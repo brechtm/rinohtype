@@ -4,8 +4,7 @@
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-
+  
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>Style Sheets &mdash; rinohtype 0.5.3 documentation</title>
@@ -14,6 +13,8 @@
   
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pdflinks.css" type="text/css" />
 
   
@@ -31,6 +32,7 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
@@ -91,7 +93,7 @@
       
     
     
-      <p><span class="caption-text">User Manual [<a class="pdf-link" href="./manual.pdf">PDF</a>]</span></p>
+      <p class="caption"><span class="caption-text">User Manual [<a class="pdf-link" href="./manual.pdf">PDF</a>]</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
@@ -104,7 +106,7 @@
 <li class="toctree-l1"><a class="reference internal" href="developing.html">Developing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="changelog.html">Release History</a></li>
 </ul>
-<p><span class="caption-text">Reference Guide [<a class="pdf-link" href="./reference.pdf">PDF</a>]</span></p>
+<p class="caption"><span class="caption-text">Reference Guide [<a class="pdf-link" href="./reference.pdf">PDF</a>]</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="rinoh.html">rinoh</a></li>
 <li class="toctree-l1"><a class="reference internal" href="sphinx.html">Sphinx Builder</a></li>
@@ -219,28 +221,28 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <section id="style-sheets">
+  <div class="section" id="style-sheets">
 <span id="id1"></span><h1>Style Sheets<a class="headerlink" href="#style-sheets" title="Permalink to this headline">¶</a></h1>
-<section id="module-rinoh.stylesheets">
+<div class="section" id="module-rinoh.stylesheets">
 <span id="id2"></span><span id="included-style-sheets"></span><h2>Included Style Sheets<a class="headerlink" href="#module-rinoh.stylesheets" title="Permalink to this headline">¶</a></h2>
 <p>These style sheets are included with rinohtype:</p>
 <dl class="py data">
-<dt id="rinoh.stylesheets.sphinx">
-<code class="sig-prename descclassname">rinoh.stylesheets.</code><code class="sig-name descname">sphinx</code><a class="headerlink" href="#rinoh.stylesheets.sphinx" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rinoh.stylesheets.sphinx">
+<span class="sig-prename descclassname"><span class="pre">rinoh.stylesheets.</span></span><span class="sig-name descname"><span class="pre">sphinx</span></span><a class="headerlink" href="#rinoh.stylesheets.sphinx" title="Permalink to this definition">¶</a></dt>
 <dd><p>Mostly a copy of the LaTeX style included with Sphinx</p>
 <p>Entry point name: <code class="docutils literal notranslate"><span class="pre">sphinx</span></code></p>
 </dd></dl>
 
 <dl class="py data">
-<dt id="rinoh.stylesheets.sphinx_article">
-<code class="sig-prename descclassname">rinoh.stylesheets.</code><code class="sig-name descname">sphinx_article</code><a class="headerlink" href="#rinoh.stylesheets.sphinx_article" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rinoh.stylesheets.sphinx_article">
+<span class="sig-prename descclassname"><span class="pre">rinoh.stylesheets.</span></span><span class="sig-name descname"><span class="pre">sphinx_article</span></span><a class="headerlink" href="#rinoh.stylesheets.sphinx_article" title="Permalink to this definition">¶</a></dt>
 <dd><p>The Sphinx stylesheet adjusted for the article template</p>
 <p>Entry point name: <code class="docutils literal notranslate"><span class="pre">sphinx_article</span></code></p>
 </dd></dl>
 
 <dl class="py data">
-<dt id="rinoh.stylesheets.sphinx_base14">
-<code class="sig-prename descclassname">rinoh.stylesheets.</code><code class="sig-name descname">sphinx_base14</code><a class="headerlink" href="#rinoh.stylesheets.sphinx_base14" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rinoh.stylesheets.sphinx_base14">
+<span class="sig-prename descclassname"><span class="pre">rinoh.stylesheets.</span></span><span class="sig-name descname"><span class="pre">sphinx_base14</span></span><a class="headerlink" href="#rinoh.stylesheets.sphinx_base14" title="Permalink to this definition">¶</a></dt>
 <dd><p>The Sphinx stylesheet, but using the fonts from the PDF core set
 (yielding smaller PDF files)</p>
 <p>Entry point name: <code class="docutils literal notranslate"><span class="pre">sphinx_base14</span></code></p>
@@ -248,14 +250,14 @@
 
 <p>Additional style sheets can be installed from PyPI. The installed style sheets
 can be listed using <a class="reference internal" href="rinoh.html#cmdoption-rinoh-list-stylesheets"><code class="xref std std-option docutils literal notranslate"><span class="pre">rinoh</span> <span class="pre">--list-stylesheets</span></code></a>.</p>
-</section>
-<section id="default-matcher">
+</div>
+<div class="section" id="default-matcher">
 <span id="id3"></span><h2>Default Matcher<a class="headerlink" href="#default-matcher" title="Permalink to this headline">¶</a></h2>
 <p>The default matcher provides the selectors for the styles used in the standard
 style sheets.</p>
 <dl class="py data">
-<dt id="rinoh.stylesheets.matcher">
-<code class="sig-prename descclassname">rinoh.stylesheets.</code><code class="sig-name descname">matcher</code><a class="headerlink" href="#rinoh.stylesheets.matcher" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rinoh.stylesheets.matcher">
+<span class="sig-prename descclassname"><span class="pre">rinoh.stylesheets.</span></span><span class="sig-name descname"><span class="pre">matcher</span></span><a class="headerlink" href="#rinoh.stylesheets.matcher" title="Permalink to this definition">¶</a></dt>
 <dd><p>The default matcher defines the following styles</p>
 <ul class="simple">
 <li><p>title page rule: <a class="reference internal" href="style/rinoh.structure.HorizontalRuleStyle.html#rinoh.structure.HorizontalRuleStyle" title="rinoh.structure.HorizontalRuleStyle"><code class="xref py py-class docutils literal notranslate"><span class="pre">HorizontalRuleStyle</span></code></a></p></li>
@@ -517,8 +519,8 @@ style sheets.</p>
 </ul>
 </dd></dl>
 
-</section>
-<section id="element-style-classes">
+</div>
+<div class="section" id="element-style-classes">
 <h2>Element Style Classes<a class="headerlink" href="#element-style-classes" title="Permalink to this headline">¶</a></h2>
 <p>These are the style classes corresponding to each type of document element. For
 each style class, the supported style attributes are listed along with the
@@ -609,8 +611,8 @@ values that can be assigned to them in a style sheet.</p>
 </tr>
 </tbody>
 </table>
-</section>
-</section>
+</div>
+</div>
 
 
            </div>

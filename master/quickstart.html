@@ -4,8 +4,7 @@
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-
+  
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>Quickstart &mdash; rinohtype 0.5.3 documentation</title>
@@ -14,6 +13,8 @@
   
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pdflinks.css" type="text/css" />
 
   
@@ -31,6 +32,7 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
@@ -91,7 +93,7 @@
       
     
     
-      <p><span class="caption-text">User Manual [<a class="pdf-link" href="./manual.pdf">PDF</a>]</span></p>
+      <p class="caption"><span class="caption-text">User Manual [<a class="pdf-link" href="./manual.pdf">PDF</a>]</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
@@ -109,7 +111,7 @@
 <li class="toctree-l1"><a class="reference internal" href="developing.html">Developing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="changelog.html">Release History</a></li>
 </ul>
-<p><span class="caption-text">Reference Guide [<a class="pdf-link" href="./reference.pdf">PDF</a>]</span></p>
+<p class="caption"><span class="caption-text">Reference Guide [<a class="pdf-link" href="./reference.pdf">PDF</a>]</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="rinoh.html">rinoh</a></li>
 <li class="toctree-l1"><a class="reference internal" href="sphinx.html">Sphinx Builder</a></li>
@@ -191,13 +193,13 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <section id="quickstart">
+  <div class="section" id="quickstart">
 <span id="id1"></span><h1>Quickstart<a class="headerlink" href="#quickstart" title="Permalink to this headline">¶</a></h1>
 <p>This section gets you started quickly, discussing each of the three modes of
 operation introduced in <a class="reference internal" href="intro.html#introduction"><span class="std std-ref">Introduction</span></a>. If you want to customize the style
 of the PDF document, please refer to <a class="reference internal" href="basicstyling.html#basic-styling"><span class="std std-ref">Basic Document Styling</span></a> which introduces
 style sheets and document templates.</p>
-<section id="command-line-renderer">
+<div class="section" id="command-line-renderer">
 <h2>Command-Line Renderer<a class="headerlink" href="#command-line-renderer" title="Permalink to this headline">¶</a></h2>
 <p>Installing rinohtype places the <strong class="program">rinoh</strong> script in the <span class="target" id="index-0"></span><code class="xref std std-envvar docutils literal notranslate"><span class="pre">PATH</span></code>.
 This can be used to render structured documents such as <a class="reference external" href="http://docutils.sourceforge.net/docs/user/rst/demo.txt">demo.txt</a>
@@ -216,8 +218,8 @@ numbers are correct. After a document has been rendered, rinohtype will save
 the page reference data to a <cite>.rtc</cite> file. Provided the document (or the
 template or style sheet) doesn’t change a lot, this can prevent the need to
 perform a second rendering pass.</p>
-</section>
-<section id="sphinx-builder">
+</div>
+<div class="section" id="sphinx-builder">
 <span id="sphinx-quickstart"></span><h2>Sphinx Builder<a class="headerlink" href="#sphinx-builder" title="Permalink to this headline">¶</a></h2>
 <p>If your Sphinx project is already configured for the LaTeX builder, rinohtype
 will happily interpret <a class="reference external" href="https://www.sphinx-doc.org/en/master/usage/configuration.html#confval-latex_documents" title="(in Sphinx v5.0.0+)"><code class="docutils literal notranslate"><span class="pre">latex_documents</span></code></a>. Otherwise, you need
@@ -235,8 +237,8 @@ the <a class="reference external" href="https://www.sphinx-doc.org/en/master/man
 </div>
 <p>Note that, just like the <strong class="program">rinoh</strong> command line tool, the Sphinx builder
 requires two <a class="reference internal" href="#rendering-passes"><span class="std std-ref">rendering passes</span></a>.</p>
-</section>
-<section id="high-level-pdf-library">
+</div>
+<div class="section" id="high-level-pdf-library">
 <span id="library-quickstart"></span><h2>High-level PDF Library<a class="headerlink" href="#high-level-pdf-library" title="Permalink to this headline">¶</a></h2>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -294,8 +296,8 @@ turn can also have children, and so on; together they form a tree.</p>
 <p>It is clear that this type of content is best parsed from a structured document
 format such as reStructuredText or XML. Manually building a document tree is
 well suited for short, custom documents however.</p>
-</section>
-</section>
+</div>
+</div>
 
 
            </div>

@@ -4,8 +4,7 @@
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-
+  
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>Strings (rinoh.strings) &mdash; rinohtype 0.5.3 documentation</title>
@@ -14,6 +13,8 @@
   
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pdflinks.css" type="text/css" />
 
   
@@ -31,6 +32,7 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
@@ -91,7 +93,7 @@
       
     
     
-      <p><span class="caption-text">User Manual [<a class="pdf-link" href="../manual.pdf">PDF</a>]</span></p>
+      <p class="caption"><span class="caption-text">User Manual [<a class="pdf-link" href="../manual.pdf">PDF</a>]</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../intro.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../install.html">Installation</a></li>
@@ -104,7 +106,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../developing.html">Developing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../changelog.html">Release History</a></li>
 </ul>
-<p><span class="caption-text">Reference Guide [<a class="pdf-link" href="../reference.pdf">PDF</a>]</span></p>
+<p class="caption"><span class="caption-text">Reference Guide [<a class="pdf-link" href="../reference.pdf">PDF</a>]</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../rinoh.html">rinoh</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../sphinx.html">Sphinx Builder</a></li>
@@ -209,11 +211,11 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <span class="target" id="module-rinoh.strings"></span><section id="strings-rinoh-strings">
+  <span class="target" id="module-rinoh.strings"></span><div class="section" id="strings-rinoh-strings">
 <span id="strings"></span><h1>Strings (<a class="reference internal" href="#module-rinoh.strings" title="rinoh.strings"><code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.strings</span></code></a>)<a class="headerlink" href="#strings-rinoh-strings" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
-<dt id="rinoh.strings.String">
-<em class="property">class </em><code class="sig-prename descclassname">rinoh.strings.</code><code class="sig-name descname">String</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">description</span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.strings.String" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rinoh.strings.String">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">rinoh.strings.</span></span><span class="sig-name descname"><span class="pre">String</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">description</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.strings.String" title="Permalink to this definition">¶</a></dt>
 <dd><p>Descriptor used to describe a configurable string</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -223,8 +225,8 @@
 </dd></dl>
 
 <dl class="py class">
-<dt id="rinoh.strings.StringCollection">
-<em class="property">class </em><code class="sig-prename descclassname">rinoh.strings.</code><code class="sig-name descname">StringCollection</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">strings</span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.strings.StringCollection" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rinoh.strings.StringCollection">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">rinoh.strings.</span></span><span class="sig-name descname"><span class="pre">StringCollection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">strings</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.strings.StringCollection" title="Permalink to this definition">¶</a></dt>
 <dd><p>A collection of related configurable strings</p>
 <dl class="field-list simple">
 <dt class="field-odd">Subclasses</dt>
@@ -238,29 +240,29 @@
 </dd></dl>
 
 <dl class="py class">
-<dt id="rinoh.strings.UserStrings">
-<em class="property">class </em><code class="sig-prename descclassname">rinoh.strings.</code><code class="sig-name descname">UserStrings</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">strings</span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.strings.UserStrings" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rinoh.strings.UserStrings">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">rinoh.strings.</span></span><span class="sig-name descname"><span class="pre">UserStrings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">strings</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.strings.UserStrings" title="Permalink to this definition">¶</a></dt>
 <dd><p>Collection of user-specified strings</p>
 <p>Unlike other string collections, these are not limited to a predefined set.</p>
 <p>Attributes:</p>
 </dd></dl>
 
 <dl class="py class">
-<dt id="rinoh.strings.Strings">
-<em class="property">class </em><code class="sig-prename descclassname">rinoh.strings.</code><code class="sig-name descname">Strings</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">string_collections</span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.strings.Strings" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rinoh.strings.Strings">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">rinoh.strings.</span></span><span class="sig-name descname"><span class="pre">Strings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">string_collections</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.strings.Strings" title="Permalink to this definition">¶</a></dt>
 <dd><p>Stores several <a class="reference internal" href="#rinoh.strings.StringCollection" title="rinoh.strings.StringCollection"><code class="xref py py-class docutils literal notranslate"><span class="pre">StringCollection</span></code></a>s</p>
 </dd></dl>
 
 <dl class="py class">
-<dt id="rinoh.strings.StringField">
-<em class="property">class </em><code class="sig-prename descclassname">rinoh.strings.</code><code class="sig-name descname">StringField</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">strings_class</span></em>, <em class="sig-param"><span class="n">key</span></em>, <em class="sig-param"><span class="n">style</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">parent</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">source</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.strings.StringField" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rinoh.strings.StringField">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">rinoh.strings.</span></span><span class="sig-name descname"><span class="pre">StringField</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">strings_class</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">style</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.strings.StringField" title="Permalink to this definition">¶</a></dt>
 <dd><p>Styled text that will be substituted with a configured string</p>
 <p>The displayed string is either the localized string as determined by the
 language set for the document or the user-supplied string passed to the
 <a class="reference internal" href="template.html#rinoh.template.TemplateConfiguration" title="rinoh.template.TemplateConfiguration"><code class="xref py py-class docutils literal notranslate"><span class="pre">TemplateConfiguration</span></code></a>.</p>
 </dd></dl>
 
-</section>
+</div>
 
 
            </div>

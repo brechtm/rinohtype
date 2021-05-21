@@ -4,8 +4,7 @@
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-
+  
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>Developing &mdash; rinohtype 0.5.3 documentation</title>
@@ -14,6 +13,8 @@
   
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pdflinks.css" type="text/css" />
 
   
@@ -31,6 +32,7 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
@@ -91,7 +93,7 @@
       
     
     
-      <p><span class="caption-text">User Manual [<a class="pdf-link" href="./manual.pdf">PDF</a>]</span></p>
+      <p class="caption"><span class="caption-text">User Manual [<a class="pdf-link" href="./manual.pdf">PDF</a>]</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
@@ -110,7 +112,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="changelog.html">Release History</a></li>
 </ul>
-<p><span class="caption-text">Reference Guide [<a class="pdf-link" href="./reference.pdf">PDF</a>]</span></p>
+<p class="caption"><span class="caption-text">Reference Guide [<a class="pdf-link" href="./reference.pdf">PDF</a>]</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="rinoh.html">rinoh</a></li>
 <li class="toctree-l1"><a class="reference internal" href="sphinx.html">Sphinx Builder</a></li>
@@ -192,7 +194,7 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <section id="developing">
+  <div class="section" id="developing">
 <span id="id1"></span><h1>Developing<a class="headerlink" href="#developing" title="Permalink to this headline">¶</a></h1>
 <p>This project makes use of <a class="reference external" href="https://nox.thea.codes">Nox</a> to manage running tests and other tasks. The
 tests can be divided into three categories: checks, unit tests and regression
@@ -218,7 +220,7 @@ through Poetry:</p>
 <p>Starting <code class="docutils literal notranslate"><span class="pre">nox</span></code> without any arguments will run the <em>check</em>, <em>check_docs</em>,
 <em>unit</em> and <em>regression</em> sessions. Refer to the next section for an overview of
 all sessions.</p>
-<section id="nox-sessions">
+<div class="section" id="nox-sessions">
 <h2>Nox Sessions<a class="headerlink" href="#nox-sessions" title="Permalink to this headline">¶</a></h2>
 <p>The following sessions execute unit tests and regression tests:</p>
 <dl class="simple">
@@ -267,8 +269,8 @@ Windows.</p>
 </dd>
 </dl>
 <p>Customization settings for <a class="reference external" href="https://github.com/PyCQA/doc8">doc8</a> and <a class="reference external" href="https://www.pytest.org">pytest</a> are stored in <code class="docutils literal notranslate"><span class="pre">setup.cfg</span></code>.</p>
-</section>
-<section id="testing-against-multiple-python-interpreter-versions">
+</div>
+<div class="section" id="testing-against-multiple-python-interpreter-versions">
 <h2>Testing against multiple Python interpreter versions<a class="headerlink" href="#testing-against-multiple-python-interpreter-versions" title="Permalink to this headline">¶</a></h2>
 <p>Nox facilitates running tests on multiple Python interpreter versions. You can
 combine the <code class="docutils literal notranslate"><span class="pre">unit</span></code> and <code class="docutils literal notranslate"><span class="pre">regression</span></code> sessions with a Python <a class="reference external" href="https://nox.thea.codes/en/stable/tutorial.html#testing-against-different-and-multiple-pythons">version
@@ -282,7 +284,7 @@ development, it can be useful to run tests on a set of Python versions before
 pushing your commits. Of course, this requires these versions to be available
 on your machine. It is highly recommended you use <a class="reference external" href="https://github.com/pyenv/pyenv">pyenv</a> (or <a class="reference external" href="https://github.com/pyenv-win/pyenv-win">pyenv-win</a>) to
 install and manage these. For example, to install CPython 3.8.1, you can run:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pyenv</span> <span class="n">install</span> <span class="mf">3.8</span><span class="o">.</span><span class="mi">1</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pyenv</span> <span class="n">install</span> <span class="mf">3.8.1</span>
 </pre></div>
 </div>
 <p>and pyenv will download, build and install this version of CPython for you.
@@ -295,16 +297,16 @@ repository checkout directory. The file lists specific the versions of CPython
 rinohtype aims to support plus recent PyPy3 versions (ideally, we should
 closely track the latest releases). The <code class="docutils literal notranslate"><span class="pre">pyenv_install.py</span></code> script can install
 these for you (skipping any that are already installed).</p>
-</section>
-<section id="continuous-integration">
+</div>
+<div class="section" id="continuous-integration">
 <h2>Continuous integration<a class="headerlink" href="#continuous-integration" title="Permalink to this headline">¶</a></h2>
 <p><a class="reference external" href="https://github.com/brechtm/rinohtype/actions">GitHub Actions</a> automatically executes the Nox sessions when new commits
 are pushed to the repository. The Nox sessions are run on Linux, macOS and
 Windows, and run the tests against an array of Python, docutils and Sphinx
 versions to make sure that we don’t break any corner cases. See
 <code class="docutils literal notranslate"><span class="pre">.github/workflows</span></code> for details.</p>
-</section>
-<section id="making-a-release">
+</div>
+<div class="section" id="making-a-release">
 <h2>Making a release<a class="headerlink" href="#making-a-release" title="Permalink to this headline">¶</a></h2>
 <p>This is a list of steps to follow when making a new release of rinohtype.
 Publishing the new release to <a class="reference external" href="https://pypi.org/">PyPI</a> and uploading the documentation to GitHub
@@ -350,8 +352,8 @@ changelog. Use previous releases as a template.</p>
 </ul>
 </li>
 </ol>
-</section>
-</section>
+</div>
+</div>
 
 
            </div>

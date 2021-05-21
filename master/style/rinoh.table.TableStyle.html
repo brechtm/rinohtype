@@ -4,8 +4,7 @@
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-
+  
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>TableStyle &mdash; rinohtype 0.5.3 documentation</title>
@@ -14,6 +13,8 @@
   
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pdflinks.css" type="text/css" />
 
   
@@ -31,6 +32,7 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
@@ -91,7 +93,7 @@
       
     
     
-      <p><span class="caption-text">User Manual [<a class="pdf-link" href="../manual.pdf">PDF</a>]</span></p>
+      <p class="caption"><span class="caption-text">User Manual [<a class="pdf-link" href="../manual.pdf">PDF</a>]</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../intro.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../install.html">Installation</a></li>
@@ -104,7 +106,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../developing.html">Developing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../changelog.html">Release History</a></li>
 </ul>
-<p><span class="caption-text">Reference Guide [<a class="pdf-link" href="../reference.pdf">PDF</a>]</span></p>
+<p class="caption"><span class="caption-text">Reference Guide [<a class="pdf-link" href="../reference.pdf">PDF</a>]</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../rinoh.html">rinoh</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../sphinx.html">Sphinx Builder</a></li>
@@ -221,191 +223,191 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <section id="tablestyle">
+  <div class="section" id="tablestyle">
 <h1>TableStyle<a class="headerlink" href="#tablestyle" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
-<dt id="rinoh.table.TableStyle">
-<em class="property">class </em><code class="sig-prename descclassname">rinoh.table.</code><code class="sig-name descname">TableStyle</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">base</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">attributes</span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.table.TableStyle" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rinoh.table.TableStyle">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">rinoh.table.</span></span><span class="sig-name descname"><span class="pre">TableStyle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">base</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">attributes</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.table.TableStyle" title="Permalink to this definition">¶</a></dt>
 <dd><p>Style class for <a class="reference internal" href="../api/table.html#rinoh.table.Table" title="rinoh.table.Table"><code class="xref py py-class docutils literal notranslate"><span class="pre">Table</span></code></a></p>
 <dl class="py attribute">
-<dt id="rinoh.table.TableStyle.column_widths">
-<code class="sig-name descname">column_widths</code><a class="headerlink" href="#rinoh.table.TableStyle.column_widths" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rinoh.table.TableStyle.column_widths">
+<span class="sig-name descname"><span class="pre">column_widths</span></span><a class="headerlink" href="#rinoh.table.TableStyle.column_widths" title="Permalink to this definition">¶</a></dt>
 <dd><p>Absolute or relative widths of each column</p>
 <p><em>Accepts</em> <code class="xref py py-class docutils literal notranslate"><span class="pre">ColumnWidths</span></code>: a whitespace-delimited list of column widths; <a class="reference internal" href="../api/dimension.html#rinoh.dimension.Dimension" title="rinoh.dimension.Dimension"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dimension</span></code></a>s (absolute width), integers (relative width) and/or ‘auto’ (automatic width)</p>
 <p><em>Default</em>: <code class="docutils literal notranslate"><span class="pre">none</span></code></p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt id="rinoh.table.TableStyle.split_minimum_rows">
-<code class="sig-name descname">split_minimum_rows</code><a class="headerlink" href="#rinoh.table.TableStyle.split_minimum_rows" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rinoh.table.TableStyle.split_minimum_rows">
+<span class="sig-name descname"><span class="pre">split_minimum_rows</span></span><a class="headerlink" href="#rinoh.table.TableStyle.split_minimum_rows" title="Permalink to this definition">¶</a></dt>
 <dd><p>The minimum number of rows to display when the table is split across pages</p>
 <p><em>Accepts</em> <a class="reference internal" href="../api/attribute.html#rinoh.attribute.Integer" title="rinoh.attribute.Integer"><code class="xref py py-class docutils literal notranslate"><span class="pre">Integer</span></code></a>: a natural number (positive integer)</p>
 <p><em>Default</em>: (no value)</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt id="rinoh.table.TableStyle.repeat_head">
-<code class="sig-name descname">repeat_head</code><a class="headerlink" href="#rinoh.table.TableStyle.repeat_head" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rinoh.table.TableStyle.repeat_head">
+<span class="sig-name descname"><span class="pre">repeat_head</span></span><a class="headerlink" href="#rinoh.table.TableStyle.repeat_head" title="Permalink to this definition">¶</a></dt>
 <dd><p>Repeat the head when the table is split across pages</p>
 <p><em>Accepts</em> <a class="reference internal" href="../api/attribute.html#rinoh.attribute.Bool" title="rinoh.attribute.Bool"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bool</span></code></a>: <code class="docutils literal notranslate"><span class="pre">true</span></code> or <code class="docutils literal notranslate"><span class="pre">false</span></code></p>
 <p><em>Default</em>: <code class="docutils literal notranslate"><span class="pre">false</span></code></p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt id="rinoh.table.TableStyle.width">
-<code class="sig-name descname">width</code><a class="headerlink" href="#rinoh.table.TableStyle.width" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rinoh.table.TableStyle.width">
+<span class="sig-name descname"><span class="pre">width</span></span><a class="headerlink" href="#rinoh.table.TableStyle.width" title="Permalink to this definition">¶</a></dt>
 <dd><p>Width to render the flowable at (inherited from <a class="reference internal" href="rinoh.flowable.FlowableStyle.html#rinoh.flowable.FlowableStyle.width" title="rinoh.flowable.FlowableStyle.width"><code class="xref py py-attr docutils literal notranslate"><span class="pre">FlowableStyle</span></code></a>)</p>
 <p><em>Accepts</em> <a class="reference internal" href="../api/flowable.html#rinoh.flowable.FlowableWidth" title="rinoh.flowable.FlowableWidth"><code class="xref py py-class docutils literal notranslate"><span class="pre">FlowableWidth</span></code></a>: <code class="docutils literal notranslate"><span class="pre">auto</span></code>, <code class="docutils literal notranslate"><span class="pre">fill</span></code> or a numeric value followed by a unit (<code class="docutils literal notranslate"><span class="pre">pt</span></code>, <code class="docutils literal notranslate"><span class="pre">in</span></code>, <code class="docutils literal notranslate"><span class="pre">pc</span></code>, <code class="docutils literal notranslate"><span class="pre">mm</span></code>, <code class="docutils literal notranslate"><span class="pre">cm</span></code>, <code class="docutils literal notranslate"><span class="pre">%</span></code>, <code class="docutils literal notranslate"><span class="pre">/2</span></code>, <code class="docutils literal notranslate"><span class="pre">/4</span></code>)</p>
 <p><em>Default</em>: <code class="docutils literal notranslate"><span class="pre">auto</span></code></p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt id="rinoh.table.TableStyle.horizontal_align">
-<code class="sig-name descname">horizontal_align</code><a class="headerlink" href="#rinoh.table.TableStyle.horizontal_align" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rinoh.table.TableStyle.horizontal_align">
+<span class="sig-name descname"><span class="pre">horizontal_align</span></span><a class="headerlink" href="#rinoh.table.TableStyle.horizontal_align" title="Permalink to this definition">¶</a></dt>
 <dd><p>Horizontal alignment of the flowable (inherited from <a class="reference internal" href="rinoh.flowable.FlowableStyle.html#rinoh.flowable.FlowableStyle.horizontal_align" title="rinoh.flowable.FlowableStyle.horizontal_align"><code class="xref py py-attr docutils literal notranslate"><span class="pre">FlowableStyle</span></code></a>)</p>
 <p><em>Accepts</em> <a class="reference internal" href="../api/flowable.html#rinoh.flowable.HorizontalAlignment" title="rinoh.flowable.HorizontalAlignment"><code class="xref py py-class docutils literal notranslate"><span class="pre">HorizontalAlignment</span></code></a>: <code class="docutils literal notranslate"><span class="pre">left</span></code>, <code class="docutils literal notranslate"><span class="pre">right</span></code>, <code class="docutils literal notranslate"><span class="pre">center</span></code></p>
 <p><em>Default</em>: <code class="docutils literal notranslate"><span class="pre">left</span></code></p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt id="rinoh.table.TableStyle.space_above">
-<code class="sig-name descname">space_above</code><a class="headerlink" href="#rinoh.table.TableStyle.space_above" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rinoh.table.TableStyle.space_above">
+<span class="sig-name descname"><span class="pre">space_above</span></span><a class="headerlink" href="#rinoh.table.TableStyle.space_above" title="Permalink to this definition">¶</a></dt>
 <dd><p>Vertical space preceding the flowable (inherited from <a class="reference internal" href="rinoh.flowable.FlowableStyle.html#rinoh.flowable.FlowableStyle.space_above" title="rinoh.flowable.FlowableStyle.space_above"><code class="xref py py-attr docutils literal notranslate"><span class="pre">FlowableStyle</span></code></a>)</p>
 <p><em>Accepts</em> <a class="reference internal" href="../api/dimension.html#rinoh.dimension.Dimension" title="rinoh.dimension.Dimension"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dimension</span></code></a>: a numeric value followed by a unit (<code class="docutils literal notranslate"><span class="pre">pt</span></code>, <code class="docutils literal notranslate"><span class="pre">in</span></code>, <code class="docutils literal notranslate"><span class="pre">pc</span></code>, <code class="docutils literal notranslate"><span class="pre">mm</span></code>, <code class="docutils literal notranslate"><span class="pre">cm</span></code>, <code class="docutils literal notranslate"><span class="pre">%</span></code>, <code class="docutils literal notranslate"><span class="pre">/2</span></code>, <code class="docutils literal notranslate"><span class="pre">/4</span></code>)</p>
 <p><em>Default</em>: <code class="docutils literal notranslate"><span class="pre">0</span></code></p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt id="rinoh.table.TableStyle.space_below">
-<code class="sig-name descname">space_below</code><a class="headerlink" href="#rinoh.table.TableStyle.space_below" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rinoh.table.TableStyle.space_below">
+<span class="sig-name descname"><span class="pre">space_below</span></span><a class="headerlink" href="#rinoh.table.TableStyle.space_below" title="Permalink to this definition">¶</a></dt>
 <dd><p>Vertical space following the flowable (inherited from <a class="reference internal" href="rinoh.flowable.FlowableStyle.html#rinoh.flowable.FlowableStyle.space_below" title="rinoh.flowable.FlowableStyle.space_below"><code class="xref py py-attr docutils literal notranslate"><span class="pre">FlowableStyle</span></code></a>)</p>
 <p><em>Accepts</em> <a class="reference internal" href="../api/dimension.html#rinoh.dimension.Dimension" title="rinoh.dimension.Dimension"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dimension</span></code></a>: a numeric value followed by a unit (<code class="docutils literal notranslate"><span class="pre">pt</span></code>, <code class="docutils literal notranslate"><span class="pre">in</span></code>, <code class="docutils literal notranslate"><span class="pre">pc</span></code>, <code class="docutils literal notranslate"><span class="pre">mm</span></code>, <code class="docutils literal notranslate"><span class="pre">cm</span></code>, <code class="docutils literal notranslate"><span class="pre">%</span></code>, <code class="docutils literal notranslate"><span class="pre">/2</span></code>, <code class="docutils literal notranslate"><span class="pre">/4</span></code>)</p>
 <p><em>Default</em>: <code class="docutils literal notranslate"><span class="pre">0</span></code></p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt id="rinoh.table.TableStyle.margin_left">
-<code class="sig-name descname">margin_left</code><a class="headerlink" href="#rinoh.table.TableStyle.margin_left" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rinoh.table.TableStyle.margin_left">
+<span class="sig-name descname"><span class="pre">margin_left</span></span><a class="headerlink" href="#rinoh.table.TableStyle.margin_left" title="Permalink to this definition">¶</a></dt>
 <dd><p>Left margin (inherited from <a class="reference internal" href="rinoh.flowable.FlowableStyle.html#rinoh.flowable.FlowableStyle.margin_left" title="rinoh.flowable.FlowableStyle.margin_left"><code class="xref py py-attr docutils literal notranslate"><span class="pre">FlowableStyle</span></code></a>)</p>
 <p><em>Accepts</em> <a class="reference internal" href="../api/dimension.html#rinoh.dimension.Dimension" title="rinoh.dimension.Dimension"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dimension</span></code></a>: a numeric value followed by a unit (<code class="docutils literal notranslate"><span class="pre">pt</span></code>, <code class="docutils literal notranslate"><span class="pre">in</span></code>, <code class="docutils literal notranslate"><span class="pre">pc</span></code>, <code class="docutils literal notranslate"><span class="pre">mm</span></code>, <code class="docutils literal notranslate"><span class="pre">cm</span></code>, <code class="docutils literal notranslate"><span class="pre">%</span></code>, <code class="docutils literal notranslate"><span class="pre">/2</span></code>, <code class="docutils literal notranslate"><span class="pre">/4</span></code>)</p>
 <p><em>Default</em>: <code class="docutils literal notranslate"><span class="pre">0</span></code></p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt id="rinoh.table.TableStyle.margin_right">
-<code class="sig-name descname">margin_right</code><a class="headerlink" href="#rinoh.table.TableStyle.margin_right" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rinoh.table.TableStyle.margin_right">
+<span class="sig-name descname"><span class="pre">margin_right</span></span><a class="headerlink" href="#rinoh.table.TableStyle.margin_right" title="Permalink to this definition">¶</a></dt>
 <dd><p>Right margin (inherited from <a class="reference internal" href="rinoh.flowable.FlowableStyle.html#rinoh.flowable.FlowableStyle.margin_right" title="rinoh.flowable.FlowableStyle.margin_right"><code class="xref py py-attr docutils literal notranslate"><span class="pre">FlowableStyle</span></code></a>)</p>
 <p><em>Accepts</em> <a class="reference internal" href="../api/dimension.html#rinoh.dimension.Dimension" title="rinoh.dimension.Dimension"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dimension</span></code></a>: a numeric value followed by a unit (<code class="docutils literal notranslate"><span class="pre">pt</span></code>, <code class="docutils literal notranslate"><span class="pre">in</span></code>, <code class="docutils literal notranslate"><span class="pre">pc</span></code>, <code class="docutils literal notranslate"><span class="pre">mm</span></code>, <code class="docutils literal notranslate"><span class="pre">cm</span></code>, <code class="docutils literal notranslate"><span class="pre">%</span></code>, <code class="docutils literal notranslate"><span class="pre">/2</span></code>, <code class="docutils literal notranslate"><span class="pre">/4</span></code>)</p>
 <p><em>Default</em>: <code class="docutils literal notranslate"><span class="pre">0</span></code></p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt id="rinoh.table.TableStyle.padding">
-<code class="sig-name descname">padding</code><a class="headerlink" href="#rinoh.table.TableStyle.padding" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rinoh.table.TableStyle.padding">
+<span class="sig-name descname"><span class="pre">padding</span></span><a class="headerlink" href="#rinoh.table.TableStyle.padding" title="Permalink to this definition">¶</a></dt>
 <dd><p>Padding (inherited from <a class="reference internal" href="rinoh.flowable.FlowableStyle.html#rinoh.flowable.FlowableStyle.padding" title="rinoh.flowable.FlowableStyle.padding"><code class="xref py py-attr docutils literal notranslate"><span class="pre">FlowableStyle</span></code></a>)</p>
 <p><em>Accepts</em> <a class="reference internal" href="../api/dimension.html#rinoh.dimension.Dimension" title="rinoh.dimension.Dimension"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dimension</span></code></a>: a numeric value followed by a unit (<code class="docutils literal notranslate"><span class="pre">pt</span></code>, <code class="docutils literal notranslate"><span class="pre">in</span></code>, <code class="docutils literal notranslate"><span class="pre">pc</span></code>, <code class="docutils literal notranslate"><span class="pre">mm</span></code>, <code class="docutils literal notranslate"><span class="pre">cm</span></code>, <code class="docutils literal notranslate"><span class="pre">%</span></code>, <code class="docutils literal notranslate"><span class="pre">/2</span></code>, <code class="docutils literal notranslate"><span class="pre">/4</span></code>)</p>
 <p><em>Default</em>: <code class="docutils literal notranslate"><span class="pre">0</span></code></p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt id="rinoh.table.TableStyle.padding_left">
-<code class="sig-name descname">padding_left</code><a class="headerlink" href="#rinoh.table.TableStyle.padding_left" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rinoh.table.TableStyle.padding_left">
+<span class="sig-name descname"><span class="pre">padding_left</span></span><a class="headerlink" href="#rinoh.table.TableStyle.padding_left" title="Permalink to this definition">¶</a></dt>
 <dd><p>Left padding (inherited from <a class="reference internal" href="rinoh.flowable.FlowableStyle.html#rinoh.flowable.FlowableStyle.padding_left" title="rinoh.flowable.FlowableStyle.padding_left"><code class="xref py py-attr docutils literal notranslate"><span class="pre">FlowableStyle</span></code></a>)</p>
 <p><em>Accepts</em> <a class="reference internal" href="../api/dimension.html#rinoh.dimension.Dimension" title="rinoh.dimension.Dimension"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dimension</span></code></a>: a numeric value followed by a unit (<code class="docutils literal notranslate"><span class="pre">pt</span></code>, <code class="docutils literal notranslate"><span class="pre">in</span></code>, <code class="docutils literal notranslate"><span class="pre">pc</span></code>, <code class="docutils literal notranslate"><span class="pre">mm</span></code>, <code class="docutils literal notranslate"><span class="pre">cm</span></code>, <code class="docutils literal notranslate"><span class="pre">%</span></code>, <code class="docutils literal notranslate"><span class="pre">/2</span></code>, <code class="docutils literal notranslate"><span class="pre">/4</span></code>)</p>
 <p><em>Default</em>: <code class="docutils literal notranslate"><span class="pre">0</span></code></p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt id="rinoh.table.TableStyle.padding_right">
-<code class="sig-name descname">padding_right</code><a class="headerlink" href="#rinoh.table.TableStyle.padding_right" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rinoh.table.TableStyle.padding_right">
+<span class="sig-name descname"><span class="pre">padding_right</span></span><a class="headerlink" href="#rinoh.table.TableStyle.padding_right" title="Permalink to this definition">¶</a></dt>
 <dd><p>Right padding (inherited from <a class="reference internal" href="rinoh.flowable.FlowableStyle.html#rinoh.flowable.FlowableStyle.padding_right" title="rinoh.flowable.FlowableStyle.padding_right"><code class="xref py py-attr docutils literal notranslate"><span class="pre">FlowableStyle</span></code></a>)</p>
 <p><em>Accepts</em> <a class="reference internal" href="../api/dimension.html#rinoh.dimension.Dimension" title="rinoh.dimension.Dimension"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dimension</span></code></a>: a numeric value followed by a unit (<code class="docutils literal notranslate"><span class="pre">pt</span></code>, <code class="docutils literal notranslate"><span class="pre">in</span></code>, <code class="docutils literal notranslate"><span class="pre">pc</span></code>, <code class="docutils literal notranslate"><span class="pre">mm</span></code>, <code class="docutils literal notranslate"><span class="pre">cm</span></code>, <code class="docutils literal notranslate"><span class="pre">%</span></code>, <code class="docutils literal notranslate"><span class="pre">/2</span></code>, <code class="docutils literal notranslate"><span class="pre">/4</span></code>)</p>
 <p><em>Default</em>: <code class="docutils literal notranslate"><span class="pre">0</span></code></p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt id="rinoh.table.TableStyle.padding_top">
-<code class="sig-name descname">padding_top</code><a class="headerlink" href="#rinoh.table.TableStyle.padding_top" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rinoh.table.TableStyle.padding_top">
+<span class="sig-name descname"><span class="pre">padding_top</span></span><a class="headerlink" href="#rinoh.table.TableStyle.padding_top" title="Permalink to this definition">¶</a></dt>
 <dd><p>Top padding (inherited from <a class="reference internal" href="rinoh.flowable.FlowableStyle.html#rinoh.flowable.FlowableStyle.padding_top" title="rinoh.flowable.FlowableStyle.padding_top"><code class="xref py py-attr docutils literal notranslate"><span class="pre">FlowableStyle</span></code></a>)</p>
 <p><em>Accepts</em> <a class="reference internal" href="../api/dimension.html#rinoh.dimension.Dimension" title="rinoh.dimension.Dimension"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dimension</span></code></a>: a numeric value followed by a unit (<code class="docutils literal notranslate"><span class="pre">pt</span></code>, <code class="docutils literal notranslate"><span class="pre">in</span></code>, <code class="docutils literal notranslate"><span class="pre">pc</span></code>, <code class="docutils literal notranslate"><span class="pre">mm</span></code>, <code class="docutils literal notranslate"><span class="pre">cm</span></code>, <code class="docutils literal notranslate"><span class="pre">%</span></code>, <code class="docutils literal notranslate"><span class="pre">/2</span></code>, <code class="docutils literal notranslate"><span class="pre">/4</span></code>)</p>
 <p><em>Default</em>: <code class="docutils literal notranslate"><span class="pre">0</span></code></p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt id="rinoh.table.TableStyle.padding_bottom">
-<code class="sig-name descname">padding_bottom</code><a class="headerlink" href="#rinoh.table.TableStyle.padding_bottom" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rinoh.table.TableStyle.padding_bottom">
+<span class="sig-name descname"><span class="pre">padding_bottom</span></span><a class="headerlink" href="#rinoh.table.TableStyle.padding_bottom" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bottom padding (inherited from <a class="reference internal" href="rinoh.flowable.FlowableStyle.html#rinoh.flowable.FlowableStyle.padding_bottom" title="rinoh.flowable.FlowableStyle.padding_bottom"><code class="xref py py-attr docutils literal notranslate"><span class="pre">FlowableStyle</span></code></a>)</p>
 <p><em>Accepts</em> <a class="reference internal" href="../api/dimension.html#rinoh.dimension.Dimension" title="rinoh.dimension.Dimension"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dimension</span></code></a>: a numeric value followed by a unit (<code class="docutils literal notranslate"><span class="pre">pt</span></code>, <code class="docutils literal notranslate"><span class="pre">in</span></code>, <code class="docutils literal notranslate"><span class="pre">pc</span></code>, <code class="docutils literal notranslate"><span class="pre">mm</span></code>, <code class="docutils literal notranslate"><span class="pre">cm</span></code>, <code class="docutils literal notranslate"><span class="pre">%</span></code>, <code class="docutils literal notranslate"><span class="pre">/2</span></code>, <code class="docutils literal notranslate"><span class="pre">/4</span></code>)</p>
 <p><em>Default</em>: <code class="docutils literal notranslate"><span class="pre">0</span></code></p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt id="rinoh.table.TableStyle.keep_with_next">
-<code class="sig-name descname">keep_with_next</code><a class="headerlink" href="#rinoh.table.TableStyle.keep_with_next" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rinoh.table.TableStyle.keep_with_next">
+<span class="sig-name descname"><span class="pre">keep_with_next</span></span><a class="headerlink" href="#rinoh.table.TableStyle.keep_with_next" title="Permalink to this definition">¶</a></dt>
 <dd><p>Keep this flowable and the next on the same page (inherited from <a class="reference internal" href="rinoh.flowable.FlowableStyle.html#rinoh.flowable.FlowableStyle.keep_with_next" title="rinoh.flowable.FlowableStyle.keep_with_next"><code class="xref py py-attr docutils literal notranslate"><span class="pre">FlowableStyle</span></code></a>)</p>
 <p><em>Accepts</em> <a class="reference internal" href="../api/attribute.html#rinoh.attribute.Bool" title="rinoh.attribute.Bool"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bool</span></code></a>: <code class="docutils literal notranslate"><span class="pre">true</span></code> or <code class="docutils literal notranslate"><span class="pre">false</span></code></p>
 <p><em>Default</em>: <code class="docutils literal notranslate"><span class="pre">false</span></code></p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt id="rinoh.table.TableStyle.border">
-<code class="sig-name descname">border</code><a class="headerlink" href="#rinoh.table.TableStyle.border" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rinoh.table.TableStyle.border">
+<span class="sig-name descname"><span class="pre">border</span></span><a class="headerlink" href="#rinoh.table.TableStyle.border" title="Permalink to this definition">¶</a></dt>
 <dd><p>Border surrounding the flowable (inherited from <a class="reference internal" href="rinoh.flowable.FlowableStyle.html#rinoh.flowable.FlowableStyle.border" title="rinoh.flowable.FlowableStyle.border"><code class="xref py py-attr docutils literal notranslate"><span class="pre">FlowableStyle</span></code></a>)</p>
 <p><em>Accepts</em> <a class="reference internal" href="../api/draw.html#rinoh.draw.Stroke" title="rinoh.draw.Stroke"><code class="xref py py-class docutils literal notranslate"><span class="pre">Stroke</span></code></a>: the width (<a class="reference internal" href="../api/dimension.html#rinoh.dimension.Dimension" title="rinoh.dimension.Dimension"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dimension</span></code></a>) and color (<a class="reference internal" href="../api/color.html#rinoh.color.Color" title="rinoh.color.Color"><code class="xref py py-class docutils literal notranslate"><span class="pre">Color</span></code></a>) of the stroke, separated by a comma (<code class="docutils literal notranslate"><span class="pre">,</span></code>)</p>
 <p><em>Default</em>: <code class="docutils literal notranslate"><span class="pre">none</span></code></p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt id="rinoh.table.TableStyle.border_left">
-<code class="sig-name descname">border_left</code><a class="headerlink" href="#rinoh.table.TableStyle.border_left" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rinoh.table.TableStyle.border_left">
+<span class="sig-name descname"><span class="pre">border_left</span></span><a class="headerlink" href="#rinoh.table.TableStyle.border_left" title="Permalink to this definition">¶</a></dt>
 <dd><p>Border left of the flowable (inherited from <a class="reference internal" href="rinoh.flowable.FlowableStyle.html#rinoh.flowable.FlowableStyle.border_left" title="rinoh.flowable.FlowableStyle.border_left"><code class="xref py py-attr docutils literal notranslate"><span class="pre">FlowableStyle</span></code></a>)</p>
 <p><em>Accepts</em> <a class="reference internal" href="../api/draw.html#rinoh.draw.Stroke" title="rinoh.draw.Stroke"><code class="xref py py-class docutils literal notranslate"><span class="pre">Stroke</span></code></a>: the width (<a class="reference internal" href="../api/dimension.html#rinoh.dimension.Dimension" title="rinoh.dimension.Dimension"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dimension</span></code></a>) and color (<a class="reference internal" href="../api/color.html#rinoh.color.Color" title="rinoh.color.Color"><code class="xref py py-class docutils literal notranslate"><span class="pre">Color</span></code></a>) of the stroke, separated by a comma (<code class="docutils literal notranslate"><span class="pre">,</span></code>)</p>
 <p><em>Default</em>: <code class="docutils literal notranslate"><span class="pre">none</span></code></p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt id="rinoh.table.TableStyle.border_right">
-<code class="sig-name descname">border_right</code><a class="headerlink" href="#rinoh.table.TableStyle.border_right" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rinoh.table.TableStyle.border_right">
+<span class="sig-name descname"><span class="pre">border_right</span></span><a class="headerlink" href="#rinoh.table.TableStyle.border_right" title="Permalink to this definition">¶</a></dt>
 <dd><p>Border right of the flowable (inherited from <a class="reference internal" href="rinoh.flowable.FlowableStyle.html#rinoh.flowable.FlowableStyle.border_right" title="rinoh.flowable.FlowableStyle.border_right"><code class="xref py py-attr docutils literal notranslate"><span class="pre">FlowableStyle</span></code></a>)</p>
 <p><em>Accepts</em> <a class="reference internal" href="../api/draw.html#rinoh.draw.Stroke" title="rinoh.draw.Stroke"><code class="xref py py-class docutils literal notranslate"><span class="pre">Stroke</span></code></a>: the width (<a class="reference internal" href="../api/dimension.html#rinoh.dimension.Dimension" title="rinoh.dimension.Dimension"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dimension</span></code></a>) and color (<a class="reference internal" href="../api/color.html#rinoh.color.Color" title="rinoh.color.Color"><code class="xref py py-class docutils literal notranslate"><span class="pre">Color</span></code></a>) of the stroke, separated by a comma (<code class="docutils literal notranslate"><span class="pre">,</span></code>)</p>
 <p><em>Default</em>: <code class="docutils literal notranslate"><span class="pre">none</span></code></p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt id="rinoh.table.TableStyle.border_top">
-<code class="sig-name descname">border_top</code><a class="headerlink" href="#rinoh.table.TableStyle.border_top" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rinoh.table.TableStyle.border_top">
+<span class="sig-name descname"><span class="pre">border_top</span></span><a class="headerlink" href="#rinoh.table.TableStyle.border_top" title="Permalink to this definition">¶</a></dt>
 <dd><p>Border above the flowable (inherited from <a class="reference internal" href="rinoh.flowable.FlowableStyle.html#rinoh.flowable.FlowableStyle.border_top" title="rinoh.flowable.FlowableStyle.border_top"><code class="xref py py-attr docutils literal notranslate"><span class="pre">FlowableStyle</span></code></a>)</p>
 <p><em>Accepts</em> <a class="reference internal" href="../api/draw.html#rinoh.draw.Stroke" title="rinoh.draw.Stroke"><code class="xref py py-class docutils literal notranslate"><span class="pre">Stroke</span></code></a>: the width (<a class="reference internal" href="../api/dimension.html#rinoh.dimension.Dimension" title="rinoh.dimension.Dimension"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dimension</span></code></a>) and color (<a class="reference internal" href="../api/color.html#rinoh.color.Color" title="rinoh.color.Color"><code class="xref py py-class docutils literal notranslate"><span class="pre">Color</span></code></a>) of the stroke, separated by a comma (<code class="docutils literal notranslate"><span class="pre">,</span></code>)</p>
 <p><em>Default</em>: <code class="docutils literal notranslate"><span class="pre">none</span></code></p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt id="rinoh.table.TableStyle.border_bottom">
-<code class="sig-name descname">border_bottom</code><a class="headerlink" href="#rinoh.table.TableStyle.border_bottom" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rinoh.table.TableStyle.border_bottom">
+<span class="sig-name descname"><span class="pre">border_bottom</span></span><a class="headerlink" href="#rinoh.table.TableStyle.border_bottom" title="Permalink to this definition">¶</a></dt>
 <dd><p>Border below the flowable (inherited from <a class="reference internal" href="rinoh.flowable.FlowableStyle.html#rinoh.flowable.FlowableStyle.border_bottom" title="rinoh.flowable.FlowableStyle.border_bottom"><code class="xref py py-attr docutils literal notranslate"><span class="pre">FlowableStyle</span></code></a>)</p>
 <p><em>Accepts</em> <a class="reference internal" href="../api/draw.html#rinoh.draw.Stroke" title="rinoh.draw.Stroke"><code class="xref py py-class docutils literal notranslate"><span class="pre">Stroke</span></code></a>: the width (<a class="reference internal" href="../api/dimension.html#rinoh.dimension.Dimension" title="rinoh.dimension.Dimension"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dimension</span></code></a>) and color (<a class="reference internal" href="../api/color.html#rinoh.color.Color" title="rinoh.color.Color"><code class="xref py py-class docutils literal notranslate"><span class="pre">Color</span></code></a>) of the stroke, separated by a comma (<code class="docutils literal notranslate"><span class="pre">,</span></code>)</p>
 <p><em>Default</em>: <code class="docutils literal notranslate"><span class="pre">none</span></code></p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt id="rinoh.table.TableStyle.background_color">
-<code class="sig-name descname">background_color</code><a class="headerlink" href="#rinoh.table.TableStyle.background_color" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rinoh.table.TableStyle.background_color">
+<span class="sig-name descname"><span class="pre">background_color</span></span><a class="headerlink" href="#rinoh.table.TableStyle.background_color" title="Permalink to this definition">¶</a></dt>
 <dd><p>Color of the area within the flowable’s borders (inherited from <a class="reference internal" href="rinoh.flowable.FlowableStyle.html#rinoh.flowable.FlowableStyle.background_color" title="rinoh.flowable.FlowableStyle.background_color"><code class="xref py py-attr docutils literal notranslate"><span class="pre">FlowableStyle</span></code></a>)</p>
 <p><em>Accepts</em> <a class="reference internal" href="../api/color.html#rinoh.color.Color" title="rinoh.color.Color"><code class="xref py py-class docutils literal notranslate"><span class="pre">Color</span></code></a>: HEX string with optional alpha component (<code class="docutils literal notranslate"><span class="pre">#RRGGBB</span></code>, <code class="docutils literal notranslate"><span class="pre">#RRGGBBAA</span></code>, <code class="docutils literal notranslate"><span class="pre">#RGB</span></code> or <code class="docutils literal notranslate"><span class="pre">#RGBA</span></code>)</p>
 <p><em>Default</em>: <code class="docutils literal notranslate"><span class="pre">none</span></code></p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt id="rinoh.table.TableStyle.page_break">
-<code class="sig-name descname">page_break</code><a class="headerlink" href="#rinoh.table.TableStyle.page_break" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rinoh.table.TableStyle.page_break">
+<span class="sig-name descname"><span class="pre">page_break</span></span><a class="headerlink" href="#rinoh.table.TableStyle.page_break" title="Permalink to this definition">¶</a></dt>
 <dd><p>Type of page break to insert before rendering this flowable (inherited from <a class="reference internal" href="rinoh.flowable.FlowableStyle.html#rinoh.flowable.FlowableStyle.page_break" title="rinoh.flowable.FlowableStyle.page_break"><code class="xref py py-attr docutils literal notranslate"><span class="pre">FlowableStyle</span></code></a>)</p>
 <p><em>Accepts</em> <code class="xref py py-class docutils literal notranslate"><span class="pre">Break</span></code>: <code class="docutils literal notranslate"><span class="pre">none</span></code>, <code class="docutils literal notranslate"><span class="pre">any</span></code>, <code class="docutils literal notranslate"><span class="pre">left</span></code>, <code class="docutils literal notranslate"><span class="pre">right</span></code>, <code class="docutils literal notranslate"><span class="pre">any</span> <span class="pre">restart</span></code>, <code class="docutils literal notranslate"><span class="pre">left</span> <span class="pre">restart</span></code>, <code class="docutils literal notranslate"><span class="pre">right</span> <span class="pre">restart</span></code></p>
 <p><em>Default</em>: <code class="docutils literal notranslate"><span class="pre">None</span></code></p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt id="rinoh.table.TableStyle.hide">
-<code class="sig-name descname">hide</code><a class="headerlink" href="#rinoh.table.TableStyle.hide" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rinoh.table.TableStyle.hide">
+<span class="sig-name descname"><span class="pre">hide</span></span><a class="headerlink" href="#rinoh.table.TableStyle.hide" title="Permalink to this definition">¶</a></dt>
 <dd><p>Suppress rendering this element (inherited from <a class="reference internal" href="../api/style.html#rinoh.style.Style.hide" title="rinoh.style.Style.hide"><code class="xref py py-attr docutils literal notranslate"><span class="pre">Style</span></code></a>)</p>
 <p><em>Accepts</em> <a class="reference internal" href="../api/attribute.html#rinoh.attribute.Bool" title="rinoh.attribute.Bool"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bool</span></code></a>: <code class="docutils literal notranslate"><span class="pre">true</span></code> or <code class="docutils literal notranslate"><span class="pre">false</span></code></p>
 <p><em>Default</em>: <code class="docutils literal notranslate"><span class="pre">false</span></code></p>
@@ -413,7 +415,7 @@
 
 </dd></dl>
 
-</section>
+</div>
 
 
            </div>

@@ -4,8 +4,7 @@
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-
+  
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>Number (rinoh.number) &mdash; rinohtype 0.5.3 documentation</title>
@@ -14,6 +13,8 @@
   
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pdflinks.css" type="text/css" />
 
   
@@ -31,6 +32,7 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
@@ -91,7 +93,7 @@
       
     
     
-      <p><span class="caption-text">User Manual [<a class="pdf-link" href="../manual.pdf">PDF</a>]</span></p>
+      <p class="caption"><span class="caption-text">User Manual [<a class="pdf-link" href="../manual.pdf">PDF</a>]</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../intro.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../install.html">Installation</a></li>
@@ -104,7 +106,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../developing.html">Developing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../changelog.html">Release History</a></li>
 </ul>
-<p><span class="caption-text">Reference Guide [<a class="pdf-link" href="../reference.pdf">PDF</a>]</span></p>
+<p class="caption"><span class="caption-text">Reference Guide [<a class="pdf-link" href="../reference.pdf">PDF</a>]</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../rinoh.html">rinoh</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../sphinx.html">Sphinx Builder</a></li>
@@ -209,11 +211,11 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <section id="module-rinoh.number">
+  <div class="section" id="module-rinoh.number">
 <span id="number-rinoh-number"></span><span id="number"></span><h1>Number (<a class="reference internal" href="#module-rinoh.number" title="rinoh.number"><code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.number</span></code></a>)<a class="headerlink" href="#module-rinoh.number" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
-<dt id="rinoh.number.NumberFormat">
-<em class="property">class </em><code class="sig-prename descclassname">rinoh.number.</code><code class="sig-name descname">NumberFormat</code><a class="headerlink" href="#rinoh.number.NumberFormat" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rinoh.number.NumberFormat">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">rinoh.number.</span></span><span class="sig-name descname"><span class="pre">NumberFormat</span></span><a class="headerlink" href="#rinoh.number.NumberFormat" title="Permalink to this definition">¶</a></dt>
 <dd><p>How (or if) numbers are displayed</p>
 <blockquote>
 <div><p>Instead of a numbering format, it’s possible to supply a custom label
@@ -223,8 +225,8 @@
 </dd></dl>
 
 <dl class="py class">
-<dt id="rinoh.number.Label">
-<em class="property">class </em><code class="sig-prename descclassname">rinoh.number.</code><code class="sig-name descname">Label</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">custom_label</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.number.Label" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rinoh.number.Label">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">rinoh.number.</span></span><span class="sig-name descname"><span class="pre">Label</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">custom_label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.number.Label" title="Permalink to this definition">¶</a></dt>
 <dd><p>Mixin class that formats a label</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -235,36 +237,36 @@ instead of an automatically determined label (typically a number)</p>
 </dd></dl>
 
 <dl class="py class">
-<dt id="rinoh.number.LabelStyle">
-<em class="property">class </em><code class="sig-prename descclassname">rinoh.number.</code><code class="sig-name descname">LabelStyle</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">base</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">attributes</span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.number.LabelStyle" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rinoh.number.LabelStyle">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">rinoh.number.</span></span><span class="sig-name descname"><span class="pre">LabelStyle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">base</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">attributes</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.number.LabelStyle" title="Permalink to this definition">¶</a></dt>
 <dd><p>Style class for <a class="reference internal" href="#rinoh.number.Label" title="rinoh.number.Label"><code class="xref py py-class docutils literal notranslate"><span class="pre">Label</span></code></a></p>
 <dl class="py attribute">
-<dt id="rinoh.number.LabelStyle.label_prefix">
-<code class="sig-name descname">label_prefix</code><a class="headerlink" href="#rinoh.number.LabelStyle.label_prefix" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rinoh.number.LabelStyle.label_prefix">
+<span class="sig-name descname"><span class="pre">label_prefix</span></span><a class="headerlink" href="#rinoh.number.LabelStyle.label_prefix" title="Permalink to this definition">¶</a></dt>
 <dd><p>Text to prepend to the label</p>
 <p><em>Accepts</em> <a class="reference internal" href="paragraph.html#rinoh.text.StyledText" title="rinoh.text.StyledText"><code class="xref py py-class docutils literal notranslate"><span class="pre">StyledText</span></code></a>: a list of styled text strings, separated by spaces. A styled text string is a quoted string (<code class="docutils literal notranslate"><span class="pre">'</span></code> or <code class="docutils literal notranslate"><span class="pre">&quot;</span></code>), optionally followed by a style name enclosed in braces: <code class="docutils literal notranslate"><span class="pre">'text</span> <span class="pre">string'</span> <span class="pre">(style</span> <span class="pre">name)</span></code></p>
 <p><em>Default</em>: (no value)</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt id="rinoh.number.LabelStyle.label_suffix">
-<code class="sig-name descname">label_suffix</code><a class="headerlink" href="#rinoh.number.LabelStyle.label_suffix" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rinoh.number.LabelStyle.label_suffix">
+<span class="sig-name descname"><span class="pre">label_suffix</span></span><a class="headerlink" href="#rinoh.number.LabelStyle.label_suffix" title="Permalink to this definition">¶</a></dt>
 <dd><p>Text to append to the label</p>
 <p><em>Accepts</em> <a class="reference internal" href="paragraph.html#rinoh.text.StyledText" title="rinoh.text.StyledText"><code class="xref py py-class docutils literal notranslate"><span class="pre">StyledText</span></code></a>: a list of styled text strings, separated by spaces. A styled text string is a quoted string (<code class="docutils literal notranslate"><span class="pre">'</span></code> or <code class="docutils literal notranslate"><span class="pre">&quot;</span></code>), optionally followed by a style name enclosed in braces: <code class="docutils literal notranslate"><span class="pre">'text</span> <span class="pre">string'</span> <span class="pre">(style</span> <span class="pre">name)</span></code></p>
 <p><em>Default</em>: (no value)</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt id="rinoh.number.LabelStyle.custom_label">
-<code class="sig-name descname">custom_label</code><a class="headerlink" href="#rinoh.number.LabelStyle.custom_label" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rinoh.number.LabelStyle.custom_label">
+<span class="sig-name descname"><span class="pre">custom_label</span></span><a class="headerlink" href="#rinoh.number.LabelStyle.custom_label" title="Permalink to this definition">¶</a></dt>
 <dd><p>Use a custom label if specified</p>
 <p><em>Accepts</em> <a class="reference internal" href="attribute.html#rinoh.attribute.Bool" title="rinoh.attribute.Bool"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bool</span></code></a>: <code class="docutils literal notranslate"><span class="pre">true</span></code> or <code class="docutils literal notranslate"><span class="pre">false</span></code></p>
 <p><em>Default</em>: <code class="docutils literal notranslate"><span class="pre">false</span></code></p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt id="rinoh.number.LabelStyle.hide">
-<code class="sig-name descname">hide</code><a class="headerlink" href="#rinoh.number.LabelStyle.hide" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rinoh.number.LabelStyle.hide">
+<span class="sig-name descname"><span class="pre">hide</span></span><a class="headerlink" href="#rinoh.number.LabelStyle.hide" title="Permalink to this definition">¶</a></dt>
 <dd><p>Suppress rendering this element (inherited from <a class="reference internal" href="style.html#rinoh.style.Style.hide" title="rinoh.style.Style.hide"><code class="xref py py-attr docutils literal notranslate"><span class="pre">Style</span></code></a>)</p>
 <p><em>Accepts</em> <a class="reference internal" href="attribute.html#rinoh.attribute.Bool" title="rinoh.attribute.Bool"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bool</span></code></a>: <code class="docutils literal notranslate"><span class="pre">true</span></code> or <code class="docutils literal notranslate"><span class="pre">false</span></code></p>
 <p><em>Default</em>: <code class="docutils literal notranslate"><span class="pre">false</span></code></p>
@@ -273,44 +275,44 @@ instead of an automatically determined label (typically a number)</p>
 </dd></dl>
 
 <dl class="py class">
-<dt id="rinoh.number.NumberStyle">
-<em class="property">class </em><code class="sig-prename descclassname">rinoh.number.</code><code class="sig-name descname">NumberStyle</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">base</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">attributes</span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.number.NumberStyle" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rinoh.number.NumberStyle">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">rinoh.number.</span></span><span class="sig-name descname"><span class="pre">NumberStyle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">base</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">attributes</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.number.NumberStyle" title="Permalink to this definition">¶</a></dt>
 <dd><p>Style class for <code class="xref py py-class docutils literal notranslate"><span class="pre">Number</span></code></p>
 <dl class="py attribute">
-<dt id="rinoh.number.NumberStyle.number_format">
-<code class="sig-name descname">number_format</code><a class="headerlink" href="#rinoh.number.NumberStyle.number_format" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rinoh.number.NumberStyle.number_format">
+<span class="sig-name descname"><span class="pre">number_format</span></span><a class="headerlink" href="#rinoh.number.NumberStyle.number_format" title="Permalink to this definition">¶</a></dt>
 <dd><p>How numbers are formatted</p>
 <p><em>Accepts</em> <a class="reference internal" href="#rinoh.number.NumberFormat" title="rinoh.number.NumberFormat"><code class="xref py py-class docutils literal notranslate"><span class="pre">NumberFormat</span></code></a>: <code class="docutils literal notranslate"><span class="pre">none</span></code>, <code class="docutils literal notranslate"><span class="pre">number</span></code>, <code class="docutils literal notranslate"><span class="pre">symbol</span></code>, <code class="docutils literal notranslate"><span class="pre">lowercase</span> <span class="pre">character</span></code>, <code class="docutils literal notranslate"><span class="pre">uppercase</span> <span class="pre">character</span></code>, <code class="docutils literal notranslate"><span class="pre">lowercase</span> <span class="pre">roman</span></code>, <code class="docutils literal notranslate"><span class="pre">uppercase</span> <span class="pre">roman</span></code></p>
 <p><em>Default</em>: <code class="docutils literal notranslate"><span class="pre">number</span></code></p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt id="rinoh.number.NumberStyle.label_prefix">
-<code class="sig-name descname">label_prefix</code><a class="headerlink" href="#rinoh.number.NumberStyle.label_prefix" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rinoh.number.NumberStyle.label_prefix">
+<span class="sig-name descname"><span class="pre">label_prefix</span></span><a class="headerlink" href="#rinoh.number.NumberStyle.label_prefix" title="Permalink to this definition">¶</a></dt>
 <dd><p>Text to prepend to the label (inherited from <a class="reference internal" href="#rinoh.number.LabelStyle.label_prefix" title="rinoh.number.LabelStyle.label_prefix"><code class="xref py py-attr docutils literal notranslate"><span class="pre">LabelStyle</span></code></a>)</p>
 <p><em>Accepts</em> <a class="reference internal" href="paragraph.html#rinoh.text.StyledText" title="rinoh.text.StyledText"><code class="xref py py-class docutils literal notranslate"><span class="pre">StyledText</span></code></a>: a list of styled text strings, separated by spaces. A styled text string is a quoted string (<code class="docutils literal notranslate"><span class="pre">'</span></code> or <code class="docutils literal notranslate"><span class="pre">&quot;</span></code>), optionally followed by a style name enclosed in braces: <code class="docutils literal notranslate"><span class="pre">'text</span> <span class="pre">string'</span> <span class="pre">(style</span> <span class="pre">name)</span></code></p>
 <p><em>Default</em>: (no value)</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt id="rinoh.number.NumberStyle.label_suffix">
-<code class="sig-name descname">label_suffix</code><a class="headerlink" href="#rinoh.number.NumberStyle.label_suffix" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rinoh.number.NumberStyle.label_suffix">
+<span class="sig-name descname"><span class="pre">label_suffix</span></span><a class="headerlink" href="#rinoh.number.NumberStyle.label_suffix" title="Permalink to this definition">¶</a></dt>
 <dd><p>Text to append to the label (inherited from <a class="reference internal" href="#rinoh.number.LabelStyle.label_suffix" title="rinoh.number.LabelStyle.label_suffix"><code class="xref py py-attr docutils literal notranslate"><span class="pre">LabelStyle</span></code></a>)</p>
 <p><em>Accepts</em> <a class="reference internal" href="paragraph.html#rinoh.text.StyledText" title="rinoh.text.StyledText"><code class="xref py py-class docutils literal notranslate"><span class="pre">StyledText</span></code></a>: a list of styled text strings, separated by spaces. A styled text string is a quoted string (<code class="docutils literal notranslate"><span class="pre">'</span></code> or <code class="docutils literal notranslate"><span class="pre">&quot;</span></code>), optionally followed by a style name enclosed in braces: <code class="docutils literal notranslate"><span class="pre">'text</span> <span class="pre">string'</span> <span class="pre">(style</span> <span class="pre">name)</span></code></p>
 <p><em>Default</em>: (no value)</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt id="rinoh.number.NumberStyle.custom_label">
-<code class="sig-name descname">custom_label</code><a class="headerlink" href="#rinoh.number.NumberStyle.custom_label" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rinoh.number.NumberStyle.custom_label">
+<span class="sig-name descname"><span class="pre">custom_label</span></span><a class="headerlink" href="#rinoh.number.NumberStyle.custom_label" title="Permalink to this definition">¶</a></dt>
 <dd><p>Use a custom label if specified (inherited from <a class="reference internal" href="#rinoh.number.LabelStyle.custom_label" title="rinoh.number.LabelStyle.custom_label"><code class="xref py py-attr docutils literal notranslate"><span class="pre">LabelStyle</span></code></a>)</p>
 <p><em>Accepts</em> <a class="reference internal" href="attribute.html#rinoh.attribute.Bool" title="rinoh.attribute.Bool"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bool</span></code></a>: <code class="docutils literal notranslate"><span class="pre">true</span></code> or <code class="docutils literal notranslate"><span class="pre">false</span></code></p>
 <p><em>Default</em>: <code class="docutils literal notranslate"><span class="pre">false</span></code></p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt id="rinoh.number.NumberStyle.hide">
-<code class="sig-name descname">hide</code><a class="headerlink" href="#rinoh.number.NumberStyle.hide" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rinoh.number.NumberStyle.hide">
+<span class="sig-name descname"><span class="pre">hide</span></span><a class="headerlink" href="#rinoh.number.NumberStyle.hide" title="Permalink to this definition">¶</a></dt>
 <dd><p>Suppress rendering this element (inherited from <a class="reference internal" href="style.html#rinoh.style.Style.hide" title="rinoh.style.Style.hide"><code class="xref py py-attr docutils literal notranslate"><span class="pre">Style</span></code></a>)</p>
 <p><em>Accepts</em> <a class="reference internal" href="attribute.html#rinoh.attribute.Bool" title="rinoh.attribute.Bool"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bool</span></code></a>: <code class="docutils literal notranslate"><span class="pre">true</span></code> or <code class="docutils literal notranslate"><span class="pre">false</span></code></p>
 <p><em>Default</em>: <code class="docutils literal notranslate"><span class="pre">false</span></code></p>
@@ -319,12 +321,12 @@ instead of an automatically determined label (typically a number)</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="rinoh.number.format_number">
-<code class="sig-prename descclassname">rinoh.number.</code><code class="sig-name descname">format_number</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">number</span></em>, <em class="sig-param"><span class="n">format</span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.number.format_number" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rinoh.number.format_number">
+<span class="sig-prename descclassname"><span class="pre">rinoh.number.</span></span><span class="sig-name descname"><span class="pre">format_number</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">number</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">format</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.number.format_number" title="Permalink to this definition">¶</a></dt>
 <dd><p>Format <cite>number</cite> according the given <cite>format</cite> (<a class="reference internal" href="#rinoh.number.NumberFormat" title="rinoh.number.NumberFormat"><code class="xref py py-class docutils literal notranslate"><span class="pre">NumberFormat</span></code></a>)</p>
 </dd></dl>
 
-</section>
+</div>
 
 
            </div>

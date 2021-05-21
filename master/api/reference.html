@@ -4,8 +4,7 @@
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-
+  
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>Cross-References and Fields (rinoh.reference) &mdash; rinohtype 0.5.3 documentation</title>
@@ -14,6 +13,8 @@
   
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pdflinks.css" type="text/css" />
 
   
@@ -31,6 +32,7 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
@@ -91,7 +93,7 @@
       
     
     
-      <p><span class="caption-text">User Manual [<a class="pdf-link" href="../manual.pdf">PDF</a>]</span></p>
+      <p class="caption"><span class="caption-text">User Manual [<a class="pdf-link" href="../manual.pdf">PDF</a>]</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../intro.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../install.html">Installation</a></li>
@@ -104,7 +106,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../developing.html">Developing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../changelog.html">Release History</a></li>
 </ul>
-<p><span class="caption-text">Reference Guide [<a class="pdf-link" href="../reference.pdf">PDF</a>]</span></p>
+<p class="caption"><span class="caption-text">Reference Guide [<a class="pdf-link" href="../reference.pdf">PDF</a>]</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../rinoh.html">rinoh</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../sphinx.html">Sphinx Builder</a></li>
@@ -209,119 +211,119 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <section id="module-rinoh.reference">
+  <div class="section" id="module-rinoh.reference">
 <span id="cross-references-and-fields-rinoh-reference"></span><span id="reference"></span><h1>Cross-References and Fields (<a class="reference internal" href="#module-rinoh.reference" title="rinoh.reference"><code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.reference</span></code></a>)<a class="headerlink" href="#module-rinoh.reference" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
-<dt id="rinoh.reference.Reference">
-<em class="property">class </em><code class="sig-prename descclassname">rinoh.reference.</code><code class="sig-name descname">Reference</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">target_id</span></em>, <em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.reference.Reference" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rinoh.reference.Reference">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">rinoh.reference.</span></span><span class="sig-name descname"><span class="pre">Reference</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target_id</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.reference.Reference" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py class">
-<dt id="rinoh.reference.ReferenceField">
-<em class="property">class </em><code class="sig-prename descclassname">rinoh.reference.</code><code class="sig-name descname">ReferenceField</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">type</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">custom_title</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">style</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">parent</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">source</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.reference.ReferenceField" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rinoh.reference.ReferenceField">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">rinoh.reference.</span></span><span class="sig-name descname"><span class="pre">ReferenceField</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">custom_title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">style</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.reference.ReferenceField" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py class">
-<dt id="rinoh.reference.ReferenceText">
-<em class="property">class </em><code class="sig-prename descclassname">rinoh.reference.</code><code class="sig-name descname">ReferenceText</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">id</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">style</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">parent</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">source</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.reference.ReferenceText" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rinoh.reference.ReferenceText">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">rinoh.reference.</span></span><span class="sig-name descname"><span class="pre">ReferenceText</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">style</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.reference.ReferenceText" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py class">
-<dt id="rinoh.reference.ReferenceType">
-<em class="property">class </em><code class="sig-prename descclassname">rinoh.reference.</code><code class="sig-name descname">ReferenceType</code><a class="headerlink" href="#rinoh.reference.ReferenceType" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rinoh.reference.ReferenceType">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">rinoh.reference.</span></span><span class="sig-name descname"><span class="pre">ReferenceType</span></span><a class="headerlink" href="#rinoh.reference.ReferenceType" title="Permalink to this definition">¶</a></dt>
 <dd><p>Accepts: <code class="docutils literal notranslate"><span class="pre">reference</span></code>, <code class="docutils literal notranslate"><span class="pre">number</span></code>, <code class="docutils literal notranslate"><span class="pre">title</span></code>, <code class="docutils literal notranslate"><span class="pre">page</span></code>, <code class="docutils literal notranslate"><span class="pre">custom</span></code></p>
 </dd></dl>
 
 <dl class="py class">
-<dt id="rinoh.reference.ReferencingParagraph">
-<em class="property">class </em><code class="sig-prename descclassname">rinoh.reference.</code><code class="sig-name descname">ReferencingParagraph</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">target_id_or_flowable</span></em>, <em class="sig-param"><span class="n">id</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">style</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">parent</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.reference.ReferencingParagraph" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rinoh.reference.ReferencingParagraph">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">rinoh.reference.</span></span><span class="sig-name descname"><span class="pre">ReferencingParagraph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target_id_or_flowable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">style</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.reference.ReferencingParagraph" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="py attribute">
-<dt id="rinoh.reference.ReferencingParagraph.style_class">
-<code class="sig-name descname">style_class</code><a class="headerlink" href="#rinoh.reference.ReferencingParagraph.style_class" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rinoh.reference.ReferencingParagraph.style_class">
+<span class="sig-name descname"><span class="pre">style_class</span></span><a class="headerlink" href="#rinoh.reference.ReferencingParagraph.style_class" title="Permalink to this definition">¶</a></dt>
 <dd><p>alias of <a class="reference internal" href="../style/rinoh.reference.ReferencingParagraphStyle.html#rinoh.reference.ReferencingParagraphStyle" title="rinoh.reference.ReferencingParagraphStyle"><code class="xref py py-class docutils literal notranslate"><span class="pre">rinoh.reference.ReferencingParagraphStyle</span></code></a></p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="rinoh.reference.ReferencingParagraph.target_style">
-<code class="sig-name descname">target_style</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">document</span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.reference.ReferencingParagraph.target_style" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rinoh.reference.ReferencingParagraph.target_style">
+<span class="sig-name descname"><span class="pre">target_style</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">document</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.reference.ReferencingParagraph.target_style" title="Permalink to this definition">¶</a></dt>
 <dd><p>Filter selection on the <code class="docutils literal notranslate"><span class="pre">style</span></code> attribute of the target flowable</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="rinoh.reference.ReferencingParagraph.target_has_class">
-<code class="sig-name descname">target_has_class</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">document</span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.reference.ReferencingParagraph.target_has_class" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rinoh.reference.ReferencingParagraph.target_has_class">
+<span class="sig-name descname"><span class="pre">target_has_class</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">document</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.reference.ReferencingParagraph.target_has_class" title="Permalink to this definition">¶</a></dt>
 <dd><p>Filter selection on a class of the target flowable</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="rinoh.reference.ReferencingParagraph.target_has_classes">
-<code class="sig-name descname">target_has_classes</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">document</span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.reference.ReferencingParagraph.target_has_classes" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rinoh.reference.ReferencingParagraph.target_has_classes">
+<span class="sig-name descname"><span class="pre">target_has_classes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">document</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.reference.ReferencingParagraph.target_has_classes" title="Permalink to this definition">¶</a></dt>
 <dd><p>Filter selection on a set of classes of the target flowable</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="rinoh.reference.ReferencingParagraph.target_is_of_type">
-<code class="sig-name descname">target_is_of_type</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">document</span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.reference.ReferencingParagraph.target_is_of_type" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rinoh.reference.ReferencingParagraph.target_is_of_type">
+<span class="sig-name descname"><span class="pre">target_is_of_type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">document</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.reference.ReferencingParagraph.target_is_of_type" title="Permalink to this definition">¶</a></dt>
 <dd><p>Filter selection on the type of the target flowable</p>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
-<dt id="rinoh.reference.Note">
-<em class="property">class </em><code class="sig-prename descclassname">rinoh.reference.</code><code class="sig-name descname">Note</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">flowable</span></em>, <em class="sig-param"><span class="n">id</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">style</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">parent</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.reference.Note" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rinoh.reference.Note">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">rinoh.reference.</span></span><span class="sig-name descname"><span class="pre">Note</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">flowable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">style</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.reference.Note" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py class">
-<dt id="rinoh.reference.RegisterNote">
-<em class="property">class </em><code class="sig-prename descclassname">rinoh.reference.</code><code class="sig-name descname">RegisterNote</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">note</span></em>, <em class="sig-param"><span class="n">parent</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.reference.RegisterNote" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rinoh.reference.RegisterNote">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">rinoh.reference.</span></span><span class="sig-name descname"><span class="pre">RegisterNote</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">note</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.reference.RegisterNote" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="py method">
-<dt id="rinoh.reference.RegisterNote.prepare">
-<code class="sig-name descname">prepare</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">flowable_target</span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.reference.RegisterNote.prepare" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rinoh.reference.RegisterNote.prepare">
+<span class="sig-name descname"><span class="pre">prepare</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">flowable_target</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.reference.RegisterNote.prepare" title="Permalink to this definition">¶</a></dt>
 <dd><p>Determine number labels and register references with the document</p>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
-<dt id="rinoh.reference.NoteMarkerBase">
-<em class="property">class </em><code class="sig-prename descclassname">rinoh.reference.</code><code class="sig-name descname">NoteMarkerBase</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">custom_label</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.reference.NoteMarkerBase" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rinoh.reference.NoteMarkerBase">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">rinoh.reference.</span></span><span class="sig-name descname"><span class="pre">NoteMarkerBase</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">custom_label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.reference.NoteMarkerBase" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="py attribute">
-<dt id="rinoh.reference.NoteMarkerBase.style_class">
-<code class="sig-name descname">style_class</code><a class="headerlink" href="#rinoh.reference.NoteMarkerBase.style_class" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rinoh.reference.NoteMarkerBase.style_class">
+<span class="sig-name descname"><span class="pre">style_class</span></span><a class="headerlink" href="#rinoh.reference.NoteMarkerBase.style_class" title="Permalink to this definition">¶</a></dt>
 <dd><p>alias of <a class="reference internal" href="../style/rinoh.reference.NoteMarkerStyle.html#rinoh.reference.NoteMarkerStyle" title="rinoh.reference.NoteMarkerStyle"><code class="xref py py-class docutils literal notranslate"><span class="pre">rinoh.reference.NoteMarkerStyle</span></code></a></p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="rinoh.reference.NoteMarkerBase.prepare">
-<code class="sig-name descname">prepare</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">flowable_target</span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.reference.NoteMarkerBase.prepare" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rinoh.reference.NoteMarkerBase.prepare">
+<span class="sig-name descname"><span class="pre">prepare</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">flowable_target</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.reference.NoteMarkerBase.prepare" title="Permalink to this definition">¶</a></dt>
 <dd><p>Determine number labels and register references with the document</p>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
-<dt id="rinoh.reference.NoteMarkerByID">
-<em class="property">class </em><code class="sig-prename descclassname">rinoh.reference.</code><code class="sig-name descname">NoteMarkerByID</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">target_id</span></em>, <em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.reference.NoteMarkerByID" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rinoh.reference.NoteMarkerByID">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">rinoh.reference.</span></span><span class="sig-name descname"><span class="pre">NoteMarkerByID</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target_id</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.reference.NoteMarkerByID" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py class">
-<dt id="rinoh.reference.NoteMarkerWithNote">
-<em class="property">class </em><code class="sig-prename descclassname">rinoh.reference.</code><code class="sig-name descname">NoteMarkerWithNote</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">referenceable</span></em>, <em class="sig-param"><span class="n">type</span><span class="o">=</span><span class="default_value">'number'</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.reference.NoteMarkerWithNote" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rinoh.reference.NoteMarkerWithNote">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">rinoh.reference.</span></span><span class="sig-name descname"><span class="pre">NoteMarkerWithNote</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">referenceable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'number'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.reference.NoteMarkerWithNote" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="py method">
-<dt id="rinoh.reference.NoteMarkerWithNote.prepare">
-<code class="sig-name descname">prepare</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">flowable_target</span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.reference.NoteMarkerWithNote.prepare" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rinoh.reference.NoteMarkerWithNote.prepare">
+<span class="sig-name descname"><span class="pre">prepare</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">flowable_target</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.reference.NoteMarkerWithNote.prepare" title="Permalink to this definition">¶</a></dt>
 <dd><p>Determine number labels and register references with the document</p>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
-<dt id="rinoh.reference.Field">
-<em class="property">class </em><code class="sig-prename descclassname">rinoh.reference.</code><code class="sig-name descname">Field</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">type</span></em>, <em class="sig-param"><span class="n">id</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">style</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">parent</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">source</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.reference.Field" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rinoh.reference.Field">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">rinoh.reference.</span></span><span class="sig-name descname"><span class="pre">Field</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">style</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.reference.Field" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-</section>
+</div>
 
 
            </div>

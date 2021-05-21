@@ -4,8 +4,7 @@
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-
+  
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>Sphinx Builder &mdash; rinohtype 0.5.3 documentation</title>
@@ -14,6 +13,8 @@
   
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pdflinks.css" type="text/css" />
 
   
@@ -31,6 +32,7 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
@@ -91,7 +93,7 @@
       
     
     
-      <p><span class="caption-text">User Manual [<a class="pdf-link" href="./manual.pdf">PDF</a>]</span></p>
+      <p class="caption"><span class="caption-text">User Manual [<a class="pdf-link" href="./manual.pdf">PDF</a>]</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
@@ -104,7 +106,7 @@
 <li class="toctree-l1"><a class="reference internal" href="developing.html">Developing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="changelog.html">Release History</a></li>
 </ul>
-<p><span class="caption-text">Reference Guide [<a class="pdf-link" href="./reference.pdf">PDF</a>]</span></p>
+<p class="caption"><span class="caption-text">Reference Guide [<a class="pdf-link" href="./reference.pdf">PDF</a>]</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="rinoh.html">rinoh</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Sphinx Builder</a><ul>
@@ -189,15 +191,15 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <section id="sphinx-builder">
+  <div class="section" id="sphinx-builder">
 <span id="id1"></span><h1>Sphinx Builder<a class="headerlink" href="#sphinx-builder" title="Permalink to this headline">¶</a></h1>
 <p><code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.frontent.sphinx</span></code> is a Sphinx extension module. It provides a Sphinx
 builder with the name <em>rinoh</em>. The builder recognizes the following <code class="docutils literal notranslate"><span class="pre">conf.py</span></code>
 options. Of these, only <a class="reference internal" href="#confval-rinoh_documents"><code class="xref std std-confval docutils literal notranslate"><span class="pre">rinoh_documents</span></code></a> (or
 <a class="reference external" href="https://www.sphinx-doc.org/en/master/usage/configuration.html#confval-latex_documents" title="(in Sphinx v5.0.0+)"><code class="docutils literal notranslate"><span class="pre">latex_documents</span></code></a>) is required.</p>
 <dl class="std confval">
-<dt id="confval-rinoh_documents">
-<code class="sig-name descname">rinoh_documents</code><a class="headerlink" href="#confval-rinoh_documents" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object std" id="confval-rinoh_documents">
+<span class="sig-name descname"><span class="pre">rinoh_documents</span></span><a class="headerlink" href="#confval-rinoh_documents" title="Permalink to this definition">¶</a></dt>
 <dd><p>Determines which PDF documents to build. Its format is a list of
 dictionaries, one for each document to be generated. The supported keys
 for these dictionaries are listed below. Two of them are required:</p>
@@ -261,8 +263,8 @@ These items will be available as document metadata and can be used in a
 </dd></dl>
 
 <dl class="std confval">
-<dt id="confval-rinoh_targets">
-<code class="sig-name descname">rinoh_targets</code><a class="headerlink" href="#confval-rinoh_targets" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object std" id="confval-rinoh_targets">
+<span class="sig-name descname"><span class="pre">rinoh_targets</span></span><a class="headerlink" href="#confval-rinoh_targets" title="Permalink to this definition">¶</a></dt>
 <dd><p>Limits rendering to the specified set of targets. This variable accepts
 either a list of strings or a string containing comma-separated values. The
 target names should match those set in <a class="reference internal" href="#confval-rinoh_documents"><code class="xref std std-confval docutils literal notranslate"><span class="pre">rinoh_documents</span></code></a>.</p>
@@ -278,20 +280,20 @@ string form with <a class="reference external" href="https://www.sphinx-doc.org/
 </div>
 </dd></dl>
 
-<section id="legacy-configuration-variables">
+<div class="section" id="legacy-configuration-variables">
 <h2>Legacy Configuration Variables<a class="headerlink" href="#legacy-configuration-variables" title="Permalink to this headline">¶</a></h2>
 <p>The configuration variables below are no longer supported. Instead, their
 functionality can now be configured per document in <a class="reference internal" href="#confval-rinoh_documents"><code class="xref std std-confval docutils literal notranslate"><span class="pre">rinoh_documents</span></code></a>.</p>
 <dl class="std confval">
-<dt id="confval-rinoh_template">
-<code class="sig-name descname">rinoh_template</code><a class="headerlink" href="#confval-rinoh_template" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object std" id="confval-rinoh_template">
+<span class="sig-name descname"><span class="pre">rinoh_template</span></span><a class="headerlink" href="#confval-rinoh_template" title="Permalink to this definition">¶</a></dt>
 <dd><p>This configuration variable is <strong>no longer supported</strong> since the
 document template can be specified in <a class="reference internal" href="#confval-rinoh_documents"><code class="xref std std-confval docutils literal notranslate"><span class="pre">rinoh_documents</span></code></a> entries.</p>
 </dd></dl>
 
 <dl class="std confval">
-<dt id="confval-rinoh_stylesheet">
-<code class="sig-name descname">rinoh_stylesheet</code><a class="headerlink" href="#confval-rinoh_stylesheet" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object std" id="confval-rinoh_stylesheet">
+<span class="sig-name descname"><span class="pre">rinoh_stylesheet</span></span><a class="headerlink" href="#confval-rinoh_stylesheet" title="Permalink to this definition">¶</a></dt>
 <dd><p>This configuration variable is <strong>no longer supported</strong> since it is not
 obvious which style sheet will be used when the template configuration also
 specifies a style sheet. Please specify the style sheet to use in your
@@ -305,8 +307,8 @@ specifies a style sheet. Please specify the style sheet to use in your
 </dd></dl>
 
 <dl class="std confval">
-<dt id="confval-rinoh_paper_size">
-<code class="sig-name descname">rinoh_paper_size</code><a class="headerlink" href="#confval-rinoh_paper_size" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object std" id="confval-rinoh_paper_size">
+<span class="sig-name descname"><span class="pre">rinoh_paper_size</span></span><a class="headerlink" href="#confval-rinoh_paper_size" title="Permalink to this definition">¶</a></dt>
 <dd><p>This configuration variable is <strong>no longer supported</strong> since it was not
 obvious which paper size was being used when the template configuration
 (<a class="reference internal" href="#confval-rinoh_template"><code class="xref std std-confval docutils literal notranslate"><span class="pre">rinoh_template</span></code></a>) also specified a paper size. Please specify
@@ -322,28 +324,28 @@ the paper_size to use in your <a class="reference internal" href="basicstyling.h
 </dd></dl>
 
 <dl class="std confval">
-<dt id="confval-rinoh_logo">
-<code class="sig-name descname">rinoh_logo</code><a class="headerlink" href="#confval-rinoh_logo" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object std" id="confval-rinoh_logo">
+<span class="sig-name descname"><span class="pre">rinoh_logo</span></span><a class="headerlink" href="#confval-rinoh_logo" title="Permalink to this definition">¶</a></dt>
 <dd><p>This configuration variable is <strong>no longer supported</strong> since the logo can
 be specified in the <a class="reference internal" href="#confval-rinoh_documents"><code class="xref std std-confval docutils literal notranslate"><span class="pre">rinoh_documents</span></code></a> entries.</p>
 </dd></dl>
 
 <dl class="std confval">
-<dt id="confval-rinoh_domain_indices">
-<code class="sig-name descname">rinoh_domain_indices</code><a class="headerlink" href="#confval-rinoh_domain_indices" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object std" id="confval-rinoh_domain_indices">
+<span class="sig-name descname"><span class="pre">rinoh_domain_indices</span></span><a class="headerlink" href="#confval-rinoh_domain_indices" title="Permalink to this definition">¶</a></dt>
 <dd><p>This configuration variable is <strong>no longer supported</strong> since the
 domain_indices can be specified in the <a class="reference internal" href="#confval-rinoh_documents"><code class="xref std std-confval docutils literal notranslate"><span class="pre">rinoh_documents</span></code></a> entries.</p>
 </dd></dl>
 
 <dl class="std confval">
-<dt id="confval-rinoh_metadata">
-<code class="sig-name descname">rinoh_metadata</code><a class="headerlink" href="#confval-rinoh_metadata" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object std" id="confval-rinoh_metadata">
+<span class="sig-name descname"><span class="pre">rinoh_metadata</span></span><a class="headerlink" href="#confval-rinoh_metadata" title="Permalink to this definition">¶</a></dt>
 <dd><p>This configuration variable is <strong>no longer supported</strong>. Metadata entries
 can now be added to <a class="reference internal" href="#confval-rinoh_documents"><code class="xref std std-confval docutils literal notranslate"><span class="pre">rinoh_documents</span></code></a> entries.</p>
 </dd></dl>
 
-</section>
-</section>
+</div>
+</div>
 
 
            </div>

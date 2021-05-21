@@ -4,8 +4,7 @@
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-
+  
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>TableCellBorderStyle &mdash; rinohtype 0.5.3 documentation</title>
@@ -14,6 +13,8 @@
   
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pdflinks.css" type="text/css" />
 
   
@@ -31,6 +32,7 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
@@ -91,7 +93,7 @@
       
     
     
-      <p><span class="caption-text">User Manual [<a class="pdf-link" href="../manual.pdf">PDF</a>]</span></p>
+      <p class="caption"><span class="caption-text">User Manual [<a class="pdf-link" href="../manual.pdf">PDF</a>]</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../intro.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../install.html">Installation</a></li>
@@ -104,7 +106,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../developing.html">Developing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../changelog.html">Release History</a></li>
 </ul>
-<p><span class="caption-text">Reference Guide [<a class="pdf-link" href="../reference.pdf">PDF</a>]</span></p>
+<p class="caption"><span class="caption-text">Reference Guide [<a class="pdf-link" href="../reference.pdf">PDF</a>]</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../rinoh.html">rinoh</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../sphinx.html">Sphinx Builder</a></li>
@@ -221,23 +223,23 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <section id="tablecellborderstyle">
+  <div class="section" id="tablecellborderstyle">
 <h1>TableCellBorderStyle<a class="headerlink" href="#tablecellborderstyle" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
-<dt id="rinoh.table.TableCellBorderStyle">
-<em class="property">class </em><code class="sig-prename descclassname">rinoh.table.</code><code class="sig-name descname">TableCellBorderStyle</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">base</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">attributes</span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.table.TableCellBorderStyle" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rinoh.table.TableCellBorderStyle">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">rinoh.table.</span></span><span class="sig-name descname"><span class="pre">TableCellBorderStyle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">base</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">attributes</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.table.TableCellBorderStyle" title="Permalink to this definition">¶</a></dt>
 <dd><p>Style class for <a class="reference internal" href="../api/table.html#rinoh.table.TableCellBorder" title="rinoh.table.TableCellBorder"><code class="xref py py-class docutils literal notranslate"><span class="pre">TableCellBorder</span></code></a></p>
 <dl class="py attribute">
-<dt id="rinoh.table.TableCellBorderStyle.stroke">
-<code class="sig-name descname">stroke</code><a class="headerlink" href="#rinoh.table.TableCellBorderStyle.stroke" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rinoh.table.TableCellBorderStyle.stroke">
+<span class="sig-name descname"><span class="pre">stroke</span></span><a class="headerlink" href="#rinoh.table.TableCellBorderStyle.stroke" title="Permalink to this definition">¶</a></dt>
 <dd><p>Overrides the default set in <a class="reference internal" href="rinoh.draw.LineStyle.html#rinoh.draw.LineStyle.stroke" title="rinoh.draw.LineStyle.stroke"><code class="xref py py-attr docutils literal notranslate"><span class="pre">LineStyle</span></code></a></p>
 <p><em>Accepts</em> <a class="reference internal" href="../api/draw.html#rinoh.draw.Stroke" title="rinoh.draw.Stroke"><code class="xref py py-class docutils literal notranslate"><span class="pre">Stroke</span></code></a>: the width (<a class="reference internal" href="../api/dimension.html#rinoh.dimension.Dimension" title="rinoh.dimension.Dimension"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dimension</span></code></a>) and color (<a class="reference internal" href="../api/color.html#rinoh.color.Color" title="rinoh.color.Color"><code class="xref py py-class docutils literal notranslate"><span class="pre">Color</span></code></a>) of the stroke, separated by a comma (<code class="docutils literal notranslate"><span class="pre">,</span></code>)</p>
 <p><em>Default</em>: <code class="docutils literal notranslate"><span class="pre">none</span></code></p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt id="rinoh.table.TableCellBorderStyle.hide">
-<code class="sig-name descname">hide</code><a class="headerlink" href="#rinoh.table.TableCellBorderStyle.hide" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rinoh.table.TableCellBorderStyle.hide">
+<span class="sig-name descname"><span class="pre">hide</span></span><a class="headerlink" href="#rinoh.table.TableCellBorderStyle.hide" title="Permalink to this definition">¶</a></dt>
 <dd><p>Suppress rendering this element (inherited from <a class="reference internal" href="../api/style.html#rinoh.style.Style.hide" title="rinoh.style.Style.hide"><code class="xref py py-attr docutils literal notranslate"><span class="pre">Style</span></code></a>)</p>
 <p><em>Accepts</em> <a class="reference internal" href="../api/attribute.html#rinoh.attribute.Bool" title="rinoh.attribute.Bool"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bool</span></code></a>: <code class="docutils literal notranslate"><span class="pre">true</span></code> or <code class="docutils literal notranslate"><span class="pre">false</span></code></p>
 <p><em>Default</em>: <code class="docutils literal notranslate"><span class="pre">false</span></code></p>
@@ -245,7 +247,7 @@
 
 </dd></dl>
 
-</section>
+</div>
 
 
            </div>

@@ -4,8 +4,7 @@
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-
+  
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>Element Styling &mdash; rinohtype 0.5.3 documentation</title>
@@ -14,6 +13,8 @@
   
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pdflinks.css" type="text/css" />
 
   
@@ -31,6 +32,7 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
@@ -91,7 +93,7 @@
       
     
     
-      <p><span class="caption-text">User Manual [<a class="pdf-link" href="./manual.pdf">PDF</a>]</span></p>
+      <p class="caption"><span class="caption-text">User Manual [<a class="pdf-link" href="./manual.pdf">PDF</a>]</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
@@ -117,7 +119,7 @@
 <li class="toctree-l1"><a class="reference internal" href="developing.html">Developing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="changelog.html">Release History</a></li>
 </ul>
-<p><span class="caption-text">Reference Guide [<a class="pdf-link" href="./reference.pdf">PDF</a>]</span></p>
+<p class="caption"><span class="caption-text">Reference Guide [<a class="pdf-link" href="./reference.pdf">PDF</a>]</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="rinoh.html">rinoh</a></li>
 <li class="toctree-l1"><a class="reference internal" href="sphinx.html">Sphinx Builder</a></li>
@@ -199,7 +201,7 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <section id="element-styling">
+  <div class="section" id="element-styling">
 <span id="styling"></span><h1>Element Styling<a class="headerlink" href="#element-styling" title="Permalink to this headline">¶</a></h1>
 <p>This section describes how styles defined in a style sheet are applied to
 document elements. Understanding how this works will help you when designing
@@ -219,7 +221,7 @@ duplication.</p>
 programming knowledge. A future update will move Python-specific details
 to another section, making things more accessible for non-programmers.</p>
 </div>
-<section id="document-tree">
+<div class="section" id="document-tree">
 <h2>Document Tree<a class="headerlink" href="#document-tree" title="Permalink to this headline">¶</a></h2>
 <p>A <a class="reference internal" href="api/flowable.html#rinoh.flowable.Flowable" title="rinoh.flowable.Flowable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Flowable</span></code></a> is a document element that is placed on a page. It is
 usually a part of a document tree. Flowables at one level in a document tree
@@ -276,8 +278,8 @@ applied style sheet. Read more about how this works in the next section.</p>
 <a class="reference internal" href="api/image.html#rinoh.image.InlineImage" title="rinoh.image.InlineImage"><code class="xref py py-class docutils literal notranslate"><span class="pre">InlineImage</span></code></a>.</p>
 <p>The common superclass for flowable and inline elements is <a class="reference internal" href="api/style.html#rinoh.style.Styled" title="rinoh.style.Styled"><code class="xref py py-class docutils literal notranslate"><span class="pre">Styled</span></code></a>,
 which indicates that these elements can be styled using the style sheets.</p>
-</section>
-<section id="selectors">
+</div>
+<div class="section" id="selectors">
 <h2>Selectors<a class="headerlink" href="#selectors" title="Permalink to this headline">¶</a></h2>
 <p>Selectors in rinohtype select elements of a particular type. The <em>class</em> of a
 document element serves as a selector for all instances of the class (and its
@@ -373,8 +375,8 @@ the <code class="xref py py-class docutils literal notranslate"><span class="pre
 <span class="o">---</span><span class="n">CodeBlock</span>                              <span class="c1"># specificity (-3, 0, 0, 0, 2)</span>
 </pre></div>
 </div>
-</section>
-<section id="matchers">
+</div>
+<div class="section" id="matchers">
 <span id="id2"></span><h2>Matchers<a class="headerlink" href="#matchers" title="Permalink to this headline">¶</a></h2>
 <p>At the most basic level, a <a class="reference internal" href="api/style.html#rinoh.style.StyledMatcher" title="rinoh.style.StyledMatcher"><code class="xref py py-class docutils literal notranslate"><span class="pre">StyledMatcher</span></code></a> is a dictionary that maps
 labels to selectors:</p>
@@ -393,8 +395,8 @@ elements in documents:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rinoh.stylesheets</span> <span class="kn">import</span> <span class="n">matcher</span>
 </pre></div>
 </div>
-</section>
-<section id="style-sheets">
+</div>
+<div class="section" id="style-sheets">
 <h2>Style Sheets<a class="headerlink" href="#style-sheets" title="Permalink to this headline">¶</a></h2>
 <p>A <a class="reference internal" href="api/style.html#rinoh.style.StyleSheet" title="rinoh.style.StyleSheet"><code class="xref py py-class docutils literal notranslate"><span class="pre">StyleSheet</span></code></a> takes a <a class="reference internal" href="api/style.html#rinoh.style.StyledMatcher" title="rinoh.style.StyledMatcher"><code class="xref py py-class docutils literal notranslate"><span class="pre">StyledMatcher</span></code></a> to provide element
 labels to assign style properties to:</p>
@@ -441,7 +443,7 @@ attribute. The style for enumerated lists is defined like this, for example:</p>
 and <em>label_suffix</em> are set to produce list items labels of the style <em>1)</em>,
 <em>2)</em>, …. Other entries control margins and spacing. See <a class="reference internal" href="style/rinoh.structure.ListStyle.html#rinoh.structure.ListStyle" title="rinoh.structure.ListStyle"><code class="xref py py-class docutils literal notranslate"><span class="pre">ListStyle</span></code></a>
 for the full list of accepted style attributes.</p>
-<section id="base-styles">
+<div class="section" id="base-styles">
 <h3>Base Styles<a class="headerlink" href="#base-styles" title="Permalink to this headline">¶</a></h3>
 <p>It is possible to define styles which are not linked to a selector. These can
 be useful to collect common attributes in a base style for a set of style
@@ -472,8 +474,8 @@ style to serve as a base for the <em>header</em> and <em>footer</em> styles:</p>
 needs to be specified manually. This is done by adding the name of the relevant
 <a class="reference internal" href="api/style.html#rinoh.style.Styled" title="rinoh.style.Styled"><code class="xref py py-class docutils literal notranslate"><span class="pre">Styled</span></code></a> subclass to the section name, using a colon (<code class="docutils literal notranslate"><span class="pre">:</span></code>) to
 separate it from the style name, optionally surrounded by spaces.</p>
-</section>
-<section id="custom-selectors">
+</div>
+<div class="section" id="custom-selectors">
 <h3>Custom Selectors<a class="headerlink" href="#custom-selectors" title="Permalink to this headline">¶</a></h3>
 <p>It is also possible to define new selectors directly in a style sheet file.
 This allows making tweaks to an existing style sheet without having to create a
@@ -511,8 +513,8 @@ in a context selector by enclosing its name in single or double quotes.</p>
 <span class="na">text_align</span><span class="o">=</span><span class="s">right</span>
 </pre></div>
 </div>
-</section>
-<section id="variables">
+</div>
+<div class="section" id="variables">
 <h3>Variables<a class="headerlink" href="#variables" title="Permalink to this headline">¶</a></h3>
 <p>Variables can be used for values that are used in multiple style definitions.
 This example declares a number of typefaces to allow easily replacing the
@@ -543,8 +545,8 @@ in style definitions as follows:</p>
 </div>
 <p>Another stylesheet can inherit (see below) from this one and easily replace
 fonts in the document by overriding the variables.</p>
-</section>
-<section id="style-attribute-resolution">
+</div>
+<div class="section" id="style-attribute-resolution">
 <span id="attribute-resolution"></span><h3>Style Attribute Resolution<a class="headerlink" href="#style-attribute-resolution" title="Permalink to this headline">¶</a></h3>
 <p>The element styling system makes a distinction between text (inline) elements
 and flowables with respect to how attribute values are resolved.</p>
@@ -599,9 +601,9 @@ of the parent type, so it cannot be used for all styles.</p>
 definition lookup hierarchy, its default value is returned. The default values
 for all style properties are defined in the class definition for each of the
 <a class="reference internal" href="api/style.html#rinoh.style.Style" title="rinoh.style.Style"><code class="xref py py-class docutils literal notranslate"><span class="pre">Style</span></code></a> subclasses.</p>
-</section>
-</section>
-<section id="style-logs">
+</div>
+</div>
+<div class="section" id="style-logs">
 <h2>Style Logs<a class="headerlink" href="#style-logs" title="Permalink to this headline">¶</a></h2>
 <p>When rendering a document, rinohtype will create a <span class="target" id="index-0"></span>style log. It is
 written to disk using the same base name as the output file, but with a
@@ -685,8 +687,8 @@ it is defined (within brackets) and the name of its base style (after <code clas
 to <code class="docutils literal notranslate"><span class="pre">lst[0::2]</span></code>.</p>
 </dd>
 </dl>
-</section>
-</section>
+</div>
+</div>
 
 
            </div>

@@ -4,8 +4,7 @@
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-
+  
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>NoteMarkerStyle &mdash; rinohtype 0.5.3 documentation</title>
@@ -14,6 +13,8 @@
   
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pdflinks.css" type="text/css" />
 
   
@@ -31,6 +32,7 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
@@ -91,7 +93,7 @@
       
     
     
-      <p><span class="caption-text">User Manual [<a class="pdf-link" href="../manual.pdf">PDF</a>]</span></p>
+      <p class="caption"><span class="caption-text">User Manual [<a class="pdf-link" href="../manual.pdf">PDF</a>]</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../intro.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../install.html">Installation</a></li>
@@ -104,7 +106,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../developing.html">Developing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../changelog.html">Release History</a></li>
 </ul>
-<p><span class="caption-text">Reference Guide [<a class="pdf-link" href="../reference.pdf">PDF</a>]</span></p>
+<p class="caption"><span class="caption-text">Reference Guide [<a class="pdf-link" href="../reference.pdf">PDF</a>]</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../rinoh.html">rinoh</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../sphinx.html">Sphinx Builder</a></li>
@@ -221,191 +223,191 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <section id="notemarkerstyle">
+  <div class="section" id="notemarkerstyle">
 <h1>NoteMarkerStyle<a class="headerlink" href="#notemarkerstyle" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
-<dt id="rinoh.reference.NoteMarkerStyle">
-<em class="property">class </em><code class="sig-prename descclassname">rinoh.reference.</code><code class="sig-name descname">NoteMarkerStyle</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">base</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">attributes</span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.reference.NoteMarkerStyle" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rinoh.reference.NoteMarkerStyle">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">rinoh.reference.</span></span><span class="sig-name descname"><span class="pre">NoteMarkerStyle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">base</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">attributes</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.reference.NoteMarkerStyle" title="Permalink to this definition">¶</a></dt>
 <dd><p>Style class for <code class="xref py py-class docutils literal notranslate"><span class="pre">NoteMarker</span></code></p>
 <dl class="py attribute">
-<dt id="rinoh.reference.NoteMarkerStyle.type">
-<code class="sig-name descname">type</code><a class="headerlink" href="#rinoh.reference.NoteMarkerStyle.type" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rinoh.reference.NoteMarkerStyle.type">
+<span class="sig-name descname"><span class="pre">type</span></span><a class="headerlink" href="#rinoh.reference.NoteMarkerStyle.type" title="Permalink to this definition">¶</a></dt>
 <dd><p>Overrides the default set in <code class="xref py py-attr docutils literal notranslate"><span class="pre">ReferenceStyle</span></code></p>
 <p><em>Accepts</em> <a class="reference internal" href="../api/reference.html#rinoh.reference.ReferenceType" title="rinoh.reference.ReferenceType"><code class="xref py py-class docutils literal notranslate"><span class="pre">ReferenceType</span></code></a>: <code class="docutils literal notranslate"><span class="pre">reference</span></code>, <code class="docutils literal notranslate"><span class="pre">number</span></code>, <code class="docutils literal notranslate"><span class="pre">title</span></code>, <code class="docutils literal notranslate"><span class="pre">page</span></code>, <code class="docutils literal notranslate"><span class="pre">custom</span></code></p>
 <p><em>Default</em>: <code class="docutils literal notranslate"><span class="pre">number</span></code></p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt id="rinoh.reference.NoteMarkerStyle.link">
-<code class="sig-name descname">link</code><a class="headerlink" href="#rinoh.reference.NoteMarkerStyle.link" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rinoh.reference.NoteMarkerStyle.link">
+<span class="sig-name descname"><span class="pre">link</span></span><a class="headerlink" href="#rinoh.reference.NoteMarkerStyle.link" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a hyperlink to the reference target (inherited from <code class="xref py py-attr docutils literal notranslate"><span class="pre">ReferenceStyle</span></code>)</p>
 <p><em>Accepts</em> <a class="reference internal" href="../api/attribute.html#rinoh.attribute.Bool" title="rinoh.attribute.Bool"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bool</span></code></a>: <code class="docutils literal notranslate"><span class="pre">true</span></code> or <code class="docutils literal notranslate"><span class="pre">false</span></code></p>
 <p><em>Default</em>: <code class="docutils literal notranslate"><span class="pre">true</span></code></p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt id="rinoh.reference.NoteMarkerStyle.quiet">
-<code class="sig-name descname">quiet</code><a class="headerlink" href="#rinoh.reference.NoteMarkerStyle.quiet" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rinoh.reference.NoteMarkerStyle.quiet">
+<span class="sig-name descname"><span class="pre">quiet</span></span><a class="headerlink" href="#rinoh.reference.NoteMarkerStyle.quiet" title="Permalink to this definition">¶</a></dt>
 <dd><p>If the given reference type does not existfor the target, resolve to an empty stringinstead of making a fuss about it (inherited from <code class="xref py py-attr docutils literal notranslate"><span class="pre">ReferenceStyle</span></code>)</p>
 <p><em>Accepts</em> <a class="reference internal" href="../api/attribute.html#rinoh.attribute.Bool" title="rinoh.attribute.Bool"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bool</span></code></a>: <code class="docutils literal notranslate"><span class="pre">true</span></code> or <code class="docutils literal notranslate"><span class="pre">false</span></code></p>
 <p><em>Default</em>: <code class="docutils literal notranslate"><span class="pre">false</span></code></p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt id="rinoh.reference.NoteMarkerStyle.typeface">
-<code class="sig-name descname">typeface</code><a class="headerlink" href="#rinoh.reference.NoteMarkerStyle.typeface" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rinoh.reference.NoteMarkerStyle.typeface">
+<span class="sig-name descname"><span class="pre">typeface</span></span><a class="headerlink" href="#rinoh.reference.NoteMarkerStyle.typeface" title="Permalink to this definition">¶</a></dt>
 <dd><p>Typeface to set the text in (inherited from <a class="reference internal" href="rinoh.text.TextStyle.html#rinoh.text.TextStyle.typeface" title="rinoh.text.TextStyle.typeface"><code class="xref py py-attr docutils literal notranslate"><span class="pre">TextStyle</span></code></a>)</p>
 <p><em>Accepts</em> <a class="reference internal" href="../api/font.html#rinoh.font.Typeface" title="rinoh.font.Typeface"><code class="xref py py-class docutils literal notranslate"><span class="pre">Typeface</span></code></a>: the name of a typeface. See <a class="reference internal" href="../rinoh.html#cmdoption-rinoh-list-fonts"><code class="xref std std-option docutils literal notranslate"><span class="pre">rinoh</span> <span class="pre">--list-fonts</span></code></a> for a list of the available typefaces.</p>
 <p><em>Default</em>: <code class="docutils literal notranslate"><span class="pre">Times</span></code></p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt id="rinoh.reference.NoteMarkerStyle.font_weight">
-<code class="sig-name descname">font_weight</code><a class="headerlink" href="#rinoh.reference.NoteMarkerStyle.font_weight" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rinoh.reference.NoteMarkerStyle.font_weight">
+<span class="sig-name descname"><span class="pre">font_weight</span></span><a class="headerlink" href="#rinoh.reference.NoteMarkerStyle.font_weight" title="Permalink to this definition">¶</a></dt>
 <dd><p>Thickness of character outlines relative to their height (inherited from <a class="reference internal" href="rinoh.text.TextStyle.html#rinoh.text.TextStyle.font_weight" title="rinoh.text.TextStyle.font_weight"><code class="xref py py-attr docutils literal notranslate"><span class="pre">TextStyle</span></code></a>)</p>
 <p><em>Accepts</em> <a class="reference internal" href="../api/font.html#rinoh.font.style.FontWeight" title="rinoh.font.style.FontWeight"><code class="xref py py-class docutils literal notranslate"><span class="pre">FontWeight</span></code></a>: <code class="docutils literal notranslate"><span class="pre">hairline</span></code>, <code class="docutils literal notranslate"><span class="pre">thin</span></code>, <code class="docutils literal notranslate"><span class="pre">ultra-light</span></code>, <code class="docutils literal notranslate"><span class="pre">extra-light</span></code>, <code class="docutils literal notranslate"><span class="pre">light</span></code>, <code class="docutils literal notranslate"><span class="pre">regular</span></code>, <code class="docutils literal notranslate"><span class="pre">normal</span></code>, <code class="docutils literal notranslate"><span class="pre">book</span></code>, <code class="docutils literal notranslate"><span class="pre">roman</span></code>, <code class="docutils literal notranslate"><span class="pre">medium</span></code>, <code class="docutils literal notranslate"><span class="pre">semi-bold</span></code>, <code class="docutils literal notranslate"><span class="pre">demi-bold</span></code>, <code class="docutils literal notranslate"><span class="pre">bold</span></code>, <code class="docutils literal notranslate"><span class="pre">extra-bold</span></code>, <code class="docutils literal notranslate"><span class="pre">ultra-bold</span></code>, <code class="docutils literal notranslate"><span class="pre">black</span></code>, <code class="docutils literal notranslate"><span class="pre">heavy</span></code>, <code class="docutils literal notranslate"><span class="pre">extra-black</span></code>, <code class="docutils literal notranslate"><span class="pre">ultra-black</span></code></p>
 <p><em>Default</em>: <code class="docutils literal notranslate"><span class="pre">500</span></code></p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt id="rinoh.reference.NoteMarkerStyle.font_slant">
-<code class="sig-name descname">font_slant</code><a class="headerlink" href="#rinoh.reference.NoteMarkerStyle.font_slant" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rinoh.reference.NoteMarkerStyle.font_slant">
+<span class="sig-name descname"><span class="pre">font_slant</span></span><a class="headerlink" href="#rinoh.reference.NoteMarkerStyle.font_slant" title="Permalink to this definition">¶</a></dt>
 <dd><p>Slope style of the font (inherited from <a class="reference internal" href="rinoh.text.TextStyle.html#rinoh.text.TextStyle.font_slant" title="rinoh.text.TextStyle.font_slant"><code class="xref py py-attr docutils literal notranslate"><span class="pre">TextStyle</span></code></a>)</p>
 <p><em>Accepts</em> <a class="reference internal" href="../api/font.html#rinoh.font.style.FontSlant" title="rinoh.font.style.FontSlant"><code class="xref py py-class docutils literal notranslate"><span class="pre">FontSlant</span></code></a>: <code class="docutils literal notranslate"><span class="pre">upright</span></code>, <code class="docutils literal notranslate"><span class="pre">oblique</span></code>, <code class="docutils literal notranslate"><span class="pre">italic</span></code></p>
 <p><em>Default</em>: <code class="docutils literal notranslate"><span class="pre">upright</span></code></p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt id="rinoh.reference.NoteMarkerStyle.font_width">
-<code class="sig-name descname">font_width</code><a class="headerlink" href="#rinoh.reference.NoteMarkerStyle.font_width" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rinoh.reference.NoteMarkerStyle.font_width">
+<span class="sig-name descname"><span class="pre">font_width</span></span><a class="headerlink" href="#rinoh.reference.NoteMarkerStyle.font_width" title="Permalink to this definition">¶</a></dt>
 <dd><p>Stretch of the characters (inherited from <a class="reference internal" href="rinoh.text.TextStyle.html#rinoh.text.TextStyle.font_width" title="rinoh.text.TextStyle.font_width"><code class="xref py py-attr docutils literal notranslate"><span class="pre">TextStyle</span></code></a>)</p>
 <p><em>Accepts</em> <a class="reference internal" href="../api/font.html#rinoh.font.style.FontWidth" title="rinoh.font.style.FontWidth"><code class="xref py py-class docutils literal notranslate"><span class="pre">FontWidth</span></code></a>: <code class="docutils literal notranslate"><span class="pre">ultra-condensed</span></code>, <code class="docutils literal notranslate"><span class="pre">extra-condensed</span></code>, <code class="docutils literal notranslate"><span class="pre">condensed</span></code>, <code class="docutils literal notranslate"><span class="pre">semi-condensed</span></code>, <code class="docutils literal notranslate"><span class="pre">normal</span></code>, <code class="docutils literal notranslate"><span class="pre">medium</span></code>, <code class="docutils literal notranslate"><span class="pre">semi-expanded</span></code>, <code class="docutils literal notranslate"><span class="pre">expanded</span></code>, <code class="docutils literal notranslate"><span class="pre">extra-expanded</span></code>, <code class="docutils literal notranslate"><span class="pre">ultra-expanded</span></code></p>
 <p><em>Default</em>: <code class="docutils literal notranslate"><span class="pre">5</span></code></p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt id="rinoh.reference.NoteMarkerStyle.font_size">
-<code class="sig-name descname">font_size</code><a class="headerlink" href="#rinoh.reference.NoteMarkerStyle.font_size" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rinoh.reference.NoteMarkerStyle.font_size">
+<span class="sig-name descname"><span class="pre">font_size</span></span><a class="headerlink" href="#rinoh.reference.NoteMarkerStyle.font_size" title="Permalink to this definition">¶</a></dt>
 <dd><p>Height of characters (inherited from <a class="reference internal" href="rinoh.text.TextStyle.html#rinoh.text.TextStyle.font_size" title="rinoh.text.TextStyle.font_size"><code class="xref py py-attr docutils literal notranslate"><span class="pre">TextStyle</span></code></a>)</p>
 <p><em>Accepts</em> <a class="reference internal" href="../api/dimension.html#rinoh.dimension.Dimension" title="rinoh.dimension.Dimension"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dimension</span></code></a>: a numeric value followed by a unit (<code class="docutils literal notranslate"><span class="pre">pt</span></code>, <code class="docutils literal notranslate"><span class="pre">in</span></code>, <code class="docutils literal notranslate"><span class="pre">pc</span></code>, <code class="docutils literal notranslate"><span class="pre">mm</span></code>, <code class="docutils literal notranslate"><span class="pre">cm</span></code>, <code class="docutils literal notranslate"><span class="pre">%</span></code>, <code class="docutils literal notranslate"><span class="pre">/2</span></code>, <code class="docutils literal notranslate"><span class="pre">/4</span></code>)</p>
 <p><em>Default</em>: <code class="docutils literal notranslate"><span class="pre">10pt</span></code></p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt id="rinoh.reference.NoteMarkerStyle.font_color">
-<code class="sig-name descname">font_color</code><a class="headerlink" href="#rinoh.reference.NoteMarkerStyle.font_color" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rinoh.reference.NoteMarkerStyle.font_color">
+<span class="sig-name descname"><span class="pre">font_color</span></span><a class="headerlink" href="#rinoh.reference.NoteMarkerStyle.font_color" title="Permalink to this definition">¶</a></dt>
 <dd><p>Color of the font (inherited from <a class="reference internal" href="rinoh.text.TextStyle.html#rinoh.text.TextStyle.font_color" title="rinoh.text.TextStyle.font_color"><code class="xref py py-attr docutils literal notranslate"><span class="pre">TextStyle</span></code></a>)</p>
 <p><em>Accepts</em> <a class="reference internal" href="../api/color.html#rinoh.color.Color" title="rinoh.color.Color"><code class="xref py py-class docutils literal notranslate"><span class="pre">Color</span></code></a>: HEX string with optional alpha component (<code class="docutils literal notranslate"><span class="pre">#RRGGBB</span></code>, <code class="docutils literal notranslate"><span class="pre">#RRGGBBAA</span></code>, <code class="docutils literal notranslate"><span class="pre">#RGB</span></code> or <code class="docutils literal notranslate"><span class="pre">#RGBA</span></code>)</p>
 <p><em>Default</em>: <code class="docutils literal notranslate"><span class="pre">#000</span></code></p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt id="rinoh.reference.NoteMarkerStyle.font_variant">
-<code class="sig-name descname">font_variant</code><a class="headerlink" href="#rinoh.reference.NoteMarkerStyle.font_variant" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rinoh.reference.NoteMarkerStyle.font_variant">
+<span class="sig-name descname"><span class="pre">font_variant</span></span><a class="headerlink" href="#rinoh.reference.NoteMarkerStyle.font_variant" title="Permalink to this definition">¶</a></dt>
 <dd><p>Variant of the font (inherited from <a class="reference internal" href="rinoh.text.TextStyle.html#rinoh.text.TextStyle.font_variant" title="rinoh.text.TextStyle.font_variant"><code class="xref py py-attr docutils literal notranslate"><span class="pre">TextStyle</span></code></a>)</p>
 <p><em>Accepts</em> <a class="reference internal" href="../api/font.html#rinoh.font.style.FontVariant" title="rinoh.font.style.FontVariant"><code class="xref py py-class docutils literal notranslate"><span class="pre">FontVariant</span></code></a>: <code class="docutils literal notranslate"><span class="pre">normal</span></code>, <code class="docutils literal notranslate"><span class="pre">small</span> <span class="pre">capital</span></code>, <code class="docutils literal notranslate"><span class="pre">oldstyle</span> <span class="pre">figures</span></code></p>
 <p><em>Default</em>: <code class="docutils literal notranslate"><span class="pre">normal</span></code></p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt id="rinoh.reference.NoteMarkerStyle.position">
-<code class="sig-name descname">position</code><a class="headerlink" href="#rinoh.reference.NoteMarkerStyle.position" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rinoh.reference.NoteMarkerStyle.position">
+<span class="sig-name descname"><span class="pre">position</span></span><a class="headerlink" href="#rinoh.reference.NoteMarkerStyle.position" title="Permalink to this definition">¶</a></dt>
 <dd><p>Vertical text position (inherited from <a class="reference internal" href="rinoh.text.TextStyle.html#rinoh.text.TextStyle.position" title="rinoh.text.TextStyle.position"><code class="xref py py-attr docutils literal notranslate"><span class="pre">TextStyle</span></code></a>)</p>
 <p><em>Accepts</em> <a class="reference internal" href="../api/font.html#rinoh.font.style.TextPosition" title="rinoh.font.style.TextPosition"><code class="xref py py-class docutils literal notranslate"><span class="pre">TextPosition</span></code></a>: <code class="docutils literal notranslate"><span class="pre">normal</span></code>, <code class="docutils literal notranslate"><span class="pre">superscript</span></code>, <code class="docutils literal notranslate"><span class="pre">subscript</span></code></p>
 <p><em>Default</em>: <code class="docutils literal notranslate"><span class="pre">normal</span></code></p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt id="rinoh.reference.NoteMarkerStyle.kerning">
-<code class="sig-name descname">kerning</code><a class="headerlink" href="#rinoh.reference.NoteMarkerStyle.kerning" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rinoh.reference.NoteMarkerStyle.kerning">
+<span class="sig-name descname"><span class="pre">kerning</span></span><a class="headerlink" href="#rinoh.reference.NoteMarkerStyle.kerning" title="Permalink to this definition">¶</a></dt>
 <dd><p>Improve inter-letter spacing (inherited from <a class="reference internal" href="rinoh.text.TextStyle.html#rinoh.text.TextStyle.kerning" title="rinoh.text.TextStyle.kerning"><code class="xref py py-attr docutils literal notranslate"><span class="pre">TextStyle</span></code></a>)</p>
 <p><em>Accepts</em> <a class="reference internal" href="../api/attribute.html#rinoh.attribute.Bool" title="rinoh.attribute.Bool"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bool</span></code></a>: <code class="docutils literal notranslate"><span class="pre">true</span></code> or <code class="docutils literal notranslate"><span class="pre">false</span></code></p>
 <p><em>Default</em>: <code class="docutils literal notranslate"><span class="pre">true</span></code></p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt id="rinoh.reference.NoteMarkerStyle.ligatures">
-<code class="sig-name descname">ligatures</code><a class="headerlink" href="#rinoh.reference.NoteMarkerStyle.ligatures" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rinoh.reference.NoteMarkerStyle.ligatures">
+<span class="sig-name descname"><span class="pre">ligatures</span></span><a class="headerlink" href="#rinoh.reference.NoteMarkerStyle.ligatures" title="Permalink to this definition">¶</a></dt>
 <dd><p>Run letters together where possible (inherited from <a class="reference internal" href="rinoh.text.TextStyle.html#rinoh.text.TextStyle.ligatures" title="rinoh.text.TextStyle.ligatures"><code class="xref py py-attr docutils literal notranslate"><span class="pre">TextStyle</span></code></a>)</p>
 <p><em>Accepts</em> <a class="reference internal" href="../api/attribute.html#rinoh.attribute.Bool" title="rinoh.attribute.Bool"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bool</span></code></a>: <code class="docutils literal notranslate"><span class="pre">true</span></code> or <code class="docutils literal notranslate"><span class="pre">false</span></code></p>
 <p><em>Default</em>: <code class="docutils literal notranslate"><span class="pre">true</span></code></p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt id="rinoh.reference.NoteMarkerStyle.hyphenate">
-<code class="sig-name descname">hyphenate</code><a class="headerlink" href="#rinoh.reference.NoteMarkerStyle.hyphenate" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rinoh.reference.NoteMarkerStyle.hyphenate">
+<span class="sig-name descname"><span class="pre">hyphenate</span></span><a class="headerlink" href="#rinoh.reference.NoteMarkerStyle.hyphenate" title="Permalink to this definition">¶</a></dt>
 <dd><p>Allow words to be broken over two lines (inherited from <a class="reference internal" href="rinoh.text.TextStyle.html#rinoh.text.TextStyle.hyphenate" title="rinoh.text.TextStyle.hyphenate"><code class="xref py py-attr docutils literal notranslate"><span class="pre">TextStyle</span></code></a>)</p>
 <p><em>Accepts</em> <a class="reference internal" href="../api/attribute.html#rinoh.attribute.Bool" title="rinoh.attribute.Bool"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bool</span></code></a>: <code class="docutils literal notranslate"><span class="pre">true</span></code> or <code class="docutils literal notranslate"><span class="pre">false</span></code></p>
 <p><em>Default</em>: <code class="docutils literal notranslate"><span class="pre">true</span></code></p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt id="rinoh.reference.NoteMarkerStyle.hyphen_chars">
-<code class="sig-name descname">hyphen_chars</code><a class="headerlink" href="#rinoh.reference.NoteMarkerStyle.hyphen_chars" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rinoh.reference.NoteMarkerStyle.hyphen_chars">
+<span class="sig-name descname"><span class="pre">hyphen_chars</span></span><a class="headerlink" href="#rinoh.reference.NoteMarkerStyle.hyphen_chars" title="Permalink to this definition">¶</a></dt>
 <dd><p>Minimum number of characters in a hyphenated part of a word (inherited from <a class="reference internal" href="rinoh.text.TextStyle.html#rinoh.text.TextStyle.hyphen_chars" title="rinoh.text.TextStyle.hyphen_chars"><code class="xref py py-attr docutils literal notranslate"><span class="pre">TextStyle</span></code></a>)</p>
 <p><em>Accepts</em> <a class="reference internal" href="../api/attribute.html#rinoh.attribute.Integer" title="rinoh.attribute.Integer"><code class="xref py py-class docutils literal notranslate"><span class="pre">Integer</span></code></a>: a natural number (positive integer)</p>
 <p><em>Default</em>: <code class="docutils literal notranslate"><span class="pre">2</span></code></p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt id="rinoh.reference.NoteMarkerStyle.hyphen_lang">
-<code class="sig-name descname">hyphen_lang</code><a class="headerlink" href="#rinoh.reference.NoteMarkerStyle.hyphen_lang" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rinoh.reference.NoteMarkerStyle.hyphen_lang">
+<span class="sig-name descname"><span class="pre">hyphen_lang</span></span><a class="headerlink" href="#rinoh.reference.NoteMarkerStyle.hyphen_lang" title="Permalink to this definition">¶</a></dt>
 <dd><p>Language to use for hyphenation. Accepts locale codes such as ‘en_US’ (inherited from <a class="reference internal" href="rinoh.text.TextStyle.html#rinoh.text.TextStyle.hyphen_lang" title="rinoh.text.TextStyle.hyphen_lang"><code class="xref py py-attr docutils literal notranslate"><span class="pre">TextStyle</span></code></a>)</p>
 <p><em>Accepts</em> <a class="reference internal" href="../api/paragraph.html#rinoh.text.Locale" title="rinoh.text.Locale"><code class="xref py py-class docutils literal notranslate"><span class="pre">Locale</span></code></a>: locale identifier in the <code class="docutils literal notranslate"><span class="pre">&lt;language</span> <span class="pre">ID&gt;_&lt;region</span> <span class="pre">ID&gt;</span></code> format</p>
 <p><em>Default</em>: <code class="docutils literal notranslate"><span class="pre">en_US</span></code></p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt id="rinoh.reference.NoteMarkerStyle.before">
-<code class="sig-name descname">before</code><a class="headerlink" href="#rinoh.reference.NoteMarkerStyle.before" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rinoh.reference.NoteMarkerStyle.before">
+<span class="sig-name descname"><span class="pre">before</span></span><a class="headerlink" href="#rinoh.reference.NoteMarkerStyle.before" title="Permalink to this definition">¶</a></dt>
 <dd><p>Item to insert before this one (inherited from <code class="xref py py-attr docutils literal notranslate"><span class="pre">InlineStyle</span></code>)</p>
 <p><em>Accepts</em> <a class="reference internal" href="../api/paragraph.html#rinoh.text.StyledText" title="rinoh.text.StyledText"><code class="xref py py-class docutils literal notranslate"><span class="pre">StyledText</span></code></a>: a list of styled text strings, separated by spaces. A styled text string is a quoted string (<code class="docutils literal notranslate"><span class="pre">'</span></code> or <code class="docutils literal notranslate"><span class="pre">&quot;</span></code>), optionally followed by a style name enclosed in braces: <code class="docutils literal notranslate"><span class="pre">'text</span> <span class="pre">string'</span> <span class="pre">(style</span> <span class="pre">name)</span></code></p>
 <p><em>Default</em>: (no value)</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt id="rinoh.reference.NoteMarkerStyle.after">
-<code class="sig-name descname">after</code><a class="headerlink" href="#rinoh.reference.NoteMarkerStyle.after" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rinoh.reference.NoteMarkerStyle.after">
+<span class="sig-name descname"><span class="pre">after</span></span><a class="headerlink" href="#rinoh.reference.NoteMarkerStyle.after" title="Permalink to this definition">¶</a></dt>
 <dd><p>Item to insert after this one (inherited from <code class="xref py py-attr docutils literal notranslate"><span class="pre">InlineStyle</span></code>)</p>
 <p><em>Accepts</em> <a class="reference internal" href="../api/paragraph.html#rinoh.text.StyledText" title="rinoh.text.StyledText"><code class="xref py py-class docutils literal notranslate"><span class="pre">StyledText</span></code></a>: a list of styled text strings, separated by spaces. A styled text string is a quoted string (<code class="docutils literal notranslate"><span class="pre">'</span></code> or <code class="docutils literal notranslate"><span class="pre">&quot;</span></code>), optionally followed by a style name enclosed in braces: <code class="docutils literal notranslate"><span class="pre">'text</span> <span class="pre">string'</span> <span class="pre">(style</span> <span class="pre">name)</span></code></p>
 <p><em>Default</em>: (no value)</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt id="rinoh.reference.NoteMarkerStyle.number_format">
-<code class="sig-name descname">number_format</code><a class="headerlink" href="#rinoh.reference.NoteMarkerStyle.number_format" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rinoh.reference.NoteMarkerStyle.number_format">
+<span class="sig-name descname"><span class="pre">number_format</span></span><a class="headerlink" href="#rinoh.reference.NoteMarkerStyle.number_format" title="Permalink to this definition">¶</a></dt>
 <dd><p>How numbers are formatted (inherited from <a class="reference internal" href="../api/number.html#rinoh.number.NumberStyle.number_format" title="rinoh.number.NumberStyle.number_format"><code class="xref py py-attr docutils literal notranslate"><span class="pre">NumberStyle</span></code></a>)</p>
 <p><em>Accepts</em> <a class="reference internal" href="../api/number.html#rinoh.number.NumberFormat" title="rinoh.number.NumberFormat"><code class="xref py py-class docutils literal notranslate"><span class="pre">NumberFormat</span></code></a>: <code class="docutils literal notranslate"><span class="pre">none</span></code>, <code class="docutils literal notranslate"><span class="pre">number</span></code>, <code class="docutils literal notranslate"><span class="pre">symbol</span></code>, <code class="docutils literal notranslate"><span class="pre">lowercase</span> <span class="pre">character</span></code>, <code class="docutils literal notranslate"><span class="pre">uppercase</span> <span class="pre">character</span></code>, <code class="docutils literal notranslate"><span class="pre">lowercase</span> <span class="pre">roman</span></code>, <code class="docutils literal notranslate"><span class="pre">uppercase</span> <span class="pre">roman</span></code></p>
 <p><em>Default</em>: <code class="docutils literal notranslate"><span class="pre">number</span></code></p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt id="rinoh.reference.NoteMarkerStyle.label_prefix">
-<code class="sig-name descname">label_prefix</code><a class="headerlink" href="#rinoh.reference.NoteMarkerStyle.label_prefix" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rinoh.reference.NoteMarkerStyle.label_prefix">
+<span class="sig-name descname"><span class="pre">label_prefix</span></span><a class="headerlink" href="#rinoh.reference.NoteMarkerStyle.label_prefix" title="Permalink to this definition">¶</a></dt>
 <dd><p>Text to prepend to the label (inherited from <a class="reference internal" href="../api/number.html#rinoh.number.LabelStyle.label_prefix" title="rinoh.number.LabelStyle.label_prefix"><code class="xref py py-attr docutils literal notranslate"><span class="pre">LabelStyle</span></code></a>)</p>
 <p><em>Accepts</em> <a class="reference internal" href="../api/paragraph.html#rinoh.text.StyledText" title="rinoh.text.StyledText"><code class="xref py py-class docutils literal notranslate"><span class="pre">StyledText</span></code></a>: a list of styled text strings, separated by spaces. A styled text string is a quoted string (<code class="docutils literal notranslate"><span class="pre">'</span></code> or <code class="docutils literal notranslate"><span class="pre">&quot;</span></code>), optionally followed by a style name enclosed in braces: <code class="docutils literal notranslate"><span class="pre">'text</span> <span class="pre">string'</span> <span class="pre">(style</span> <span class="pre">name)</span></code></p>
 <p><em>Default</em>: (no value)</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt id="rinoh.reference.NoteMarkerStyle.label_suffix">
-<code class="sig-name descname">label_suffix</code><a class="headerlink" href="#rinoh.reference.NoteMarkerStyle.label_suffix" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rinoh.reference.NoteMarkerStyle.label_suffix">
+<span class="sig-name descname"><span class="pre">label_suffix</span></span><a class="headerlink" href="#rinoh.reference.NoteMarkerStyle.label_suffix" title="Permalink to this definition">¶</a></dt>
 <dd><p>Text to append to the label (inherited from <a class="reference internal" href="../api/number.html#rinoh.number.LabelStyle.label_suffix" title="rinoh.number.LabelStyle.label_suffix"><code class="xref py py-attr docutils literal notranslate"><span class="pre">LabelStyle</span></code></a>)</p>
 <p><em>Accepts</em> <a class="reference internal" href="../api/paragraph.html#rinoh.text.StyledText" title="rinoh.text.StyledText"><code class="xref py py-class docutils literal notranslate"><span class="pre">StyledText</span></code></a>: a list of styled text strings, separated by spaces. A styled text string is a quoted string (<code class="docutils literal notranslate"><span class="pre">'</span></code> or <code class="docutils literal notranslate"><span class="pre">&quot;</span></code>), optionally followed by a style name enclosed in braces: <code class="docutils literal notranslate"><span class="pre">'text</span> <span class="pre">string'</span> <span class="pre">(style</span> <span class="pre">name)</span></code></p>
 <p><em>Default</em>: (no value)</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt id="rinoh.reference.NoteMarkerStyle.custom_label">
-<code class="sig-name descname">custom_label</code><a class="headerlink" href="#rinoh.reference.NoteMarkerStyle.custom_label" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rinoh.reference.NoteMarkerStyle.custom_label">
+<span class="sig-name descname"><span class="pre">custom_label</span></span><a class="headerlink" href="#rinoh.reference.NoteMarkerStyle.custom_label" title="Permalink to this definition">¶</a></dt>
 <dd><p>Use a custom label if specified (inherited from <a class="reference internal" href="../api/number.html#rinoh.number.LabelStyle.custom_label" title="rinoh.number.LabelStyle.custom_label"><code class="xref py py-attr docutils literal notranslate"><span class="pre">LabelStyle</span></code></a>)</p>
 <p><em>Accepts</em> <a class="reference internal" href="../api/attribute.html#rinoh.attribute.Bool" title="rinoh.attribute.Bool"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bool</span></code></a>: <code class="docutils literal notranslate"><span class="pre">true</span></code> or <code class="docutils literal notranslate"><span class="pre">false</span></code></p>
 <p><em>Default</em>: <code class="docutils literal notranslate"><span class="pre">false</span></code></p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt id="rinoh.reference.NoteMarkerStyle.hide">
-<code class="sig-name descname">hide</code><a class="headerlink" href="#rinoh.reference.NoteMarkerStyle.hide" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rinoh.reference.NoteMarkerStyle.hide">
+<span class="sig-name descname"><span class="pre">hide</span></span><a class="headerlink" href="#rinoh.reference.NoteMarkerStyle.hide" title="Permalink to this definition">¶</a></dt>
 <dd><p>Suppress rendering this element (inherited from <a class="reference internal" href="../api/style.html#rinoh.style.Style.hide" title="rinoh.style.Style.hide"><code class="xref py py-attr docutils literal notranslate"><span class="pre">Style</span></code></a>)</p>
 <p><em>Accepts</em> <a class="reference internal" href="../api/attribute.html#rinoh.attribute.Bool" title="rinoh.attribute.Bool"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bool</span></code></a>: <code class="docutils literal notranslate"><span class="pre">true</span></code> or <code class="docutils literal notranslate"><span class="pre">false</span></code></p>
 <p><em>Default</em>: <code class="docutils literal notranslate"><span class="pre">false</span></code></p>
@@ -413,7 +415,7 @@
 
 </dd></dl>
 
-</section>
+</div>
 
 
            </div>

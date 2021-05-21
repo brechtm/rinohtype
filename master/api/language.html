@@ -4,8 +4,7 @@
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-
+  
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>Language (rinoh.language) &mdash; rinohtype 0.5.3 documentation</title>
@@ -14,6 +13,8 @@
   
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pdflinks.css" type="text/css" />
 
   
@@ -31,6 +32,7 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
@@ -91,7 +93,7 @@
       
     
     
-      <p><span class="caption-text">User Manual [<a class="pdf-link" href="../manual.pdf">PDF</a>]</span></p>
+      <p class="caption"><span class="caption-text">User Manual [<a class="pdf-link" href="../manual.pdf">PDF</a>]</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../intro.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../install.html">Installation</a></li>
@@ -104,7 +106,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../developing.html">Developing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../changelog.html">Release History</a></li>
 </ul>
-<p><span class="caption-text">Reference Guide [<a class="pdf-link" href="../reference.pdf">PDF</a>]</span></p>
+<p class="caption"><span class="caption-text">Reference Guide [<a class="pdf-link" href="../reference.pdf">PDF</a>]</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../rinoh.html">rinoh</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../sphinx.html">Sphinx Builder</a></li>
@@ -209,11 +211,11 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <span class="target" id="module-rinoh.language"></span><section id="language-rinoh-language">
+  <span class="target" id="module-rinoh.language"></span><div class="section" id="language-rinoh-language">
 <span id="language"></span><h1>Language (<a class="reference internal" href="#module-rinoh.language" title="rinoh.language"><code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.language</span></code></a>)<a class="headerlink" href="#language-rinoh-language" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
-<dt id="rinoh.language.Language">
-<em class="property">class </em><code class="sig-prename descclassname">rinoh.language.</code><code class="sig-name descname">Language</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">code</span></em>, <em class="sig-param"><span class="n">name</span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.language.Language" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rinoh.language.Language">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">rinoh.language.</span></span><span class="sig-name descname"><span class="pre">Language</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">code</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.language.Language" title="Permalink to this definition">¶</a></dt>
 <dd><p>Collects localized strings for a particular language</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -224,8 +226,8 @@
 </dd>
 </dl>
 <dl class="py attribute">
-<dt id="rinoh.language.Language.languages">
-<code class="sig-name descname">languages</code><a class="headerlink" href="#rinoh.language.Language.languages" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rinoh.language.Language.languages">
+<span class="sig-name descname"><span class="pre">languages</span></span><a class="headerlink" href="#rinoh.language.Language.languages" title="Permalink to this definition">¶</a></dt>
 <dd><p>Dictionary mapping codes to <a class="reference internal" href="#rinoh.language.Language" title="rinoh.language.Language"><code class="xref py py-class docutils literal notranslate"><span class="pre">Language</span></code></a>s</p>
 </dd></dl>
 
@@ -233,8 +235,8 @@
 
 <p id="supported-languages">The following languages are supported:</p>
 <dl class="py data">
-<dt id="rinoh.language.EN">
-<code class="sig-prename descclassname">rinoh.language.</code><code class="sig-name descname">EN</code><em class="property"> = Language('en', 'English')</em><a class="headerlink" href="#rinoh.language.EN" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rinoh.language.EN">
+<span class="sig-prename descclassname"><span class="pre">rinoh.language.</span></span><span class="sig-name descname"><span class="pre">EN</span></span><em class="property"> <span class="pre">=</span> <span class="pre">Language('en',</span> <span class="pre">'English')</span></em><a class="headerlink" href="#rinoh.language.EN" title="Permalink to this definition">¶</a></dt>
 <dd><p>Localized strings for English</p>
 <p class="rubric">SectionTitles</p>
 <dl class="field-list simple">
@@ -290,8 +292,8 @@
 </dd></dl>
 
 <dl class="py data">
-<dt id="rinoh.language.FR">
-<code class="sig-prename descclassname">rinoh.language.</code><code class="sig-name descname">FR</code><em class="property"> = Language('fr', 'Français')</em><a class="headerlink" href="#rinoh.language.FR" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rinoh.language.FR">
+<span class="sig-prename descclassname"><span class="pre">rinoh.language.</span></span><span class="sig-name descname"><span class="pre">FR</span></span><em class="property"> <span class="pre">=</span> <span class="pre">Language('fr',</span> <span class="pre">'Français')</span></em><a class="headerlink" href="#rinoh.language.FR" title="Permalink to this definition">¶</a></dt>
 <dd><p>Localized strings for Français</p>
 <p class="rubric">SectionTitles</p>
 <dl class="field-list simple">
@@ -347,8 +349,8 @@
 </dd></dl>
 
 <dl class="py data">
-<dt id="rinoh.language.IT">
-<code class="sig-prename descclassname">rinoh.language.</code><code class="sig-name descname">IT</code><em class="property"> = Language('it', 'Italiano')</em><a class="headerlink" href="#rinoh.language.IT" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rinoh.language.IT">
+<span class="sig-prename descclassname"><span class="pre">rinoh.language.</span></span><span class="sig-name descname"><span class="pre">IT</span></span><em class="property"> <span class="pre">=</span> <span class="pre">Language('it',</span> <span class="pre">'Italiano')</span></em><a class="headerlink" href="#rinoh.language.IT" title="Permalink to this definition">¶</a></dt>
 <dd><p>Localized strings for Italiano</p>
 <p class="rubric">SectionTitles</p>
 <dl class="field-list simple">
@@ -404,8 +406,8 @@
 </dd></dl>
 
 <dl class="py data">
-<dt id="rinoh.language.NL">
-<code class="sig-prename descclassname">rinoh.language.</code><code class="sig-name descname">NL</code><em class="property"> = Language('nl', 'Nederlands')</em><a class="headerlink" href="#rinoh.language.NL" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rinoh.language.NL">
+<span class="sig-prename descclassname"><span class="pre">rinoh.language.</span></span><span class="sig-name descname"><span class="pre">NL</span></span><em class="property"> <span class="pre">=</span> <span class="pre">Language('nl',</span> <span class="pre">'Nederlands')</span></em><a class="headerlink" href="#rinoh.language.NL" title="Permalink to this definition">¶</a></dt>
 <dd><p>Localized strings for Nederlands</p>
 <p class="rubric">SectionTitles</p>
 <dl class="field-list simple">
@@ -461,8 +463,8 @@
 </dd></dl>
 
 <dl class="py data">
-<dt id="rinoh.language.PL">
-<code class="sig-prename descclassname">rinoh.language.</code><code class="sig-name descname">PL</code><em class="property"> = Language('pl', 'Polski')</em><a class="headerlink" href="#rinoh.language.PL" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rinoh.language.PL">
+<span class="sig-prename descclassname"><span class="pre">rinoh.language.</span></span><span class="sig-name descname"><span class="pre">PL</span></span><em class="property"> <span class="pre">=</span> <span class="pre">Language('pl',</span> <span class="pre">'Polski')</span></em><a class="headerlink" href="#rinoh.language.PL" title="Permalink to this definition">¶</a></dt>
 <dd><p>Localized strings for Polski</p>
 <p class="rubric">SectionTitles</p>
 <dl class="field-list simple">
@@ -517,7 +519,7 @@
 </dl>
 </dd></dl>
 
-</section>
+</div>
 
 
            </div>
