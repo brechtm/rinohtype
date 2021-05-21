@@ -98,6 +98,7 @@ Sphinx = { version = ">=2.2.1", optional = true }
 doc8 = "^0.8.1"
 nox = "^2020.12.31"
 nox-poetry = "^0.8.4"
+poetry-core = "^1.0.3"
 pytest = "^6.2.2"
 pytest-assume = "^2.4.2"
 pytest-console-scripts = "^1.2.0"
@@ -107,8 +108,6 @@ restview = "^2.9.2"
 Sphinx = "^3.4.3"
 sphinx-rtd-theme = "^0.5.1"
 sphinxcontrib-autoprogram = "^0.1.7"
-tox = "^3.23.1"
-tox-poetry-installer = {extras = ["poetry"], version = "0.6.3"}
 pytest-github-actions-annotate-failures = { version = "^0.1.2", optional = true }
 
 [build-system]
