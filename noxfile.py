@@ -1,5 +1,7 @@
 
+import glob
 import os
+import shutil
 import sys
 
 import nox
@@ -53,6 +55,8 @@ def build_docs(session):
                                     'sphinxcontrib-autoprogram'])
     session.chdir('doc')
     session.run('python', 'build.py')
+    for pdf in glob.glob("_build/rinoh/*.pdf"):
+        shutil.copy(pdf, "_build/html")
 
 
 @nox_poetry.session(python=PYTHONS)
