@@ -102,6 +102,8 @@ def _unit(session, docutils=None, sphinx=None, dist='wheel'):
     _install(session, docutils=docutils, sphinx=sphinx, dist=dist,
              dependencies=DEPENDENCIES)
     mark_expr = ['-m', 'with_sphinx'] if sphinx else []
+    if dist == 'sdist':
+        session.env['WITH_COVERAGE'] = '0'
     session.run('python', 'run_tests.py', *mark_expr, *session.posargs,
                 'tests')
 
@@ -111,6 +113,8 @@ def _regression(session, docutils=None, sphinx=None, dist='wheel'):
              dependencies=[*DEPENDENCIES, 'pytest-assume',
                            'pytest-console-scripts'])
     mark_expr = ['-m', 'with_sphinx'] if sphinx else ['-m', 'not longrunning']
+    if dist == 'sdist':
+        session.env['WITH_COVERAGE'] = '0'
     session.run('python', 'run_tests.py', *mark_expr,
                 '--script-launch-mode=subprocess', *session.posargs,
                 'tests_regression')
