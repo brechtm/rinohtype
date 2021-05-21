@@ -89,6 +89,9 @@ def regression_sphinx(session, sphinx):
 
 def _install(session, docutils=None, sphinx=None, dist='wheel',
              dependencies=[]):
+    # work around https://github.com/pypa/pip/issues/4183
+    session.run("pip", "cache", "--verbose", "remove", "rinohtype",
+                success_codes=[0, 1])
     session.poetry.installroot(distribution_format=dist)
     if dependencies:
         session.install(*dependencies)
