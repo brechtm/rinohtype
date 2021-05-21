@@ -32,6 +32,86 @@ space_below=0
 [bold]
 font_weight=BOLD
 
+[emphasis]
+font_slant=italic
+
+[strong]
+font_weight=BOLD
+
+[monospaced]
+typeface=$(mono_typeface)
+hyphenate=False
+ligatures=False
+
+[literal emphasis]
+base=emphasis
+typeface=$(mono_typeface)
+hyphenate=False
+ligatures=False
+
+[literal strong]
+base=strong
+typeface=$(mono_typeface)
+hyphenate=False
+ligatures=False
+
+[file path]
+base=monospaced
+ligatures=False
+
+[keystrokes]
+base=monospaced
+ligatures=False
+
+[regular expression]
+base=monospaced
+ligatures=False
+hyphenate=False
+
+[code with variable]
+base=monospaced
+ligatures=False
+hyphenate=False
+
+[mail header]
+base=literal emphasis
+
+[MIME type]
+base=literal emphasis
+
+[newsgroup]
+base=literal emphasis
+
+[command]
+base=literal strong
+
+[make variable]
+base=literal strong
+
+[program]
+base=literal strong
+
+[man page]
+base=literal emphasis
+
+[window title]
+font_weight=BOLD
+
+[UI control]
+font_slant=italic
+
+[UI control accelerator]
+font_weight=bold
+
+[menu cascade]
+font_weight=BOLD
+
+[draft comment]
+font_color=#f00
+
+[title reference]
+font_slant=ITALIC
+
 [table of contents section]
 show_in_toc=False
 
