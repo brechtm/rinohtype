@@ -216,13 +216,21 @@ def main():
         parser.print_help()
         return
 
+    if not os.path.exists(args.input):
+        raise SystemExit('{}: No such file'.format(args.input))
+    input_dir, input_filename = os.path.split(args.input)
+    input_root, input_ext = os.path.splitext(input_filename)
+
     template_cfg = {}
     variables = {}
-    cwd_source = CwdSource()
+    input_source = InputDirSource(input_dir)
     if args.stylesheet:
-        if os.path.isfile(args.stylesheet):
-            stylesheet = StyleSheetFile(args.stylesheet, matcher=matcher,
-                                        source=cwd_source)
+        stylesheet_path = Path(args.stylesheet)
+        if not stylesheet_path.is_absolute():
+            stylesheet_path = input_source.root / stylesheet_path
+        if stylesheet_path.exists():
+            stylesheet = StyleSheetFile(str(stylesheet_path.resolve()), matcher=matcher,
+                                        source=input_source)
         else:
             try:
                 stylesheet = StyleSheet.from_string(args.stylesheet)
@@ -242,11 +250,6 @@ def main():
                                         in PAPER_BY_NAME.values()))
             raise SystemExit("Unknown paper size '{}'. Must be one of:\n"
                              "   {}".format(args.paper, accepted))
-
-    if not os.path.exists(args.input):
-        raise SystemExit('{}: No such file'.format(args.input))
-    input_dir, input_filename = os.path.split(args.input)
-    input_root, input_ext = os.path.splitext(input_filename)
 
     if args.output:
         if os.path.isdir(args.output):
@@ -273,9 +276,12 @@ def main():
                          '  {}'.format(key, e))
     reader = reader_cls(**options)
 
-    if os.path.isfile(args.template):
-        template_cfg['base'] = TemplateConfigurationFile(args.template,
-                                                         source=cwd_source)
+    template_path = Path(args.template)
+    if not template_path.is_absolute():
+        template_path = input_source.root / template_path
+    if template_path.exists():
+        template_cfg['base'] = TemplateConfigurationFile(str(template_path),
+                                                         source=input_source)
         template_cls = template_cfg['base'].template
     else:
         template_cls = DocumentTemplate.from_string(args.template)
@@ -307,14 +313,21 @@ def main():
                                          err.resource_name))
 
 
-class CwdSource(Source):
+class InputDirSource(Source):
+
+    def __init__(self, input_dir):
+        if input_dir:
+            self._root = Path(input_dir)
+        else:
+            self._root = Path.cwd()
+
     @property
     def location(self):
-        return 'current working directory'
+        return 'input directory'
 
     @property
     def root(self):
-        return Path.cwd()
+        return self._root
 
 
 if __name__ == '__main__':
