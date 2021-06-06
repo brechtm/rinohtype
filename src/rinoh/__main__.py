@@ -323,7 +323,7 @@ class InputDirSource(Source):
 
     @property
     def location(self):
-        return 'input directory'
+        return str(self._root)
 
     @property
     def root(self):
