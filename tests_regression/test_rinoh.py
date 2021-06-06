@@ -37,9 +37,7 @@ def collect_tests():
                if rst_path.stem == 'install_resources' else rst_path.stem)
 
 
-@pytest.mark.parametrize('test_name', collect_tests())
-def test_rinoh_paths_in_cwd(script_runner, test_name):
-    rst_path = Path(test_name + '.rst')
+def build_args(rst_path):
     args = ['--install-resources']
     templconf_path = rst_path.with_suffix('.rtt')
     if (RINOH_PATH / templconf_path).exists():
@@ -47,7 +45,14 @@ def test_rinoh_paths_in_cwd(script_runner, test_name):
     stylesheet_path = rst_path.with_suffix('.rts')
     if (RINOH_PATH / stylesheet_path).exists():
         args += ['--stylesheet', str(stylesheet_path)]
-    output_dir = OUTPUT_PATH / ('rinoh_' + test_name)
+    return args
+
+
+@pytest.mark.parametrize('test_name', collect_tests())
+def test_rinoh_paths_in_cwd(script_runner, test_name):
+    rst_path = Path(test_name + '.rst')
+    args = build_args(rst_path)
+    output_dir = OUTPUT_PATH / ('rinoh_' + test_name + '_cwd')
     output_dir.mkdir(parents=True, exist_ok=True)
     ret = script_runner.run('rinoh', *args, str(rst_path),
                             '--output', str(output_dir), cwd=RINOH_PATH)
@@ -58,14 +63,8 @@ def test_rinoh_paths_in_cwd(script_runner, test_name):
 @pytest.mark.parametrize('test_name', collect_tests())
 def test_rinoh_paths_relative_to_input(script_runner, test_name):
     rst_path = Path(test_name + '.rst')
-    args = ['--install-resources']
-    templconf_path = rst_path.with_suffix('.rtt')
-    if (RINOH_PATH / templconf_path).exists():
-        args += ['--template', str(templconf_path)]
-    stylesheet_path = rst_path.with_suffix('.rts')
-    if (RINOH_PATH / stylesheet_path).exists():
-        args += ['--stylesheet', str(stylesheet_path)]
-    output_dir = OUTPUT_PATH / ('rinoh_' + test_name)
+    args = build_args(rst_path)
+    output_dir = OUTPUT_PATH / ('rinoh_' + test_name + '_relative')
     output_dir.mkdir(parents=True, exist_ok=True)
     ret = script_runner.run('rinoh', *args, str(RINOH_PATH / rst_path),
                             '--output', str(output_dir))
