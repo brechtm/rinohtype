@@ -111,6 +111,20 @@ sheet, the default values for its style properties are used.
     sheet can serve as a good starting point for developing a custom style
     sheet from scratch.
 
+Using a Style Sheet
+-------------------
+
+A style sheet file (``.rts``) can be specified when rendering using the
+command-line :program:`rinoh` or by :ref:`configure_templates`.
+
+Specify style sheet from :program:`rinoh` command-line
+++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+When using the command-line :program:`rinoh`, you can pass the style
+sheet using the the :option:`--stylesheet <rinoh --stylesheet>`
+command-line option.::
+
+    rinoh --stylesheet my_stylesheet.rts index.rst
 
 .. _basics_templates:
 
@@ -208,13 +222,36 @@ configurable. Refer to :ref:`standard_templates` for details.
 Using a Template Configuration File
 -----------------------------------
 
-A template configuration file can be specified when rendering using the
-command-line :program:`rinoh` tool by passing it to the
-:option:`--template <rinoh --template>` command-line option. When using the
-:ref:`Sphinx_builder`, you can set the :confval:`rinoh_template` option in
-``conf.py``.
+A template configuration file (``.rtt``) can be specified when rendering using the
+command-line :program:`rinoh`, when using the :ref:`Sphinx_builder` or
+programmatically.
 
-To render a document using this template configuration programatically, load
+Specify template configuration from :program:`rinoh` command-line
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+When using the command-line :program:`rinoh`, you can pass the template
+configuration using the the :option:`--template <rinoh --template>`
+command-line option.::
+
+    rinoh --template my_template.rtt index.rst
+
+
+Specify template configuration in :ref:`Sphinx_builder`
++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+When using :ref:`Sphinx_builder`, you can set the template configuration file
+as part of the :confval:`rinoh_documents` option in ``conf.py``.
+
+.. code-block:: python
+
+    rinoh_documents = [
+        dict(..., template='my_template.rtt', ...),
+    ]
+
+Specify template configuration programmatically
++++++++++++++++++++++++++++++++++++++++++++++++
+
+To render a document using this template configuration programmatically, load
 the template file using :class:`.TemplateConfigurationFile`:
 
 .. include:: testcode.rst
