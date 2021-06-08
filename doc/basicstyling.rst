@@ -222,8 +222,8 @@ configurable. Refer to :ref:`standard_templates` for details.
 Using a Template Configuration File
 -----------------------------------
 
-A template configuration file (``.rtt``) can be specified when rendering using the
-command-line :program:`rinoh`, when using the :ref:`Sphinx_builder` or
+A template configuration file (``.rtt``) can be specified when rendering using
+the command-line :program:`rinoh`, when using the :ref:`Sphinx_builder` or
 programmatically.
 
 Specify template configuration from :program:`rinoh` command-line
