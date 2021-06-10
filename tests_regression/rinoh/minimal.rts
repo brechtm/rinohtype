@@ -1,0 +1,10 @@
+[STYLESHEET]
+name = Sphinx minimal
+base = sphinx_base14
+
+[title page date : Paragraph('title page date')]
+hide = true
+
+[emphasis]
+font_slant=italic
+font_color=#f00

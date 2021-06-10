@@ -6,6 +6,7 @@
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
 from pathlib import Path
+from os.path import relpath
 
 import pytest
 
@@ -14,6 +15,7 @@ from helpers.regression import verify_output
 
 RINOH_PATH = Path(__file__).parent / 'rinoh'
 OUTPUT_PATH = Path(__file__).parent / 'rinoh_output'
+RELATIVE_PATH = Path(__file__).parent / 'relative'
 
 
 def test_version(script_runner):
@@ -37,19 +39,36 @@ def collect_tests():
                if rst_path.stem == 'install_resources' else rst_path.stem)
 
 
-@pytest.mark.parametrize('test_name', collect_tests())
-def test_rinoh(script_runner, test_name):
-    rst_path = Path(test_name + '.rst')
+def do_test_rinoh(script_runner, test_name, cwd):
+    rst_path = RINOH_PATH / Path(test_name + '.rst')
     args = ['--install-resources']
     templconf_path = rst_path.with_suffix('.rtt')
-    if (RINOH_PATH / templconf_path).exists():
-        args += ['--template', str(templconf_path)]
+    if templconf_path.exists():
+        args += ['--template', str(templconf_path.relative_to(cwd))]
     stylesheet_path = rst_path.with_suffix('.rts')
-    if (RINOH_PATH / stylesheet_path).exists():
-        args += ['--stylesheet', str(stylesheet_path)]
-    output_dir = OUTPUT_PATH / ('rinoh_' + test_name)
+    if stylesheet_path.exists():
+        args += ['--stylesheet', str(stylesheet_path.relative_to(cwd))]
+    relative_path = relpath(cwd, RINOH_PATH)
+    output_dir = OUTPUT_PATH / f'rinoh_{relative_path}_{test_name}'
     output_dir.mkdir(parents=True, exist_ok=True)
-    ret = script_runner.run('rinoh', *args, str(rst_path),
-                            '--output', str(output_dir), cwd=RINOH_PATH)
+    ret = script_runner.run('rinoh', *args, str(rst_path.relative_to(cwd)),
+                            '--output', str(output_dir), cwd=str(cwd))
     assert ret.success
     verify_output(test_name, output_dir, RINOH_PATH)
+
+
+@pytest.mark.parametrize('test_name', collect_tests())
+def test_rinoh_in_cwd(script_runner, test_name):
+    do_test_rinoh(script_runner, test_name, RINOH_PATH)
+
+
+@pytest.mark.parametrize('test_name', collect_tests())
+def test_rinoh_relative_to_cwd(script_runner, test_name):
+    do_test_rinoh(script_runner, test_name, Path.cwd())
+
+
+def test_rinoh_stylesheet_not_found(script_runner):
+    args = ['--stylesheet', 'missing.rts']
+    ret = script_runner.run('rinoh', *args, str(RINOH_PATH / 'minimal.rst'))
+    assert not ret.success
+    assert "FileNotFoundError" in ret.stderr

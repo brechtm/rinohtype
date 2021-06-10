@@ -225,7 +225,7 @@ def main():
                                         source=cwd_source)
         else:
             try:
-                stylesheet = StyleSheet.from_string(args.stylesheet)
+                stylesheet = StyleSheet.from_string(args.stylesheet, source=cwd_source)
             except ResourceNotFound as err:
                 raise SystemExit("Could not find the Style sheet '{}'. "
                                  "Aborting.\n"
