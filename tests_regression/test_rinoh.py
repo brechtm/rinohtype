@@ -38,7 +38,7 @@ def collect_tests():
                if rst_path.stem == 'install_resources' else rst_path.stem)
 
 
-def do_test_rinoh(script_runner, test_name, cwd):
+def do_test_rinoh(script_runner, test_name, cwd, output_prefix):
     rst_path = RINOH_PATH / Path(test_name + '.rst')
     args = ['--install-resources']
     templconf_path = rst_path.with_suffix('.rtt')
@@ -47,8 +47,7 @@ def do_test_rinoh(script_runner, test_name, cwd):
     stylesheet_path = rst_path.with_suffix('.rts')
     if stylesheet_path.exists():
         args += ['--stylesheet', str(stylesheet_path.relative_to(cwd))]
-    relative_path = relpath(cwd, RINOH_PATH)
-    output_dir = OUTPUT_PATH / f'rinoh_{relative_path}_{test_name}'
+    output_dir = OUTPUT_PATH / f'{output_prefix}_{test_name}'
     output_dir.mkdir(parents=True, exist_ok=True)
     ret = script_runner.run('rinoh', *args, str(rst_path.relative_to(cwd)),
                             '--output', str(output_dir), cwd=str(cwd))
@@ -58,12 +57,12 @@ def do_test_rinoh(script_runner, test_name, cwd):
 
 @pytest.mark.parametrize('test_name', collect_tests())
 def test_rinoh_in_cwd(script_runner, test_name):
-    do_test_rinoh(script_runner, test_name, RINOH_PATH)
+    do_test_rinoh(script_runner, test_name, RINOH_PATH, "in_cwd")
 
 
 @pytest.mark.parametrize('test_name', collect_tests())
 def test_rinoh_relative_to_cwd(script_runner, test_name):
-    do_test_rinoh(script_runner, test_name, Path.cwd())
+    do_test_rinoh(script_runner, test_name, Path.cwd(), "relative_to_cwd")
 
 
 def test_rinoh_stylesheet_not_found(script_runner):
