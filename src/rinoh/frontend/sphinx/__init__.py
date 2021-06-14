@@ -40,7 +40,7 @@ from rinoh.frontend.rst import from_doctree
 from rinoh.util import cached
 
 from . import nodes
-
+from . import transforms
 
 logger = logging.getLogger(__name__)
 
@@ -195,6 +195,10 @@ class RinohBuilder(Builder, Source):
         largetree = inline_all_toctrees(self, self._docnames, indexfile,
                                         new_tree, darkgreen, [indexfile])
         largetree['docname'] = indexfile
+        largetree.citations.extend(tree.citations)
+        largetree.citation_refs.update(tree.citation_refs)
+        largetree.ids.update(tree.ids)
+        largetree.refnames.update(tree.refnames)
         logger.info("resolving references...")
         self.env.resolve_references(largetree, indexfile, self)
         # resolve :ref:s to other PDF files -- we can't add a cross-reference,
@@ -380,6 +384,7 @@ def variable_removed_warnings(config, logger):
 
 def setup(app):
     app.add_builder(RinohBuilder)
+    app.add_post_transform(transforms.RinohCitationReferenceTransform)
     app.add_config_value('rinoh_documents', None, 'env', (dict, list))
     app.add_config_value('rinoh_targets', None, 'env', (list, str))
     # the following are no longer supported and have no effect
