@@ -336,6 +336,8 @@ matcher('table first column paragraph',
 matcher('table body cell list item number', SelectorByName('table cell')
                                             / ... / ListItem / Paragraph)
 matcher('table head cell', Table / TableHead / TableRow / TableCell)
+matcher('table head cell background', Table / TableHead / TableRow / TableCell
+                                      / TableCellBackground)
 matcher('table head cell paragraph', 'table head cell' / Paragraph)
 matcher('table cell left border', TableCellBorder.like(position='left'))
 matcher('table cell top border', TableCellBorder.like(position='top'))
