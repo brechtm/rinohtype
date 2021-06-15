@@ -155,39 +155,44 @@ Pages is handled by the GitHub Actions workflow.
 
 1. Make sure your checkout is clean.
 
-2. Run basic tests and checks locally::
+2. Update dependencies::
+
+    poetry show --outdated
+    poetry update
+
+3. Run basic tests and checks locally::
 
     nox
 
-3. Push your commits to master on GitHub. Don't create a tag yet!
+4. Push your commits to master on GitHub. Don't create a tag yet!
 
-4. Check whether all tests on `GitHub Actions`_ are green.
+5. Check whether all tests on `GitHub Actions`_ are green.
 
-5. Set the release date.
+6. Set the release date.
 
    * set ``__release_date__`` in *src/rinoh/__init__.py* (``YYYY-MM-DD``)
    * add release date to this release's section (see other sections for
      examples)
 
-6. Create a git tag: ``git tag v$(poetry version --short)``
+7. Create a git tag: ``git tag v$(poetry version --short)``
 
-7. Push the new tag: ``git push origin v$(poetry version --short)``
+8. Push the new tag: ``git push origin v$(poetry version --short)``
 
-8. The GitHub workflow will run all Nox sessions and upload the new version
+9. The GitHub workflow will run all Nox sessions and upload the new version
    to PyPI if all checks were successful.
 
-9. Create a `new release on GitHub`_. Include the relevant section of the
-   changelog. Use previous releases as a template.
+10. Create a `new release on GitHub`_. Include the relevant section of the
+    changelog. Use previous releases as a template.
 
-   * Tag version: the release's tag *vx.y.z*
-   * Release title: *Release x.y.z (date)*
-   * Add a link to the release on PyPI::
+    * Tag version: the release's tag *vx.y.z*
+    * Release title: *Release x.y.z (date)*
+    * Add a link to the release on PyPI::
 
           Install from [PyPI](https://pypi.org/project/rinohtype/x.y.z/)
 
-   * Copy the release notes from the change log
+    * Copy the release notes from the change log
 
-10. Bump version number and reset the release date to "upcoming".
+11. Bump version number and reset the release date to "upcoming".
 
     * ``poetry version patch  # or 'minor'``
     * add new section at the top of the changelog
