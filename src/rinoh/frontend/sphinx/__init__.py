@@ -195,10 +195,6 @@ class RinohBuilder(Builder, Source):
         largetree = inline_all_toctrees(self, self._docnames, indexfile,
                                         new_tree, darkgreen, [indexfile])
         largetree['docname'] = indexfile
-        largetree.citations.extend(tree.citations)
-        largetree.citation_refs.update(tree.citation_refs)
-        largetree.ids.update(tree.ids)
-        largetree.refnames.update(tree.refnames)
         logger.info("resolving references...")
         self.env.resolve_references(largetree, indexfile, self)
         # resolve :ref:s to other PDF files -- we can't add a cross-reference,
