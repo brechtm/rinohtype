@@ -19,6 +19,7 @@ from .xobject.png import PNGReader
 
 from ...font.type1 import Type1Font
 from ...font.opentype import OpenTypeFont
+from ...number import NumberFormatBase
 
 
 class Document(object):
@@ -128,11 +129,11 @@ class Document(object):
         self.cos_document.write(file)
 
 
-PAGE_NUMBER_FORMATS = {'number': cos.DECIMAL_ARABIC,
-                       'lowercase characters': cos.LOWERCASE_LETTERS,
-                       'uppercase characters': cos.UPPERCASE_LETTERS,
-                       'lowercase roman': cos.LOWERCASE_ROMAN,
-                       'uppercase roman': cos.UPPERCASE_ROMAN}
+PAGE_NUMBER_FORMATS = {NumberFormatBase.NUMBER: cos.DECIMAL_ARABIC,
+                       NumberFormatBase.LOWERCASE_CHARACTER: cos.LOWERCASE_LETTERS,
+                       NumberFormatBase.UPPERCASE_CHARACTER: cos.UPPERCASE_LETTERS,
+                       NumberFormatBase.LOWERCASE_ROMAN: cos.LOWERCASE_ROMAN,
+                       NumberFormatBase.UPPERCASE_ROMAN: cos.UPPERCASE_ROMAN}
 
 
 class Page(object):
