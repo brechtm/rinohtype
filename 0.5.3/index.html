@@ -1,0 +1,295 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>rinohtype: The Python Document Processor &mdash; rinohtype 0.5.3 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pdflinks.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/versions.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Introduction" href="intro.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="#" class="icon icon-home"> rinohtype
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.5.3
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+    
+    
+      
+    
+    
+      <p class="caption"><span class="caption-text">User Manual [<a class="pdf-link" href="./manual.pdf">PDF</a>]</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="basicstyling.html">Basic Document Styling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="elementstyling.html">Element Styling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="templates.html">Document Templates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="developing.html">Developing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Release History</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Reference Guide [<a class="pdf-link" href="./reference.pdf">PDF</a>]</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="rinoh.html">rinoh</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sphinx.html">Sphinx Builder</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stylesheets.html">Style Sheets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stdtemplates.html">Standard Document Templates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/api.html">API Documentation</a></li>
+</ul>
+
+    
+
+    <p class="caption">
+        <span class="caption-text">Indices and tables</span>
+    </p>
+    <a href="genindex.html">Index</a>
+    <a href="py-modindex.html">Module Index</a>
+  
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">rinohtype</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="#" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>rinohtype: The Python Document Processor</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            
+              <a href="https://github.com/brechtm/rinohtype/blob/master/doc/index.rst" class="fa fa-github"> Edit on GitHub</a>
+            
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="rinohtype-the-python-document-processor">
+<h1>rinohtype: The Python Document Processor<a class="headerlink" href="#rinohtype-the-python-document-processor" title="Permalink to this headline">¶</a></h1>
+<p>Release v0.5.3. (<a class="reference internal" href="changelog.html#changelog"><span class="std std-ref">Release History</span></a>)</p>
+<p>rinohtype is a Python library that transforms a structured document into a
+professionally typeset PDF guided by a document template and style sheet. It
+can be used to create any kind of document, but its focus is on complex
+documents such as technical manuals.</p>
+<p>Included with rinohtype is the <strong class="program">rinoh</strong> command line tool that renders
+reStructuredText and Markdown (CommonMark) documents. There is also a
+commercial <a class="reference external" href="https://en.wikipedia.org/wiki/Darwin_Information_Typing_Architecture">DITA</a> frontend, but its development is currently on hold. Please
+<a class="reference external" href="mailto:brecht&#37;&#52;&#48;opqode&#46;com">contact me</a> if you are interested in testing it.</p>
+<p>rinohtype also includes support for <a class="reference external" href="http://sphinx-doc.org">Sphinx</a>, which helps writing large
+structured documents and supports a multitude of different output formats
+including searchable HTML. rinohtype adds support to produce PDF output.</p>
+<p>Here is a list of rinohtype’s main features:</p>
+<ul class="simple">
+<li><p>a powerful page layout system supporting columns, running headers/footers,
+floatable elements and footnotes</p></li>
+<li><p>figures, large tables and automatically generated table of contents</p></li>
+<li><p>automatic numbering and cross-referencing of sections, figures and tables</p></li>
+<li><p>use one of the highly configurable included document templates or create your
+own custom template</p></li>
+<li><p>the intuitive style sheets make it easy to change the style of individual
+document elements</p></li>
+<li><p>modular design allowing for multiple frontends (such as reStructuredText,
+Markdown, DocBook, …) and backends (PDF, SVG, bitmap, …)</p></li>
+<li><p>handles OpenType, TrueType and Type1 fonts with support for advanced
+typographic features such as kerning, ligatures and small capitals</p></li>
+<li><p>embeds PDF, PNG and JPEG images, preserving transparency and color profiles</p></li>
+<li><p>easy to deploy; pure-Python with few dependencies</p></li>
+<li><p>built on Unicode; ready for non-latin languages</p></li>
+</ul>
+<p>rinohtype is currently in a beta phase. We are working toward a first stable
+release.</p>
+<p>rinohtype is open source software licensed under the <a class="reference external" href="http://www.gnu.org/licenses/agpl-3.0.en.html">GNU AGPL 3.0</a>.
+Practically, this means you are free to use it in open-source software, but not
+in (commercial) closed-source software. For the latter, you need to obtain a
+commercial license. I am also available for consultancy projects involving
+rinohtype, so don’t hesitate to <a class="reference external" href="mailto:brecht&#37;&#52;&#48;opqode&#46;com">contact me</a>.</p>
+<div class="toctree-wrapper compound">
+</div>
+<div class="toctree-wrapper compound">
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="intro.html" class="btn btn-neutral float-right" title="Introduction" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Brecht Machiels and contributors.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"> Versions</span>
+      v: v0.5.3
+      <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      <dl id="docs-versions">
+      </dl>
+    </div>
+  </div>
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
