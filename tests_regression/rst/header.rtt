@@ -1,0 +1,15 @@
+[TEMPLATE_CONFIGURATION]
+name=header
+template=article
+stylesheet=header.rts
+
+parts=contents
+
+[VARIABLES]
+paper_size=A5
+
+[contents]
+page_number_format = number
+
+[contents_page]
+header_text = '{SECTION_TITLE(1)}' (red)

@@ -1,0 +1,20 @@
+[STYLESHEET]
+base = sphinx_base14
+
+[chapter]
+page_break = none
+
+[spacer1 : Paragraph(has_class='spacer1')]
+border = 1pt, #555
+padding_top = 5.1cm
+padding_bottom = 5.1cm
+text_align = center
+
+[spacer2 : Paragraph(has_class='spacer2')]
+border = 1pt, #555
+padding_top = 6.8cm
+padding_bottom = 6.8cm
+text_align = center
+
+[red : StyledText('red')]
+font_color = #f00
