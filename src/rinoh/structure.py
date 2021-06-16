@@ -128,7 +128,8 @@ class Heading(StaticParagraph):
 
     def flow_inner(self, container, descender, state=None, **kwargs):
         result = super().flow_inner(container, descender, state=state, **kwargs)
-        create_destination(self.section, container, True)
+        if not state.initial:
+            create_destination(self.section, container, True)
         return result
 
 

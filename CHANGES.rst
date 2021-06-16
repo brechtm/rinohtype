@@ -36,6 +36,8 @@ Fixed:
 * rinoh --install_resources: wrong section numbers when resources need to be
   installed
 * The style of a heading is influenced by the style defined for the page header
+* A heading is still displayed in the page header even if it doesn't fit on the
+  page and thus moved to the next
 
 
 Release 0.5.2 (2021-02-24)
