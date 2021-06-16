@@ -76,7 +76,7 @@ class Document(object):
                                cos.Array(map(cos.Integer, widths))])
                 cf_cls = cos.CIDFontType0 if 'CFF' in font else cos.CIDFontType2
                 cid_font = cf_cls(font.name, cid_system_info, font_desc, w=w)
-                mapping = font['cmap'][(3, 1)].mapping
+                mapping = font['cmap'][font._encoding].mapping
                 to_unicode = cos.ToUnicode(mapping, filter=FlateDecode())
                 font_rsc = cos.CompositeFont(cid_font, 'Identity-H', to_unicode)
             font_number = self.get_unique_font_number()

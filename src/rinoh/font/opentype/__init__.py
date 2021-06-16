@@ -52,7 +52,8 @@ class OpenTypeFont(Font, OpenTypeParser):
                             FontWidth.to_name)
         super().__init__(filename, weight, slant, width)
         self._glyphs_by_code = self._create_glyph_metrics()
-        self._glyphs = self._create_glyphs_by_char(self._glyphs_by_code)
+        self._encoding, self._glyphs = \
+            self._create_glyphs_by_char(self._glyphs_by_code)
         self._suffixes = {}
         self._ligatures = {}
         self._kerning_pairs = {}
@@ -80,25 +81,23 @@ class OpenTypeFont(Font, OpenTypeParser):
         return glyphs_by_code
 
     def _create_glyphs_by_char(self, glyphs_by_code):
-        # TODO: support symbol/wingdings
-        #       "The 'cmap' subtable (platform 3, encoding 0) must use format 4.
-        #       The character codes should start at 0xF000, which is in the
-        #       Private Use Area of Unicode. It is suggested to derive the
-        #       format 4 encodings by simply adding 0xF000 to the format 0
-        #       (Macintosh) encodings."
         # TODO: properly handle encodings
         glyphs_by_char = {}
         cmap_tables = self['cmap']
-        for encoding in [(0, 0), (0, 1), (0, 2), (0, 3), (3, 1)]:
+        for encoding in [(0, 0), (0, 1), (0, 2), (0, 3), (3, 1), (3, 0)]:
             try:
                 for ordinal, index in cmap_tables[encoding].mapping.items():
                     glyphs_by_char[chr(ordinal)] = glyphs_by_code[index]
                 break
             except KeyError:
                 continue
+        if encoding == (3, 0) and ' ' not in glyphs_by_char:    # Symbol
+            first_char_index = self['OS/2']['usFirstCharIndex']
+            index = cmap_tables[encoding].mapping[first_char_index]
+            glyphs_by_char[' '] = glyphs_by_code[index]
         if not glyphs_by_char:
             raise Exception
-        return glyphs_by_char
+        return encoding, glyphs_by_char
 
     _VARIANTS = {FontVariant.SMALL_CAPITAL: 'smcp',
                  FontVariant.OLDSTYLE_FIGURES: 'onum'}

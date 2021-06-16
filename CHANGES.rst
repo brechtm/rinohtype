@@ -17,6 +17,7 @@ New Features:
 * Setting the *base* for a style to ``NEXT_STYLE`` proceeds to look up style
   attributes in the next matching style if they are undefined.
 * The default matcher now defines the *table head cell background* style.
+* Support True/OpenType fonts with 'Symbol' encoding (e.g. Web/Wingdings)
 * If the *RINOH_NO_CACHE* environment variable is set, the references cache
   (.rtc file) won't be loaded nor saved. This is mostly useful for testing.
 
