@@ -33,6 +33,8 @@ Fixed:
   decimal point (#251 by Karel Frajtak)
 * docutils inline images don't support width, height and scale options
 * crash on using characters for page numbering (PDF backend)
+* rinoh --install_resources: wrong section numbers when resources need to be
+  installed
 
 
 Release 0.5.2 (2021-02-24)

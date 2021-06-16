@@ -284,9 +284,9 @@ def main():
     configuration.variables.update(variables)
 
     document_tree = reader.parse(args.input)
-    document = template_cls(document_tree, configuration=configuration)
     while True:
         try:
+            document = template_cls(document_tree, configuration=configuration)
             success = document.render(output_path)
             if not success:
                 raise SystemExit('Rendering completed with errors')
