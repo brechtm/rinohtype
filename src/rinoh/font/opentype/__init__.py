@@ -84,14 +84,15 @@ class OpenTypeFont(Font, OpenTypeParser):
         # TODO: properly handle encodings
         glyphs_by_char = {}
         cmap_tables = self['cmap']
-        for encoding in [(0, 0), (0, 1), (0, 2), (0, 3), (3, 1), (3, 0)]:
+        for encoding in [UNICODE_10, UNICODE_11, UNICODE_ISO, UNICODE_20_BMP,
+                         WINDOWS_UNICODE_BMP, WINDOWS_SYMBOL]:
             try:
                 for ordinal, index in cmap_tables[encoding].mapping.items():
                     glyphs_by_char[chr(ordinal)] = glyphs_by_code[index]
                 break
             except KeyError:
                 continue
-        if encoding == (3, 0) and ' ' not in glyphs_by_char:    # Symbol
+        if encoding == WINDOWS_SYMBOL and ' ' not in glyphs_by_char:
             first_char_index = self['OS/2']['usFirstCharIndex']
             index = cmap_tables[encoding].mapping[first_char_index]
             glyphs_by_char[' '] = glyphs_by_code[index]
@@ -184,3 +185,13 @@ class OpenTypeFont(Font, OpenTypeParser):
             except KeyError:
                 pass
         return 0.0
+
+
+# Platform/Encoding IDs
+
+UNICODE_10 = (0, 0)
+UNICODE_11 = (0, 1)
+UNICODE_ISO = (0, 2)
+UNICODE_20_BMP = (0, 3)
+WINDOWS_UNICODE_BMP = (3, 1)
+WINDOWS_SYMBOL = (3, 0)
