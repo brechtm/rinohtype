@@ -220,6 +220,8 @@ restart</em> and <em>any restart</em> values to restart page numbering</p></li>
 restart page numbering.</p></li>
 <li><p>Setting the <em>base</em> for a style to <code class="docutils literal notranslate"><span class="pre">NEXT_STYLE</span></code> proceeds to look up style
 attributes in the next matching style if they are undefined.</p></li>
+<li><p>The default matcher now defines the <em>table head cell background</em> style.</p></li>
+<li><p>Support True/OpenType fonts with ‘Symbol’ encoding (e.g. Web/Wingdings)</p></li>
 <li><p>If the <em>RINOH_NO_CACHE</em> environment variable is set, the references cache
 (.rtc file) won’t be loaded nor saved. This is mostly useful for testing.</p></li>
 </ul>
@@ -234,6 +236,12 @@ contents don’t require wrapping.</p></li>
 <li><p>docutils image directive: crash when encountering a width/height containing a
 decimal point (#251 by Karel Frajtak)</p></li>
 <li><p>docutils inline images don’t support width, height and scale options</p></li>
+<li><p>crash on using characters for page numbering (PDF backend)</p></li>
+<li><p>rinoh –install_resources: wrong section numbers when resources need to be
+installed</p></li>
+<li><p>The style of a heading is influenced by the style defined for the page header</p></li>
+<li><p>A heading is still displayed in the page header even if it doesn’t fit on the
+page and thus moved to the next</p></li>
 </ul>
 </div>
 <div class="section" id="release-0-5-2-2021-02-24">

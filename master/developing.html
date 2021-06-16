@@ -313,6 +313,12 @@ Publishing the new release to <a class="reference external" href="https://pypi.o
 Pages is handled by the GitHub Actions workflow.</p>
 <ol class="arabic">
 <li><p>Make sure your checkout is clean.</p></li>
+<li><p>Update dependencies:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">poetry</span> <span class="n">show</span> <span class="o">--</span><span class="n">outdated</span>
+<span class="n">poetry</span> <span class="n">update</span>
+</pre></div>
+</div>
+</li>
 <li><p>Run basic tests and checks locally:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">nox</span>
 </pre></div>
