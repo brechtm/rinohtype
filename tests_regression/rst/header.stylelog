@@ -1,0 +1,127 @@
+---------------------------------- page 1 ----------------------------------
+#### FootnoteContainer('footnotes')
+  StaticGroupedFlowables()
+#### DownExpandingContainer('floats')
+  StaticGroupedFlowables()
+#### ChainedContainer('column1')
+  StaticGroupedFlowables()
+    DocumentTree(id='document-title')   header.rst   <document>
+      Section(id='one')   header.rst:6   <section>
+           > (0,0,0,1,4) content chapter [Sphinx] > chapter
+             (0,0,0,1,2) chapter [header.rts] > DEFAULT
+        Heading('1 One')   header.rst:6   <title>
+             > (0,0,0,1,2) heading level 1 [Sphinx] > DEFAULT
+               (0,0,0,0,2) other heading levels [Sphinx] > heading level 5
+            MixedStyledText('1 ')
+              SingleStyledText('1')
+              SingleStyledText(' ')
+            MixedStyledText('One')
+              MixedStyledText('One')
+                SingleStyledText('One')
+        Paragraph('Paragraph 1.')   header.rst:8   <paragraph>
+             > (0,0,0,0,2) body [Sphinx] > default
+            MixedStyledText('Paragraph 1.')
+              MixedStyledText('Paragraph 1.')
+                SingleStyledText('Paragraph 1.')
+        Paragraph('spacer1')   header.rst:13   <paragraph>
+             > (0,0,0,1,2) spacer1 [header.rts] > DEFAULT
+               (0,0,0,0,2) body [Sphinx] > default
+            MixedStyledText('spacer1')
+              MixedStyledText('spacer1')
+                SingleStyledText('spacer1')
+#### UpExpandingContainer('header')
+  StaticGroupedFlowables()
+    Header('One')
+         > (0,0,0,0,2) header [Sphinx] > header_footer
+        Field('One', style='red')
+             > (0,0,1,0,1) red [header.rts] > DEFAULT
+          MixedStyledText('One')
+            MixedStyledText('One')
+              SingleStyledText('One')
+#### DownExpandingContainer('footer')
+  StaticGroupedFlowables()
+    Footer('	1/3')
+         > (0,0,0,0,2) footer [Sphinx] > header_footer
+        MixedStyledText('	1/3')
+          MixedStyledText('	1/3')
+            Tab('	')
+            Field('1')
+              SingleStyledText('1')
+            SingleStyledText('/')
+            Field('3')
+              SingleStyledText('3')
+---------------------------------- page 2 ----------------------------------
+#### FootnoteContainer('footnotes')
+  StaticGroupedFlowables()
+#### DownExpandingContainer('floats')
+  StaticGroupedFlowables()
+#### ChainedContainer('column1')
+  (continued) StaticGroupedFlowables()
+    (continued) DocumentTree(id='document-title')   header.rst   <document>
+      (continued) Section(id='one')   header.rst:6   <section>
+           > (0,0,0,1,4) content chapter [Sphinx] > chapter
+             (0,0,0,1,2) chapter [header.rts] > DEFAULT
+        Paragraph('spacer2')   header.rst:18   <paragraph>
+             > (0,0,0,1,2) spacer2 [header.rts] > DEFAULT
+               (0,0,0,0,2) body [Sphinx] > default
+#### UpExpandingContainer('header')
+  StaticGroupedFlowables()
+    Header('One')
+         > (0,0,0,0,2) header [Sphinx] > header_footer
+        Field('One', style='red')
+             > (0,0,1,0,1) red [header.rts] > DEFAULT
+          MixedStyledText('One')
+            MixedStyledText('One')
+              SingleStyledText('One')
+#### DownExpandingContainer('footer')
+  StaticGroupedFlowables()
+    Footer('	2/3')
+         > (0,0,0,0,2) footer [Sphinx] > header_footer
+        MixedStyledText('	2/3')
+          MixedStyledText('	2/3')
+            Tab('	')
+            Field('2')
+              SingleStyledText('2')
+            SingleStyledText('/')
+            Field('3')
+              SingleStyledText('3')
+---------------------------------- page 3 ----------------------------------
+#### FootnoteContainer('footnotes')
+  StaticGroupedFlowables()
+#### DownExpandingContainer('floats')
+  StaticGroupedFlowables()
+#### ChainedContainer('column1')
+  (continued) StaticGroupedFlowables()
+    (continued) DocumentTree(id='document-title')   header.rst   <document>
+      Section(id='two')   header.rst:22   <section>
+           > (0,0,0,1,4) content chapter [Sphinx] > chapter
+             (0,0,0,1,2) chapter [header.rts] > DEFAULT
+        Heading('2 Two')   header.rst:22   <title>
+             > (0,0,0,1,2) heading level 1 [Sphinx] > DEFAULT
+               (0,0,0,0,2) other heading levels [Sphinx] > heading level 5
+        Paragraph('Paragraph 2.')   header.rst:24   <paragraph>
+             > (0,0,0,0,2) body [Sphinx] > default
+            MixedStyledText('Paragraph 2.')
+              MixedStyledText('Paragraph 2.')
+                SingleStyledText('Paragraph 2.')
+#### UpExpandingContainer('header')
+  StaticGroupedFlowables()
+    Header('Two')
+         > (0,0,0,0,2) header [Sphinx] > header_footer
+        Field('Two', style='red')
+             > (0,0,1,0,1) red [header.rts] > DEFAULT
+          MixedStyledText('Two')
+            MixedStyledText('Two')
+              SingleStyledText('Two')
+#### DownExpandingContainer('footer')
+  StaticGroupedFlowables()
+    Footer('	3/3')
+         > (0,0,0,0,2) footer [Sphinx] > header_footer
+        MixedStyledText('	3/3')
+          MixedStyledText('	3/3')
+            Tab('	')
+            Field('3')
+              SingleStyledText('3')
+            SingleStyledText('/')
+            Field('3')
+              SingleStyledText('3')
