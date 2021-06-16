@@ -6,3 +6,6 @@ parts=contents
 
 [VARIABLES]
 paper_size=A5
+
+[contents]
+page_number_format = number
