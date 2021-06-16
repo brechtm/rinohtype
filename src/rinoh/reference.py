@@ -18,7 +18,7 @@ from .layout import ContainerOverflow
 from .number import NumberStyle, Label, format_number
 from .paragraph import Paragraph, ParagraphStyle, ParagraphBase
 from .strings import StringCollection, StringField
-from .style import HasClass, HasClasses
+from .style import HasClass, HasClasses, Styled
 from .text import (InlineStyled, StyledText, TextStyle, SingleStyledText,
                    MixedStyledTextBase, MixedStyledText, ErrorText)
 from .util import NotImplementedAttribute
@@ -108,7 +108,7 @@ class ReferenceBase(MixedStyledTextBase):
                 yield from self.children(container, type='reference')
                 return
             document.title_targets.add(target_id)
-        yield (text.copy(parent=self) if isinstance(text, InlineStyled)
+        yield (text.copy(parent=self) if isinstance(text, Styled)
                else SingleStyledText(text, parent=self))
         document.title_targets.clear()
 
@@ -421,9 +421,8 @@ class Field(MixedStyledTextBase):
             text = '?'
         if text is None:
             return
-        elif isinstance(text, StyledText):
-            text.parent = self
-            yield text
+        elif isinstance(text, Styled):
+            yield text.copy(parent=self)
         else:
             yield SingleStyledText(text, parent=self)
 

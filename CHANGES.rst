@@ -35,6 +35,7 @@ Fixed:
 * crash on using characters for page numbering (PDF backend)
 * rinoh --install_resources: wrong section numbers when resources need to be
   installed
+* The style of a heading is influenced by the style defined for the page header
 
 
 Release 0.5.2 (2021-02-24)
