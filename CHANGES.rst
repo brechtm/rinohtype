@@ -1,8 +1,8 @@
 Release History
 ---------------
 
-Release 0.5.3 (in development)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Release 0.5.3 (2021-06-16)
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 New Features:
 
@@ -28,6 +28,8 @@ Changed:
 
 Fixed:
 
+* Citation definitions are not output when using sphinx (#262, PR #268 by
+  Alex Fargus)
 * Setting the *base* for a style to ``PARENT_STYLE`` results in a crash.
 * docutils image directive: crash when encountering a width/height containing a
   decimal point (#251 by Karel Frajtak)
@@ -38,6 +40,9 @@ Fixed:
 * The style of a heading is influenced by the style defined for the page header
 * A heading is still displayed in the page header even if it doesn't fit on the
   page and thus moved to the next
+
+Part of the work included in this release was kindly sponsored by `Joby
+Aviation <https://www.jobyaviation.com>`_.
 
 
 Release 0.5.2 (2021-02-24)
