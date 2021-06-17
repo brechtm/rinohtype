@@ -5,27 +5,32 @@
 # Use of this source code is subject to the terms of the GNU Affero General
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
+import pytest
 import re
+
 from itertools import chain
 from pathlib import Path
 
-import pytest
-from rinoh.attribute import OverrideDefault, Var
-from rinoh.frontend.commonmark import CommonMarkReader
-from rinoh.frontend.rst import ReStructuredTextReader, from_doctree
-from rinoh.template import (DocumentTemplate, TemplateConfiguration,
-                            ContentsPartTemplate, PageTemplate,
-                            TemplateConfigurationFile)
 from sphinx.application import Sphinx
-from sphinx.testing.restructuredtext import parse as sphinx_parse
 from sphinx.util.docutils import docutils_namespace
+from sphinx.testing.restructuredtext import parse as sphinx_parse
 
 from .diffpdf import diff_pdf
 from .pdf_linkchecker import check_pdf_links
 from .util import in_directory
 
+from rinoh.frontend.commonmark import CommonMarkReader
+from rinoh.frontend.rst import ReStructuredTextReader, from_doctree
+from rinoh.frontend.sphinx import nodes    # load Sphinx docutils nodes
+from rinoh.attribute import OverrideDefault, Var
+from rinoh.template import (DocumentTemplate, TemplateConfiguration,
+                            ContentsPartTemplate, PageTemplate,
+                            TemplateConfigurationFile)
+
+
 __all__ = ['render_doctree', 'render_md_file', 'render_rst_file',
            'verify_output']
+
 
 TEST_DIR = Path(__file__).parent.parent.absolute()
 
