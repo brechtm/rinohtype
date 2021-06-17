@@ -69,4 +69,4 @@ def test_rinoh_stylesheet_not_found(script_runner):
     args = ['--stylesheet', 'missing.rts']
     ret = script_runner.run('rinoh', *args, str(RINOH_PATH / 'minimal.rst'))
     assert not ret.success
-    assert "FileNotFoundError" in ret.stderr
+    assert "Could not find the style sheet" in ret.stderr
