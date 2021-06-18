@@ -274,8 +274,7 @@ class Canvas(BytesIO):
                 char = CODE_TO_CHAR[high] + CODE_TO_CHAR[low]
             adjust = int(glyph.width - displ)
             if adjust:
-                string += '({}{}) {} '.format(current_string, char,
-                                              adjust)
+                string += '({}{}) {} '.format(current_string, char, adjust)
                 current_string = ''
             else:
                 current_string += char

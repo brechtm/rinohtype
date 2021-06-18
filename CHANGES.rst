@@ -14,6 +14,7 @@ Changed:
 
 Fixed:
 
+* Descenders affect spacing between top border and content (issue #144)
 * The table of contents (outlines) displayed in PDF readers show garbled text
   when section titles contain non-ASCII characters.
 

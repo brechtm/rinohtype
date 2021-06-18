@@ -247,7 +247,7 @@ class Flowable(Styled):
         container.document.progress(self, container)
         return margin_left + width + margin_right, top_to_baseline, descender
 
-    def flow_inner(self, container, descender, state=None, space_below=0,
+    def flow_inner(self, container, last_descender, state=None, space_below=0,
                    **kwargs):
         def border_width(attribute):
             border = self.get_style(attribute, container)
@@ -271,20 +271,22 @@ class Flowable(Styled):
         right = container.width - padding_right - border_right
         padding_border_bottom = float(padding_bottom + border_bottom)
         total_space_below = space_below + padding_border_bottom
+        last_descender = None if border_top else last_descender
         if draw_top:
-            if not container.advance2(padding_top + border_top):
-                return state, 0, 0, descender
+            if not container.advance2(border_top + padding_top):
+                return state, 0, 0, last_descender
         pad_cntnr = InlineDownExpandingContainer('PADDING', container,
                                                  left=left, right=right)
         try:
             content_width, first_line_ascender, descender = \
-                self.render(pad_cntnr, descender, state=state,
+                self.render(pad_cntnr, last_descender, state=state,
                             space_below=total_space_below, **kwargs)
             state = None
             assert container.advance2(padding_border_bottom)
         except EndOfContainer as eoc:
             state = eoc.flowable_state
             first_line_ascender = 0
+            descender = last_descender
             try:
                 content_width = state.width
             except AttributeError:
@@ -300,6 +302,7 @@ class Flowable(Styled):
             self.render_frame(container, frame_width, container.height,
                               top=draw_top, bottom=state is None)
         top_to_baseline = border_top + padding_top + first_line_ascender
+        descender = None if border_bottom else descender
         return state, bordered_width, top_to_baseline, descender
 
     def render_frame(self, container, width, height, top=True, bottom=True):
