@@ -182,7 +182,7 @@ class String(Object, bytes):
         try:
             value = value.encode('pdf_doc')
         except UnicodeEncodeError:
-            value = BOM_UTF16_BE + value.encode('utf_16')
+            value = BOM_UTF16_BE + value.encode('utf_16_be')
         except AttributeError:
             assert isinstance(value, bytes)
         return bytes.__new__(cls, value)

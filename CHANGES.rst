@@ -14,7 +14,8 @@ Changed:
 
 Fixed:
 
-*
+* The table of contents (outlines) displayed in PDF readers show garbled text
+  when section titles contain non-ASCII characters.
 
 
 Release 0.5.3 (2021-06-16)
