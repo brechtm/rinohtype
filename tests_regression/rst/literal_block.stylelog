@@ -5,9 +5,11 @@
   StaticGroupedFlowables()
 #### ChainedContainer('column1')
   StaticGroupedFlowables()
-    DocumentTree()
-      CodeBlock('if literal_block:\n    text = 'is...')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/literal_block.rst:3 <literal_block>
-           > (1,0,0,0,2) code block
-             (0,0,0,0,1) body
-        Token('if literal_block:\n    text = 'is...', type=Token.Text)
-             > (0,0,0,1,2) (pygments)Token.Text
+    DocumentTree()   literal_block.rst   <document>
+      CodeBlock('if literal_block:\n    text = 'is...')   literal_block.rst:3   <literal_block>
+           > (1,0,0,0,2) code block [Sphinx] > DEFAULT
+             (0,0,0,0,1) body [Sphinx] > default
+          MixedStyledText('if literal_block:\n    text = 'is...')
+            MixedStyledText('if literal_block:\n    text = 'is...')
+              Token('if literal_block:\n    text = 'is...', type=Token.Text)
+                   > (0,0,0,1,2) (pygments)Token.Text [FriendlyStyle (pygments)] > DEFAULT

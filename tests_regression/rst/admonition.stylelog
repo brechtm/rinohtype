@@ -5,96 +5,97 @@
   StaticGroupedFlowables()
 #### ChainedContainer('column1')
   StaticGroupedFlowables()
-    DocumentTree()
-      Admonition()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/admonition.rst:None <hint>
-           > (0,0,0,1,2) hint admonition
-             (0,0,0,0,2) admonition
+    DocumentTree()   admonition.rst   <document>
+      Admonition()   admonition.rst   <hint>
+           > (0,0,0,1,2) hint admonition [Sphinx] > builtin admonition
+             (0,0,0,0,2) admonition [Sphinx] > DEFAULT
         Paragraph('Hint It's bigger than a bread bo...')
-             > (0,0,0,0,2) body
-          MixedStyledText('Hint It's bigger than a bread bo...')
-            MixedStyledText('Hint', style='inline title')
-                 x (0,0,1,1,3) hint admonition inline title
-                 > (0,0,1,0,3) admonition inline title
-              SingleStyledText('Hint')
-            SingleStyledText(' ')
-            MixedStyledText('It's bigger than a bread box.')
-              SingleStyledText('It's bigger than a bread box.')
-      Admonition()   None:None <important>
-           > (0,0,0,1,2) important admonition
-             (0,0,0,0,2) admonition
+             > (0,0,0,0,2) body [Sphinx] > default
+            MixedStyledText('Hint It's bigger than a bread bo...')
+              MixedStyledText('Hint It's bigger than a bread bo...')
+                MixedStyledText('Hint', style='inline title')
+                     x (0,0,1,1,3) hint admonition inline title
+                     > (0,0,1,0,3) admonition inline title [Sphinx] > admonition title
+                  SingleStyledText('Hint')
+                SingleStyledText(' ')
+                MixedStyledText('It's bigger than a bread box.')
+                  SingleStyledText('It's bigger than a bread box.')
+      Admonition()   <important>
+           > (0,0,0,1,2) important admonition [Sphinx] > builtin admonition
+             (0,0,0,0,2) admonition [Sphinx] > DEFAULT
         Paragraph('Important', style='title')
              x (0,0,1,1,4) important admonition title
-             > (0,0,1,0,4) admonition title
-               (0,0,1,0,2) title
-               (0,0,0,0,2) body
-          SingleStyledText('Important')
-        List(style='bulleted')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/admonition.rst:4 <bullet_list>
-             > (0,0,1,0,2) bulleted list
-          ListItem()
+             > (0,0,1,0,4) admonition title [Sphinx] > body
+               (0,0,1,0,2) title [Sphinx] > default
+               (0,0,0,0,2) body [Sphinx] > default
+            SingleStyledText('Important')
+        List(style='bulleted')   admonition.rst:4   <bullet_list>
+             > (0,0,1,0,2) bulleted list [Sphinx] > enumerated list
+          ListItem()   <list_item>
                x (0,0,1,0,4) bulleted list item
-               > fallback to default style
             ListItemLabel('•')
-                 > (0,0,1,0,6) bulleted list item label
-                   (0,0,0,0,2) list item label
+                 > (0,0,1,0,6) bulleted list item label [Sphinx] > list item label
+                   (0,0,0,0,2) list item label [Sphinx] > default
                 MixedStyledText('•')
                   SingleStyledText('')
                   SingleStyledText('•')
                   SingleStyledText('')
-            StaticGroupedFlowables()   None:None <list_item>
-                 > (0,0,0,0,3) list item body
-              Paragraph('Wash behind your ears.')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/admonition.rst:4 <paragraph>
-                   > (0,0,0,0,5) list item paragraph
-                     (0,0,0,0,2) body
-                MixedStyledText('Wash behind your ears.')
-                  SingleStyledText('Wash behind your ears.')
-          ListItem()
+            StaticGroupedFlowables()
+                 > (0,0,0,0,3) list item body [Sphinx] > DEFAULT
+              Paragraph('Wash behind your ears.')   admonition.rst:4   <paragraph>
+                   > (0,0,0,0,5) list item paragraph [Sphinx] > default
+                     (0,0,0,0,2) body [Sphinx] > default
+                  MixedStyledText('Wash behind your ears.')
+                    MixedStyledText('Wash behind your ears.')
+                      SingleStyledText('Wash behind your ears.')
+          ListItem()   <list_item>
                x (0,0,1,0,4) bulleted list item
-               > fallback to default style
             ListItemLabel('•')
-                 > (0,0,1,0,6) bulleted list item label
-                   (0,0,0,0,2) list item label
+                 > (0,0,1,0,6) bulleted list item label [Sphinx] > list item label
+                   (0,0,0,0,2) list item label [Sphinx] > default
                 MixedStyledText('•')
                   SingleStyledText('')
                   SingleStyledText('•')
                   SingleStyledText('')
-            StaticGroupedFlowables()   None:None <list_item>
-                 > (0,0,0,0,3) list item body
-              Paragraph('Clean up your room.')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/admonition.rst:5 <paragraph>
-                   > (0,0,0,0,5) list item paragraph
-                     (0,0,0,0,2) body
-                MixedStyledText('Clean up your room.')
-                  SingleStyledText('Clean up your room.')
-          ListItem()
+            StaticGroupedFlowables()
+                 > (0,0,0,0,3) list item body [Sphinx] > DEFAULT
+              Paragraph('Clean up your room.')   admonition.rst:5   <paragraph>
+                   > (0,0,0,0,5) list item paragraph [Sphinx] > default
+                     (0,0,0,0,2) body [Sphinx] > default
+                  MixedStyledText('Clean up your room.')
+                    MixedStyledText('Clean up your room.')
+                      SingleStyledText('Clean up your room.')
+          ListItem()   <list_item>
                x (0,0,1,0,4) bulleted list item
-               > fallback to default style
             ListItemLabel('•')
-                 > (0,0,1,0,6) bulleted list item label
-                   (0,0,0,0,2) list item label
+                 > (0,0,1,0,6) bulleted list item label [Sphinx] > list item label
+                   (0,0,0,0,2) list item label [Sphinx] > default
                 MixedStyledText('•')
                   SingleStyledText('')
                   SingleStyledText('•')
                   SingleStyledText('')
-            StaticGroupedFlowables()   None:None <list_item>
-                 > (0,0,0,0,3) list item body
-              Paragraph('Call your mother.')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/admonition.rst:6 <paragraph>
-                   > (0,0,0,0,5) list item paragraph
-                     (0,0,0,0,2) body
-                MixedStyledText('Call your mother.')
-                  SingleStyledText('Call your mother.')
-          ListItem()
+            StaticGroupedFlowables()
+                 > (0,0,0,0,3) list item body [Sphinx] > DEFAULT
+              Paragraph('Call your mother.')   admonition.rst:6   <paragraph>
+                   > (0,0,0,0,5) list item paragraph [Sphinx] > default
+                     (0,0,0,0,2) body [Sphinx] > default
+                  MixedStyledText('Call your mother.')
+                    MixedStyledText('Call your mother.')
+                      SingleStyledText('Call your mother.')
+          ListItem()   <list_item>
                x (0,0,1,0,4) bulleted list item
-               > fallback to default style
             ListItemLabel('•')
-                 > (0,0,1,0,6) bulleted list item label
-                   (0,0,0,0,2) list item label
+                 > (0,0,1,0,6) bulleted list item label [Sphinx] > list item label
+                   (0,0,0,0,2) list item label [Sphinx] > default
                 MixedStyledText('•')
                   SingleStyledText('')
                   SingleStyledText('•')
                   SingleStyledText('')
-            StaticGroupedFlowables()   None:None <list_item>
-                 > (0,0,0,0,3) list item body
-              Paragraph('Back up your data.')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/admonition.rst:7 <paragraph>
-                   > (0,0,0,0,5) list item paragraph
-                     (0,0,0,0,2) body
-                MixedStyledText('Back up your data.')
-                  SingleStyledText('Back up your data.')
+            StaticGroupedFlowables()
+                 > (0,0,0,0,3) list item body [Sphinx] > DEFAULT
+              Paragraph('Back up your data.')   admonition.rst:7   <paragraph>
+                   > (0,0,0,0,5) list item paragraph [Sphinx] > default
+                     (0,0,0,0,2) body [Sphinx] > default
+                  MixedStyledText('Back up your data.')
+                    MixedStyledText('Back up your data.')
+                      SingleStyledText('Back up your data.')

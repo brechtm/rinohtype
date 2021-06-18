@@ -5,27 +5,27 @@
   StaticGroupedFlowables()
 #### ChainedContainer('column1')
   StaticGroupedFlowables()
-    DocumentTree()
-      Paragraph('spacer 1')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/footnote.rst:5 <paragraph>
-           > (0,0,0,1,2) spacer1
-             (0,0,0,0,2) body
+    DocumentTree()   footnote.rst   <document>
+      Paragraph('spacer 1')   footnote.rst:5   <paragraph>
+           > (0,0,0,1,2) spacer1 [footnote.rts] > DEFAULT
+             (0,0,0,0,2) body [Sphinx] > default
           MixedStyledText('spacer 1')
             MixedStyledText('spacer 1')
               SingleStyledText('spacer 1')
 ---------------------------------- page 2 ----------------------------------
 #### FootnoteContainer('footnotes')
   StaticGroupedFlowables()
-  Note(id='f1')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/footnote.rst:11 <footnote>
+  Note(id='f1')   footnote.rst:11   <footnote>
     Paragraph('1')
-         > (0,0,0,0,4) footnote label
-           (0,0,0,0,2) body
+         > (0,0,0,0,4) footnote label [Sphinx] > footnote paragraph
+           (0,0,0,0,2) body [Sphinx] > default
         DirectReference('1')
-             > (0,0,0,0,1) linked reference
+             > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
           SingleStyledText('1')
     StaticGroupedFlowables()
-      Paragraph('Text of the first footnote.')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/footnote.rst:11 <paragraph>
-           > (0,0,0,0,5) footnote paragraph
-             (0,0,0,0,2) body
+      Paragraph('Text of the first footnote.')   footnote.rst:11   <paragraph>
+           > (0,0,0,0,5) footnote paragraph [Sphinx] > default
+             (0,0,0,0,2) body [Sphinx] > default
           MixedStyledText('Text of the first footnote.')
             MixedStyledText('Text of the first footnote.')
               SingleStyledText('Text of the first footnote.')
@@ -33,9 +33,9 @@
   StaticGroupedFlowables()
 #### ChainedContainer('column1')
   (continued) StaticGroupedFlowables()
-    (continued) DocumentTree()
-      Paragraph('A Paragraph with a footnote1 at ...')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/footnote.rst:8 <paragraph>
-           > (0,0,0,0,2) body
+    (continued) DocumentTree()   footnote.rst   <document>
+      Paragraph('A Paragraph with a footnote1 at ...')   footnote.rst:8   <paragraph>
+           > (0,0,0,0,2) body [Sphinx] > default
 ---------------------------------- page 3 ----------------------------------
 #### FootnoteContainer('footnotes')
   StaticGroupedFlowables()
@@ -43,28 +43,28 @@
   StaticGroupedFlowables()
 #### ChainedContainer('column1')
   (continued) StaticGroupedFlowables()
-    (continued) DocumentTree()
-      PageBreak(style=FlowableStyle)   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/footnote.rst:15 <raw>
-      Paragraph('spacer 2')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/footnote.rst:22 <paragraph>
-           > (0,0,0,1,2) spacer2
-             (0,0,0,0,2) body
+    (continued) DocumentTree()   footnote.rst   <document>
+      PageBreak(style=FlowableStyle)   footnote.rst:15   <raw>
+      Paragraph('spacer 2')   footnote.rst:22   <paragraph>
+           > (0,0,0,1,2) spacer2 [footnote.rts] > DEFAULT
+             (0,0,0,0,2) body [Sphinx] > default
           MixedStyledText('spacer 2')
             MixedStyledText('spacer 2')
               SingleStyledText('spacer 2')
 ---------------------------------- page 4 ----------------------------------
 #### FootnoteContainer('footnotes')
   StaticGroupedFlowables()
-  Note(id='f2')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/footnote.rst:30 <footnote>
+  Note(id='f2')   footnote.rst:30   <footnote>
     Paragraph('2')
-         > (0,0,0,0,4) footnote label
-           (0,0,0,0,2) body
+         > (0,0,0,0,4) footnote label [Sphinx] > footnote paragraph
+           (0,0,0,0,2) body [Sphinx] > default
         DirectReference('2')
-             > (0,0,0,0,1) linked reference
+             > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
           SingleStyledText('2')
     StaticGroupedFlowables()
-      Paragraph('Text of the second footnote.')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/footnote.rst:30 <paragraph>
-           > (0,0,0,0,5) footnote paragraph
-             (0,0,0,0,2) body
+      Paragraph('Text of the second footnote.')   footnote.rst:30   <paragraph>
+           > (0,0,0,0,5) footnote paragraph [Sphinx] > default
+             (0,0,0,0,2) body [Sphinx] > default
           MixedStyledText('Text of the second footnote.')
             MixedStyledText('Text of the second footnote.')
               SingleStyledText('Text of the second footnote.')
@@ -72,14 +72,14 @@
   StaticGroupedFlowables()
 #### ChainedContainer('column1')
   (continued) StaticGroupedFlowables()
-    (continued) DocumentTree()
-      Paragraph('This paragraph2 is placed a litt...', id='par2')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/footnote.rst:27 <paragraph>
-           > (0,0,0,0,2) body
+    (continued) DocumentTree()   footnote.rst   <document>
+      Paragraph('This paragraph2 is placed a litt...', id='par2')   footnote.rst:27   <paragraph>
+           > (0,0,0,0,2) body [Sphinx] > default
           MixedStyledText('This paragraph2 is placed a litt...')
             MixedStyledText('This paragraph2 is placed a litt...')
               SingleStyledText('This paragraph')
-              NoteMarkerByID('2', style='footnote')   None:None <footnote_reference>
-                   > (0,0,1,0,1) footnote marker
-                     (0,0,0,0,1) linked reference
+              NoteMarkerByID('2', id='id2', style='footnote')   <footnote_reference>
+                   > (0,0,1,0,1) footnote marker [Sphinx] > linked reference
+                     (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
                 SingleStyledText('2')
               SingleStyledText(' is placed a little bit higher.')

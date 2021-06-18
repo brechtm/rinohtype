@@ -153,7 +153,7 @@ space_above=6pt
 space_below=4pt
 border=$(thin_black_stroke)
 padding_left=5pt
-padding_top=1pt
+padding_top=3pt
 padding_bottom=3pt
 
 [code block caption]
@@ -521,7 +521,7 @@ inline_title=false
 space_above=9pt
 space_below=5pt
 padding_top=0
-padding_bottom=6pt
+padding_bottom=4pt
 border_top=$(thin_black_stroke)
 border_bottom=$(thin_black_stroke)
 
@@ -877,5 +877,5 @@ text_align=right
 space_above=0.83in
 border_top=$(thin_black_stroke)
 border_bottom=$(thin_black_stroke)
-padding_top=16pt
-padding_bottom=20pt
+padding_top=18pt
+padding_bottom=18pt

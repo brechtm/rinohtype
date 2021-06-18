@@ -1,17 +1,17 @@
 ---------------------------------- page 1 ----------------------------------
 #### FootnoteContainer('footnotes')
   StaticGroupedFlowables()
-  Note(id='qq')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/footnote_in_note.rst:7 <footnote>
+  Note(id='qq')   footnote_in_note.rst:7   <footnote>
     Paragraph('1')
-         > (0,0,0,0,4) footnote label
-           (0,0,0,0,2) body
+         > (0,0,0,0,4) footnote label [Sphinx] > footnote paragraph
+           (0,0,0,0,2) body [Sphinx] > default
         DirectReference('1')
-             > (0,0,0,0,1) linked reference
+             > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
           SingleStyledText('1')
     StaticGroupedFlowables()
-      Paragraph('Here it is!')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/footnote_in_note.rst:7 <paragraph>
-           > (0,0,0,0,5) footnote paragraph
-             (0,0,0,0,2) body
+      Paragraph('Here it is!')   footnote_in_note.rst:7   <paragraph>
+           > (0,0,0,0,5) footnote paragraph [Sphinx] > default
+             (0,0,0,0,2) body [Sphinx] > default
           MixedStyledText('Here it is!')
             MixedStyledText('Here it is!')
               SingleStyledText('Here it is!')
@@ -19,23 +19,23 @@
   StaticGroupedFlowables()
 #### ChainedContainer('column1')
   StaticGroupedFlowables()
-    DocumentTree()
-      Admonition()   None:None <note>
-           > (0,0,0,1,2) note admonition
-             (0,0,0,0,2) admonition
+    DocumentTree()   footnote_in_note.rst   <document>
+      Admonition()   <note>
+           > (0,0,0,1,2) note admonition [Sphinx] > builtin admonition
+             (0,0,0,0,2) admonition [Sphinx] > DEFAULT
         Paragraph('Note Here is my footnote 1.')
-             > (0,0,0,0,2) body
+             > (0,0,0,0,2) body [Sphinx] > default
             MixedStyledText('Note Here is my footnote 1.')
               MixedStyledText('Note Here is my footnote 1.')
                 MixedStyledText('Note', style='inline title')
                      x (0,0,1,1,3) note admonition inline title
-                     > (0,0,1,0,3) admonition inline title
+                     > (0,0,1,0,3) admonition inline title [Sphinx] > admonition title
                   SingleStyledText('Note')
                 SingleStyledText(' ')
                 MixedStyledText('Here is my footnote 1.')
                   SingleStyledText('Here is my footnote ')
-                  NoteMarkerByID('1', style='footnote')   None:None <footnote_reference>
-                       > (0,0,1,0,1) footnote marker
-                         (0,0,0,0,1) linked reference
+                  NoteMarkerByID('1', id='id1', style='footnote')   <footnote_reference>
+                       > (0,0,1,0,1) footnote marker [Sphinx] > linked reference
+                         (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
                     SingleStyledText('1')
                   SingleStyledText('.')

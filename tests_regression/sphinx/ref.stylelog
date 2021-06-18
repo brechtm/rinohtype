@@ -2,16 +2,16 @@
 #### DownExpandingContainer('title')
   StaticGroupedFlowables()
     Paragraph('References', style='title page title')
-         > (0,0,1,0,2) title page title
-           (0,0,0,0,2) body
+         > (0,0,1,0,2) title page title [Sphinx] > DEFAULT
+           (0,0,0,0,2) body [Sphinx] > default
         SingleStyledText('References')
     Paragraph('Release ', style='title page subtitle')
-         > (0,0,1,0,2) title page subtitle
-           (0,0,0,0,2) body
+         > (0,0,1,0,2) title page subtitle [Sphinx] > title page title
+           (0,0,0,0,2) body [Sphinx] > default
         SingleStyledText('Release ')
     Paragraph('Author', style='title page author')
-         > (0,0,1,0,2) title page author
-           (0,0,0,0,2) body
+         > (0,0,1,0,2) title page author [Sphinx] > DEFAULT
+           (0,0,0,0,2) body [Sphinx] > default
         SingleStyledText('Author')
 ---------------------------------- page i ----------------------------------
 #### FootnoteContainer('footnotes')
@@ -20,163 +20,163 @@
   StaticGroupedFlowables()
 #### FlowablesContainer('chapter title')
   Paragraph('Table of Contents', style='front matter section title')
-       > (0,0,1,0,2) front matter section title
-         (0,0,0,0,2) body
+       > (0,0,1,0,2) front matter section title [Sphinx] > DEFAULT
+         (0,0,0,0,2) body [Sphinx] > default
       Field('Table of Contents')
         StringField('Table of Contents')
           SingleStyledText('Table of Contents')
 #### ChainedContainer('column1')
   StaticGroupedFlowables()
     TableOfContentsSection(style='table of contents')
-         > (0,0,1,0,1) table of contents section
-           (0,0,0,1,1) chapter
+         > (0,0,1,0,1) table of contents section [Sphinx] > DEFAULT
+           (0,0,0,1,1) chapter [Sphinx] > DEFAULT
       TableOfContents()   table of contents
-           > (0,0,0,0,2) table of contents
+           > (0,0,0,0,2) table of contents [Sphinx] > default
         TableOfContentsEntry('	List of Figures	iii')
-             > (0,0,0,1,2) toc level 1
+             > (0,0,0,1,2) toc level 1 [Sphinx] > table of contents
             ReferenceField('')
-                 > (0,0,0,1,4) toc entry number reference field
-                   (0,0,0,0,1) linked reference
+                 > (0,0,0,1,4) toc entry number reference field [Sphinx] > linked reference
+                   (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
               SingleStyledText('')
             Tab('	')
             ReferenceField('List of Figures')
-                 > (0,0,0,0,1) linked reference
+                 > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
               StringField('List of Figures')
                 SingleStyledText('List of Figures')
             Tab('	')
             ReferenceField('iii')
-                 > (0,0,0,0,1) linked reference
+                 > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
               SingleStyledText('iii')
         TableOfContentsEntry('	List of Tables	v')
-             > (0,0,0,1,2) toc level 1
+             > (0,0,0,1,2) toc level 1 [Sphinx] > table of contents
             ReferenceField('')
-                 > (0,0,0,1,4) toc entry number reference field
-                   (0,0,0,0,1) linked reference
+                 > (0,0,0,1,4) toc entry number reference field [Sphinx] > linked reference
+                   (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
               SingleStyledText('')
             Tab('	')
             ReferenceField('List of Tables')
-                 > (0,0,0,0,1) linked reference
+                 > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
               StringField('List of Tables')
                 SingleStyledText('List of Tables')
             Tab('	')
             ReferenceField('v')
-                 > (0,0,0,0,1) linked reference
+                 > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
               SingleStyledText('v')
         TableOfContentsEntry('1	One	1-1')
-             > (0,0,0,1,2) toc level 1
+             > (0,0,0,1,2) toc level 1 [Sphinx] > table of contents
             ReferenceField('1')
-                 > (0,0,0,1,4) toc entry number reference field
-                   (0,0,0,0,1) linked reference
+                 > (0,0,0,1,4) toc entry number reference field [Sphinx] > linked reference
+                   (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
               SingleStyledText('1')
             Tab('	')
             ReferenceField('One')
-                 > (0,0,0,0,1) linked reference
+                 > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
               MixedStyledText('One')
                 MixedStyledText('One')
                   SingleStyledText('One')
             Tab('	')
             ReferenceField('1-1')
-                 > (0,0,0,0,1) linked reference
+                 > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
               SingleStyledText('1-1')
         TableOfContentsEntry('1.1	Section A	1-1')
-             > (0,0,0,1,2) toc level 2
+             > (0,0,0,1,2) toc level 2 [Sphinx] > table of contents
             ReferenceField('1.1')
-                 > (0,0,0,1,4) toc entry number reference field
-                   (0,0,0,0,1) linked reference
+                 > (0,0,0,1,4) toc entry number reference field [Sphinx] > linked reference
+                   (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
               SingleStyledText('1.1')
             Tab('	')
             ReferenceField('Section A')
-                 > (0,0,0,0,1) linked reference
+                 > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
               MixedStyledText('Section A')
                 MixedStyledText('Section A')
                   SingleStyledText('Section A')
             Tab('	')
             ReferenceField('1-1')
-                 > (0,0,0,0,1) linked reference
+                 > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
               SingleStyledText('1-1')
         TableOfContentsEntry('1.2	Section B	1-1')
-             > (0,0,0,1,2) toc level 2
+             > (0,0,0,1,2) toc level 2 [Sphinx] > table of contents
             ReferenceField('1.2')
-                 > (0,0,0,1,4) toc entry number reference field
-                   (0,0,0,0,1) linked reference
+                 > (0,0,0,1,4) toc entry number reference field [Sphinx] > linked reference
+                   (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
               SingleStyledText('1.2')
             Tab('	')
             ReferenceField('Section B')
-                 > (0,0,0,0,1) linked reference
+                 > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
               MixedStyledText('Section B')
                 MixedStyledText('Section B')
                   SingleStyledText('Section B')
             Tab('	')
             ReferenceField('1-1')
-                 > (0,0,0,0,1) linked reference
+                 > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
               SingleStyledText('1-1')
         TableOfContentsEntry('2	Two	2-1')
-             > (0,0,0,1,2) toc level 1
+             > (0,0,0,1,2) toc level 1 [Sphinx] > table of contents
             ReferenceField('2')
-                 > (0,0,0,1,4) toc entry number reference field
-                   (0,0,0,0,1) linked reference
+                 > (0,0,0,1,4) toc entry number reference field [Sphinx] > linked reference
+                   (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
               SingleStyledText('2')
             Tab('	')
             ReferenceField('Two')
-                 > (0,0,0,0,1) linked reference
+                 > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
               MixedStyledText('Two')
                 MixedStyledText('Two')
                   SingleStyledText('Two')
             Tab('	')
             ReferenceField('2-1')
-                 > (0,0,0,0,1) linked reference
+                 > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
               SingleStyledText('2-1')
         TableOfContentsEntry('2.1	Section C	2-1')
-             > (0,0,0,1,2) toc level 2
+             > (0,0,0,1,2) toc level 2 [Sphinx] > table of contents
             ReferenceField('2.1')
-                 > (0,0,0,1,4) toc entry number reference field
-                   (0,0,0,0,1) linked reference
+                 > (0,0,0,1,4) toc entry number reference field [Sphinx] > linked reference
+                   (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
               SingleStyledText('2.1')
             Tab('	')
             ReferenceField('Section C')
-                 > (0,0,0,0,1) linked reference
+                 > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
               MixedStyledText('Section C')
                 MixedStyledText('Section C')
                   SingleStyledText('Section C')
             Tab('	')
             ReferenceField('2-1')
-                 > (0,0,0,0,1) linked reference
+                 > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
               SingleStyledText('2-1')
         TableOfContentsEntry('2.2	Glossary	2-1')
-             > (0,0,0,1,2) toc level 2
+             > (0,0,0,1,2) toc level 2 [Sphinx] > table of contents
             ReferenceField('2.2')
-                 > (0,0,0,1,4) toc entry number reference field
-                   (0,0,0,0,1) linked reference
+                 > (0,0,0,1,4) toc entry number reference field [Sphinx] > linked reference
+                   (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
               SingleStyledText('2.2')
             Tab('	')
             ReferenceField('Glossary')
-                 > (0,0,0,0,1) linked reference
+                 > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
               MixedStyledText('Glossary')
                 MixedStyledText('Glossary')
                   SingleStyledText('Glossary')
             Tab('	')
             ReferenceField('2-1')
-                 > (0,0,0,0,1) linked reference
+                 > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
               SingleStyledText('2-1')
         TableOfContentsEntry('	Index	I-1')
-             > (0,0,0,1,2) toc level 1
+             > (0,0,0,1,2) toc level 1 [Sphinx] > table of contents
             ReferenceField('')
-                 > (0,0,0,1,4) toc entry number reference field
-                   (0,0,0,0,1) linked reference
+                 > (0,0,0,1,4) toc entry number reference field [Sphinx] > linked reference
+                   (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
               SingleStyledText('')
             Tab('	')
             ReferenceField('Index')
-                 > (0,0,0,0,1) linked reference
+                 > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
               StringField('Index')
                 SingleStyledText('Index')
             Tab('	')
             ReferenceField('I-1')
-                 > (0,0,0,0,1) linked reference
+                 > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
               SingleStyledText('I-1')
 #### DownExpandingContainer('footer')
   StaticGroupedFlowables()
     Footer('		i')
-         > (0,0,0,0,2) footer
+         > (0,0,0,0,2) footer [Sphinx] > header_footer
         MixedStyledText('		i')
           MixedStyledText('		i')
             Tab('	')
@@ -193,7 +193,7 @@
 #### DownExpandingContainer('footer')
   StaticGroupedFlowables()
     Footer('ii')
-         > (0,0,0,0,2) footer
+         > (0,0,0,0,2) footer [Sphinx] > header_footer
         Field('ii')
           SingleStyledText('ii')
 ---------------------------------- page iii ----------------------------------
@@ -203,58 +203,58 @@
   StaticGroupedFlowables()
 #### FlowablesContainer('chapter title')
   Paragraph('List of Figures', style='front matter section title')
-       > (0,0,1,0,2) front matter section title
-         (0,0,0,0,2) body
+       > (0,0,1,0,2) front matter section title [Sphinx] > DEFAULT
+         (0,0,0,0,2) body [Sphinx] > default
       Field('List of Figures')
         StringField('List of Figures')
           SingleStyledText('List of Figures')
 #### ChainedContainer('column1')
   (continued) StaticGroupedFlowables()
     ListOfFiguresSection(style='list of Chapter')
-         > (0,0,0,1,1) chapter
-           (0,0,0,0,2) list of figures section
+         > (0,0,0,1,1) chapter [Sphinx] > DEFAULT
+           (0,0,0,0,2) list of figures section [Sphinx] > table of contents section
       ListOfFigures()   List of Figures
-           > (0,0,0,0,2) list of figures
+           > (0,0,0,0,2) list of figures [Sphinx] > table of contents
         ListOfEntry('Figure 1.1: Biohazard!	1-1')
-             > (0,0,0,0,4) list of figures entry
+             > (0,0,0,0,4) list of figures entry [Sphinx] > list of figures
             ReferenceField('Figure 1.1')
-                 > (0,0,0,0,1) linked reference
+                 > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
               MixedStyledText('Figure 1.1')
                 SingleStyledText('Figure')
                 SingleStyledText(' ')
                 SingleStyledText('1.1')
             SingleStyledText(': ')
             ReferenceField('Biohazard!')
-                 > (0,0,0,0,1) linked reference
+                 > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
               MixedStyledText('Biohazard!')
                 MixedStyledText('Biohazard!')
                   SingleStyledText('Biohazard!')
             Tab('	')
             ReferenceField('1-1')
-                 > (0,0,0,0,1) linked reference
+                 > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
               SingleStyledText('1-1')
         ListOfEntry('Figure 2.1: Another image	2-1')
-             > (0,0,0,0,4) list of figures entry
+             > (0,0,0,0,4) list of figures entry [Sphinx] > list of figures
             ReferenceField('Figure 2.1')
-                 > (0,0,0,0,1) linked reference
+                 > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
               MixedStyledText('Figure 2.1')
                 SingleStyledText('Figure')
                 SingleStyledText(' ')
                 SingleStyledText('2.1')
             SingleStyledText(': ')
             ReferenceField('Another image')
-                 > (0,0,0,0,1) linked reference
+                 > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
               MixedStyledText('Another image')
                 MixedStyledText('Another image')
                   SingleStyledText('Another image')
             Tab('	')
             ReferenceField('2-1')
-                 > (0,0,0,0,1) linked reference
+                 > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
               SingleStyledText('2-1')
 #### DownExpandingContainer('footer')
   StaticGroupedFlowables()
     Footer('		iii')
-         > (0,0,0,0,2) footer
+         > (0,0,0,0,2) footer [Sphinx] > header_footer
         MixedStyledText('		iii')
           MixedStyledText('		iii')
             Tab('	')
@@ -271,7 +271,7 @@
 #### DownExpandingContainer('footer')
   StaticGroupedFlowables()
     Footer('iv')
-         > (0,0,0,0,2) footer
+         > (0,0,0,0,2) footer [Sphinx] > header_footer
         Field('iv')
           SingleStyledText('iv')
 ---------------------------------- page v ----------------------------------
@@ -281,40 +281,40 @@
   StaticGroupedFlowables()
 #### FlowablesContainer('chapter title')
   Paragraph('List of Tables', style='front matter section title')
-       > (0,0,1,0,2) front matter section title
-         (0,0,0,0,2) body
+       > (0,0,1,0,2) front matter section title [Sphinx] > DEFAULT
+         (0,0,0,0,2) body [Sphinx] > default
       Field('List of Tables')
         StringField('List of Tables')
           SingleStyledText('List of Tables')
 #### ChainedContainer('column1')
   (continued) StaticGroupedFlowables()
     ListOfTablesSection(style='list of Chapter')
-         > (0,0,0,1,1) chapter
-           (0,0,0,0,2) list of tables section
+         > (0,0,0,1,1) chapter [Sphinx] > DEFAULT
+           (0,0,0,0,2) list of tables section [Sphinx] > list of figures section
       ListOfTables()   List of Tables
-           > (0,0,0,0,2) list of tables
+           > (0,0,0,0,2) list of tables [Sphinx] > list of figures
         ListOfEntry('Table 1.1: Input-output	1-1')
-             > (0,0,0,0,4) list of tables entry
+             > (0,0,0,0,4) list of tables entry [Sphinx] > list of figures entry
             ReferenceField('Table 1.1')
-                 > (0,0,0,0,1) linked reference
+                 > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
               MixedStyledText('Table 1.1')
                 SingleStyledText('Table')
                 SingleStyledText(' ')
                 SingleStyledText('1.1')
             SingleStyledText(': ')
             ReferenceField('Input-output')
-                 > (0,0,0,0,1) linked reference
+                 > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
               MixedStyledText('Input-output')
                 MixedStyledText('Input-output')
                   SingleStyledText('Input-output')
             Tab('	')
             ReferenceField('1-1')
-                 > (0,0,0,0,1) linked reference
+                 > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
               SingleStyledText('1-1')
 #### DownExpandingContainer('footer')
   StaticGroupedFlowables()
     Footer('		v')
-         > (0,0,0,0,2) footer
+         > (0,0,0,0,2) footer [Sphinx] > header_footer
         MixedStyledText('		v')
           MixedStyledText('		v')
             Tab('	')
@@ -328,8 +328,8 @@
   StaticGroupedFlowables()
 #### FlowablesContainer('chapter title')
   Paragraph('Chapter 1', style='body matter chapter label')
-       > (0,0,1,0,2) body matter chapter label
-         (0,0,0,0,2) body
+       > (0,0,1,0,2) body matter chapter label [Sphinx] > DEFAULT
+         (0,0,0,0,2) body [Sphinx] > default
       MixedStyledText('Chapter 1')
         MixedStyledText('Chapter 1')
           MixedStyledText('Chapter ')
@@ -337,487 +337,474 @@
               SingleStyledText('Chapter')
             SingleStyledText(' ')
           Field('1', style='number')
-               > (0,0,2,0,3) body matter chapter number
+               > (0,0,2,0,3) body matter chapter number [Sphinx] > DEFAULT
             SingleStyledText('1')
   Paragraph('One', style='body matter chapter title')
-       > (0,0,1,0,2) body matter chapter title
-         (0,0,0,0,2) body
+       > (0,0,1,0,2) body matter chapter title [Sphinx] > DEFAULT
+         (0,0,0,0,2) body [Sphinx] > default
       Field('One')
         MixedStyledText('One')
           MixedStyledText('One')
             SingleStyledText('One')
 #### ChainedContainer('column1')
   StaticGroupedFlowables()
-    DocumentTree()
-      StaticGroupedFlowables()   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-7/ref/index.rst:0 <compound>
-        StaticGroupedFlowables(id='%chapter1')   None:None <start_of_file>
-          Section(id='%chapter1#one')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-7/ref/chapter1.rst:4 <section>
-               > (0,0,0,1,4) content chapter
-                 (0,0,0,1,2) chapter
-            Section(id='%chapter1#section-a')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-7/ref/chapter1.rst:9 <section>
-              Heading('1.1 Section A')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-7/ref/chapter1.rst:9 <title>
-                   > (0,0,0,1,2) heading level 2
-                     (0,0,0,0,2) other heading levels
+    DocumentTree()   index.rst   <document>
+      StaticGroupedFlowables()   index.rst   <compound>
+        StaticGroupedFlowables(id='%chapter1')   <start_of_file>
+          Section(id='%chapter1#one')   chapter1.rst:4   <section>
+               > (0,0,0,1,4) content chapter [Sphinx ref] > DEFAULT
+                 (0,0,0,1,2) chapter [Sphinx] > DEFAULT
+            Section(id='%chapter1#section-a')   chapter1.rst:9   <section>
+              Heading('1.1 Section A')   chapter1.rst:9   <title>
+                   > (0,0,0,1,2) heading level 2 [Sphinx] > heading level 1
+                     (0,0,0,0,2) other heading levels [Sphinx] > heading level 5
                   MixedStyledText('1.1 ')
                     SingleStyledText('1.1')
                     SingleStyledText(' ')
                   MixedStyledText('Section A')
                     MixedStyledText('Section A')
                       SingleStyledText('Section A')
-              Paragraph('Paragraph A with some references...', id='%chapter1#par-a')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-7/ref/chapter1.rst:13 <paragraph>
-                   > (0,0,0,0,2) body
+              Paragraph('Paragraph A with some references...', id='%chapter1#par-a')   chapter1.rst:13   <paragraph>
+                   > (0,0,0,0,2) body [Sphinx] > default
                   MixedStyledText('Paragraph A with some references...')
                     MixedStyledText('Paragraph A with some references...')
                       SingleStyledText('Paragraph A with some references...')
-              List(style='bulleted')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-7/ref/chapter1.rst:15 <bullet_list>
-                   > (0,0,1,0,2) bulleted list
-                ListItem()   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-7/ref/chapter1.rst:None <list_item>
+              List(style='bulleted')   chapter1.rst:15   <bullet_list>
+                   > (0,0,1,0,2) bulleted list [Sphinx] > enumerated list
+                ListItem()   chapter1.rst   <list_item>
                      x (0,0,1,0,4) bulleted list item
-                     > fallback to default style
                   ListItemLabel('•')
-                       > (0,0,1,0,6) bulleted list item label
-                         (0,0,0,0,2) list item label
+                       > (0,0,1,0,6) bulleted list item label [Sphinx] > list item label
+                         (0,0,0,0,2) list item label [Sphinx] > default
                       MixedStyledText('•')
                         SingleStyledText('')
                         SingleStyledText('•')
                         SingleStyledText('')
                   StaticGroupedFlowables()
-                       > (0,0,0,0,3) list item body
-                    Paragraph('Chapter 1, Chapter 1, Chapter 1')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-7/ref/chapter1.rst:15 <paragraph>
-                         > (0,0,0,0,5) list item paragraph
-                           (0,0,0,0,2) body
+                       > (0,0,0,0,3) list item body [Sphinx] > DEFAULT
+                    Paragraph('Chapter 1, Chapter 1, Chapter 1')   chapter1.rst:15   <paragraph>
+                         > (0,0,0,0,5) list item paragraph [Sphinx] > default
+                           (0,0,0,0,2) body [Sphinx] > default
                         MixedStyledText('Chapter 1, Chapter 1, Chapter 1')
                           MixedStyledText('Chapter 1, Chapter 1, Chapter 1')
-                            Reference('Chapter 1')   None:None <reference>
-                                 > (0,0,0,0,1) linked reference
+                            Reference('Chapter 1')   <reference>
+                                 > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
                               MixedStyledText('Chapter 1')
                                 SingleStyledText('Chapter')
                                 SingleStyledText(' ')
                                 SingleStyledText('1')
                             SingleStyledText(', ')
-                            Reference('Chapter 1')   None:None <reference>
-                                 > (0,0,0,0,1) linked reference
+                            Reference('Chapter 1')   <reference>
+                                 > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
                               MixedStyledText('Chapter 1')
                                 SingleStyledText('Chapter')
                                 SingleStyledText(' ')
                                 SingleStyledText('1')
                             SingleStyledText(', ')
-                            Reference('Chapter 1')   None:None <number_reference>
-                                 > (0,0,0,0,1) linked reference
+                            Reference('Chapter 1')   <number_reference>
+                                 > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
                               MixedStyledText('Chapter 1')
                                 SingleStyledText('Chapter')
                                 SingleStyledText(' ')
                                 SingleStyledText('1')
-                ListItem()   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-7/ref/chapter1.rst:None <list_item>
+                ListItem()   chapter1.rst   <list_item>
                      x (0,0,1,0,4) bulleted list item
-                     > fallback to default style
                   ListItemLabel('•')
-                       > (0,0,1,0,6) bulleted list item label
-                         (0,0,0,0,2) list item label
+                       > (0,0,1,0,6) bulleted list item label [Sphinx] > list item label
+                         (0,0,0,0,2) list item label [Sphinx] > default
                       MixedStyledText('•')
                         SingleStyledText('')
                         SingleStyledText('•')
                         SingleStyledText('')
                   StaticGroupedFlowables()
-                       > (0,0,0,0,3) list item body
-                    Paragraph('Chapter 2, Chapter 2, Chapter 2')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-7/ref/chapter1.rst:16 <paragraph>
-                         > (0,0,0,0,5) list item paragraph
-                           (0,0,0,0,2) body
+                       > (0,0,0,0,3) list item body [Sphinx] > DEFAULT
+                    Paragraph('Chapter 2, Chapter 2, Chapter 2')   chapter1.rst:16   <paragraph>
+                         > (0,0,0,0,5) list item paragraph [Sphinx] > default
+                           (0,0,0,0,2) body [Sphinx] > default
                         MixedStyledText('Chapter 2, Chapter 2, Chapter 2')
                           MixedStyledText('Chapter 2, Chapter 2, Chapter 2')
-                            Reference('Chapter 2')   None:None <reference>
-                                 > (0,0,0,0,1) linked reference
+                            Reference('Chapter 2')   <reference>
+                                 > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
                               MixedStyledText('Chapter 2')
                                 SingleStyledText('Chapter')
                                 SingleStyledText(' ')
                                 SingleStyledText('2')
                             SingleStyledText(', ')
-                            Reference('Chapter 2')   None:None <reference>
-                                 > (0,0,0,0,1) linked reference
+                            Reference('Chapter 2')   <reference>
+                                 > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
                               MixedStyledText('Chapter 2')
                                 SingleStyledText('Chapter')
                                 SingleStyledText(' ')
                                 SingleStyledText('2')
                             SingleStyledText(', ')
-                            Reference('Chapter 2')   None:None <number_reference>
-                                 > (0,0,0,0,1) linked reference
+                            Reference('Chapter 2')   <number_reference>
+                                 > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
                               MixedStyledText('Chapter 2')
                                 SingleStyledText('Chapter')
                                 SingleStyledText(' ')
                                 SingleStyledText('2')
-                ListItem()   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-7/ref/chapter1.rst:None <list_item>
+                ListItem()   chapter1.rst   <list_item>
                      x (0,0,1,0,4) bulleted list item
-                     > fallback to default style
                   ListItemLabel('•')
-                       > (0,0,1,0,6) bulleted list item label
-                         (0,0,0,0,2) list item label
+                       > (0,0,1,0,6) bulleted list item label [Sphinx] > list item label
+                         (0,0,0,0,2) list item label [Sphinx] > default
                       MixedStyledText('•')
                         SingleStyledText('')
                         SingleStyledText('•')
                         SingleStyledText('')
                   StaticGroupedFlowables()
-                       > (0,0,0,0,3) list item body
-                    Paragraph('Section 1.1, Section 1.1, Sectio...')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-7/ref/chapter1.rst:17 <paragraph>
-                         > (0,0,0,0,5) list item paragraph
-                           (0,0,0,0,2) body
+                       > (0,0,0,0,3) list item body [Sphinx] > DEFAULT
+                    Paragraph('Section 1.1, Section 1.1, Sectio...')   chapter1.rst:17   <paragraph>
+                         > (0,0,0,0,5) list item paragraph [Sphinx] > default
+                           (0,0,0,0,2) body [Sphinx] > default
                         MixedStyledText('Section 1.1, Section 1.1, Sectio...')
                           MixedStyledText('Section 1.1, Section 1.1, Sectio...')
-                            Reference('Section 1.1')   None:None <reference>
-                                 > (0,0,0,0,1) linked reference
+                            Reference('Section 1.1')   <reference>
+                                 > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
                               MixedStyledText('Section 1.1')
                                 SingleStyledText('Section')
                                 SingleStyledText(' ')
                                 SingleStyledText('1.1')
                             SingleStyledText(', ')
-                            Reference('Section 1.1')   None:None <reference>
-                                 > (0,0,0,0,1) linked reference
+                            Reference('Section 1.1')   <reference>
+                                 > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
                               MixedStyledText('Section 1.1')
                                 SingleStyledText('Section')
                                 SingleStyledText(' ')
                                 SingleStyledText('1.1')
                             SingleStyledText(', ')
-                            Reference('Section 1.1')   None:None <number_reference>
-                                 > (0,0,0,0,1) linked reference
+                            Reference('Section 1.1')   <number_reference>
+                                 > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
                               MixedStyledText('Section 1.1')
                                 SingleStyledText('Section')
                                 SingleStyledText(' ')
                                 SingleStyledText('1.1')
-                ListItem()   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-7/ref/chapter1.rst:None <list_item>
+                ListItem()   chapter1.rst   <list_item>
                      x (0,0,1,0,4) bulleted list item
-                     > fallback to default style
                   ListItemLabel('•')
-                       > (0,0,1,0,6) bulleted list item label
-                         (0,0,0,0,2) list item label
+                       > (0,0,1,0,6) bulleted list item label [Sphinx] > list item label
+                         (0,0,0,0,2) list item label [Sphinx] > default
                       MixedStyledText('•')
                         SingleStyledText('')
                         SingleStyledText('•')
                         SingleStyledText('')
                   StaticGroupedFlowables()
-                       > (0,0,0,0,3) list item body
-                    Paragraph('Section 2.1, Section 2.1, Sectio...')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-7/ref/chapter1.rst:18 <paragraph>
-                         > (0,0,0,0,5) list item paragraph
-                           (0,0,0,0,2) body
+                       > (0,0,0,0,3) list item body [Sphinx] > DEFAULT
+                    Paragraph('Section 2.1, Section 2.1, Sectio...')   chapter1.rst:18   <paragraph>
+                         > (0,0,0,0,5) list item paragraph [Sphinx] > default
+                           (0,0,0,0,2) body [Sphinx] > default
                         MixedStyledText('Section 2.1, Section 2.1, Sectio...')
                           MixedStyledText('Section 2.1, Section 2.1, Sectio...')
-                            Reference('Section 2.1')   None:None <reference>
-                                 > (0,0,0,0,1) linked reference
+                            Reference('Section 2.1')   <reference>
+                                 > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
                               MixedStyledText('Section 2.1')
                                 SingleStyledText('Section')
                                 SingleStyledText(' ')
                                 SingleStyledText('2.1')
                             SingleStyledText(', ')
-                            Reference('Section 2.1')   None:None <reference>
-                                 > (0,0,0,0,1) linked reference
+                            Reference('Section 2.1')   <reference>
+                                 > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
                               MixedStyledText('Section 2.1')
                                 SingleStyledText('Section')
                                 SingleStyledText(' ')
                                 SingleStyledText('2.1')
                             SingleStyledText(', ')
-                            Reference('Section 2.1')   None:None <number_reference>
-                                 > (0,0,0,0,1) linked reference
+                            Reference('Section 2.1')   <number_reference>
+                                 > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
                               MixedStyledText('Section 2.1')
                                 SingleStyledText('Section')
                                 SingleStyledText(' ')
                                 SingleStyledText('2.1')
-                ListItem()   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-7/ref/chapter1.rst:None <list_item>
+                ListItem()   chapter1.rst   <list_item>
                      x (0,0,1,0,4) bulleted list item
-                     > fallback to default style
                   ListItemLabel('•')
-                       > (0,0,1,0,6) bulleted list item label
-                         (0,0,0,0,2) list item label
+                       > (0,0,1,0,6) bulleted list item label [Sphinx] > list item label
+                         (0,0,0,0,2) list item label [Sphinx] > default
                       MixedStyledText('•')
                         SingleStyledText('')
                         SingleStyledText('•')
                         SingleStyledText('')
                   StaticGroupedFlowables()
-                       > (0,0,0,0,3) list item body
-                    Paragraph('par-a, this paragraph, par-a')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-7/ref/chapter1.rst:19 <paragraph>
-                         > (0,0,0,0,5) list item paragraph
-                           (0,0,0,0,2) body
+                       > (0,0,0,0,3) list item body [Sphinx] > DEFAULT
+                    Paragraph('par-a, this paragraph, par-a')   chapter1.rst:19   <paragraph>
+                         > (0,0,0,0,5) list item paragraph [Sphinx] > default
+                           (0,0,0,0,2) body [Sphinx] > default
                         MixedStyledText('par-a, this paragraph, par-a')
                           MixedStyledText('par-a, this paragraph, par-a')
-                            MixedStyledText('par-a')   None:None <inline>
+                            MixedStyledText('par-a')   <inline>
                               SingleStyledText('par-a')
                             SingleStyledText(', ')
-                            Reference('this paragraph')   None:None <reference>
-                                 > (0,0,0,0,1) linked reference
+                            Reference('this paragraph')   <reference>
+                                 > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
                               MixedStyledText('this paragraph')
-                                MixedStyledText('this paragraph')   None:None <inline>
+                                MixedStyledText('this paragraph')   <inline>
                                   SingleStyledText('this paragraph')
                             SingleStyledText(', ')
-                            MixedStyledText('par-a', style='monospaced')   None:None <literal>
-                                 > (0,0,1,0,1) monospaced
+                            MixedStyledText('par-a', style='monospaced')   <literal>
+                                 > (0,0,1,0,1) monospaced [Sphinx] > DEFAULT
                               SingleStyledText('par-a')
-                ListItem()   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-7/ref/chapter1.rst:None <list_item>
+                ListItem()   chapter1.rst   <list_item>
                      x (0,0,1,0,4) bulleted list item
-                     > fallback to default style
                   ListItemLabel('•')
-                       > (0,0,1,0,6) bulleted list item label
-                         (0,0,0,0,2) list item label
+                       > (0,0,1,0,6) bulleted list item label [Sphinx] > list item label
+                         (0,0,0,0,2) list item label [Sphinx] > default
                       MixedStyledText('•')
                         SingleStyledText('')
                         SingleStyledText('•')
                         SingleStyledText('')
                   StaticGroupedFlowables()
-                       > (0,0,0,0,3) list item body
-                    Paragraph('par-b, that paragraph, par-b')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-7/ref/chapter1.rst:20 <paragraph>
-                         > (0,0,0,0,5) list item paragraph
-                           (0,0,0,0,2) body
+                       > (0,0,0,0,3) list item body [Sphinx] > DEFAULT
+                    Paragraph('par-b, that paragraph, par-b')   chapter1.rst:20   <paragraph>
+                         > (0,0,0,0,5) list item paragraph [Sphinx] > default
+                           (0,0,0,0,2) body [Sphinx] > default
                         MixedStyledText('par-b, that paragraph, par-b')
                           MixedStyledText('par-b, that paragraph, par-b')
-                            MixedStyledText('par-b')   None:None <inline>
+                            MixedStyledText('par-b')   <inline>
                               SingleStyledText('par-b')
                             SingleStyledText(', ')
-                            Reference('that paragraph')   None:None <reference>
-                                 > (0,0,0,0,1) linked reference
+                            Reference('that paragraph')   <reference>
+                                 > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
                               MixedStyledText('that paragraph')
-                                MixedStyledText('that paragraph')   None:None <inline>
+                                MixedStyledText('that paragraph')   <inline>
                                   SingleStyledText('that paragraph')
                             SingleStyledText(', ')
-                            MixedStyledText('par-b', style='monospaced')   None:None <literal>
-                                 > (0,0,1,0,1) monospaced
+                            MixedStyledText('par-b', style='monospaced')   <literal>
+                                 > (0,0,1,0,1) monospaced [Sphinx] > DEFAULT
                               SingleStyledText('par-b')
-                ListItem()   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-7/ref/chapter1.rst:None <list_item>
+                ListItem()   chapter1.rst   <list_item>
                      x (0,0,1,0,4) bulleted list item
-                     > fallback to default style
                   ListItemLabel('•')
-                       > (0,0,1,0,6) bulleted list item label
-                         (0,0,0,0,2) list item label
+                       > (0,0,1,0,6) bulleted list item label [Sphinx] > list item label
+                         (0,0,0,0,2) list item label [Sphinx] > default
                       MixedStyledText('•')
                         SingleStyledText('')
                         SingleStyledText('•')
                         SingleStyledText('')
                   StaticGroupedFlowables()
-                       > (0,0,0,0,3) list item body
-                    Paragraph('par-c, Paragraph 1, par-c')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-7/ref/chapter1.rst:21 <paragraph>
-                         > (0,0,0,0,5) list item paragraph
-                           (0,0,0,0,2) body
+                       > (0,0,0,0,3) list item body [Sphinx] > DEFAULT
+                    Paragraph('par-c, Paragraph 1, par-c')   chapter1.rst:21   <paragraph>
+                         > (0,0,0,0,5) list item paragraph [Sphinx] > default
+                           (0,0,0,0,2) body [Sphinx] > default
                         MixedStyledText('par-c, Paragraph 1, par-c')
                           MixedStyledText('par-c, Paragraph 1, par-c')
-                            MixedStyledText('par-c')   None:None <inline>
+                            MixedStyledText('par-c')   <inline>
                               SingleStyledText('par-c')
                             SingleStyledText(', ')
-                            Reference('Paragraph 1')   None:None <reference>
-                                 > (0,0,0,0,1) linked reference
+                            Reference('Paragraph 1')   <reference>
+                                 > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
                               MixedStyledText('Paragraph 1')
                                 SingleStyledText('Paragraph')
                                 SingleStyledText(' ')
                                 SingleStyledText('1')
                             SingleStyledText(', ')
-                            MixedStyledText('par-c', style='monospaced')   None:None <literal>
-                                 > (0,0,1,0,1) monospaced
+                            MixedStyledText('par-c', style='monospaced')   <literal>
+                                 > (0,0,1,0,1) monospaced [Sphinx] > DEFAULT
                               SingleStyledText('par-c')
-                ListItem()   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-7/ref/chapter1.rst:None <list_item>
+                ListItem()   chapter1.rst   <list_item>
                      x (0,0,1,0,4) bulleted list item
-                     > fallback to default style
                   ListItemLabel('•')
-                       > (0,0,1,0,6) bulleted list item label
-                         (0,0,0,0,2) list item label
+                       > (0,0,1,0,6) bulleted list item label [Sphinx] > list item label
+                         (0,0,0,0,2) list item label [Sphinx] > default
                       MixedStyledText('•')
                         SingleStyledText('')
                         SingleStyledText('•')
                         SingleStyledText('')
                   StaticGroupedFlowables()
-                       > (0,0,0,0,3) list item body
-                    Paragraph('par-d, Paragraph 2, par-d')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-7/ref/chapter1.rst:22 <paragraph>
-                         > (0,0,0,0,5) list item paragraph
-                           (0,0,0,0,2) body
+                       > (0,0,0,0,3) list item body [Sphinx] > DEFAULT
+                    Paragraph('par-d, Paragraph 2, par-d')   chapter1.rst:22   <paragraph>
+                         > (0,0,0,0,5) list item paragraph [Sphinx] > default
+                           (0,0,0,0,2) body [Sphinx] > default
                         MixedStyledText('par-d, Paragraph 2, par-d')
                           MixedStyledText('par-d, Paragraph 2, par-d')
-                            MixedStyledText('par-d')   None:None <inline>
+                            MixedStyledText('par-d')   <inline>
                               SingleStyledText('par-d')
                             SingleStyledText(', ')
-                            Reference('Paragraph 2')   None:None <reference>
-                                 > (0,0,0,0,1) linked reference
+                            Reference('Paragraph 2')   <reference>
+                                 > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
                               MixedStyledText('Paragraph 2')
                                 SingleStyledText('Paragraph')
                                 SingleStyledText(' ')
                                 SingleStyledText('2')
                             SingleStyledText(', ')
-                            MixedStyledText('par-d', style='monospaced')   None:None <literal>
-                                 > (0,0,1,0,1) monospaced
+                            MixedStyledText('par-d', style='monospaced')   <literal>
+                                 > (0,0,1,0,1) monospaced [Sphinx] > DEFAULT
                               SingleStyledText('par-d')
-                ListItem()   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-7/ref/chapter1.rst:None <list_item>
+                ListItem()   chapter1.rst   <list_item>
                      x (0,0,1,0,4) bulleted list item
-                     > fallback to default style
                   ListItemLabel('•')
-                       > (0,0,1,0,6) bulleted list item label
-                         (0,0,0,0,2) list item label
+                       > (0,0,1,0,6) bulleted list item label [Sphinx] > list item label
+                         (0,0,0,0,2) list item label [Sphinx] > default
                       MixedStyledText('•')
                         SingleStyledText('')
                         SingleStyledText('•')
                         SingleStyledText('')
                   StaticGroupedFlowables()
-                       > (0,0,0,0,3) list item body
-                    Paragraph('Figure 1.1, Figure 1.1, Figure 1...')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-7/ref/chapter1.rst:23 <paragraph>
-                         > (0,0,0,0,5) list item paragraph
-                           (0,0,0,0,2) body
+                       > (0,0,0,0,3) list item body [Sphinx] > DEFAULT
+                    Paragraph('Figure 1.1, Figure 1.1, Figure 1...')   chapter1.rst:23   <paragraph>
+                         > (0,0,0,0,5) list item paragraph [Sphinx] > default
+                           (0,0,0,0,2) body [Sphinx] > default
                         MixedStyledText('Figure 1.1, Figure 1.1, Figure 1...')
                           MixedStyledText('Figure 1.1, Figure 1.1, Figure 1...')
-                            Reference('Figure 1.1')   None:None <reference>
-                                 > (0,0,0,0,1) linked reference
+                            Reference('Figure 1.1')   <reference>
+                                 > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
                               MixedStyledText('Figure 1.1')
                                 SingleStyledText('Figure')
                                 SingleStyledText(' ')
                                 SingleStyledText('1.1')
                             SingleStyledText(', ')
-                            Reference('Figure 1.1')   None:None <reference>
-                                 > (0,0,0,0,1) linked reference
+                            Reference('Figure 1.1')   <reference>
+                                 > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
                               MixedStyledText('Figure 1.1')
                                 SingleStyledText('Figure')
                                 SingleStyledText(' ')
                                 SingleStyledText('1.1')
                             SingleStyledText(', ')
-                            Reference('Figure 1.1')   None:None <number_reference>
-                                 > (0,0,0,0,1) linked reference
+                            Reference('Figure 1.1')   <number_reference>
+                                 > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
                               MixedStyledText('Figure 1.1')
                                 SingleStyledText('Figure')
                                 SingleStyledText(' ')
                                 SingleStyledText('1.1')
-                ListItem()   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-7/ref/chapter1.rst:None <list_item>
+                ListItem()   chapter1.rst   <list_item>
                      x (0,0,1,0,4) bulleted list item
-                     > fallback to default style
                   ListItemLabel('•')
-                       > (0,0,1,0,6) bulleted list item label
-                         (0,0,0,0,2) list item label
+                       > (0,0,1,0,6) bulleted list item label [Sphinx] > list item label
+                         (0,0,0,0,2) list item label [Sphinx] > default
                       MixedStyledText('•')
                         SingleStyledText('')
                         SingleStyledText('•')
                         SingleStyledText('')
                   StaticGroupedFlowables()
-                       > (0,0,0,0,3) list item body
-                    Paragraph('Figure 2.1, Figure 2.1, Figure 2...')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-7/ref/chapter1.rst:24 <paragraph>
-                         > (0,0,0,0,5) list item paragraph
-                           (0,0,0,0,2) body
+                       > (0,0,0,0,3) list item body [Sphinx] > DEFAULT
+                    Paragraph('Figure 2.1, Figure 2.1, Figure 2...')   chapter1.rst:24   <paragraph>
+                         > (0,0,0,0,5) list item paragraph [Sphinx] > default
+                           (0,0,0,0,2) body [Sphinx] > default
                         MixedStyledText('Figure 2.1, Figure 2.1, Figure 2...')
                           MixedStyledText('Figure 2.1, Figure 2.1, Figure 2...')
-                            Reference('Figure 2.1')   None:None <reference>
-                                 > (0,0,0,0,1) linked reference
+                            Reference('Figure 2.1')   <reference>
+                                 > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
                               MixedStyledText('Figure 2.1')
                                 SingleStyledText('Figure')
                                 SingleStyledText(' ')
                                 SingleStyledText('2.1')
                             SingleStyledText(', ')
-                            Reference('Figure 2.1')   None:None <reference>
-                                 > (0,0,0,0,1) linked reference
+                            Reference('Figure 2.1')   <reference>
+                                 > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
                               MixedStyledText('Figure 2.1')
                                 SingleStyledText('Figure')
                                 SingleStyledText(' ')
                                 SingleStyledText('2.1')
                             SingleStyledText(', ')
-                            Reference('Figure 2.1')   None:None <number_reference>
-                                 > (0,0,0,0,1) linked reference
+                            Reference('Figure 2.1')   <number_reference>
+                                 > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
                               MixedStyledText('Figure 2.1')
                                 SingleStyledText('Figure')
                                 SingleStyledText(' ')
                                 SingleStyledText('2.1')
-                ListItem()   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-7/ref/chapter1.rst:None <list_item>
+                ListItem()   chapter1.rst   <list_item>
                      x (0,0,1,0,4) bulleted list item
-                     > fallback to default style
                   ListItemLabel('•')
-                       > (0,0,1,0,6) bulleted list item label
-                         (0,0,0,0,2) list item label
+                       > (0,0,1,0,6) bulleted list item label [Sphinx] > list item label
+                         (0,0,0,0,2) list item label [Sphinx] > default
                       MixedStyledText('•')
                         SingleStyledText('')
                         SingleStyledText('•')
                         SingleStyledText('')
                   StaticGroupedFlowables()
-                       > (0,0,0,0,3) list item body
-                    Paragraph('Table 1.1, Table 1.1, Table 1.1')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-7/ref/chapter1.rst:25 <paragraph>
-                         > (0,0,0,0,5) list item paragraph
-                           (0,0,0,0,2) body
+                       > (0,0,0,0,3) list item body [Sphinx] > DEFAULT
+                    Paragraph('Table 1.1, Table 1.1, Table 1.1')   chapter1.rst:25   <paragraph>
+                         > (0,0,0,0,5) list item paragraph [Sphinx] > default
+                           (0,0,0,0,2) body [Sphinx] > default
                         MixedStyledText('Table 1.1, Table 1.1, Table 1.1')
                           MixedStyledText('Table 1.1, Table 1.1, Table 1.1')
-                            Reference('Table 1.1')   None:None <reference>
-                                 > (0,0,0,0,1) linked reference
+                            Reference('Table 1.1')   <reference>
+                                 > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
                               MixedStyledText('Table 1.1')
                                 SingleStyledText('Table')
                                 SingleStyledText(' ')
                                 SingleStyledText('1.1')
                             SingleStyledText(', ')
-                            Reference('Table 1.1')   None:None <reference>
-                                 > (0,0,0,0,1) linked reference
+                            Reference('Table 1.1')   <reference>
+                                 > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
                               MixedStyledText('Table 1.1')
                                 SingleStyledText('Table')
                                 SingleStyledText(' ')
                                 SingleStyledText('1.1')
                             SingleStyledText(', ')
-                            Reference('Table 1.1')   None:None <number_reference>
-                                 > (0,0,0,0,1) linked reference
+                            Reference('Table 1.1')   <number_reference>
+                                 > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
                               MixedStyledText('Table 1.1')
                                 SingleStyledText('Table')
                                 SingleStyledText(' ')
                                 SingleStyledText('1.1')
-                ListItem()   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-7/ref/chapter1.rst:None <list_item>
+                ListItem()   chapter1.rst   <list_item>
                      x (0,0,1,0,4) bulleted list item
-                     > fallback to default style
                   ListItemLabel('•')
-                       > (0,0,1,0,6) bulleted list item label
-                         (0,0,0,0,2) list item label
+                       > (0,0,1,0,6) bulleted list item label [Sphinx] > list item label
+                         (0,0,0,0,2) list item label [Sphinx] > default
                       MixedStyledText('•')
                         SingleStyledText('')
                         SingleStyledText('•')
                         SingleStyledText('')
                   StaticGroupedFlowables()
-                       > (0,0,0,0,3) list item body
-                    Paragraph('&&, SOS')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-7/ref/chapter1.rst:26 <paragraph>
-                         > (0,0,0,0,5) list item paragraph
-                           (0,0,0,0,2) body
+                       > (0,0,0,0,3) list item body [Sphinx] > DEFAULT
+                    Paragraph('&&, SOS')   chapter1.rst:26   <paragraph>
+                         > (0,0,0,0,5) list item paragraph [Sphinx] > default
+                           (0,0,0,0,2) body [Sphinx] > default
                         MixedStyledText('&&, SOS')
                           MixedStyledText('&&, SOS')
-                            Reference('&&')   None:None <reference>
-                                 > (0,0,0,0,1) linked reference
+                            Reference('&&')   <reference>
+                                 > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
                               MixedStyledText('&&')
-                                MixedStyledText('&&')   None:None <inline>
+                                MixedStyledText('&&')   <inline>
                                   SingleStyledText('&&')
                             SingleStyledText(', ')
-                            Reference('SOS')   None:None <reference>
-                                 > (0,0,0,0,1) linked reference
+                            Reference('SOS')   <reference>
+                                 > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
                               MixedStyledText('SOS')
-                                MixedStyledText('SOS')   None:None <inline>
+                                MixedStyledText('SOS')   <inline>
                                   SingleStyledText('SOS')
-                ListItem()   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-7/ref/chapter1.rst:None <list_item>
+                ListItem()   chapter1.rst   <list_item>
                      x (0,0,1,0,4) bulleted list item
-                     > fallback to default style
                   ListItemLabel('•')
-                       > (0,0,1,0,6) bulleted list item label
-                         (0,0,0,0,2) list item label
+                       > (0,0,1,0,6) bulleted list item label [Sphinx] > list item label
+                         (0,0,0,0,2) list item label [Sphinx] > default
                       MixedStyledText('•')
                         SingleStyledText('')
                         SingleStyledText('•')
                         SingleStyledText('')
                   StaticGroupedFlowables()
-                       > (0,0,0,0,3) list item body
-                    Paragraph('broken reference: nonexisting')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-7/ref/chapter1.rst:27 <paragraph>
-                         > (0,0,0,0,5) list item paragraph
-                           (0,0,0,0,2) body
+                       > (0,0,0,0,3) list item body [Sphinx] > DEFAULT
+                    Paragraph('broken reference: nonexisting')   chapter1.rst:27   <paragraph>
+                         > (0,0,0,0,5) list item paragraph [Sphinx] > default
+                           (0,0,0,0,2) body [Sphinx] > default
                         MixedStyledText('broken reference: nonexisting')
                           MixedStyledText('broken reference: nonexisting')
                             SingleStyledText('broken reference: ')
-                            MixedStyledText('nonexisting')   None:None <inline>
+                            MixedStyledText('nonexisting')   <inline>
                               SingleStyledText('nonexisting')
-            Section(id='%chapter1#section-b')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-7/ref/chapter1.rst:33 <section>
-              Heading('1.2 Section B')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-7/ref/chapter1.rst:33 <title>
-                   > (0,0,0,1,2) heading level 2
-                     (0,0,0,0,2) other heading levels
+            Section(id='%chapter1#section-b')   chapter1.rst:33   <section>
+              Heading('1.2 Section B')   chapter1.rst:33   <title>
+                   > (0,0,0,1,2) heading level 2 [Sphinx] > heading level 1
+                     (0,0,0,0,2) other heading levels [Sphinx] > heading level 5
                   MixedStyledText('1.2 ')
                     SingleStyledText('1.2')
                     SingleStyledText(' ')
                   MixedStyledText('Section B')
                     MixedStyledText('Section B')
                       SingleStyledText('Section B')
-              Paragraph('Paragraph B.', id='%chapter1#par-b')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-7/ref/chapter1.rst:37 <paragraph>
-                   > (0,0,0,0,2) body
+              Paragraph('Paragraph B.', id='%chapter1#par-b')   chapter1.rst:37   <paragraph>
+                   > (0,0,0,0,2) body [Sphinx] > default
                   MixedStyledText('Paragraph B.')
                     MixedStyledText('Paragraph B.')
                       SingleStyledText('Paragraph B.')
-              Figure(id='%chapter1#fig-1')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-7/ref/chapter1.rst:42 <figure>
-                   > (0,0,0,0,2) figure
-                Image('biohazard.png')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-7/ref/chapter1.rst:42 <image>
-                     > (0,0,0,0,4) figure image
-                       (0,0,0,0,2) image
-                Caption('Figure 1.1. Biohazard!')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-7/ref/chapter1.rst:42 <caption>
-                     > (0,0,0,0,4) figure caption
+              Figure(id='%chapter1#fig-1')   chapter1.rst:42   <figure>
+                   > (0,0,0,0,2) figure [Sphinx] > DEFAULT
+                Image('biohazard.png')   chapter1.rst:42   <image>
+                     > (0,0,0,0,4) figure image [Sphinx] > image
+                       (0,0,0,0,2) image [Sphinx] > DEFAULT
+                Caption('Figure 1.1. Biohazard!')   chapter1.rst:42   <caption>
+                     > (0,0,0,0,4) figure caption [Sphinx] > caption
                     SingleStyledText('Figure')
                     SingleStyledText(' ')
                     MixedStyledText('1.1. ')
@@ -826,11 +813,10 @@
                     MixedStyledText('Biohazard!')
                       MixedStyledText('Biohazard!')
                         SingleStyledText('Biohazard!')
-              TableWithCaption(id='%chapter1#table-1')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-7/ref/chapter1.rst:None <table>
+              TableWithCaption(id='%chapter1#table-1')   chapter1.rst   <table>
                    x (0,0,0,0,2) table with caption
-                   > fallback to default style
                 Caption('Table 1.1. Input-output')
-                     > (0,0,0,0,4) table caption
+                     > (0,0,0,0,4) table caption [Sphinx] > caption
                     SingleStyledText('Table')
                     SingleStyledText(' ')
                     MixedStyledText('1.1. ')
@@ -840,175 +826,171 @@
                       MixedStyledText('Input-output')
                         SingleStyledText('Input-output')
                 Table()
-                     > (0,0,0,0,2) table
+                     > (0,0,0,0,2) table [Sphinx] > DEFAULT
                   TableHead()
                     TableRow()
-                      TableCell()   None:None <entry>
+                      TableCell()   <entry>
                            x (0,0,0,0,8) table head cell
-                           > (0,0,0,0,7) table cell
-                        Paragraph('Inputs')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-7/ref/chapter1.rst:49 <paragraph>
-                             > (0,0,0,0,10) table head cell paragraph
-                               (0,0,0,0,9) table body cell paragraph
-                               (0,0,0,0,2) body
+                           > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                        Paragraph('Inputs')   chapter1.rst:49   <paragraph>
+                             > (0,0,0,0,10) table head cell paragraph [Sphinx] > table body cell paragraph
+                               (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                               (0,0,0,0,2) body [Sphinx] > default
                             MixedStyledText('Inputs')
                               MixedStyledText('Inputs')
                                 SingleStyledText('Inputs')
                         TableCellBackground()
-                      TableCell()   None:None <entry>
+                             x (0,0,0,0,10) table head cell background
+                      TableCell()   <entry>
                            x (0,0,0,0,8) table head cell
-                           > (0,0,0,0,7) table cell
-                        Paragraph('Output')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-7/ref/chapter1.rst:49 <paragraph>
-                             > (0,0,0,0,10) table head cell paragraph
-                               (0,0,0,0,9) table body cell paragraph
-                               (0,0,0,0,2) body
+                           > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                        Paragraph('Output')   chapter1.rst:49   <paragraph>
+                             > (0,0,0,0,10) table head cell paragraph [Sphinx] > table body cell paragraph
+                               (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                               (0,0,0,0,2) body [Sphinx] > default
                             MixedStyledText('Output')
                               MixedStyledText('Output')
                                 SingleStyledText('Output')
                         TableCellBackground()
+                             x (0,0,0,0,10) table head cell background
                     TableRow()
-                      TableCell()   None:None <entry>
+                      TableCell()   <entry>
                            x (0,0,0,0,8) table head cell
-                           > (0,0,0,0,7) table cell
-                        Paragraph('A')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-7/ref/chapter1.rst:51 <paragraph>
-                             > (0,0,0,0,10) table head cell paragraph
-                               (0,0,0,0,9) table body cell paragraph
-                               (0,0,0,0,2) body
+                           > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                        Paragraph('A')   chapter1.rst:51   <paragraph>
+                             > (0,0,0,0,10) table head cell paragraph [Sphinx] > table body cell paragraph
+                               (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                               (0,0,0,0,2) body [Sphinx] > default
                             MixedStyledText('A')
                               MixedStyledText('A')
                                 SingleStyledText('A')
                         TableCellBackground()
-                      TableCell()   None:None <entry>
+                             x (0,0,0,0,10) table head cell background
+                      TableCell()   <entry>
                            x (0,0,0,0,8) table head cell
-                           > (0,0,0,0,7) table cell
-                        Paragraph('B')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-7/ref/chapter1.rst:51 <paragraph>
-                             > (0,0,0,0,10) table head cell paragraph
-                               (0,0,0,0,9) table body cell paragraph
-                               (0,0,0,0,2) body
+                           > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                        Paragraph('B')   chapter1.rst:51   <paragraph>
+                             > (0,0,0,0,10) table head cell paragraph [Sphinx] > table body cell paragraph
+                               (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                               (0,0,0,0,2) body [Sphinx] > default
                             MixedStyledText('B')
                               MixedStyledText('B')
                                 SingleStyledText('B')
                         TableCellBackground()
-                      TableCell()   None:None <entry>
+                             x (0,0,0,0,10) table head cell background
+                      TableCell()   <entry>
                            x (0,0,0,0,8) table head cell
-                           > (0,0,0,0,7) table cell
-                        Paragraph('A or B')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-7/ref/chapter1.rst:51 <paragraph>
-                             > (0,0,0,0,10) table head cell paragraph
-                               (0,0,0,0,9) table body cell paragraph
-                               (0,0,0,0,2) body
+                           > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                        Paragraph('A or B')   chapter1.rst:51   <paragraph>
+                             > (0,0,0,0,10) table head cell paragraph [Sphinx] > table body cell paragraph
+                               (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                               (0,0,0,0,2) body [Sphinx] > default
                             MixedStyledText('A or B')
                               MixedStyledText('A or B')
                                 SingleStyledText('A or B')
                         TableCellBackground()
+                             x (0,0,0,0,10) table head cell background
                   TableBody()
                     TableRow()
-                      TableCell()   None:None <entry>
-                           > (0,0,0,0,7) table cell
-                        Paragraph('False')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-7/ref/chapter1.rst:53 <paragraph>
-                             > (0,0,0,1,8) table first column paragraph
-                               (0,0,0,0,9) table body cell paragraph
-                               (0,0,0,0,2) body
+                      TableCell()   <entry>
+                           > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                        Paragraph('False')   chapter1.rst:53   <paragraph>
+                             > (0,0,0,1,8) table first column paragraph [Sphinx] > table body cell paragraph
+                               (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                               (0,0,0,0,2) body [Sphinx] > default
                             MixedStyledText('False')
                               MixedStyledText('False')
                                 SingleStyledText('False')
                         TableCellBackground()
                              x (0,0,0,2,8) table body cell background on odd row
-                             > fallback to default style
-                      TableCell()   None:None <entry>
-                           > (0,0,0,0,7) table cell
-                        Paragraph('False')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-7/ref/chapter1.rst:53 <paragraph>
-                             > (0,0,0,0,9) table body cell paragraph
-                               (0,0,0,0,2) body
+                      TableCell()   <entry>
+                           > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                        Paragraph('False')   chapter1.rst:53   <paragraph>
+                             > (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                               (0,0,0,0,2) body [Sphinx] > default
                             MixedStyledText('False')
                               MixedStyledText('False')
                                 SingleStyledText('False')
                         TableCellBackground()
                              x (0,0,0,2,8) table body cell background on odd row
-                             > fallback to default style
-                      TableCell()   None:None <entry>
-                           > (0,0,0,0,7) table cell
-                        Paragraph('False')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-7/ref/chapter1.rst:53 <paragraph>
-                             > (0,0,0,0,9) table body cell paragraph
-                               (0,0,0,0,2) body
+                      TableCell()   <entry>
+                           > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                        Paragraph('False')   chapter1.rst:53   <paragraph>
+                             > (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                               (0,0,0,0,2) body [Sphinx] > default
                             MixedStyledText('False')
                               MixedStyledText('False')
                                 SingleStyledText('False')
                         TableCellBackground()
                              x (0,0,0,2,8) table body cell background on odd row
-                             > fallback to default style
                     TableRow()
-                      TableCell()   None:None <entry>
-                           > (0,0,0,0,7) table cell
-                        Paragraph('True')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-7/ref/chapter1.rst:54 <paragraph>
-                             > (0,0,0,1,8) table first column paragraph
-                               (0,0,0,0,9) table body cell paragraph
-                               (0,0,0,0,2) body
+                      TableCell()   <entry>
+                           > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                        Paragraph('True')   chapter1.rst:54   <paragraph>
+                             > (0,0,0,1,8) table first column paragraph [Sphinx] > table body cell paragraph
+                               (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                               (0,0,0,0,2) body [Sphinx] > default
                             MixedStyledText('True')
                               MixedStyledText('True')
                                 SingleStyledText('True')
                         TableCellBackground()
                              x (0,0,0,2,8) table body cell background on even row
-                             > fallback to default style
-                      TableCell()   None:None <entry>
-                           > (0,0,0,0,7) table cell
-                        Paragraph('False')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-7/ref/chapter1.rst:54 <paragraph>
-                             > (0,0,0,0,9) table body cell paragraph
-                               (0,0,0,0,2) body
+                      TableCell()   <entry>
+                           > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                        Paragraph('False')   chapter1.rst:54   <paragraph>
+                             > (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                               (0,0,0,0,2) body [Sphinx] > default
                             MixedStyledText('False')
                               MixedStyledText('False')
                                 SingleStyledText('False')
                         TableCellBackground()
                              x (0,0,0,2,8) table body cell background on even row
-                             > fallback to default style
-                      TableCell()   None:None <entry>
-                           > (0,0,0,0,7) table cell
-                        Paragraph('True')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-7/ref/chapter1.rst:54 <paragraph>
-                             > (0,0,0,0,9) table body cell paragraph
-                               (0,0,0,0,2) body
+                      TableCell()   <entry>
+                           > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                        Paragraph('True')   chapter1.rst:54   <paragraph>
+                             > (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                               (0,0,0,0,2) body [Sphinx] > default
                             MixedStyledText('True')
                               MixedStyledText('True')
                                 SingleStyledText('True')
                         TableCellBackground()
                              x (0,0,0,2,8) table body cell background on even row
-                             > fallback to default style
                     TableRow()
-                      TableCell()   None:None <entry>
-                           > (0,0,0,0,7) table cell
-                        Paragraph('False')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-7/ref/chapter1.rst:55 <paragraph>
-                             > (0,0,0,1,8) table first column paragraph
-                               (0,0,0,0,9) table body cell paragraph
-                               (0,0,0,0,2) body
+                      TableCell()   <entry>
+                           > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                        Paragraph('False')   chapter1.rst:55   <paragraph>
+                             > (0,0,0,1,8) table first column paragraph [Sphinx] > table body cell paragraph
+                               (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                               (0,0,0,0,2) body [Sphinx] > default
                             MixedStyledText('False')
                               MixedStyledText('False')
                                 SingleStyledText('False')
                         TableCellBackground()
                              x (0,0,0,2,8) table body cell background on odd row
-                             > fallback to default style
-                      TableCell()   None:None <entry>
-                           > (0,0,0,0,7) table cell
-                        Paragraph('True')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-7/ref/chapter1.rst:55 <paragraph>
-                             > (0,0,0,0,9) table body cell paragraph
-                               (0,0,0,0,2) body
+                      TableCell()   <entry>
+                           > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                        Paragraph('True')   chapter1.rst:55   <paragraph>
+                             > (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                               (0,0,0,0,2) body [Sphinx] > default
                             MixedStyledText('True')
                               MixedStyledText('True')
                                 SingleStyledText('True')
                         TableCellBackground()
                              x (0,0,0,2,8) table body cell background on odd row
-                             > fallback to default style
-                      TableCell()   None:None <entry>
-                           > (0,0,0,0,7) table cell
-                        Paragraph('True')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-7/ref/chapter1.rst:55 <paragraph>
-                             > (0,0,0,0,9) table body cell paragraph
-                               (0,0,0,0,2) body
+                      TableCell()   <entry>
+                           > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                        Paragraph('True')   chapter1.rst:55   <paragraph>
+                             > (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                               (0,0,0,0,2) body [Sphinx] > default
                             MixedStyledText('True')
                               MixedStyledText('True')
                                 SingleStyledText('True')
                         TableCellBackground()
                              x (0,0,0,2,8) table body cell background on odd row
-                             > fallback to default style
 #### DownExpandingContainer('footer')
   StaticGroupedFlowables()
     Footer('		1-1')
-         > (0,0,0,0,2) footer
+         > (0,0,0,0,2) footer [Sphinx] > header_footer
         MixedStyledText('		1-1')
           MixedStyledText('		1-1')
             Tab('	')
@@ -1022,58 +1004,54 @@
   StaticGroupedFlowables()
 #### ChainedContainer('column1')
   (continued) StaticGroupedFlowables()
-    (continued) DocumentTree()
-      (continued) StaticGroupedFlowables()   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-7/ref/index.rst:0 <compound>
-        (continued) StaticGroupedFlowables(id='%chapter1')   None:None <start_of_file>
-          (continued) Section(id='%chapter1#one')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-7/ref/chapter1.rst:4 <section>
-               > (0,0,0,1,4) content chapter
-                 (0,0,0,1,2) chapter
-            (continued) Section(id='%chapter1#section-b')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-7/ref/chapter1.rst:33 <section>
-              (continued) TableWithCaption(id='%chapter1#table-1')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-7/ref/chapter1.rst:None <table>
+    (continued) DocumentTree()   index.rst   <document>
+      (continued) StaticGroupedFlowables()   index.rst   <compound>
+        (continued) StaticGroupedFlowables(id='%chapter1')   <start_of_file>
+          (continued) Section(id='%chapter1#one')   chapter1.rst:4   <section>
+               > (0,0,0,1,4) content chapter [Sphinx ref] > DEFAULT
+                 (0,0,0,1,2) chapter [Sphinx] > DEFAULT
+            (continued) Section(id='%chapter1#section-b')   chapter1.rst:33   <section>
+              (continued) TableWithCaption(id='%chapter1#table-1')   chapter1.rst   <table>
                    x (0,0,0,0,2) table with caption
-                   > fallback to default style
                 (continued) Table()
-                     > (0,0,0,0,2) table
+                     > (0,0,0,0,2) table [Sphinx] > DEFAULT
                     TableRow()
-                      TableCell()   None:None <entry>
-                           > (0,0,0,0,7) table cell
-                        Paragraph('True')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-7/ref/chapter1.rst:56 <paragraph>
-                             > (0,0,0,1,8) table first column paragraph
-                               (0,0,0,0,9) table body cell paragraph
-                               (0,0,0,0,2) body
+                      TableCell()   <entry>
+                           > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                        Paragraph('True')   chapter1.rst:56   <paragraph>
+                             > (0,0,0,1,8) table first column paragraph [Sphinx] > table body cell paragraph
+                               (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                               (0,0,0,0,2) body [Sphinx] > default
                             MixedStyledText('True')
                               MixedStyledText('True')
                                 SingleStyledText('True')
                         TableCellBackground()
                              x (0,0,0,2,8) table body cell background on even row
-                             > fallback to default style
-                      TableCell()   None:None <entry>
-                           > (0,0,0,0,7) table cell
-                        Paragraph('True')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-7/ref/chapter1.rst:56 <paragraph>
-                             > (0,0,0,0,9) table body cell paragraph
-                               (0,0,0,0,2) body
+                      TableCell()   <entry>
+                           > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                        Paragraph('True')   chapter1.rst:56   <paragraph>
+                             > (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                               (0,0,0,0,2) body [Sphinx] > default
                             MixedStyledText('True')
                               MixedStyledText('True')
                                 SingleStyledText('True')
                         TableCellBackground()
                              x (0,0,0,2,8) table body cell background on even row
-                             > fallback to default style
-                      TableCell()   None:None <entry>
-                           > (0,0,0,0,7) table cell
-                        Paragraph('True')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-7/ref/chapter1.rst:56 <paragraph>
-                             > (0,0,0,0,9) table body cell paragraph
-                               (0,0,0,0,2) body
+                      TableCell()   <entry>
+                           > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                        Paragraph('True')   chapter1.rst:56   <paragraph>
+                             > (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                               (0,0,0,0,2) body [Sphinx] > default
                             MixedStyledText('True')
                               MixedStyledText('True')
                                 SingleStyledText('True')
                         TableCellBackground()
                              x (0,0,0,2,8) table body cell background on even row
-                             > fallback to default style
-        StaticGroupedFlowables(id='%chapter2')   None:None <start_of_file>
+        StaticGroupedFlowables(id='%chapter2')   <start_of_file>
 #### UpExpandingContainer('header')
   StaticGroupedFlowables()
     Header('References, Release ')
-         > (0,0,0,0,2) header
+         > (0,0,0,0,2) header [Sphinx] > header_footer
         MixedStyledText('References, Release ')
           MixedStyledText('References, Release ')
             Field('References')
@@ -1084,7 +1062,7 @@
 #### DownExpandingContainer('footer')
   StaticGroupedFlowables()
     Footer('2-2		Chapter 2.  Two')
-         > (0,0,0,0,2) footer
+         > (0,0,0,0,2) footer [Sphinx] > header_footer
         MixedStyledText('2-2		Chapter 2.  Two')
           MixedStyledText('2-2		Chapter 2.  Two')
             Field('2-2')
@@ -1098,9 +1076,9 @@
               SingleStyledText('1')
             SingleStyledText('.  ')
             Field('Two')
-        MixedStyledText('One')
-          MixedStyledText('One')
-            SingleStyledText('One')
+              MixedStyledText('One')
+                MixedStyledText('One')
+                  SingleStyledText('One')
 ---------------------------------- page 2-1 ----------------------------------
 #### FootnoteContainer('footnotes')
   StaticGroupedFlowables()
@@ -1108,8 +1086,8 @@
   StaticGroupedFlowables()
 #### FlowablesContainer('chapter title')
   Paragraph('Chapter 2', style='body matter chapter label')
-       > (0,0,1,0,2) body matter chapter label
-         (0,0,0,0,2) body
+       > (0,0,1,0,2) body matter chapter label [Sphinx] > DEFAULT
+         (0,0,0,0,2) body [Sphinx] > default
       MixedStyledText('Chapter 2')
         MixedStyledText('Chapter 2')
           MixedStyledText('Chapter ')
@@ -1117,30 +1095,30 @@
               SingleStyledText('Chapter')
             SingleStyledText(' ')
           Field('2', style='number')
-               > (0,0,2,0,3) body matter chapter number
+               > (0,0,2,0,3) body matter chapter number [Sphinx] > DEFAULT
             SingleStyledText('2')
   Paragraph('Two', style='body matter chapter title')
-       > (0,0,1,0,2) body matter chapter title
-         (0,0,0,0,2) body
+       > (0,0,1,0,2) body matter chapter title [Sphinx] > DEFAULT
+         (0,0,0,0,2) body [Sphinx] > default
       Field('Two')
         MixedStyledText('Two')
           MixedStyledText('Two')
             SingleStyledText('Two')
 #### ChainedContainer('column1')
   (continued) StaticGroupedFlowables()
-    (continued) DocumentTree()
-      (continued) StaticGroupedFlowables()   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-7/ref/index.rst:0 <compound>
-        (continued) StaticGroupedFlowables(id='%chapter2')   None:None <start_of_file>
-          Section(id='%chapter2#two')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-7/ref/chapter2.rst:6 <section>
-               > (0,0,0,1,4) content chapter
-                 (0,0,0,1,2) chapter
-            Figure(id='%chapter2#fig-2')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-7/ref/chapter2.rst:11 <figure>
-                 > (0,0,0,0,2) figure
-              Image('biohazard.png')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-7/ref/chapter2.rst:11 <image>
-                   > (0,0,0,0,4) figure image
-                     (0,0,0,0,2) image
-              Caption('Figure 2.1. Another image')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-7/ref/chapter2.rst:11 <caption>
-                   > (0,0,0,0,4) figure caption
+    (continued) DocumentTree()   index.rst   <document>
+      (continued) StaticGroupedFlowables()   index.rst   <compound>
+        (continued) StaticGroupedFlowables(id='%chapter2')   <start_of_file>
+          Section(id='%chapter2#two')   chapter2.rst:6   <section>
+               > (0,0,0,1,4) content chapter [Sphinx ref] > DEFAULT
+                 (0,0,0,1,2) chapter [Sphinx] > DEFAULT
+            Figure(id='%chapter2#fig-2')   chapter2.rst:11   <figure>
+                 > (0,0,0,0,2) figure [Sphinx] > DEFAULT
+              Image('biohazard.png')   chapter2.rst:11   <image>
+                   > (0,0,0,0,4) figure image [Sphinx] > image
+                     (0,0,0,0,2) image [Sphinx] > DEFAULT
+              Caption('Figure 2.1. Another image')   chapter2.rst:11   <caption>
+                   > (0,0,0,0,4) figure caption [Sphinx] > caption
                   SingleStyledText('Figure')
                   SingleStyledText(' ')
                   MixedStyledText('2.1. ')
@@ -1149,19 +1127,19 @@
                   MixedStyledText('Another image')
                     MixedStyledText('Another image')
                       SingleStyledText('Another image')
-            Section(id='%chapter2#section-c')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-7/ref/chapter2.rst:17 <section>
-              Heading('2.1 Section C')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-7/ref/chapter2.rst:17 <title>
-                   > (0,0,0,1,2) heading level 2
-                     (0,0,0,0,2) other heading levels
+            Section(id='%chapter2#section-c')   chapter2.rst:17   <section>
+              Heading('2.1 Section C')   chapter2.rst:17   <title>
+                   > (0,0,0,1,2) heading level 2 [Sphinx] > heading level 1
+                     (0,0,0,0,2) other heading levels [Sphinx] > heading level 5
                   MixedStyledText('2.1 ')
                     SingleStyledText('2.1')
                     SingleStyledText(' ')
                   MixedStyledText('Section C')
                     MixedStyledText('Section C')
                       SingleStyledText('Section C')
-              Paragraph('	1	Paragraph C.', id='%chapter2#par-c')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-7/ref/chapter2.rst:21 <paragraph>
-                   > (0,0,0,1,4) numbered paragraph
-                     (0,0,0,0,2) body
+              Paragraph('	1	Paragraph C.', id='%chapter2#par-c')   chapter2.rst:21   <paragraph>
+                   > (0,0,0,1,4) numbered paragraph [Sphinx ref] > body
+                     (0,0,0,0,2) body [Sphinx] > default
                   MixedStyledText('	1	')
                     Tab('	')
                     SingleStyledText('1')
@@ -1169,9 +1147,9 @@
                   MixedStyledText('Paragraph C.')
                     MixedStyledText('Paragraph C.')
                       SingleStyledText('Paragraph C.')
-              Paragraph('	2	Paragraph D.', id='%chapter2#par-d')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-7/ref/chapter2.rst:25 <paragraph>
-                   > (0,0,0,1,4) numbered paragraph
-                     (0,0,0,0,2) body
+              Paragraph('	2	Paragraph D.', id='%chapter2#par-d')   chapter2.rst:25   <paragraph>
+                   > (0,0,0,1,4) numbered paragraph [Sphinx ref] > body
+                     (0,0,0,0,2) body [Sphinx] > default
                   MixedStyledText('	2	')
                     Tab('	')
                     SingleStyledText('2')
@@ -1179,65 +1157,65 @@
                   MixedStyledText('Paragraph D.')
                     MixedStyledText('Paragraph D.')
                       SingleStyledText('Paragraph D.')
-            Section(id='%chapter2#glossary')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-7/ref/chapter2.rst:29 <section>
-              Heading('2.2 Glossary')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-7/ref/chapter2.rst:29 <title>
-                   > (0,0,0,1,2) heading level 2
-                     (0,0,0,0,2) other heading levels
+            Section(id='%chapter2#glossary')   chapter2.rst:29   <section>
+              Heading('2.2 Glossary')   chapter2.rst:29   <title>
+                   > (0,0,0,1,2) heading level 2 [Sphinx] > heading level 1
+                     (0,0,0,0,2) other heading levels [Sphinx] > heading level 5
                   MixedStyledText('2.2 ')
                     SingleStyledText('2.2')
                     SingleStyledText(' ')
                   MixedStyledText('Glossary')
                     MixedStyledText('Glossary')
                       SingleStyledText('Glossary')
-              StaticGroupedFlowables(style='glossary')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-7/ref/chapter2.rst:None <glossary>
-                DefinitionList()   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-7/ref/chapter2.rst:None <definition_list>
-                     > (0,0,0,0,2) definition list
-                  LabeledFlowable()   None:None <definition_list_item>
-                       > (0,0,0,0,4) definition list item
+              StaticGroupedFlowables(style='glossary')   chapter2.rst   <glossary>
+                DefinitionList()   chapter2.rst   <definition_list>
+                     > (0,0,0,0,2) definition list [Sphinx] > DEFAULT
+                  LabeledFlowable()   <definition_list_item>
+                       > (0,0,0,0,4) definition list item [Sphinx] > DEFAULT
                     StaticGroupedFlowables(style='definition term')
-                         > (0,0,1,0,5) definition term
+                         > (0,0,1,0,5) definition term [Sphinx] > DEFAULT
                       Paragraph('&&')
-                           > (0,0,1,0,7) definition term paragraph
-                             (0,0,0,1,4) numbered paragraph
-                             (0,0,0,0,2) body
+                           > (0,0,1,0,7) definition term paragraph [Sphinx] > default
+                             (0,0,0,1,4) numbered paragraph [Sphinx ref] > body
+                             (0,0,0,0,2) body [Sphinx] > default
                           MixedStyledText('&&')
-                            MixedStyledText('&&', id='%chapter2#term-0')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-7/ref/chapter2.rst:32 <term>
+                            MixedStyledText('&&', id='%chapter2#term-0')   chapter2.rst:32   <term>
                               SingleStyledText('&&')
-                              InlineIndexTarget('')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-7/ref/chapter2.rst:32 <index>
-                    StaticGroupedFlowables(style='definition')   None:None <definition>
-                         > (0,0,1,0,5) definition
-                      Paragraph('bit-wise AND')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-7/ref/chapter2.rst:34 <paragraph>
-                           > (0,0,1,0,7) definition paragraph
-                             (0,0,0,1,4) numbered paragraph
-                             (0,0,0,0,2) body
+                              InlineIndexTarget('')   chapter2.rst:32   <index>
+                    StaticGroupedFlowables(style='definition')   <definition>
+                         > (0,0,1,0,5) definition [Sphinx] > DEFAULT
+                      Paragraph('bit-wise AND')   chapter2.rst:34   <paragraph>
+                           > (0,0,1,0,7) definition paragraph [Sphinx] > body
+                             (0,0,0,1,4) numbered paragraph [Sphinx ref] > body
+                             (0,0,0,0,2) body [Sphinx] > default
                           MixedStyledText('bit-wise AND')
                             MixedStyledText('bit-wise AND')
                               SingleStyledText('bit-wise AND')
-                  LabeledFlowable()   None:None <definition_list_item>
-                       > (0,0,0,0,4) definition list item
+                  LabeledFlowable()   <definition_list_item>
+                       > (0,0,0,0,4) definition list item [Sphinx] > DEFAULT
                     StaticGroupedFlowables(style='definition term')
-                         > (0,0,1,0,5) definition term
+                         > (0,0,1,0,5) definition term [Sphinx] > DEFAULT
                       Paragraph('SOS')
-                           > (0,0,1,0,7) definition term paragraph
-                             (0,0,0,1,4) numbered paragraph
-                             (0,0,0,0,2) body
+                           > (0,0,1,0,7) definition term paragraph [Sphinx] > default
+                             (0,0,0,1,4) numbered paragraph [Sphinx ref] > body
+                             (0,0,0,0,2) body [Sphinx] > default
                           MixedStyledText('SOS')
-                            MixedStyledText('SOS', id='%chapter2#term-SOS')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-7/ref/chapter2.rst:35 <term>
+                            MixedStyledText('SOS', id='%chapter2#term-SOS')   chapter2.rst:35   <term>
                               SingleStyledText('SOS')
-                              InlineIndexTarget('')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-7/ref/chapter2.rst:35 <index>
-                    StaticGroupedFlowables(style='definition')   None:None <definition>
-                         > (0,0,1,0,5) definition
-                      Paragraph('save our souls')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-7/ref/chapter2.rst:37 <paragraph>
-                           > (0,0,1,0,7) definition paragraph
-                             (0,0,0,1,4) numbered paragraph
-                             (0,0,0,0,2) body
+                              InlineIndexTarget('')   chapter2.rst:35   <index>
+                    StaticGroupedFlowables(style='definition')   <definition>
+                         > (0,0,1,0,5) definition [Sphinx] > DEFAULT
+                      Paragraph('save our souls')   chapter2.rst:37   <paragraph>
+                           > (0,0,1,0,7) definition paragraph [Sphinx] > body
+                             (0,0,0,1,4) numbered paragraph [Sphinx ref] > body
+                             (0,0,0,0,2) body [Sphinx] > default
                           MixedStyledText('save our souls')
                             MixedStyledText('save our souls')
                               SingleStyledText('save our souls')
 #### DownExpandingContainer('footer')
   StaticGroupedFlowables()
     Footer('		2-1')
-         > (0,0,0,0,2) footer
+         > (0,0,0,0,2) footer [Sphinx] > header_footer
         MixedStyledText('		2-1')
           MixedStyledText('		2-1')
             Tab('	')
@@ -1251,8 +1229,8 @@
   StaticGroupedFlowables()
 #### FlowablesContainer('chapter title')
   Paragraph('Index', style='front matter section title')
-       > (0,0,1,0,2) front matter section title
-         (0,0,0,0,2) body
+       > (0,0,1,0,2) front matter section title [Sphinx] > DEFAULT
+         (0,0,0,0,2) body [Sphinx] > default
       Field('Index')
         StringField('Index')
           SingleStyledText('Index')
@@ -1260,43 +1238,43 @@
   StaticGroupedFlowables()
     StaticGroupedFlowables()
     IndexSection()
-         > (0,0,0,1,1) chapter
+         > (0,0,0,1,1) chapter [Sphinx] > DEFAULT
       Index()   index
-           > (0,0,0,0,2) index
+           > (0,0,0,0,2) index [Sphinx] > DEFAULT
         IndexLabel('Symbols')
-             > (0,0,0,0,2) index section label
-               (0,0,0,0,1) body
+             > (0,0,0,0,2) index section label [Sphinx] > DEFAULT
+               (0,0,0,0,1) body [Sphinx] > default
             SingleStyledText('Symbols')
         IndexEntry('&&, 2-1')
-             > (0,0,0,1,2) level 1 index entry
-               (0,0,0,0,1) body
+             > (0,0,0,1,2) level 1 index entry [Sphinx] > default
+               (0,0,0,0,1) body [Sphinx] > default
             MixedStyledText('&&, 2-1')
               MixedStyledText('&&, 2-1')
                 SingleStyledText('&&, ')
                 MixedStyledText('2-1')
                   Reference('2-1')
-                       > (0,0,0,0,1) linked reference
+                       > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
                     SingleStyledText('2-1')
         IndexLabel('S')
-             > (0,0,0,0,2) index section label
-               (0,0,0,0,1) body
+             > (0,0,0,0,2) index section label [Sphinx] > DEFAULT
+               (0,0,0,0,1) body [Sphinx] > default
             SingleStyledText('S')
         IndexEntry('SOS, 2-1')
-             > (0,0,0,1,2) level 1 index entry
-               (0,0,0,0,1) body
+             > (0,0,0,1,2) level 1 index entry [Sphinx] > default
+               (0,0,0,0,1) body [Sphinx] > default
             MixedStyledText('SOS, 2-1')
               MixedStyledText('SOS, 2-1')
                 SingleStyledText('SOS, ')
                 MixedStyledText('2-1')
                   Reference('2-1')
-                       > (0,0,0,0,1) linked reference
+                       > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
                     SingleStyledText('2-1')
 #### ChainedContainer('column2')
   StaticGroupedFlowables()
 #### DownExpandingContainer('footer')
   StaticGroupedFlowables()
     Footer('		I-1')
-         > (0,0,0,0,2) footer
+         > (0,0,0,0,2) footer [Sphinx] > header_footer
         MixedStyledText('		I-1')
           MixedStyledText('		I-1')
             Tab('	')

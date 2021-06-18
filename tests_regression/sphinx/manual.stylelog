@@ -2,16 +2,16 @@
 #### DownExpandingContainer('title')
   StaticGroupedFlowables()
     Paragraph('Manual', style='title page title')
-         > (0,0,1,0,2) title page title
-           (0,0,0,0,2) body
+         > (0,0,1,0,2) title page title [Sphinx] > DEFAULT
+           (0,0,0,0,2) body [Sphinx] > default
         SingleStyledText('Manual')
     Paragraph('Release ', style='title page subtitle')
-         > (0,0,1,0,2) title page subtitle
-           (0,0,0,0,2) body
+         > (0,0,1,0,2) title page subtitle [Sphinx] > title page title
+           (0,0,0,0,2) body [Sphinx] > default
         SingleStyledText('Release ')
     Paragraph('Author', style='title page author')
-         > (0,0,1,0,2) title page author
-           (0,0,0,0,2) body
+         > (0,0,1,0,2) title page author [Sphinx] > DEFAULT
+           (0,0,0,0,2) body [Sphinx] > default
         SingleStyledText('Author')
 ---------------------------------- page i ----------------------------------
 #### FootnoteContainer('footnotes')
@@ -20,49 +20,54 @@
   StaticGroupedFlowables()
 #### FlowablesContainer('chapter title')
   Paragraph('Table of Contents', style='front matter section title')
-       > (0,0,1,0,2) front matter section title
-         (0,0,0,0,2) body
+       > (0,0,1,0,2) front matter section title [Sphinx] > DEFAULT
+         (0,0,0,0,2) body [Sphinx] > default
       Field('Table of Contents')
-        SingleStyledText('Table of Contents')
+        StringField('Table of Contents')
+          SingleStyledText('Table of Contents')
 #### ChainedContainer('column1')
   StaticGroupedFlowables()
     TableOfContentsSection(style='table of contents')
-         > (0,0,1,0,1) table of contents section
-           (0,0,0,1,1) chapter
+         > (0,0,1,0,1) table of contents section [Sphinx] > DEFAULT
+           (0,0,0,1,1) chapter [Sphinx] > DEFAULT
       TableOfContents()   table of contents
-           > (0,0,0,0,2) table of contents
+           > (0,0,0,0,2) table of contents [Sphinx] > default
         TableOfContentsEntry('1	Introduction	1')
-             > (0,0,0,1,2) toc level 1
+             > (0,0,0,1,2) toc level 1 [Sphinx] > table of contents
             ReferenceField('1')
-                 > (0,0,0,1,4) toc entry number reference field
-                   (0,0,0,0,1) linked reference
+                 > (0,0,0,1,4) toc entry number reference field [Sphinx] > linked reference
+                   (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
               SingleStyledText('1')
             Tab('	')
             ReferenceField('Introduction')
-                 > (0,0,0,0,1) linked reference
-              SingleStyledText('Introduction')
+                 > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+              MixedStyledText('Introduction')
+                MixedStyledText('Introduction')
+                  SingleStyledText('Introduction')
             Tab('	')
             ReferenceField('1')
-                 > (0,0,0,0,1) linked reference
+                 > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
               SingleStyledText('1')
         TableOfContentsEntry('2	Installation	3')
-             > (0,0,0,1,2) toc level 1
+             > (0,0,0,1,2) toc level 1 [Sphinx] > table of contents
             ReferenceField('2')
-                 > (0,0,0,1,4) toc entry number reference field
-                   (0,0,0,0,1) linked reference
+                 > (0,0,0,1,4) toc entry number reference field [Sphinx] > linked reference
+                   (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
               SingleStyledText('2')
             Tab('	')
             ReferenceField('Installation')
-                 > (0,0,0,0,1) linked reference
-              SingleStyledText('Installation')
+                 > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+              MixedStyledText('Installation')
+                MixedStyledText('Installation')
+                  SingleStyledText('Installation')
             Tab('	')
             ReferenceField('3')
-                 > (0,0,0,0,1) linked reference
+                 > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
               SingleStyledText('3')
 #### DownExpandingContainer('footer')
   StaticGroupedFlowables()
     Footer('		i')
-         > (0,0,0,0,2) footer
+         > (0,0,0,0,2) footer [Sphinx] > header_footer
         MixedStyledText('		i')
           MixedStyledText('		i')
             Tab('	')
@@ -76,8 +81,8 @@
   StaticGroupedFlowables()
 #### FlowablesContainer('chapter title')
   Paragraph('Chapter 1', style='body matter chapter label')
-       > (0,0,1,0,2) body matter chapter label
-         (0,0,0,0,2) body
+       > (0,0,1,0,2) body matter chapter label [Sphinx] > DEFAULT
+         (0,0,0,0,2) body [Sphinx] > default
       MixedStyledText('Chapter 1')
         MixedStyledText('Chapter 1')
           MixedStyledText('Chapter ')
@@ -85,46 +90,49 @@
               SingleStyledText('Chapter')
             SingleStyledText(' ')
           Field('1', style='number')
-               > (0,0,2,0,3) body matter chapter number
+               > (0,0,2,0,3) body matter chapter number [Sphinx] > DEFAULT
             SingleStyledText('1')
   Paragraph('Introduction', style='body matter chapter title')
-       > (0,0,1,0,2) body matter chapter title
-         (0,0,0,0,2) body
+       > (0,0,1,0,2) body matter chapter title [Sphinx] > DEFAULT
+         (0,0,0,0,2) body [Sphinx] > default
       Field('Introduction')
-        SingleStyledText('Introduction')
+        MixedStyledText('Introduction')
+          MixedStyledText('Introduction')
+            SingleStyledText('Introduction')
 #### ChainedContainer('column1')
   StaticGroupedFlowables()
-    DocumentTree()
-      StaticGroupedFlowables()   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-647/twotargets/manual.rst:0 <compound>
-        StaticGroupedFlowables(id='%intro')   None:None <start_of_file>
-          Section(id='%intro#introduction')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-647/twotargets/intro.rst:4 <section>
-               > (0,0,0,1,2) chapter
-            Paragraph('This is the introduction.')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-647/twotargets/intro.rst:6 <paragraph>
-                 > (0,0,0,0,2) body
+    DocumentTree()   manual.rst   <document>
+      StaticGroupedFlowables()   manual.rst   <compound>
+        StaticGroupedFlowables(id='%intro')   <start_of_file>
+          Section(id='%intro#introduction')   intro.rst:4   <section>
+               > (0,0,0,1,4) content chapter [Sphinx] > chapter
+                 (0,0,0,1,2) chapter [Sphinx] > DEFAULT
+            Paragraph('This is the introduction.')   intro.rst:6   <paragraph>
+                 > (0,0,0,0,2) body [Sphinx] > default
                 MixedStyledText('This is the introduction.')
                   MixedStyledText('This is the introduction.')
                     SingleStyledText('This is the introduction.')
-            Paragraph('Link to command.')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-647/twotargets/intro.rst:8 <paragraph>
-                 > (0,0,0,0,2) body
+            Paragraph('Link to command.')   intro.rst:8   <paragraph>
+                 > (0,0,0,0,2) body [Sphinx] > default
                 MixedStyledText('Link to command.')
                   MixedStyledText('Link to command.')
                     SingleStyledText('Link to ')
-                    MixedStyledText('command')   None:None <inline>
+                    MixedStyledText('command')   <inline>
                       SingleStyledText('command')
                     SingleStyledText('.')
-            Paragraph('Link to command-line.')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-647/twotargets/intro.rst:10 <paragraph>
-                 > (0,0,0,0,2) body
+            Paragraph('Link to command-line.')   intro.rst:10   <paragraph>
+                 > (0,0,0,0,2) body [Sphinx] > default
                 MixedStyledText('Link to command-line.')
                   MixedStyledText('Link to command-line.')
                     SingleStyledText('Link to ')
-                    MixedStyledText('command-line')   None:None <inline>
+                    MixedStyledText('command-line')   <inline>
                       SingleStyledText('command-line')
                     SingleStyledText('.')
-        StaticGroupedFlowables(id='%install')   None:None <start_of_file>
+        StaticGroupedFlowables(id='%install')   <start_of_file>
 #### DownExpandingContainer('footer')
   StaticGroupedFlowables()
     Footer('		1')
-         > (0,0,0,0,2) footer
+         > (0,0,0,0,2) footer [Sphinx] > header_footer
         MixedStyledText('		1')
           MixedStyledText('		1')
             Tab('	')
@@ -138,13 +146,13 @@
   StaticGroupedFlowables()
 #### ChainedContainer('column1')
   (continued) StaticGroupedFlowables()
-    (continued) DocumentTree()
-      (continued) StaticGroupedFlowables()   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-647/twotargets/manual.rst:0 <compound>
-        (continued) StaticGroupedFlowables(id='%install')   None:None <start_of_file>
+    (continued) DocumentTree()   manual.rst   <document>
+      (continued) StaticGroupedFlowables()   manual.rst   <compound>
+        (continued) StaticGroupedFlowables(id='%install')   <start_of_file>
 #### UpExpandingContainer('header')
   StaticGroupedFlowables()
     Header('Manual, Release ')
-         > (0,0,0,0,2) header
+         > (0,0,0,0,2) header [Sphinx] > header_footer
         MixedStyledText('Manual, Release ')
           MixedStyledText('Manual, Release ')
             Field('Manual')
@@ -155,7 +163,7 @@
 #### DownExpandingContainer('footer')
   StaticGroupedFlowables()
     Footer('2		Chapter 1.  Introduction')
-         > (0,0,0,0,2) footer
+         > (0,0,0,0,2) footer [Sphinx] > header_footer
         MixedStyledText('2		Chapter 1.  Introduction')
           MixedStyledText('2		Chapter 1.  Introduction')
             Field('2')
@@ -169,7 +177,9 @@
               SingleStyledText('1')
             SingleStyledText('.  ')
             Field('Introduction')
-              SingleStyledText('Introduction')
+              MixedStyledText('Introduction')
+                MixedStyledText('Introduction')
+                  SingleStyledText('Introduction')
 ---------------------------------- page 3 ----------------------------------
 #### FootnoteContainer('footnotes')
   StaticGroupedFlowables()
@@ -177,8 +187,8 @@
   StaticGroupedFlowables()
 #### FlowablesContainer('chapter title')
   Paragraph('Chapter 2', style='body matter chapter label')
-       > (0,0,1,0,2) body matter chapter label
-         (0,0,0,0,2) body
+       > (0,0,1,0,2) body matter chapter label [Sphinx] > DEFAULT
+         (0,0,0,0,2) body [Sphinx] > default
       MixedStyledText('Chapter 2')
         MixedStyledText('Chapter 2')
           MixedStyledText('Chapter ')
@@ -186,29 +196,32 @@
               SingleStyledText('Chapter')
             SingleStyledText(' ')
           Field('2', style='number')
-               > (0,0,2,0,3) body matter chapter number
+               > (0,0,2,0,3) body matter chapter number [Sphinx] > DEFAULT
             SingleStyledText('2')
   Paragraph('Installation', style='body matter chapter title')
-       > (0,0,1,0,2) body matter chapter title
-         (0,0,0,0,2) body
+       > (0,0,1,0,2) body matter chapter title [Sphinx] > DEFAULT
+         (0,0,0,0,2) body [Sphinx] > default
       Field('Installation')
-        SingleStyledText('Installation')
+        MixedStyledText('Installation')
+          MixedStyledText('Installation')
+            SingleStyledText('Installation')
 #### ChainedContainer('column1')
   (continued) StaticGroupedFlowables()
-    (continued) DocumentTree()
-      (continued) StaticGroupedFlowables()   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-647/twotargets/manual.rst:0 <compound>
-        (continued) StaticGroupedFlowables(id='%install')   None:None <start_of_file>
-          Section(id='%install#installation')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-647/twotargets/install.rst:5 <section>
-               > (0,0,0,1,2) chapter
-            Paragraph('Here would go installation instr...')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-647/twotargets/install.rst:7 <paragraph>
-                 > (0,0,0,0,2) body
+    (continued) DocumentTree()   manual.rst   <document>
+      (continued) StaticGroupedFlowables()   manual.rst   <compound>
+        (continued) StaticGroupedFlowables(id='%install')   <start_of_file>
+          Section(id='%install#installation')   install.rst:5   <section>
+               > (0,0,0,1,4) content chapter [Sphinx] > chapter
+                 (0,0,0,1,2) chapter [Sphinx] > DEFAULT
+            Paragraph('Here would go installation instr...')   install.rst:7   <paragraph>
+                 > (0,0,0,0,2) body [Sphinx] > default
                 MixedStyledText('Here would go installation instr...')
                   MixedStyledText('Here would go installation instr...')
                     SingleStyledText('Here would go installation instr...')
 #### DownExpandingContainer('footer')
   StaticGroupedFlowables()
     Footer('		3')
-         > (0,0,0,0,2) footer
+         > (0,0,0,0,2) footer [Sphinx] > header_footer
         MixedStyledText('		3')
           MixedStyledText('		3')
             Tab('	')
@@ -228,7 +241,7 @@
 #### DownExpandingContainer('footer')
   StaticGroupedFlowables()
     Footer('		5')
-         > (0,0,0,0,2) footer
+         > (0,0,0,0,2) footer [Sphinx] > header_footer
         MixedStyledText('		5')
           MixedStyledText('		5')
             Tab('	')

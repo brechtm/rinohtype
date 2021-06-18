@@ -5,40 +5,45 @@
   StaticGroupedFlowables()
 #### FlowablesContainer('chapter title')
   Paragraph('Hoofdstuk 1', style='body matter chapter label')
-       > (0,0,1,0,2) body matter chapter label
-         (0,0,0,0,2) body
-    MixedStyledText('Hoofdstuk 1')
-      MixedStyledText('Hoofdstuk ')
-        StringField('Hoofdstuk')
-          SingleStyledText('Hoofdstuk')
-        SingleStyledText(' ')
-      Field('1', style='number')
-           > (0,0,2,0,3) body matter chapter number
-        SingleStyledText('1')
+       > (0,0,1,0,2) body matter chapter label [Sphinx] > DEFAULT
+         (0,0,0,0,2) body [Sphinx] > default
+      MixedStyledText('Hoofdstuk 1')
+        MixedStyledText('Hoofdstuk 1')
+          MixedStyledText('Hoofdstuk ')
+            StringField('Hoofdstuk')
+              SingleStyledText('Hoofdstuk')
+            SingleStyledText(' ')
+          Field('1', style='number')
+               > (0,0,2,0,3) body matter chapter number [Sphinx] > DEFAULT
+            SingleStyledText('1')
   Paragraph('Eerste hoofdstuk', style='body matter chapter title')
-       > (0,0,1,0,2) body matter chapter title
-         (0,0,0,0,2) body
-    Field('Eerste hoofdstuk')
-      SingleStyledText('Eerste hoofdstuk')
+       > (0,0,1,0,2) body matter chapter title [Sphinx] > DEFAULT
+         (0,0,0,0,2) body [Sphinx] > default
+      Field('Eerste hoofdstuk')
+        MixedStyledText('Eerste hoofdstuk')
+          MixedStyledText('Eerste hoofdstuk')
+            SingleStyledText('Eerste hoofdstuk')
 #### ChainedContainer('column1')
   StaticGroupedFlowables()
-    DocumentTree()
-      Section(id='eerste-hoofdstuk')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/stringfield_lang.rst:4 <section>
-           > (0,0,0,1,2) chapter
-        Paragraph('Een paragraaf.')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/stringfield_lang.rst:6 <paragraph>
-             > (0,0,0,0,2) body
-          MixedStyledText('Een paragraaf.')
-            SingleStyledText('Een paragraaf.')
+    DocumentTree()   stringfield_lang.rst   <document>
+      Section(id='eerste-hoofdstuk')   stringfield_lang.rst:4   <section>
+           > (0,0,0,1,4) content chapter [Sphinx] > chapter
+             (0,0,0,1,2) chapter [Sphinx] > DEFAULT
+        Paragraph('Een paragraaf.')   stringfield_lang.rst:6   <paragraph>
+             > (0,0,0,0,2) body [Sphinx] > default
+            MixedStyledText('Een paragraaf.')
+              MixedStyledText('Een paragraaf.')
+                SingleStyledText('Een paragraaf.')
 #### DownExpandingContainer('footer')
   StaticGroupedFlowables()
     Footer('		1')
-         > (0,0,0,0,2) footer
-           (0,0,0,0,1) body
-      MixedStyledText('		1')
-        Tab('	')
-        Tab('	')
-        Field('1')
-          SingleStyledText('1')
+         > (0,0,0,0,2) footer [Sphinx] > header_footer
+        MixedStyledText('		1')
+          MixedStyledText('		1')
+            Tab('	')
+            Tab('	')
+            Field('1')
+              SingleStyledText('1')
 ---------------------------------- page 2 ----------------------------------
 #### FootnoteContainer('footnotes')
   StaticGroupedFlowables()
@@ -46,30 +51,32 @@
   StaticGroupedFlowables()
 #### ChainedContainer('column1')
   (continued) StaticGroupedFlowables()
-    (continued) DocumentTree()
+    (continued) DocumentTree()   stringfield_lang.rst   <document>
 #### UpExpandingContainer('header')
   StaticGroupedFlowables()
     Header(', ')
-         > (0,0,0,0,2) header
-           (0,0,0,0,1) body
-      MixedStyledText(', ')
-        Field('')
-        SingleStyledText(', ')
-        Field('')
+         > (0,0,0,0,2) header [Sphinx] > header_footer
+        MixedStyledText(', ')
+          MixedStyledText(', ')
+            Field('')
+            SingleStyledText(', ')
+            Field('')
 #### DownExpandingContainer('footer')
   StaticGroupedFlowables()
     Footer('my string 	 	 1.  Eerste hoofdst...')
-         > (0,0,0,0,2) footer
-           (0,0,0,0,1) body
-      MixedStyledText('my string 	 	 1.  Eerste hoofdst...')
-        StringField('my string')
-          SingleStyledText('my string')
-        SingleStyledText(' 	 	 ')
-        Field('1')
-          SingleStyledText('1')
-        SingleStyledText('.  ')
-        Field('Eerste hoofdstuk')
-          SingleStyledText('Eerste hoofdstuk')
+         > (0,0,0,0,2) footer [Sphinx] > header_footer
+        MixedStyledText('my string 	 	 1.  Eerste hoofdst...')
+          MixedStyledText('my string 	 	 1.  Eerste hoofdst...')
+            StringField('my string')
+              SingleStyledText('my string')
+            SingleStyledText(' 	 	 ')
+            Field('1')
+              SingleStyledText('1')
+            SingleStyledText('.  ')
+            Field('Eerste hoofdstuk')
+              MixedStyledText('Eerste hoofdstuk')
+                MixedStyledText('Eerste hoofdstuk')
+                  SingleStyledText('Eerste hoofdstuk')
 ---------------------------------- page 3 ----------------------------------
 #### FootnoteContainer('footnotes')
   StaticGroupedFlowables()
@@ -77,50 +84,56 @@
   StaticGroupedFlowables()
 #### FlowablesContainer('chapter title')
   Paragraph('Hoofdstuk 2', style='body matter chapter label')
-       > (0,0,1,0,2) body matter chapter label
-         (0,0,0,0,2) body
-    MixedStyledText('Hoofdstuk 2')
-      MixedStyledText('Hoofdstuk ')
-        StringField('Hoofdstuk')
-          SingleStyledText('Hoofdstuk')
-        SingleStyledText(' ')
-      Field('2', style='number')
-           > (0,0,2,0,3) body matter chapter number
-        SingleStyledText('2')
+       > (0,0,1,0,2) body matter chapter label [Sphinx] > DEFAULT
+         (0,0,0,0,2) body [Sphinx] > default
+      MixedStyledText('Hoofdstuk 2')
+        MixedStyledText('Hoofdstuk 2')
+          MixedStyledText('Hoofdstuk ')
+            StringField('Hoofdstuk')
+              SingleStyledText('Hoofdstuk')
+            SingleStyledText(' ')
+          Field('2', style='number')
+               > (0,0,2,0,3) body matter chapter number [Sphinx] > DEFAULT
+            SingleStyledText('2')
   Paragraph('Tweede hoofdstuk', style='body matter chapter title')
-       > (0,0,1,0,2) body matter chapter title
-         (0,0,0,0,2) body
-    Field('Tweede hoofdstuk')
-      SingleStyledText('Tweede hoofdstuk')
+       > (0,0,1,0,2) body matter chapter title [Sphinx] > DEFAULT
+         (0,0,0,0,2) body [Sphinx] > default
+      Field('Tweede hoofdstuk')
+        MixedStyledText('Tweede hoofdstuk')
+          MixedStyledText('Tweede hoofdstuk')
+            SingleStyledText('Tweede hoofdstuk')
 #### ChainedContainer('column1')
   (continued) StaticGroupedFlowables()
-    (continued) DocumentTree()
-      Section(id='tweede-hoofdstuk')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/stringfield_lang.rst:10 <section>
-           > (0,0,0,1,2) chapter
-        Admonition()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/stringfield_lang.rst:None <warning>
-             > (0,0,0,1,2) warning admonition
-               (0,0,0,0,2) admonition
+    (continued) DocumentTree()   stringfield_lang.rst   <document>
+      Section(id='tweede-hoofdstuk')   stringfield_lang.rst:10   <section>
+           > (0,0,0,1,4) content chapter [Sphinx] > chapter
+             (0,0,0,1,2) chapter [Sphinx] > DEFAULT
+        Admonition()   stringfield_lang.rst   <warning>
+             > (0,0,0,1,2) warning admonition [Sphinx] > boxed builtin admonition
+               (0,0,0,0,2) admonition [Sphinx] > DEFAULT
           Paragraph('Waarschuwing Veeg je voeten.')
-               > (0,0,0,0,2) body
-            MixedStyledText('Waarschuwing Veeg je voeten.')
-              MixedStyledText('Waarschuwing', style='inline title')
-                   x (0,0,1,1,3) warning admonition inline title
-                   > (0,0,1,0,3) admonition inline title
-                SingleStyledText('Waarschuwing')
-              SingleStyledText(' ')
-              MixedStyledText('Veeg je voeten.')
-                SingleStyledText('Veeg je voeten.')
-        Paragraph('Een paragraaf in het tweede hoof...')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/stringfield_lang.rst:14 <paragraph>
-             > (0,0,0,0,2) body
-          MixedStyledText('Een paragraaf in het tweede hoof...')
-            SingleStyledText('Een paragraaf in het tweede hoof...')
+               > (0,0,0,0,2) body [Sphinx] > default
+              MixedStyledText('Waarschuwing Veeg je voeten.')
+                MixedStyledText('Waarschuwing Veeg je voeten.')
+                  MixedStyledText('Waarschuwing', style='inline title')
+                       x (0,0,1,1,3) warning admonition inline title
+                       > (0,0,1,0,3) admonition inline title [Sphinx] > admonition title
+                    SingleStyledText('Waarschuwing')
+                  SingleStyledText(' ')
+                  MixedStyledText('Veeg je voeten.')
+                    SingleStyledText('Veeg je voeten.')
+        Paragraph('Een paragraaf in het tweede hoof...')   stringfield_lang.rst:14   <paragraph>
+             > (0,0,0,0,2) body [Sphinx] > default
+            MixedStyledText('Een paragraaf in het tweede hoof...')
+              MixedStyledText('Een paragraaf in het tweede hoof...')
+                SingleStyledText('Een paragraaf in het tweede hoof...')
 #### DownExpandingContainer('footer')
   StaticGroupedFlowables()
     Footer('		3')
-         > (0,0,0,0,2) footer
-           (0,0,0,0,1) body
-      MixedStyledText('		3')
-        Tab('	')
-        Tab('	')
-        Field('3')
-          SingleStyledText('3')
+         > (0,0,0,0,2) footer [Sphinx] > header_footer
+        MixedStyledText('		3')
+          MixedStyledText('		3')
+            Tab('	')
+            Tab('	')
+            Field('3')
+              SingleStyledText('3')

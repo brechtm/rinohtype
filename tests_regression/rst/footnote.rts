@@ -11,6 +11,6 @@ text_align = center
 
 [spacer2 : Paragraph(has_class='spacer2')]
 border = 1pt, #555
-padding_top = 7cm
-padding_bottom = 6.6cm
+padding_top = 6.85cm
+padding_bottom = 6.86cm
 text_align = center

@@ -5,97 +5,115 @@
   StaticGroupedFlowables()
 #### ChainedContainer('column1')
   StaticGroupedFlowables()
-    DocumentTree()
-      Section(id='paragraph-width-is-auto')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/paragraph.rst:4 <section>
-           > (0,0,0,1,2) chapter
-        Heading('Paragraph width is 'auto'')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/paragraph.rst:4 <title>
-             > (0,0,0,1,2) heading level 1
-               (0,0,0,0,2) other heading levels
+    DocumentTree()   paragraph.rst   <document>
+      Section(id='paragraph-width-is-auto')   paragraph.rst:4   <section>
+           > (0,0,0,1,4) content chapter [Sphinx] > chapter
+             (0,0,0,1,2) chapter [paragraph.rts] > DEFAULT
+        Heading('Paragraph width is 'auto'')   paragraph.rst:4   <title>
+             > (0,0,0,1,2) heading level 1 [paragraph.rts] > DEFAULT
+               (0,0,0,0,2) other heading levels [Sphinx] > heading level 5
             MixedStyledText('Paragraph width is 'auto'')
-              SingleStyledText('')
               MixedStyledText('Paragraph width is 'auto'')
                 SingleStyledText('Paragraph width is 'auto'')
-        Paragraph('Left-aligned paragraph with left...', style='line block')   None:None <line_block>
-             > (1,0,0,1,2) auto-left-left paragraph
-               (0,0,1,0,2) line block
-               (0,0,0,0,2) body
-          MixedStyledText('Left-aligned paragraph with left...')   None:None <line>
-            SingleStyledText('Left-aligned paragraph with left...')
-          Newline('\n')
-          MixedStyledText('A Second line.')   None:None <line>
-            SingleStyledText('A Second line.')
-        Paragraph('Left-aligned paragraph with cent...', style='line block')   None:None <line_block>
-             > (1,0,0,1,2) auto-left-center paragraph
-               (0,0,1,0,2) line block
-               (0,0,0,0,2) body
-          MixedStyledText('Left-aligned paragraph with cent...')   None:None <line>
-            SingleStyledText('Left-aligned paragraph with cent...')
-          Newline('\n')
-          MixedStyledText('A Second line.')   None:None <line>
-            SingleStyledText('A Second line.')
-        Paragraph('Left-aligned paragraph with righ...', style='line block')   None:None <line_block>
-             > (1,0,0,1,2) auto-left-right paragraph
-               (0,0,1,0,2) line block
-               (0,0,0,0,2) body
-          MixedStyledText('Left-aligned paragraph with righ...')   None:None <line>
-            SingleStyledText('Left-aligned paragraph with righ...')
-          Newline('\n')
-          MixedStyledText('A Second line.')   None:None <line>
-            SingleStyledText('A Second line.')
-        Paragraph('Center-aligned paragraph with le...', style='line block')   None:None <line_block>
-             > (1,0,0,1,2) auto-center-left paragraph
-               (0,0,1,0,2) line block
-               (0,0,0,0,2) body
-          MixedStyledText('Center-aligned paragraph with le...')   None:None <line>
-            SingleStyledText('Center-aligned paragraph with le...')
-          Newline('\n')
-          MixedStyledText('A Second line.')   None:None <line>
-            SingleStyledText('A Second line.')
-        Paragraph('Center-aligned paragraph with ce...', style='line block')   None:None <line_block>
-             > (1,0,0,1,2) auto-center-center paragraph
-               (0,0,1,0,2) line block
-               (0,0,0,0,2) body
-          MixedStyledText('Center-aligned paragraph with ce...')   None:None <line>
-            SingleStyledText('Center-aligned paragraph with ce...')
-          Newline('\n')
-          MixedStyledText('A Second line.')   None:None <line>
-            SingleStyledText('A Second line.')
-        Paragraph('Center-aligned paragraph with ri...', style='line block')   None:None <line_block>
-             > (1,0,0,1,2) auto-center-right paragraph
-               (0,0,1,0,2) line block
-               (0,0,0,0,2) body
-          MixedStyledText('Center-aligned paragraph with ri...')   None:None <line>
-            SingleStyledText('Center-aligned paragraph with ri...')
-          Newline('\n')
-          MixedStyledText('A Second line.')   None:None <line>
-            SingleStyledText('A Second line.')
-        Paragraph('Right-aligned paragraph with lef...', style='line block')   None:None <line_block>
-             > (1,0,0,1,2) auto-right-left paragraph
-               (0,0,1,0,2) line block
-               (0,0,0,0,2) body
-          MixedStyledText('Right-aligned paragraph with lef...')   None:None <line>
-            SingleStyledText('Right-aligned paragraph with lef...')
-          Newline('\n')
-          MixedStyledText('A Second line.')   None:None <line>
-            SingleStyledText('A Second line.')
-        Paragraph('Right-aligned paragraph with cen...', style='line block')   None:None <line_block>
-             > (1,0,0,1,2) auto-right-center paragraph
-               (0,0,1,0,2) line block
-               (0,0,0,0,2) body
-          MixedStyledText('Right-aligned paragraph with cen...')   None:None <line>
-            SingleStyledText('Right-aligned paragraph with cen...')
-          Newline('\n')
-          MixedStyledText('A Second line.')   None:None <line>
-            SingleStyledText('A Second line.')
-        Paragraph('Right-aligned paragraph with rig...', style='line block')   None:None <line_block>
-             > (1,0,0,1,2) auto-right-right paragraph
-               (0,0,1,0,2) line block
-               (0,0,0,0,2) body
-          MixedStyledText('Right-aligned paragraph with rig...')   None:None <line>
-            SingleStyledText('Right-aligned paragraph with rig...')
-          Newline('\n')
-          MixedStyledText('A Second line.')   None:None <line>
-            SingleStyledText('A Second line.')
+        Paragraph('Left-aligned paragraph with left...', style='line block')   <line_block>
+             > (1,0,0,1,2) auto-left-left paragraph [paragraph.rts] > auto paragraph
+               (0,0,1,0,2) line block [Sphinx] > body
+               (0,0,0,0,2) body [Sphinx] > default
+            MixedStyledText('Left-aligned paragraph with left...')
+              MixedStyledText('Left-aligned paragraph with left...')
+                MixedStyledText('Left-aligned paragraph with left...')   <line>
+                  SingleStyledText('Left-aligned paragraph with left...')
+                Newline('\n')
+                MixedStyledText('A Second line.')   <line>
+                  SingleStyledText('A Second line.')
+        Paragraph('Left-aligned paragraph with cent...', style='line block')   <line_block>
+             > (1,0,0,1,2) auto-left-center paragraph [paragraph.rts] > auto paragraph
+               (0,0,1,0,2) line block [Sphinx] > body
+               (0,0,0,0,2) body [Sphinx] > default
+            MixedStyledText('Left-aligned paragraph with cent...')
+              MixedStyledText('Left-aligned paragraph with cent...')
+                MixedStyledText('Left-aligned paragraph with cent...')   <line>
+                  SingleStyledText('Left-aligned paragraph with cent...')
+                Newline('\n')
+                MixedStyledText('A Second line.')   <line>
+                  SingleStyledText('A Second line.')
+        Paragraph('Left-aligned paragraph with righ...', style='line block')   <line_block>
+             > (1,0,0,1,2) auto-left-right paragraph [paragraph.rts] > auto paragraph
+               (0,0,1,0,2) line block [Sphinx] > body
+               (0,0,0,0,2) body [Sphinx] > default
+            MixedStyledText('Left-aligned paragraph with righ...')
+              MixedStyledText('Left-aligned paragraph with righ...')
+                MixedStyledText('Left-aligned paragraph with righ...')   <line>
+                  SingleStyledText('Left-aligned paragraph with righ...')
+                Newline('\n')
+                MixedStyledText('A Second line.')   <line>
+                  SingleStyledText('A Second line.')
+        Paragraph('Center-aligned paragraph with le...', style='line block')   <line_block>
+             > (1,0,0,1,2) auto-center-left paragraph [paragraph.rts] > auto paragraph
+               (0,0,1,0,2) line block [Sphinx] > body
+               (0,0,0,0,2) body [Sphinx] > default
+            MixedStyledText('Center-aligned paragraph with le...')
+              MixedStyledText('Center-aligned paragraph with le...')
+                MixedStyledText('Center-aligned paragraph with le...')   <line>
+                  SingleStyledText('Center-aligned paragraph with le...')
+                Newline('\n')
+                MixedStyledText('A Second line.')   <line>
+                  SingleStyledText('A Second line.')
+        Paragraph('Center-aligned paragraph with ce...', style='line block')   <line_block>
+             > (1,0,0,1,2) auto-center-center paragraph [paragraph.rts] > auto paragraph
+               (0,0,1,0,2) line block [Sphinx] > body
+               (0,0,0,0,2) body [Sphinx] > default
+            MixedStyledText('Center-aligned paragraph with ce...')
+              MixedStyledText('Center-aligned paragraph with ce...')
+                MixedStyledText('Center-aligned paragraph with ce...')   <line>
+                  SingleStyledText('Center-aligned paragraph with ce...')
+                Newline('\n')
+                MixedStyledText('A Second line.')   <line>
+                  SingleStyledText('A Second line.')
+        Paragraph('Center-aligned paragraph with ri...', style='line block')   <line_block>
+             > (1,0,0,1,2) auto-center-right paragraph [paragraph.rts] > auto paragraph
+               (0,0,1,0,2) line block [Sphinx] > body
+               (0,0,0,0,2) body [Sphinx] > default
+            MixedStyledText('Center-aligned paragraph with ri...')
+              MixedStyledText('Center-aligned paragraph with ri...')
+                MixedStyledText('Center-aligned paragraph with ri...')   <line>
+                  SingleStyledText('Center-aligned paragraph with ri...')
+                Newline('\n')
+                MixedStyledText('A Second line.')   <line>
+                  SingleStyledText('A Second line.')
+        Paragraph('Right-aligned paragraph with lef...', style='line block')   <line_block>
+             > (1,0,0,1,2) auto-right-left paragraph [paragraph.rts] > auto paragraph
+               (0,0,1,0,2) line block [Sphinx] > body
+               (0,0,0,0,2) body [Sphinx] > default
+            MixedStyledText('Right-aligned paragraph with lef...')
+              MixedStyledText('Right-aligned paragraph with lef...')
+                MixedStyledText('Right-aligned paragraph with lef...')   <line>
+                  SingleStyledText('Right-aligned paragraph with lef...')
+                Newline('\n')
+                MixedStyledText('A Second line.')   <line>
+                  SingleStyledText('A Second line.')
+        Paragraph('Right-aligned paragraph with cen...', style='line block')   <line_block>
+             > (1,0,0,1,2) auto-right-center paragraph [paragraph.rts] > auto paragraph
+               (0,0,1,0,2) line block [Sphinx] > body
+               (0,0,0,0,2) body [Sphinx] > default
+            MixedStyledText('Right-aligned paragraph with cen...')
+              MixedStyledText('Right-aligned paragraph with cen...')
+                MixedStyledText('Right-aligned paragraph with cen...')   <line>
+                  SingleStyledText('Right-aligned paragraph with cen...')
+                Newline('\n')
+                MixedStyledText('A Second line.')   <line>
+                  SingleStyledText('A Second line.')
+        Paragraph('Right-aligned paragraph with rig...', style='line block')   <line_block>
+             > (1,0,0,1,2) auto-right-right paragraph [paragraph.rts] > auto paragraph
+               (0,0,1,0,2) line block [Sphinx] > body
+               (0,0,0,0,2) body [Sphinx] > default
+            MixedStyledText('Right-aligned paragraph with rig...')
+              MixedStyledText('Right-aligned paragraph with rig...')
+                MixedStyledText('Right-aligned paragraph with rig...')   <line>
+                  SingleStyledText('Right-aligned paragraph with rig...')
+                Newline('\n')
+                MixedStyledText('A Second line.')   <line>
+                  SingleStyledText('A Second line.')
 ---------------------------------- page 2 ----------------------------------
 #### FootnoteContainer('footnotes')
   StaticGroupedFlowables()
@@ -103,94 +121,112 @@
   StaticGroupedFlowables()
 #### ChainedContainer('column1')
   (continued) StaticGroupedFlowables()
-    (continued) DocumentTree()
-      Section(id='paragraph-width-is-fill-default')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/paragraph.rst:64 <section>
-           > (0,0,0,1,2) chapter
-        Heading('Paragraph width is 'fill' (defau...')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/paragraph.rst:64 <title>
-             > (0,0,0,1,2) heading level 1
-               (0,0,0,0,2) other heading levels
+    (continued) DocumentTree()   paragraph.rst   <document>
+      Section(id='paragraph-width-is-fill-default')   paragraph.rst:64   <section>
+           > (0,0,0,1,4) content chapter [Sphinx] > chapter
+             (0,0,0,1,2) chapter [paragraph.rts] > DEFAULT
+        Heading('Paragraph width is 'fill' (defau...')   paragraph.rst:64   <title>
+             > (0,0,0,1,2) heading level 1 [paragraph.rts] > DEFAULT
+               (0,0,0,0,2) other heading levels [Sphinx] > heading level 5
             MixedStyledText('Paragraph width is 'fill' (defau...')
-              SingleStyledText('')
               MixedStyledText('Paragraph width is 'fill' (defau...')
                 SingleStyledText('Paragraph width is 'fill' (defau...')
-        Paragraph('Left-aligned paragraph with left...', style='line block')   None:None <line_block>
-             > (1,0,0,1,2) fill-left-left paragraph
-               (0,0,1,0,2) line block
-               (0,0,0,0,2) body
-          MixedStyledText('Left-aligned paragraph with left...')   None:None <line>
-            SingleStyledText('Left-aligned paragraph with left...')
-          Newline('\n')
-          MixedStyledText('A Second line.')   None:None <line>
-            SingleStyledText('A Second line.')
-        Paragraph('Left-aligned paragraph with cent...', style='line block')   None:None <line_block>
-             > (1,0,0,1,2) fill-left-center paragraph
-               (0,0,1,0,2) line block
-               (0,0,0,0,2) body
-          MixedStyledText('Left-aligned paragraph with cent...')   None:None <line>
-            SingleStyledText('Left-aligned paragraph with cent...')
-          Newline('\n')
-          MixedStyledText('A Second line.')   None:None <line>
-            SingleStyledText('A Second line.')
-        Paragraph('Left-aligned paragraph with righ...', style='line block')   None:None <line_block>
-             > (1,0,0,1,2) fill-left-right paragraph
-               (0,0,1,0,2) line block
-               (0,0,0,0,2) body
-          MixedStyledText('Left-aligned paragraph with righ...')   None:None <line>
-            SingleStyledText('Left-aligned paragraph with righ...')
-          Newline('\n')
-          MixedStyledText('A Second line.')   None:None <line>
-            SingleStyledText('A Second line.')
-        Paragraph('Center-aligned paragraph with le...', style='line block')   None:None <line_block>
-             > (1,0,0,1,2) fill-center-left paragraph
-               (0,0,1,0,2) line block
-               (0,0,0,0,2) body
-          MixedStyledText('Center-aligned paragraph with le...')   None:None <line>
-            SingleStyledText('Center-aligned paragraph with le...')
-          Newline('\n')
-          MixedStyledText('A Second line.')   None:None <line>
-            SingleStyledText('A Second line.')
-        Paragraph('Center-aligned paragraph with ce...', style='line block')   None:None <line_block>
-             > (1,0,0,1,2) fill-center-center paragraph
-               (0,0,1,0,2) line block
-               (0,0,0,0,2) body
-          MixedStyledText('Center-aligned paragraph with ce...')   None:None <line>
-            SingleStyledText('Center-aligned paragraph with ce...')
-          Newline('\n')
-          MixedStyledText('A Second line.')   None:None <line>
-            SingleStyledText('A Second line.')
-        Paragraph('Center-aligned paragraph with ri...', style='line block')   None:None <line_block>
-             > (1,0,0,1,2) fill-center-right paragraph
-               (0,0,1,0,2) line block
-               (0,0,0,0,2) body
-          MixedStyledText('Center-aligned paragraph with ri...')   None:None <line>
-            SingleStyledText('Center-aligned paragraph with ri...')
-          Newline('\n')
-          MixedStyledText('A Second line.')   None:None <line>
-            SingleStyledText('A Second line.')
-        Paragraph('Right-aligned paragraph with lef...', style='line block')   None:None <line_block>
-             > (1,0,0,1,2) fill-right-left paragraph
-               (0,0,1,0,2) line block
-               (0,0,0,0,2) body
-          MixedStyledText('Right-aligned paragraph with lef...')   None:None <line>
-            SingleStyledText('Right-aligned paragraph with lef...')
-          Newline('\n')
-          MixedStyledText('A Second line.')   None:None <line>
-            SingleStyledText('A Second line.')
-        Paragraph('Right-aligned paragraph with cen...', style='line block')   None:None <line_block>
-             > (1,0,0,1,2) fill-right-center paragraph
-               (0,0,1,0,2) line block
-               (0,0,0,0,2) body
-          MixedStyledText('Right-aligned paragraph with cen...')   None:None <line>
-            SingleStyledText('Right-aligned paragraph with cen...')
-          Newline('\n')
-          MixedStyledText('A Second line.')   None:None <line>
-            SingleStyledText('A Second line.')
-        Paragraph('Right-aligned paragraph with rig...', style='line block')   None:None <line_block>
-             > (1,0,0,1,2) fill-right-right paragraph
-               (0,0,1,0,2) line block
-               (0,0,0,0,2) body
-          MixedStyledText('Right-aligned paragraph with rig...')   None:None <line>
-            SingleStyledText('Right-aligned paragraph with rig...')
-          Newline('\n')
-          MixedStyledText('A Second line.')   None:None <line>
-            SingleStyledText('A Second line.')
+        Paragraph('Left-aligned paragraph with left...', style='line block')   <line_block>
+             > (1,0,0,1,2) fill-left-left paragraph [paragraph.rts] > fill paragraph
+               (0,0,1,0,2) line block [Sphinx] > body
+               (0,0,0,0,2) body [Sphinx] > default
+            MixedStyledText('Left-aligned paragraph with left...')
+              MixedStyledText('Left-aligned paragraph with left...')
+                MixedStyledText('Left-aligned paragraph with left...')   <line>
+                  SingleStyledText('Left-aligned paragraph with left...')
+                Newline('\n')
+                MixedStyledText('A Second line.')   <line>
+                  SingleStyledText('A Second line.')
+        Paragraph('Left-aligned paragraph with cent...', style='line block')   <line_block>
+             > (1,0,0,1,2) fill-left-center paragraph [paragraph.rts] > fill paragraph
+               (0,0,1,0,2) line block [Sphinx] > body
+               (0,0,0,0,2) body [Sphinx] > default
+            MixedStyledText('Left-aligned paragraph with cent...')
+              MixedStyledText('Left-aligned paragraph with cent...')
+                MixedStyledText('Left-aligned paragraph with cent...')   <line>
+                  SingleStyledText('Left-aligned paragraph with cent...')
+                Newline('\n')
+                MixedStyledText('A Second line.')   <line>
+                  SingleStyledText('A Second line.')
+        Paragraph('Left-aligned paragraph with righ...', style='line block')   <line_block>
+             > (1,0,0,1,2) fill-left-right paragraph [paragraph.rts] > fill paragraph
+               (0,0,1,0,2) line block [Sphinx] > body
+               (0,0,0,0,2) body [Sphinx] > default
+            MixedStyledText('Left-aligned paragraph with righ...')
+              MixedStyledText('Left-aligned paragraph with righ...')
+                MixedStyledText('Left-aligned paragraph with righ...')   <line>
+                  SingleStyledText('Left-aligned paragraph with righ...')
+                Newline('\n')
+                MixedStyledText('A Second line.')   <line>
+                  SingleStyledText('A Second line.')
+        Paragraph('Center-aligned paragraph with le...', style='line block')   <line_block>
+             > (1,0,0,1,2) fill-center-left paragraph [paragraph.rts] > fill paragraph
+               (0,0,1,0,2) line block [Sphinx] > body
+               (0,0,0,0,2) body [Sphinx] > default
+            MixedStyledText('Center-aligned paragraph with le...')
+              MixedStyledText('Center-aligned paragraph with le...')
+                MixedStyledText('Center-aligned paragraph with le...')   <line>
+                  SingleStyledText('Center-aligned paragraph with le...')
+                Newline('\n')
+                MixedStyledText('A Second line.')   <line>
+                  SingleStyledText('A Second line.')
+        Paragraph('Center-aligned paragraph with ce...', style='line block')   <line_block>
+             > (1,0,0,1,2) fill-center-center paragraph [paragraph.rts] > fill paragraph
+               (0,0,1,0,2) line block [Sphinx] > body
+               (0,0,0,0,2) body [Sphinx] > default
+            MixedStyledText('Center-aligned paragraph with ce...')
+              MixedStyledText('Center-aligned paragraph with ce...')
+                MixedStyledText('Center-aligned paragraph with ce...')   <line>
+                  SingleStyledText('Center-aligned paragraph with ce...')
+                Newline('\n')
+                MixedStyledText('A Second line.')   <line>
+                  SingleStyledText('A Second line.')
+        Paragraph('Center-aligned paragraph with ri...', style='line block')   <line_block>
+             > (1,0,0,1,2) fill-center-right paragraph [paragraph.rts] > fill paragraph
+               (0,0,1,0,2) line block [Sphinx] > body
+               (0,0,0,0,2) body [Sphinx] > default
+            MixedStyledText('Center-aligned paragraph with ri...')
+              MixedStyledText('Center-aligned paragraph with ri...')
+                MixedStyledText('Center-aligned paragraph with ri...')   <line>
+                  SingleStyledText('Center-aligned paragraph with ri...')
+                Newline('\n')
+                MixedStyledText('A Second line.')   <line>
+                  SingleStyledText('A Second line.')
+        Paragraph('Right-aligned paragraph with lef...', style='line block')   <line_block>
+             > (1,0,0,1,2) fill-right-left paragraph [paragraph.rts] > fill paragraph
+               (0,0,1,0,2) line block [Sphinx] > body
+               (0,0,0,0,2) body [Sphinx] > default
+            MixedStyledText('Right-aligned paragraph with lef...')
+              MixedStyledText('Right-aligned paragraph with lef...')
+                MixedStyledText('Right-aligned paragraph with lef...')   <line>
+                  SingleStyledText('Right-aligned paragraph with lef...')
+                Newline('\n')
+                MixedStyledText('A Second line.')   <line>
+                  SingleStyledText('A Second line.')
+        Paragraph('Right-aligned paragraph with cen...', style='line block')   <line_block>
+             > (1,0,0,1,2) fill-right-center paragraph [paragraph.rts] > fill paragraph
+               (0,0,1,0,2) line block [Sphinx] > body
+               (0,0,0,0,2) body [Sphinx] > default
+            MixedStyledText('Right-aligned paragraph with cen...')
+              MixedStyledText('Right-aligned paragraph with cen...')
+                MixedStyledText('Right-aligned paragraph with cen...')   <line>
+                  SingleStyledText('Right-aligned paragraph with cen...')
+                Newline('\n')
+                MixedStyledText('A Second line.')   <line>
+                  SingleStyledText('A Second line.')
+        Paragraph('Right-aligned paragraph with rig...', style='line block')   <line_block>
+             > (1,0,0,1,2) fill-right-right paragraph [paragraph.rts] > fill paragraph
+               (0,0,1,0,2) line block [Sphinx] > body
+               (0,0,0,0,2) body [Sphinx] > default
+            MixedStyledText('Right-aligned paragraph with rig...')
+              MixedStyledText('Right-aligned paragraph with rig...')
+                MixedStyledText('Right-aligned paragraph with rig...')   <line>
+                  SingleStyledText('Right-aligned paragraph with rig...')
+                Newline('\n')
+                MixedStyledText('A Second line.')   <line>
+                  SingleStyledText('A Second line.')

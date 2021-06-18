@@ -5,27 +5,27 @@
   StaticGroupedFlowables()
 #### ChainedContainer('column1')
   StaticGroupedFlowables()
-    DocumentTree()
-      Paragraph('spacer')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/footnote_descender_overflow.rst:5 <paragraph>
-           > (0,0,0,1,2) spacer
-             (0,0,0,0,2) body
+    DocumentTree()   footnote_descender_overflow.rst   <document>
+      Paragraph('spacer')   footnote_descender_overflow.rst:5   <paragraph>
+           > (0,0,0,1,2) spacer [footnote_descender_overflow.rts] > DEFAULT
+             (0,0,0,0,2) body [Sphinx] > default
           MixedStyledText('spacer')
             MixedStyledText('spacer')
               SingleStyledText('spacer')
 ---------------------------------- page 2 ----------------------------------
 #### FootnoteContainer('footnotes')
   StaticGroupedFlowables()
-  Note(id='f1')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/footnote_descender_overflow.rst:11 <footnote>
+  Note(id='f1')   footnote_descender_overflow.rst:11   <footnote>
     Paragraph('1')
-         > (0,0,0,0,4) footnote label
-           (0,0,0,0,2) body
+         > (0,0,0,0,4) footnote label [Sphinx] > footnote paragraph
+           (0,0,0,0,2) body [Sphinx] > default
         DirectReference('1')
-             > (0,0,0,0,1) linked reference
+             > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
           SingleStyledText('1')
     StaticGroupedFlowables()
-      Paragraph('Text of the footnote.')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/footnote_descender_overflow.rst:11 <paragraph>
-           > (0,0,0,0,5) footnote paragraph
-             (0,0,0,0,2) body
+      Paragraph('Text of the footnote.')   footnote_descender_overflow.rst:11   <paragraph>
+           > (0,0,0,0,5) footnote paragraph [Sphinx] > default
+             (0,0,0,0,2) body [Sphinx] > default
           MixedStyledText('Text of the footnote.')
             MixedStyledText('Text of the footnote.')
               SingleStyledText('Text of the footnote.')
@@ -33,6 +33,6 @@
   StaticGroupedFlowables()
 #### ChainedContainer('column1')
   (continued) StaticGroupedFlowables()
-    (continued) DocumentTree()
-      Paragraph('A Paragraph with a footnote1 at ...')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/footnote_descender_overflow.rst:8 <paragraph>
-           > (0,0,0,0,2) body
+    (continued) DocumentTree()   footnote_descender_overflow.rst   <document>
+      Paragraph('A Paragraph with a footnote1 at ...')   footnote_descender_overflow.rst:8   <paragraph>
+           > (0,0,0,0,2) body [Sphinx] > default

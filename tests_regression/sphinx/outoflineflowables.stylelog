@@ -2,16 +2,16 @@
 #### DownExpandingContainer('title')
   StaticGroupedFlowables()
     Paragraph('Out-of-line Flowables', style='title page title')
-         > (0,0,1,0,2) title page title
-           (0,0,0,0,2) body
+         > (0,0,1,0,2) title page title [Sphinx] > DEFAULT
+           (0,0,0,0,2) body [Sphinx] > default
         SingleStyledText('Out-of-line Flowables')
     Paragraph('Release ', style='title page subtitle')
-         > (0,0,1,0,2) title page subtitle
-           (0,0,0,0,2) body
+         > (0,0,1,0,2) title page subtitle [Sphinx] > title page title
+           (0,0,0,0,2) body [Sphinx] > default
         SingleStyledText('Release ')
     Paragraph('Author', style='title page author')
-         > (0,0,1,0,2) title page author
-           (0,0,0,0,2) body
+         > (0,0,1,0,2) title page author [Sphinx] > DEFAULT
+           (0,0,0,0,2) body [Sphinx] > default
         SingleStyledText('Author')
 ---------------------------------- page i ----------------------------------
 #### FootnoteContainer('footnotes')
@@ -20,26 +20,26 @@
   StaticGroupedFlowables()
 #### FlowablesContainer('chapter title')
   Paragraph('Dedication', style='front matter section title')
-       > (0,0,1,0,2) front matter section title
-         (0,0,0,0,2) body
+       > (0,0,1,0,2) front matter section title [Sphinx] > DEFAULT
+         (0,0,0,0,2) body [Sphinx] > default
       Field('Dedication')
         SingleStyledText('Dedication')
 #### ChainedContainer('column1')
   StaticGroupedFlowables()
-    StaticGroupedFlowables()   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-646/popen-gw2/outoflineflowables/template.rtt
+    StaticGroupedFlowables()   template.rtt
       Section(id='dedication')
-           > (0,0,0,1,2) dedication section
-             (0,0,0,1,2) chapter
+           > (0,0,0,1,2) dedication section [Sphinx out-of-line flowables] > DEFAULT
+             (0,0,0,1,2) chapter [Sphinx] > DEFAULT
         OutOfLineFlowables()
-          Paragraph('For mommy')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-646/popen-gw2/outoflineflowables/index.rst:7 <paragraph>
-               > (0,0,0,0,2) body
+          Paragraph('For mommy')   index.rst:7   <paragraph>
+               > (0,0,0,0,2) body [Sphinx] > default
               MixedStyledText('For mommy')
                 MixedStyledText('For mommy')
                   SingleStyledText('For mommy')
 #### DownExpandingContainer('footer')
   StaticGroupedFlowables()
     Footer('		i')
-         > (0,0,0,0,2) footer
+         > (0,0,0,0,2) footer [Sphinx] > header_footer
         MixedStyledText('		i')
           MixedStyledText('		i')
             Tab('	')
@@ -53,11 +53,11 @@
   StaticGroupedFlowables()
 #### ChainedContainer('column1')
   (continued) StaticGroupedFlowables()
-    (continued) StaticGroupedFlowables()   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-646/popen-gw2/outoflineflowables/template.rtt
+    (continued) StaticGroupedFlowables()   template.rtt
 #### DownExpandingContainer('footer')
   StaticGroupedFlowables()
     Footer('ii')
-         > (0,0,0,0,2) footer
+         > (0,0,0,0,2) footer [Sphinx] > header_footer
         Field('ii')
           SingleStyledText('ii')
 ---------------------------------- page iii ----------------------------------
@@ -67,55 +67,55 @@
   StaticGroupedFlowables()
 #### FlowablesContainer('chapter title')
   Paragraph('Table of Contents', style='front matter section title')
-       > (0,0,1,0,2) front matter section title
-         (0,0,0,0,2) body
+       > (0,0,1,0,2) front matter section title [Sphinx] > DEFAULT
+         (0,0,0,0,2) body [Sphinx] > default
       Field('Table of Contents')
         StringField('Table of Contents')
           SingleStyledText('Table of Contents')
 #### ChainedContainer('column1')
   (continued) StaticGroupedFlowables()
-    (continued) StaticGroupedFlowables()   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-646/popen-gw2/outoflineflowables/template.rtt
+    (continued) StaticGroupedFlowables()   template.rtt
       TableOfContentsSection(style='table of contents')
-           > (0,0,1,0,1) table of contents section
-             (0,0,0,1,1) chapter
+           > (0,0,1,0,1) table of contents section [Sphinx out-of-line flowables] > DEFAULT
+             (0,0,0,1,1) chapter [Sphinx] > DEFAULT
         TableOfContents()   table of contents
-             > (0,0,0,0,2) table of contents
+             > (0,0,0,0,2) table of contents [Sphinx] > default
           TableOfContentsEntry('1	Introduction	1')
-               > (0,0,0,1,2) toc level 1
+               > (0,0,0,1,2) toc level 1 [Sphinx] > table of contents
               ReferenceField('1')
-                   > (0,0,0,1,4) toc entry number reference field
-                     (0,0,0,0,1) linked reference
+                   > (0,0,0,1,4) toc entry number reference field [Sphinx] > linked reference
+                     (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
                 SingleStyledText('1')
               Tab('	')
               ReferenceField('Introduction')
-                   > (0,0,0,0,1) linked reference
+                   > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
                 MixedStyledText('Introduction')
                   MixedStyledText('Introduction')
                     SingleStyledText('Introduction')
               Tab('	')
               ReferenceField('1')
-                   > (0,0,0,0,1) linked reference
+                   > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
                 SingleStyledText('1')
           TableOfContentsEntry('2	Conclusion	3')
-               > (0,0,0,1,2) toc level 1
+               > (0,0,0,1,2) toc level 1 [Sphinx] > table of contents
               ReferenceField('2')
-                   > (0,0,0,1,4) toc entry number reference field
-                     (0,0,0,0,1) linked reference
+                   > (0,0,0,1,4) toc entry number reference field [Sphinx] > linked reference
+                     (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
                 SingleStyledText('2')
               Tab('	')
               ReferenceField('Conclusion')
-                   > (0,0,0,0,1) linked reference
+                   > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
                 MixedStyledText('Conclusion')
                   MixedStyledText('Conclusion')
                     SingleStyledText('Conclusion')
               Tab('	')
               ReferenceField('3')
-                   > (0,0,0,0,1) linked reference
+                   > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
                 SingleStyledText('3')
 #### DownExpandingContainer('footer')
   StaticGroupedFlowables()
     Footer('		iii')
-         > (0,0,0,0,2) footer
+         > (0,0,0,0,2) footer [Sphinx] > header_footer
         MixedStyledText('		iii')
           MixedStyledText('		iii')
             Tab('	')
@@ -129,11 +129,11 @@
   StaticGroupedFlowables()
 #### ChainedContainer('column1')
   (continued) StaticGroupedFlowables()
-    (continued) StaticGroupedFlowables()   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-646/popen-gw2/outoflineflowables/template.rtt
+    (continued) StaticGroupedFlowables()   template.rtt
 #### DownExpandingContainer('footer')
   StaticGroupedFlowables()
     Footer('iv')
-         > (0,0,0,0,2) footer
+         > (0,0,0,0,2) footer [Sphinx] > header_footer
         Field('iv')
           SingleStyledText('iv')
 ---------------------------------- page v ----------------------------------
@@ -143,32 +143,32 @@
   StaticGroupedFlowables()
 #### ChainedContainer('column1')
   (continued) StaticGroupedFlowables()
-    (continued) StaticGroupedFlowables()   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-646/popen-gw2/outoflineflowables/template.rtt
+    (continued) StaticGroupedFlowables()   template.rtt
       Section()
-           > (0,0,0,1,2) chapter
+           > (0,0,0,1,2) chapter [Sphinx] > DEFAULT
         OutOfLineFlowables()
-             > (0,0,0,1,2) epigraph
+             > (0,0,0,1,2) epigraph [Sphinx out-of-line flowables] > DEFAULT
           Paragraph('Epigraph', style='title')
-               > (0,0,1,0,2) title
-                 (0,0,0,0,2) body
+               > (0,0,1,0,2) title [Sphinx] > default
+                 (0,0,0,0,2) body [Sphinx] > default
               SingleStyledText('Epigraph')
-          Paragraph('Gloomy eventide\nbefore evil syma...', style='line block')   None:None <line_block>
-               > (0,0,1,0,2) line block
-                 (0,0,0,0,2) body
+          Paragraph('Gloomy eventide\nbefore evil syma...', style='line block')   <line_block>
+               > (0,0,1,0,2) line block [Sphinx] > body
+                 (0,0,0,0,2) body [Sphinx] > default
               MixedStyledText('Gloomy eventide\nbefore evil syma...')
                 MixedStyledText('Gloomy eventide\nbefore evil syma...')
-                  MixedStyledText('Gloomy eventide')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-646/popen-gw2/outoflineflowables/intro.rst:0 <line>
+                  MixedStyledText('Gloomy eventide')   intro.rst   <line>
                     SingleStyledText('Gloomy eventide')
                   Newline('\n')
-                  MixedStyledText('before evil symantics writes')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-646/popen-gw2/outoflineflowables/intro.rst:0 <line>
+                  MixedStyledText('before evil symantics writes')   intro.rst   <line>
                     SingleStyledText('before evil symantics writes')
                   Newline('\n')
-                  MixedStyledText('into the despair')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-646/popen-gw2/outoflineflowables/intro.rst:0 <line>
+                  MixedStyledText('into the despair')   intro.rst   <line>
                     SingleStyledText('into the despair')
 #### DownExpandingContainer('footer')
   StaticGroupedFlowables()
     Footer('		v')
-         > (0,0,0,0,2) footer
+         > (0,0,0,0,2) footer [Sphinx] > header_footer
         MixedStyledText('		v')
           MixedStyledText('		v')
             Tab('	')
@@ -182,8 +182,8 @@
   StaticGroupedFlowables()
 #### FlowablesContainer('chapter title')
   Paragraph('Chapter 1', style='body matter chapter label')
-       > (0,0,1,0,2) body matter chapter label
-         (0,0,0,0,2) body
+       > (0,0,1,0,2) body matter chapter label [Sphinx] > DEFAULT
+         (0,0,0,0,2) body [Sphinx] > default
       MixedStyledText('Chapter 1')
         MixedStyledText('Chapter 1')
           MixedStyledText('Chapter ')
@@ -191,31 +191,32 @@
               SingleStyledText('Chapter')
             SingleStyledText(' ')
           Field('1', style='number')
-               > (0,0,2,0,3) body matter chapter number
+               > (0,0,2,0,3) body matter chapter number [Sphinx] > DEFAULT
             SingleStyledText('1')
   Paragraph('Introduction', style='body matter chapter title')
-       > (0,0,1,0,2) body matter chapter title
-         (0,0,0,0,2) body
+       > (0,0,1,0,2) body matter chapter title [Sphinx] > DEFAULT
+         (0,0,0,0,2) body [Sphinx] > default
       Field('Introduction')
         MixedStyledText('Introduction')
           MixedStyledText('Introduction')
             SingleStyledText('Introduction')
 #### ChainedContainer('column1')
   StaticGroupedFlowables()
-    DocumentTree()
-      StaticGroupedFlowables()   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-646/popen-gw2/outoflineflowables/index.rst:0 <compound>
-        StaticGroupedFlowables(id='%intro')   None:None <start_of_file>
-          Section(id='%intro#introduction')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-646/popen-gw2/outoflineflowables/intro.rst:2 <section>
-               > (0,0,0,1,2) chapter
-            Paragraph('This is the introduction.')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-646/popen-gw2/outoflineflowables/intro.rst:12 <paragraph>
-                 > (0,0,0,0,2) body
+    DocumentTree()   index.rst   <document>
+      StaticGroupedFlowables()   index.rst   <compound>
+        StaticGroupedFlowables(id='%intro')   <start_of_file>
+          Section(id='%intro#introduction')   intro.rst:2   <section>
+               > (0,0,0,1,4) content chapter [Sphinx] > chapter
+                 (0,0,0,1,2) chapter [Sphinx] > DEFAULT
+            Paragraph('This is the introduction.')   intro.rst:12   <paragraph>
+                 > (0,0,0,0,2) body [Sphinx] > default
                 MixedStyledText('This is the introduction.')
                   MixedStyledText('This is the introduction.')
                     SingleStyledText('This is the introduction.')
 #### DownExpandingContainer('footer')
   StaticGroupedFlowables()
     Footer('		1')
-         > (0,0,0,0,2) footer
+         > (0,0,0,0,2) footer [Sphinx] > header_footer
         MixedStyledText('		1')
           MixedStyledText('		1')
             Tab('	')
@@ -229,12 +230,12 @@
   StaticGroupedFlowables()
 #### ChainedContainer('column1')
   (continued) StaticGroupedFlowables()
-    (continued) DocumentTree()
-      (continued) StaticGroupedFlowables()   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-646/popen-gw2/outoflineflowables/index.rst:0 <compound>
+    (continued) DocumentTree()   index.rst   <document>
+      (continued) StaticGroupedFlowables()   index.rst   <compound>
 #### UpExpandingContainer('header')
   StaticGroupedFlowables()
     Header('Out-of-line Flowables, Release ')
-         > (0,0,0,0,2) header
+         > (0,0,0,0,2) header [Sphinx] > header_footer
         MixedStyledText('Out-of-line Flowables, Release ')
           MixedStyledText('Out-of-line Flowables, Release ')
             Field('Out-of-line Flowables')
@@ -245,7 +246,7 @@
 #### DownExpandingContainer('footer')
   StaticGroupedFlowables()
     Footer('2		Chapter 1.  Introduction')
-         > (0,0,0,0,2) footer
+         > (0,0,0,0,2) footer [Sphinx] > header_footer
         MixedStyledText('2		Chapter 1.  Introduction')
           MixedStyledText('2		Chapter 1.  Introduction')
             Field('2')
@@ -269,8 +270,8 @@
   StaticGroupedFlowables()
 #### FlowablesContainer('chapter title')
   Paragraph('Chapter 2', style='body matter chapter label')
-       > (0,0,1,0,2) body matter chapter label
-         (0,0,0,0,2) body
+       > (0,0,1,0,2) body matter chapter label [Sphinx] > DEFAULT
+         (0,0,0,0,2) body [Sphinx] > default
       MixedStyledText('Chapter 2')
         MixedStyledText('Chapter 2')
           MixedStyledText('Chapter ')
@@ -278,31 +279,32 @@
               SingleStyledText('Chapter')
             SingleStyledText(' ')
           Field('2', style='number')
-               > (0,0,2,0,3) body matter chapter number
+               > (0,0,2,0,3) body matter chapter number [Sphinx] > DEFAULT
             SingleStyledText('2')
   Paragraph('Conclusion', style='body matter chapter title')
-       > (0,0,1,0,2) body matter chapter title
-         (0,0,0,0,2) body
+       > (0,0,1,0,2) body matter chapter title [Sphinx] > DEFAULT
+         (0,0,0,0,2) body [Sphinx] > default
       Field('Conclusion')
         MixedStyledText('Conclusion')
           MixedStyledText('Conclusion')
             SingleStyledText('Conclusion')
 #### ChainedContainer('column1')
   (continued) StaticGroupedFlowables()
-    (continued) DocumentTree()
-      (continued) StaticGroupedFlowables()   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-646/popen-gw2/outoflineflowables/index.rst:0 <compound>
-        StaticGroupedFlowables(id='%conclusion')   None:None <start_of_file>
-          Section(id='%conclusion#conclusion')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-646/popen-gw2/outoflineflowables/conclusion.rst:2 <section>
-               > (0,0,0,1,2) chapter
-            Paragraph('Concluding words go here.')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-646/popen-gw2/outoflineflowables/conclusion.rst:4 <paragraph>
-                 > (0,0,0,0,2) body
+    (continued) DocumentTree()   index.rst   <document>
+      (continued) StaticGroupedFlowables()   index.rst   <compound>
+        StaticGroupedFlowables(id='%conclusion')   <start_of_file>
+          Section(id='%conclusion#conclusion')   conclusion.rst:2   <section>
+               > (0,0,0,1,4) content chapter [Sphinx] > chapter
+                 (0,0,0,1,2) chapter [Sphinx] > DEFAULT
+            Paragraph('Concluding words go here.')   conclusion.rst:4   <paragraph>
+                 > (0,0,0,0,2) body [Sphinx] > default
                 MixedStyledText('Concluding words go here.')
                   MixedStyledText('Concluding words go here.')
                     SingleStyledText('Concluding words go here.')
 #### DownExpandingContainer('footer')
   StaticGroupedFlowables()
     Footer('		3')
-         > (0,0,0,0,2) footer
+         > (0,0,0,0,2) footer [Sphinx] > header_footer
         MixedStyledText('		3')
           MixedStyledText('		3')
             Tab('	')
@@ -322,7 +324,7 @@
 #### DownExpandingContainer('footer')
   StaticGroupedFlowables()
     Footer('		5')
-         > (0,0,0,0,2) footer
+         > (0,0,0,0,2) footer [Sphinx] > header_footer
         MixedStyledText('		5')
           MixedStyledText('		5')
             Tab('	')

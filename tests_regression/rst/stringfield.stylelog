@@ -5,41 +5,46 @@
   StaticGroupedFlowables()
 #### FlowablesContainer('chapter title')
   Paragraph('Ch. 1', style='body matter chapter label')
-       > (0,0,1,0,2) body matter chapter label
-         (0,0,0,0,2) body
-    MixedStyledText('Ch. 1')
-      MixedStyledText('Ch. ')
-        StringField('Ch.')
-          SingleStyledText('Ch.', style='emphasis')
-               > (0,0,1,0,1) emphasis
-        SingleStyledText(' ')
-      Field('1', style='number')
-           > (0,0,2,0,3) body matter chapter number
-        SingleStyledText('1')
+       > (0,0,1,0,2) body matter chapter label [Sphinx] > DEFAULT
+         (0,0,0,0,2) body [Sphinx] > default
+      MixedStyledText('Ch. 1')
+        MixedStyledText('Ch. 1')
+          MixedStyledText('Ch. ')
+            StringField('Ch.')
+              SingleStyledText('Ch.', style='emphasis')
+                   > (0,0,1,0,1) emphasis [Sphinx] > DEFAULT
+            SingleStyledText(' ')
+          Field('1', style='number')
+               > (0,0,2,0,3) body matter chapter number [Sphinx] > DEFAULT
+            SingleStyledText('1')
   Paragraph('First Chapter', style='body matter chapter title')
-       > (0,0,1,0,2) body matter chapter title
-         (0,0,0,0,2) body
-    Field('First Chapter')
-      SingleStyledText('First Chapter')
+       > (0,0,1,0,2) body matter chapter title [Sphinx] > DEFAULT
+         (0,0,0,0,2) body [Sphinx] > default
+      Field('First Chapter')
+        MixedStyledText('First Chapter')
+          MixedStyledText('First Chapter')
+            SingleStyledText('First Chapter')
 #### ChainedContainer('column1')
   StaticGroupedFlowables()
-    DocumentTree()
-      Section(id='first-chapter')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/stringfield.rst:7 <section>
-           > (0,0,0,1,2) chapter
-        Paragraph('A paragraph.')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/stringfield.rst:9 <paragraph>
-             > (0,0,0,0,2) body
-          MixedStyledText('A paragraph.')
-            SingleStyledText('A paragraph.')
+    DocumentTree()   stringfield.rst   <document>
+      Section(id='first-chapter')   stringfield.rst:7   <section>
+           > (0,0,0,1,4) content chapter [Sphinx] > chapter
+             (0,0,0,1,2) chapter [Sphinx] > DEFAULT
+        Paragraph('A paragraph.')   stringfield.rst:9   <paragraph>
+             > (0,0,0,0,2) body [Sphinx] > default
+            MixedStyledText('A paragraph.')
+              MixedStyledText('A paragraph.')
+                SingleStyledText('A paragraph.')
 #### DownExpandingContainer('footer')
   StaticGroupedFlowables()
     Footer('		1')
-         > (0,0,0,0,2) footer
-           (0,0,0,0,1) body
-      MixedStyledText('		1')
-        Tab('	')
-        Tab('	')
-        Field('1')
-          SingleStyledText('1')
+         > (0,0,0,0,2) footer [Sphinx] > header_footer
+        MixedStyledText('		1')
+          MixedStyledText('		1')
+            Tab('	')
+            Tab('	')
+            Field('1')
+              SingleStyledText('1')
 ---------------------------------- page 2 ----------------------------------
 #### FootnoteContainer('footnotes')
   StaticGroupedFlowables()
@@ -47,38 +52,39 @@
   StaticGroupedFlowables()
 #### ChainedContainer('column1')
   (continued) StaticGroupedFlowables()
-    (continued) DocumentTree()
+    (continued) DocumentTree()   stringfield.rst   <document>
 #### UpExpandingContainer('header')
   StaticGroupedFlowables()
     Header('a UserString defined using a sub...')
-         > (0,0,0,0,2) header
-           (0,0,0,0,1) body
-      StringField('a UserString defined using a sub...')
-        MixedStyledText('a UserString defined using a sub...')
-          SingleStyledText('a ')
-          MixedStyledText('UserString', style='monospaced')   None:None <literal>
-               > (0,0,1,0,1) monospaced
-            SingleStyledText('UserString')
-          SingleStyledText(' defined using a ')
-          MixedStyledText('substitition definition', style='emphasis')   None:None <emphasis>
-               > (0,0,1,0,1) emphasis
-            SingleStyledText('substitition definition')
+         > (0,0,0,0,2) header [Sphinx] > header_footer
+        StringField('a UserString defined using a sub...')
+          MixedStyledText('a UserString defined using a sub...')
+            SingleStyledText('a ')
+            MixedStyledText('UserString', style='monospaced')   <literal>
+                 > (0,0,1,0,1) monospaced [Sphinx] > DEFAULT
+              SingleStyledText('UserString')
+            SingleStyledText(' defined using a ')
+            MixedStyledText('substitition definition', style='emphasis')   <emphasis>
+                 > (0,0,1,0,1) emphasis [Sphinx] > DEFAULT
+              SingleStyledText('substitition definition')
 #### DownExpandingContainer('footer')
   StaticGroupedFlowables()
     Footer('my string	 	 1.  First Chapter')
-         > (0,0,0,0,2) footer
-           (0,0,0,0,1) body
-      MixedStyledText('my string	 	 1.  First Chapter')
-        StringField('my string', style='monospaced')
-             > (0,0,1,0,1) monospaced
-          SingleStyledText('my string')
-        MixedStyledText('	 	 1.  First Chapter')
-          SingleStyledText('	 	 ')
-          Field('1')
-            SingleStyledText('1')
-          SingleStyledText('.  ')
-          Field('First Chapter')
-            SingleStyledText('First Chapter')
+         > (0,0,0,0,2) footer [Sphinx] > header_footer
+        MixedStyledText('my string	 	 1.  First Chapter')
+          MixedStyledText('my string	 	 1.  First Chapter')   stringfield.rtt
+            StringField('my string', style='monospaced')
+                 > (0,0,1,0,1) monospaced [Sphinx] > DEFAULT
+              SingleStyledText('my string')
+            MixedStyledText('	 	 1.  First Chapter')
+              SingleStyledText('	 	 ')
+              Field('1')
+                SingleStyledText('1')
+              SingleStyledText('.  ')
+              Field('First Chapter')
+                MixedStyledText('First Chapter')
+                  MixedStyledText('First Chapter')
+                    SingleStyledText('First Chapter')
 ---------------------------------- page 3 ----------------------------------
 #### FootnoteContainer('footnotes')
   StaticGroupedFlowables()
@@ -86,51 +92,57 @@
   StaticGroupedFlowables()
 #### FlowablesContainer('chapter title')
   Paragraph('Ch. 2', style='body matter chapter label')
-       > (0,0,1,0,2) body matter chapter label
-         (0,0,0,0,2) body
-    MixedStyledText('Ch. 2')
-      MixedStyledText('Ch. ')
-        StringField('Ch.')
-          SingleStyledText('Ch.', style='emphasis')
-               > (0,0,1,0,1) emphasis
-        SingleStyledText(' ')
-      Field('2', style='number')
-           > (0,0,2,0,3) body matter chapter number
-        SingleStyledText('2')
+       > (0,0,1,0,2) body matter chapter label [Sphinx] > DEFAULT
+         (0,0,0,0,2) body [Sphinx] > default
+      MixedStyledText('Ch. 2')
+        MixedStyledText('Ch. 2')
+          MixedStyledText('Ch. ')
+            StringField('Ch.')
+              SingleStyledText('Ch.', style='emphasis')
+                   > (0,0,1,0,1) emphasis [Sphinx] > DEFAULT
+            SingleStyledText(' ')
+          Field('2', style='number')
+               > (0,0,2,0,3) body matter chapter number [Sphinx] > DEFAULT
+            SingleStyledText('2')
   Paragraph('Second Chapter', style='body matter chapter title')
-       > (0,0,1,0,2) body matter chapter title
-         (0,0,0,0,2) body
-    Field('Second Chapter')
-      SingleStyledText('Second Chapter')
+       > (0,0,1,0,2) body matter chapter title [Sphinx] > DEFAULT
+         (0,0,0,0,2) body [Sphinx] > default
+      Field('Second Chapter')
+        MixedStyledText('Second Chapter')
+          MixedStyledText('Second Chapter')
+            SingleStyledText('Second Chapter')
 #### ChainedContainer('column1')
   (continued) StaticGroupedFlowables()
-    (continued) DocumentTree()
-      Section(id='second-chapter')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/stringfield.rst:13 <section>
-           > (0,0,0,1,2) chapter
-        Admonition()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/stringfield.rst:None <warning>
-             > (0,0,0,1,2) warning admonition
-               (0,0,0,0,2) admonition
+    (continued) DocumentTree()   stringfield.rst   <document>
+      Section(id='second-chapter')   stringfield.rst:13   <section>
+           > (0,0,0,1,4) content chapter [Sphinx] > chapter
+             (0,0,0,1,2) chapter [Sphinx] > DEFAULT
+        Admonition()   stringfield.rst   <warning>
+             > (0,0,0,1,2) warning admonition [Sphinx] > boxed builtin admonition
+               (0,0,0,0,2) admonition [Sphinx] > DEFAULT
           Paragraph('Be warned! Wipe your feet.')
-               > (0,0,0,0,2) body
-            MixedStyledText('Be warned! Wipe your feet.')
-              MixedStyledText('Be warned!', style='inline title')
-                   x (0,0,1,1,3) warning admonition inline title
-                   > (0,0,1,0,3) admonition inline title
-                SingleStyledText('Be warned!')
-              SingleStyledText(' ')
-              MixedStyledText('Wipe your feet.')
-                SingleStyledText('Wipe your feet.')
-        Paragraph('A paragraph in the second sectio...')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/stringfield.rst:17 <paragraph>
-             > (0,0,0,0,2) body
-          MixedStyledText('A paragraph in the second sectio...')
-            SingleStyledText('A paragraph in the second sectio...')
+               > (0,0,0,0,2) body [Sphinx] > default
+              MixedStyledText('Be warned! Wipe your feet.')
+                MixedStyledText('Be warned! Wipe your feet.')
+                  MixedStyledText('Be warned!', style='inline title')
+                       x (0,0,1,1,3) warning admonition inline title
+                       > (0,0,1,0,3) admonition inline title [Sphinx] > admonition title
+                    SingleStyledText('Be warned!')
+                  SingleStyledText(' ')
+                  MixedStyledText('Wipe your feet.')
+                    SingleStyledText('Wipe your feet.')
+        Paragraph('A paragraph in the second sectio...')   stringfield.rst:17   <paragraph>
+             > (0,0,0,0,2) body [Sphinx] > default
+            MixedStyledText('A paragraph in the second sectio...')
+              MixedStyledText('A paragraph in the second sectio...')
+                SingleStyledText('A paragraph in the second sectio...')
 #### DownExpandingContainer('footer')
   StaticGroupedFlowables()
     Footer('		3')
-         > (0,0,0,0,2) footer
-           (0,0,0,0,1) body
-      MixedStyledText('		3')
-        Tab('	')
-        Tab('	')
-        Field('3')
-          SingleStyledText('3')
+         > (0,0,0,0,2) footer [Sphinx] > header_footer
+        MixedStyledText('		3')
+          MixedStyledText('		3')
+            Tab('	')
+            Tab('	')
+            Field('3')
+              SingleStyledText('3')
