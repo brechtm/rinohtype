@@ -149,8 +149,6 @@ jobs:
       run: python .github/workflows/noxpy.py "${{ matrix.python-version }}"
 
     - name: Run Nox
-      continue-on-error: ${{ startsWith(matrix.python-version, 'pypy') }}
-                        # https://github.com/pytest-dev/pytest-xdist/issues/622
       run: ${{ env.nox_cmd }} ${{ env.NOXENV }} -- -s
 
     - name: Upload coverage statistics to codecov.io
@@ -254,9 +252,6 @@ jobs:
         choco install imagemagick.tool
 
     - name: Run Nox
-      # https://github.com/pytest-dev/pytest-xdist/issues/622
-      continue-on-error: ${{ runner.os == 'Linux'
-                             && startsWith(matrix.python-version, 'pypy') }}
       run: ${{ env.nox_cmd }} ${{ env.NOXENV }} -- -s
 
     - name: Upload coverage statistics to codecov.io
