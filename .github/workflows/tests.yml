@@ -171,6 +171,7 @@ jobs:
           - { os: Ubuntu, python-version: 3.6, noxenv: regression, cov: 1 }
           - { os: Ubuntu, python-version: 3.7, noxenv: regression, cov: 1 }
           - { os: Ubuntu, python-version: 3.8, noxenv: regression, cov: 1 }
+          - { os: Ubuntu, python-version: 3.10.0-alpha - 3.10, noxenv: regression, cov: 1 }
           - { os: Ubuntu, python-version: pypy-3.6, noxenv: regression, cov: 1 }
           - { os: Ubuntu, python-version: pypy-3.7, noxenv: regression, cov: 1 }
           - { os: Ubuntu, python-version: 3.9, noxenv: regression_docutils, cov: 0, name: " (docutils)" }
