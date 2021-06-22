@@ -5,12 +5,23 @@
   StaticGroupedFlowables()
 #### ChainedContainer('column1')
   StaticGroupedFlowables()
-    DocumentTree()
-      Paragraph('We'll be wrapping this with styl...')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/before_after.rst:5 <paragraph>
-           > (0,0,0,0,2) body
-        MixedStyledText('We'll be wrapping this with styl...')
-          SingleStyledText('We'll be wrapping ')
-          MixedStyledText('this')   None:None <inline>
-               > (0,0,0,1,1) wrap
-            SingleStyledText('this')
-          SingleStyledText(' with styled text configured in ...')
+    DocumentTree()   before_after.rst   <document>
+      Paragraph('We'll be wrapping this with styl...')   before_after.rst:5   <paragraph>
+           > (0,0,0,0,2) body [Sphinx] > default
+          MixedStyledText('We'll be wrapping this with styl...')
+            MixedStyledText('We'll be wrapping this with styl...')
+              SingleStyledText('We'll be wrapping ')
+              MixedStyledText('this')   <inline>
+                   > (0,0,0,1,1) wrap [before_after.rts] > DEFAULT
+                SingleStyledText('this')
+              SingleStyledText(' with styled text configured in ...')
+      Paragraph('>>Wrapped paragraph.<<')   before_after.rst:10   <paragraph>
+           > (0,0,0,1,2) wrapped paragraph [before_after.rts] > DEFAULT
+             (0,0,0,0,2) body [Sphinx] > default
+          SingleStyledText('>>', style='strong')
+               > (0,0,1,0,1) strong [Sphinx] > DEFAULT
+          MixedStyledText('Wrapped paragraph.')
+            MixedStyledText('Wrapped paragraph.')
+              SingleStyledText('Wrapped paragraph.')
+          SingleStyledText('<<', style='strong')
+               > (0,0,1,0,1) strong [Sphinx] > DEFAULT

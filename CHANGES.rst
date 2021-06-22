@@ -6,7 +6,7 @@ Release 0.5.4 (in development)
 
 New Features:
 
-*
+* The *before* and *after* style properties are now supported on paragraphs too
 
 Changed:
 

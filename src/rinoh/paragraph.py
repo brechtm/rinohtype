@@ -670,9 +670,17 @@ class ParagraphBase(Flowable, Label):
             return ''
 
     def text(self, container):
-        number_format = self.get_style('number_format', container)
-        number = [self.number(container)] if number_format else []
-        return MixedStyledText(number + [self.content], parent=self)
+        text = []
+        if self.get_style('number_format', container):
+            text.append(self.number(container))
+        before = self.get_style('before', container)
+        if before is not None:
+            text.append(before.copy())
+        text.append(self.content)
+        after = self.get_style('after', container)
+        if after is not None:
+            text.append(after.copy())
+        return MixedStyledText(text, parent=self)
 
     @property
     def paragraph(self):

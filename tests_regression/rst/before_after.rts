@@ -6,3 +6,8 @@ base = sphinx_base14
 font_color = #f00
 before = 'before ' (strong)
 after = ' after' (emphasis)
+
+
+[wrapped paragraph : Paragraph(has_class='parwrap')]
+before = '>>' (strong)
+after = '<<' (strong)
