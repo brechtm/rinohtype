@@ -533,6 +533,7 @@ space_below=2pt
 
 [admonition inline title]
 base=admonition title
+after = ' '
 
 [builtin admonition:Admonition]
 base=admonition

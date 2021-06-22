@@ -404,7 +404,7 @@ class Admonition(StaticGroupedFlowables):
             title = MixedStyledText(title, style='inline title')
             kwargs = dict(id=first_flowable.id, style=first_flowable.style,
                           parent=self)
-            title_plus_content = title + ' ' + first_flowable.content
+            title_plus_content = title + first_flowable.content
             paragraph = Paragraph(title_plus_content, **kwargs)
             paragraph.secondary_ids = first_flowable.secondary_ids
             yield paragraph

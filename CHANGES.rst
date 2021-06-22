@@ -7,6 +7,9 @@ Release 0.5.4 (in development)
 New Features:
 
 * The *before* and *after* style properties are now supported on paragraphs too
+* The separator string between an inline admonition title and the adminition
+  text is now specified in the style sheet (*after* property of the *admonition
+  inline title* style), so it can be overridden (default: space character).
 
 Changed:
 
