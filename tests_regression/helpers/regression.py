@@ -28,7 +28,8 @@ from rinoh.template import (DocumentTemplate, TemplateConfiguration,
                             TemplateConfigurationFile)
 
 
-__all__ = ['render_doctree', 'render_md_file', 'render_rst_file']
+__all__ = ['render_doctree', 'render_md_file', 'render_rst_file',
+           'verify_output']
 
 
 TEST_DIR = Path(__file__).parent.parent.absolute()

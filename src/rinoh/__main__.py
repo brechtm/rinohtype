@@ -25,7 +25,6 @@ from rinoh.paper import Paper, PAPER_BY_NAME
 from rinoh.paragraph import ParagraphStyle, Paragraph
 from rinoh.resource import find_entry_points, ResourceNotFound
 from rinoh.style import StyleSheet, StyleSheetFile
-from rinoh.stylesheets import matcher
 from rinoh.template import DocumentTemplate, TemplateConfigurationFile
 from rinoh.templates import Article
 
@@ -220,20 +219,17 @@ def main():
     variables = {}
     cwd_source = CwdSource()
     if args.stylesheet:
-        if os.path.isfile(args.stylesheet):
-            stylesheet = StyleSheetFile(args.stylesheet, matcher=matcher,
-                                        source=cwd_source)
-        else:
-            try:
-                stylesheet = StyleSheet.from_string(args.stylesheet)
-            except ResourceNotFound as err:
-                raise SystemExit("Could not find the Style sheet '{}'. "
-                                 "Aborting.\n"
-                                 "Run `{} --list-stylesheets` to find out "
-                                 "which style sheets are available."
-                                 .format(err.resource_name, parser.prog))
+        try:
+            stylesheet = StyleSheet.from_string(args.stylesheet,
+                                                source=cwd_source)
+        except FileNotFoundError:
+            raise SystemExit("Could not find the style sheet '{}'. "
+                             "Aborting.\n"
+                             "Make sure the path to your style sheet is "
+                             "correct, or run `{} --list-stylesheets` to find "
+                             "out which style sheets are installed."
+                             .format(args.stylesheet, parser.prog))
         template_cfg['stylesheet'] = stylesheet
-
     if args.paper:
         try:
             variables['paper_size'] = Paper.from_string(args.paper.lower())
