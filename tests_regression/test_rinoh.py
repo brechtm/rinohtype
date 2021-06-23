@@ -6,7 +6,6 @@
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
 from pathlib import Path
-from os.path import relpath
 
 import pytest
 

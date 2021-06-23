@@ -17,6 +17,8 @@ Changed:
 
 Fixed:
 
+* Fix error message for --stylesheet argument with relative path (issue #253,
+  PR #266 by Alex Fargus)
 * Descenders affect spacing between top border and content (issue #144)
 * The table of contents (outlines) displayed in PDF readers show garbled text
   when section titles contain non-ASCII characters.
