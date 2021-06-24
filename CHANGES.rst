@@ -10,6 +10,8 @@ New Features:
 * The separator string between an inline admonition title and the adminition
   text is now specified in the style sheet (*after* property of the *admonition
   inline title* style), so it can be overridden (default: space character).
+* Warn about targets in ``rinoh_targets`` that are not defined in
+  ``rinoh_documents``.
 
 Changed:
 

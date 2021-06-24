@@ -142,8 +142,13 @@ class RinohBuilder(Builder, Source):
                          if known_document_reference(entry['doc'])]
         targets = config.rinoh_targets
         if targets:
+            known_targets = [entry['target'] for entry in document_data]
             if isinstance(targets, str):
                 targets = [target.strip() for target in targets.split(',')]
+            for target in (tgt for tgt in targets if tgt not in known_targets):
+                logger.warning("'rinoh_targets' config value entry '{}' is"
+                               " not a target listed in 'rinoh_documents'"
+                               .format(target))
             document_data = [entry for entry in document_data
                              if entry['target'] in targets]
         return document_data
