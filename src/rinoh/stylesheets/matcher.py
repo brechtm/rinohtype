@@ -270,13 +270,19 @@ for admonition_type in ('attention', 'caution', 'danger', 'error', 'hint',
 matcher('header', Header)
 matcher('footer', Footer)
 
+# footnotes
 
-# footnotes & citations
-matcher('citation', Note.like('citation'))
 matcher('footnote marker', NoteMarkerBase.like('footnote'))
-matcher('citation marker', NoteMarkerBase.like('citation'))
 matcher('footnote paragraph', Note / GroupedFlowables / Paragraph)
 matcher('footnote label', Note / Paragraph)
+
+# citations
+
+matcher('citation', Note.like('citation'))
+matcher('citation marker', NoteMarkerBase.like('citation'))
+matcher('citation paragraph',
+        Note.like('citation') / GroupedFlowables / Paragraph)
+matcher('citation label', Note.like('citation') / Paragraph)
 
 
 # images & figures
