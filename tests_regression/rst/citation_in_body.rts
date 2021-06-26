@@ -3,3 +3,6 @@ base = sphinx_base14
 
 [citation]
 as_footnote = False
+
+[citation paragraph]
+font_slant=ITALIC
