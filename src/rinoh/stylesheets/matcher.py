@@ -272,7 +272,7 @@ matcher('footer', Footer)
 
 
 # footnotes & citations
-
+matcher('citation', Note.like('citation'))
 matcher('footnote marker', NoteMarkerBase.like('footnote'))
 matcher('citation marker', NoteMarkerBase.like('citation'))
 matcher('footnote paragraph', Note / GroupedFlowables / Paragraph)

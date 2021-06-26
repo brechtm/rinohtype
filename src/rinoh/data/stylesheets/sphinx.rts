@@ -605,11 +605,6 @@ base=linked reference
 position=SUPERSCRIPT
 number_format=number
 
-[citation marker]
-label_prefix='['
-label_suffix=']'
-custom_label=True
-
 [footnote paragraph]
 base=default
 font_size=8pt
@@ -620,6 +615,21 @@ line_spacing=Fixed(10pt)
 base=footnote paragraph
 text_align=RIGHT
 
+[citation]
+base=header_footer
+as_footnote=True
+
+[citation marker]
+label_prefix='['
+label_suffix=']'
+custom_label=True
+
+[citation paragraph]
+base=footnote paragraph
+
+[citation label]
+base=citation paragraph
+text_align=RIGHT
 
 [image]
 space_above=10pt

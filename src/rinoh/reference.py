@@ -7,28 +7,27 @@
 
 
 import re
-
-from copy import copy
 from itertools import chain, zip_longest
 
 from .annotation import NamedDestinationLink
 from .attribute import Attribute, Bool, OptionSet, OverrideDefault
-from .flowable import Flowable, LabeledFlowable, DummyFlowable
+from .flowable import (Flowable, LabeledFlowable, DummyFlowable,
+                       LabeledFlowableStyle)
 from .layout import ContainerOverflow
 from .number import NumberStyle, Label, format_number
 from .paragraph import Paragraph, ParagraphStyle, ParagraphBase
 from .strings import StringCollection, StringField
 from .style import HasClass, HasClasses, Styled
-from .text import (InlineStyled, StyledText, TextStyle, SingleStyledText,
+from .text import (StyledText, TextStyle, SingleStyledText,
                    MixedStyledTextBase, MixedStyledText, ErrorText)
 from .util import NotImplementedAttribute
 
-
 __all__ = ['Reference', 'ReferenceField', 'ReferenceText', 'ReferenceType',
            'ReferencingParagraph', 'ReferencingParagraphStyle',
-           'Note', 'RegisterNote', 'NoteMarkerBase', 'NoteMarkerByID',
-           'NoteMarkerWithNote', 'NoteMarkerStyle',
-           'Field', 'PAGE_NUMBER', 'NUMBER_OF_PAGES', 'SECTION_NUMBER',
+           'Note', 'CitationNote', 'RegisterNote',
+           'NoteMarkerBase', 'NoteMarkerByID', 'NoteMarkerWithNote',
+           'NoteMarkerStyle', 'CitationMarker', 'Field',
+           'PAGE_NUMBER', 'NUMBER_OF_PAGES', 'SECTION_NUMBER',
            'SECTION_TITLE', 'DOCUMENT_TITLE', 'DOCUMENT_SUBTITLE']
 
 
@@ -100,7 +99,7 @@ class ReferenceBase(MixedStyledTextBase):
                 self.warn(f"Target '{target_id}' has no '{type}' reference",
                           container)
                 text = ErrorText('??', parent=self)
-        if type == ReferenceType.TITLE:     # prevent infinite recursion
+        if type == ReferenceType.TITLE:  # prevent infinite recursion
             document.title_targets.update(self.referenceable_ids)
             if target_id in document.title_targets:
                 self.warn("Circular 'title' reference replaced with "
@@ -215,8 +214,14 @@ class IsOfType:
         return type_name == type(self.styled).__name__
 
 
+class NoteStyle(LabeledFlowableStyle):
+    as_footnote = Attribute(Bool, True,
+                            'Display the Note as a footnote')
+
+
 class Note(LabeledFlowable):
     category = 'Note'
+    style_class = NoteStyle
 
     def __init__(self, flowable, id=None, style=None, parent=None):
         label = Paragraph(DirectReference(self))
@@ -230,6 +235,25 @@ class RegisterNote(DummyFlowable):
 
     def prepare(self, flowable_target):
         self.note.prepare(flowable_target)
+
+
+class CitationNote(Note):
+    def __init__(self, flowable, id=None, style=None, parent=None):
+        super().__init__(flowable, id, style, parent)
+
+    def as_footnote(self):
+        return CitationFootnote(self.flowable, style=self.style,
+                                parent=self.parent,
+                                id=self.id)
+
+    def flow(self, container, last_descender, state=None, **kwargs):
+        if self.get_style('as_footnote', container):
+            return 0, 0, last_descender
+        return super().flow(container, last_descender, state, **kwargs)
+
+
+class CitationFootnote(Note):
+    pass
 
 
 class NoteMarkerStyle(ReferenceStyle):
@@ -261,10 +285,22 @@ class NoteMarkerBase(ReferenceBase, Label):
             document.set_reference(target_id, 'number', formatted_label)
 
     def before_placing(self, container):
+        self.add_footnote(container)
+        super().before_placing(container)
+
+    def add_footnote(self, container):
         note = container.document.elements[self.target_id(container.document)]
         if not container._footnote_space.add_footnote(note):
             raise ContainerOverflow
-        super().before_placing(container)
+
+
+class CitationMarker(Reference, NoteMarkerBase):
+    def add_footnote(self, container):
+        note = container.document.elements[self.target_id(container.document)]
+        if note.get_style('as_footnote', container):
+            footnote = note.as_footnote()
+            if not container._footnote_space.add_footnote(footnote):
+                raise ContainerOverflow
 
 
 class NoteMarkerByID(Reference, NoteMarkerBase):
@@ -361,8 +397,6 @@ class SECTION_TITLE(SectionFieldType):
     reference_type = 'title'
 
 
-from . import structure    # fills StringCollection.subclasses
-
 RE_STRINGFIELD = ('|'.join(r'{}\.(?:[a-z_][a-z0-9_]*)'
                            .format(collection_name)
                            for collection_name in StringCollection.subclasses))
@@ -428,8 +462,8 @@ class Field(MixedStyledTextBase):
 
     RE_FIELD = re.compile('{(' + '|'.join(chain(FieldType.all,
                                                 (r'{}\(\d+\)'.format(name)
-                                                    for name
-                                                    in SectionFieldType.all)))
+                                                 for name
+                                                 in SectionFieldType.all)))
                           + '|' + RE_STRINGFIELD
                           + ')}', re.IGNORECASE)
 
