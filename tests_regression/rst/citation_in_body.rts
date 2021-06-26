@@ -1,0 +1,5 @@
+[STYLESHEET]
+base = sphinx_base14
+
+[citation]
+as_footnote = False

@@ -7,7 +7,6 @@
 
 
 import re
-
 from datetime import datetime
 
 import rinoh as rt
@@ -419,6 +418,8 @@ class Reference(DocutilsBodyNode, DocutilsInlineNode):
 
 
 class Footnote(DocutilsBodyNode):
+    style = 'footnote'
+
     def flowables(self):
         note, = super().flowables()
         yield rt.RegisterNote(note)
@@ -441,12 +442,22 @@ class Footnote_Reference(DocutilsInlineNode):
                                  style=self.style)
 
 
-class Citation(Footnote):
-    pass
-
-
-class Citation_Reference(Footnote_Reference):
+class Citation(DocutilsBodyNode):
     style = 'citation'
+
+    def build_flowable(self):
+        return rt.CitationNote(
+            rt.StaticGroupedFlowables(self.children_flowables(1)),
+            style=self.style)
+
+
+class Citation_Reference(DocutilsInlineNode):
+    style = 'citation'
+
+    def build_styled_text(self):
+        return rt.CitationMarker(self['refid'],
+                                 custom_label=self.process_content(),
+                                 style=self.style)
 
 
 class Substitution_Definition(DocutilsBodyNode):
