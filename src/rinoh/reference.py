@@ -397,6 +397,8 @@ class SECTION_TITLE(SectionFieldType):
     reference_type = 'title'
 
 
+from . import structure    # fills StringCollection.subclasses
+
 RE_STRINGFIELD = ('|'.join(r'{}\.(?:[a-z_][a-z0-9_]*)'
                            .format(collection_name)
                            for collection_name in StringCollection.subclasses))
