@@ -24,6 +24,8 @@ Fixed:
 * Descenders affect spacing between top border and content (issue #144)
 * The table of contents (outlines) displayed in PDF readers show garbled text
   when section titles contain non-ASCII characters.
+* Page templates with a page-filling background cause an infinite rendering
+  loop when placing a footnote.
 
 
 Release 0.5.3 (2021-06-16)

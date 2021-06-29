@@ -280,7 +280,7 @@ class FlowablesContainerBase(Container):
         return True
 
     def check_overflow(self):
-        return self.remaining_height > 0
+        return self.type is not CONTENT or self.remaining_height > 0
 
     def render(self, type, rerender=False):
         if type in (self.type, None):
