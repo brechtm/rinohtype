@@ -395,7 +395,7 @@ testing = ["argcomplete", "hypothesis (>=3.56)", "mock", "nose", "requests", "xm
 
 [[package]]
 name = "pytest-assume"
-version = "2.4.2"
+version = "2.4.3"
 description = "A pytest plugin that allows multiple failures per test"
 category = "dev"
 optional = false
@@ -826,7 +826,7 @@ testing = ["pytest (>=4.6)", "pytest-checkdocs (>=1.2.3)", "pytest-flake8", "pyt
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.6.1"
-content-hash = "d5553a708aaeb5b1c4fb3fa2b2dd58e7f1d1258a92055969a56534a6c69ecbf9"
+content-hash = "7b4674cd3442ff553f0bf48d3067ba58373556c757c0f02bf29e753acf7d04f7"
 
 [metadata.files]
 alabaster = [
@@ -1056,8 +1056,8 @@ pytest = [
     {file = "pytest-6.2.4.tar.gz", hash = "sha256:50bcad0a0b9c5a72c8e4e7c9855a3ad496ca6a881a3641b4260605450772c54b"},
 ]
 pytest-assume = [
-    {file = "pytest-assume-2.4.2.tar.gz", hash = "sha256:4356b4741dd54d4c484f157903342f62f1434067bc5350c3fc56141da35afffc"},
-    {file = "pytest_assume-2.4.2-py3-none-any.whl", hash = "sha256:34239b92660ea98708e2e69108c8308a127feb1121e10ee08ba36b018c2190bf"},
+    {file = "pytest-assume-2.4.3.tar.gz", hash = "sha256:983e90537660fd7aa18bb554693523020272e7edeee3e40435593297bcc6347e"},
+    {file = "pytest_assume-2.4.3-py3-none-any.whl", hash = "sha256:09074220213b87cf1f400609701a44b75078b4e69588c7227e061ff9b3ecf54b"},
 ]
 pytest-console-scripts = [
     {file = "pytest-console-scripts-1.2.0.tar.gz", hash = "sha256:4a2138d7d567bc581fe081b6a5975849a2a36b3925cb0f066d2380103e13741c"},
