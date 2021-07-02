@@ -11,6 +11,11 @@ import math
 from io import BytesIO
 from contextlib import contextmanager
 
+try:
+    from PIL import Image as PILImage
+except ImportError:
+    PILImage = None
+
 from . import cos
 from .reader import PDFReader, PDFPageReader
 from .filter import FlateDecode
@@ -412,7 +417,10 @@ class Image(object):
         return self.xobject.dpi
 
     def _convert_to_png(self, filename_or_file):
-        from PIL import Image as PILImage
+        if PILImage is None:
+            raise ModuleNotFoundError('The Pillow package is required to '
+                                      'handle image formats other than PNG, '
+                                      'JPEG and PDF')
         png_image = BytesIO()
         input_image = PILImage.open(filename_or_file)
         metadata = {}

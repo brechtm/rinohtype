@@ -15,7 +15,7 @@ New Features:
 
 Changed:
 
-*
+* Provide a more informative exception message when Pillow cannot be imported.
 
 Fixed:
 
