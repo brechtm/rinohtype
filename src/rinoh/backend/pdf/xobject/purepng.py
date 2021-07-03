@@ -2570,6 +2570,7 @@ class Reader(object):
         # TODO: Raise FormatError
         compress_method = data[i + 2: i + 3]
         assert (compress_method == zerobyte)
+        data_ = data[i + 3:]
         i = data_.index(zerobyte)
         # skip language tag
         data_ = data_[i + 1:]
