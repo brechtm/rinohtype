@@ -211,6 +211,9 @@
 <h2>Release 0.5.4 (in development)<a class="headerlink" href="#release-0-5-4-in-development" title="Permalink to this headline">¶</a></h2>
 <p>New Features:</p>
 <ul class="simple">
+<li><p>Footnotes and citations can now optionally be rendered where they are located
+in the source document instead of as footnotes. This is controlled by the
+<em>location</em> style property for notes. (issue #269, PR #271 by Alex Fargus)</p></li>
 <li><p>The <em>before</em> and <em>after</em> style properties are now supported on paragraphs too</p></li>
 <li><p>The separator string between an inline admonition title and the adminition
 text is now specified in the style sheet (<em>after</em> property of the <em>admonition
@@ -220,7 +223,7 @@ inline title</em> style), so it can be overridden (default: space character).</p
 </ul>
 <p>Changed:</p>
 <ul class="simple">
-<li></li>
+<li><p>Provide a more informative exception message when Pillow cannot be imported.</p></li>
 </ul>
 <p>Fixed:</p>
 <ul class="simple">

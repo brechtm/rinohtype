@@ -278,31 +278,15 @@
 <dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">rinoh.reference.NoteStyle</span></code></p>
 </dd></dl>
 
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="rinoh.reference.CitationNote">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">rinoh.reference.</span></span><span class="sig-name descname"><span class="pre">CitationNote</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">flowable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">style</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.reference.CitationNote" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="py method">
-<dt class="sig sig-object py" id="rinoh.reference.CitationNote.flow">
-<span class="sig-name descname"><span class="pre">flow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">container</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">last_descender</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.reference.CitationNote.flow" title="Permalink to this definition">¶</a></dt>
+<dl class="py method">
+<dt class="sig sig-object py" id="rinoh.reference.Note.flow">
+<span class="sig-name descname"><span class="pre">flow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">container</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">last_descender</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">footnote</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.reference.Note.flow" title="Permalink to this definition">¶</a></dt>
 <dd><p>Flow this flowable into <cite>container</cite> and return the vertical space
 consumed.</p>
 <p>The flowable’s contents are preceded by a vertical space with a height
 as specified in its style’s <cite>space_above</cite> attribute. Similarly, the
 flowed content is followed by a vertical space with a height given
 by the <cite>space_below</cite> style attribute.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="rinoh.reference.RegisterNote">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">rinoh.reference.</span></span><span class="sig-name descname"><span class="pre">RegisterNote</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">note</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.reference.RegisterNote" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="py method">
-<dt class="sig sig-object py" id="rinoh.reference.RegisterNote.prepare">
-<span class="sig-name descname"><span class="pre">prepare</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">flowable_target</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.reference.RegisterNote.prepare" title="Permalink to this definition">¶</a></dt>
-<dd><p>Determine number labels and register references with the document</p>
 </dd></dl>
 
 </dd></dl>
@@ -339,11 +323,6 @@ by the <cite>space_below</cite> style attribute.</p>
 </dd></dl>
 
 </dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="rinoh.reference.CitationMarker">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">rinoh.reference.</span></span><span class="sig-name descname"><span class="pre">CitationMarker</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target_id</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.reference.CitationMarker" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="rinoh.reference.Field">
