@@ -601,6 +601,9 @@ padding_top=4pt
 border_top=$(thin_black_stroke)
 space_above=18pt
 
+[footnote]
+location=footer
+
 [footnote marker]
 base=linked reference
 position=SUPERSCRIPT
@@ -617,8 +620,7 @@ base=footnote paragraph
 text_align=RIGHT
 
 [citation]
-base=header_footer
-as_footnote=True
+location=footer
 
 [citation marker]
 label_prefix='['

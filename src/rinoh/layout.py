@@ -533,7 +533,8 @@ class FootnoteContainer(UpExpandingContainer):
             footnote_id = footnote.get_id(self.document)
             if footnote_id not in self.document.placed_footnotes:
                 _, _, descender = footnote.flow(maybe_container,
-                                                self._descenders[-1])
+                                                self._descenders[-1],
+                                                footnote=True)
                 self._descenders.append(descender)
                 self._reflowed = True
                 if not self.page.check_overflow():

@@ -2,7 +2,7 @@
 base = sphinx_base14
 
 [citation]
-as_footnote = False
+location = in-place
 
 [citation paragraph]
 font_slant=ITALIC

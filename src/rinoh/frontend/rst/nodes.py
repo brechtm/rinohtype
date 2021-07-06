@@ -420,12 +420,9 @@ class Reference(DocutilsBodyNode, DocutilsInlineNode):
 class Footnote(DocutilsBodyNode):
     style = 'footnote'
 
-    def flowables(self):
-        note, = super().flowables()
-        yield rt.RegisterNote(note)
-
     def build_flowable(self):
-        return rt.Note(rt.StaticGroupedFlowables(self.children_flowables(1)))
+        return rt.Note(rt.StaticGroupedFlowables(self.children_flowables(1)),
+                       style=self.style)
 
 
 class Label(DocutilsBodyNode):
@@ -442,22 +439,12 @@ class Footnote_Reference(DocutilsInlineNode):
                                  style=self.style)
 
 
-class Citation(DocutilsBodyNode):
+class Citation(Footnote):
     style = 'citation'
 
-    def build_flowable(self):
-        return rt.CitationNote(
-            rt.StaticGroupedFlowables(self.children_flowables(1)),
-            style=self.style)
 
-
-class Citation_Reference(DocutilsInlineNode):
+class Citation_Reference(Footnote_Reference):
     style = 'citation'
-
-    def build_styled_text(self):
-        return rt.CitationMarker(self['refid'],
-                                 custom_label=self.process_content(),
-                                 style=self.style)
 
 
 class Substitution_Definition(DocutilsBodyNode):

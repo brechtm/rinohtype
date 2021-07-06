@@ -272,17 +272,20 @@ matcher('footer', Footer)
 
 # footnotes
 
+footnote = Note.like('footnote')
+matcher('footnote', footnote)
 matcher('footnote marker', NoteMarkerBase.like('footnote'))
-matcher('footnote paragraph', Note / GroupedFlowables / Paragraph)
-matcher('footnote label', Note / Paragraph)
+matcher('footnote paragraph', footnote / GroupedFlowables / Paragraph)
+matcher('footnote label', footnote / Paragraph)
+
 
 # citations
 
-matcher('citation', Note.like('citation'))
+citation = Note.like('citation')
+matcher('citation', citation)
 matcher('citation marker', NoteMarkerBase.like('citation'))
-matcher('citation paragraph',
-        Note.like('citation') / GroupedFlowables / Paragraph)
-matcher('citation label', Note.like('citation') / Paragraph)
+matcher('citation paragraph', citation / GroupedFlowables / Paragraph)
+matcher('citation label', citation / Paragraph)
 
 
 # images & figures

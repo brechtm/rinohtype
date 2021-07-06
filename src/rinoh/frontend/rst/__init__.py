@@ -11,7 +11,6 @@ from docutils.core import publish_doctree
 from docutils.io import FileInput
 from docutils.parsers.rst import Parser as ReStructuredTextParser
 
-from ...document import DocumentTree
 from ...text import MixedStyledText
 
 from .. import (TreeNode, TreeNodeMeta, InlineNode, BodyNode, BodySubNode,

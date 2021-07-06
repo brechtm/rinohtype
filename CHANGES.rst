@@ -6,6 +6,9 @@ Release 0.5.4 (in development)
 
 New Features:
 
+* Footnotes and citations can now optionally be rendered where they are located
+  in the source document instead of as footnotes. This is controlled by the
+  *location* style property for notes. (issue #269, PR #271 by Alex Fargus)
 * The *before* and *after* style properties are now supported on paragraphs too
 * The separator string between an inline admonition title and the adminition
   text is now specified in the style sheet (*after* property of the *admonition

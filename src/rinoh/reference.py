@@ -24,9 +24,8 @@ from .util import NotImplementedAttribute
 
 __all__ = ['Reference', 'ReferenceField', 'ReferenceText', 'ReferenceType',
            'ReferencingParagraph', 'ReferencingParagraphStyle',
-           'Note', 'CitationNote', 'RegisterNote',
-           'NoteMarkerBase', 'NoteMarkerByID', 'NoteMarkerWithNote',
-           'NoteMarkerStyle', 'CitationMarker', 'Field',
+           'Note', 'NoteMarkerBase', 'NoteMarkerByID', 'NoteMarkerWithNote',
+           'NoteMarkerStyle', 'Field',
            'PAGE_NUMBER', 'NUMBER_OF_PAGES', 'SECTION_NUMBER',
            'SECTION_TITLE', 'DOCUMENT_TITLE', 'DOCUMENT_SUBTITLE']
 
@@ -214,9 +213,14 @@ class IsOfType:
         return type_name == type(self.styled).__name__
 
 
+class NoteLocation(OptionSet):
+    """Where a :class:`.Note` is placed"""
+
+    values = 'in-place', 'footer'
+
+
 class NoteStyle(LabeledFlowableStyle):
-    as_footnote = Attribute(Bool, True,
-                            'Display the Note as a footnote')
+    location = Attribute(NoteLocation, 'footer', 'Where to place the note')
 
 
 class Note(LabeledFlowable):
@@ -227,33 +231,12 @@ class Note(LabeledFlowable):
         label = Paragraph(DirectReference(self))
         super().__init__(label, flowable, id=id, style=style, parent=parent)
 
-
-class RegisterNote(DummyFlowable):
-    def __init__(self, note, parent=None):
-        super().__init__(parent=parent)
-        self.note = note
-
-    def prepare(self, flowable_target):
-        self.note.prepare(flowable_target)
-
-
-class CitationNote(Note):
-    def __init__(self, flowable, id=None, style=None, parent=None):
-        super().__init__(flowable, id, style, parent)
-
-    def as_footnote(self):
-        return CitationFootnote(self.flowable, style=self.style,
-                                parent=self.parent,
-                                id=self.id)
-
-    def flow(self, container, last_descender, state=None, **kwargs):
-        if self.get_style('as_footnote', container):
+    def flow(self, container, last_descender, state=None, footnote=False,
+             **kwargs):
+        location = self.get_style('location', container)
+        if not footnote and location == NoteLocation.FOOTER:
             return 0, 0, last_descender
         return super().flow(container, last_descender, state, **kwargs)
-
-
-class CitationFootnote(Note):
-    pass
 
 
 class NoteMarkerStyle(ReferenceStyle):
@@ -285,22 +268,11 @@ class NoteMarkerBase(ReferenceBase, Label):
             document.set_reference(target_id, 'number', formatted_label)
 
     def before_placing(self, container):
-        self.add_footnote(container)
-        super().before_placing(container)
-
-    def add_footnote(self, container):
         note = container.document.elements[self.target_id(container.document)]
-        if not container._footnote_space.add_footnote(note):
-            raise ContainerOverflow
-
-
-class CitationMarker(Reference, NoteMarkerBase):
-    def add_footnote(self, container):
-        note = container.document.elements[self.target_id(container.document)]
-        if note.get_style('as_footnote', container):
-            footnote = note.as_footnote()
-            if not container._footnote_space.add_footnote(footnote):
+        if note.get_style('location', container) == NoteLocation.FOOTER:
+            if not container._footnote_space.add_footnote(note):
                 raise ContainerOverflow
+        super().before_placing(container)
 
 
 class NoteMarkerByID(Reference, NoteMarkerBase):
