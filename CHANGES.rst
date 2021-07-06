@@ -29,6 +29,7 @@ Fixed:
   when section titles contain non-ASCII characters.
 * Page templates with a page-filling background cause an infinite rendering
   loop when placing a footnote.
+* Crash on loading PNGs containing an iTXt chunk (PR #275 by Alex Fargus)
 
 
 Release 0.5.3 (2021-06-16)
