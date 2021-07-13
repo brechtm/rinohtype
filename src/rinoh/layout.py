@@ -37,9 +37,9 @@ from .util import ContextManager
 
 __all__ = ['Container', 'FlowablesContainer', 'ChainedContainer',
            'DownExpandingContainer', 'InlineDownExpandingContainer',
-           'UpExpandingContainer', 'VirtualContainer', 'Chain',
-           'FootnoteContainer', 'MaybeContainer', 'discard_state',
-           'ContainerOverflow', 'EndOfContainer',
+           'UpExpandingContainer', 'UpDownExpandingContainer',
+           'VirtualContainer', 'Chain', 'FootnoteContainer', 'MaybeContainer',
+           'discard_state', 'ContainerOverflow', 'EndOfContainer',
            'PageBreakException']
 
 
@@ -438,6 +438,28 @@ class UpExpandingContainer(_FlowablesContainer, ExpandingContainerBase):
         bottom = bottom or parent.height
         super().__init__(name, type, parent, left=left, top=None, width=width,
                          right=right, bottom=bottom, max_height=max_height)
+
+
+class UpDownExpandingContainer(_FlowablesContainer, ExpandingContainerBase):
+    """A container that is anchored in the middle and symetrically expands
+    upwards and downwards."""
+
+    def __init__(self, name, type, parent, left=None, middle=None, width=None,
+                 right=None, max_height=None):
+        """See :class:`ContainerBase` for information on the `name`, `parent`,
+        `left`, `width` and `right` parameters.
+
+        `middle` specifies the location of the container's vertical center with
+        respect to the top of the parent container. When `middle` is omitted,
+        the middle is placed at the top edge of the parent container.
+
+        `max_height` is the maximum height this container can grow to."""
+        if middle is None:
+            middle = 0*PT
+        top = middle
+        super().__init__(name, type, parent, left=left, top=top, width=width,
+                         right=right, max_height=max_height)
+        self.top -= self.height / 2
 
 
 class _MaybeContainer(InlineDownExpandingContainer):
