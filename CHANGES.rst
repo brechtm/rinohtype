@@ -32,6 +32,8 @@ Fixed:
 * Page templates with a page-filling background cause an infinite rendering
   loop when placing a footnote.
 * Crash on loading PNGs containing an iTXt chunk (PR #275 by Alex Fargus)
+* Line-wrapped section headings without hyphenation are missing from the page
+  header.
 
 
 Release 0.5.3 (2021-06-16)

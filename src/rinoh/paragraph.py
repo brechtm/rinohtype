@@ -573,6 +573,7 @@ class ParagraphState(FlowableState):
         self._words = words
         self.nested_flowable_state = nested_flowable_state
         self._first_word = _first_word
+        self._saved = None
 
     paragraph = ReadAliasAttribute('flowable')
 
@@ -594,6 +595,19 @@ class ParagraphState(FlowableState):
 
     def prepend_word(self, word):
         self._first_word = word
+
+    def save(self):
+        self._words, saved_words,  = tee(self._words)
+        self._saved = (self._first_word, saved_words,
+                       copy(self.nested_flowable_state), self.initial)
+
+    def restore(self):
+        first_word, words, nested_state, initial = self._saved
+        self._first_word = first_word
+        self._words = words
+        self.nested_flowable_state = nested_state
+        self.initial = initial
+        self._saved = None
 
 
 class ParagraphBase(Flowable, Label):
@@ -730,7 +744,6 @@ class ParagraphBase(Flowable, Label):
         # that when `container` overflows on rendering a line, the words in that
         # line are yielded again on the next typeset() call.
         saved_state = copy(state)
-        prev_state = copy(state)
         max_line_width = 0
 
         def typeset_line(line, last_line=False):
@@ -765,6 +778,7 @@ class ParagraphBase(Flowable, Label):
 
         first_line = line = Line(tab_stops, line_width, container,
                                  indent_first, self.significant_whitespace)
+        state.save()
         while True:
             try:
                 word = state.next_word()
@@ -777,7 +791,7 @@ class ParagraphBase(Flowable, Label):
                             state.prepend_word(second)  # prepend second part
                             break
                     else:
-                        state = prev_state
+                        state.restore()
                     line = typeset_line(line)
                     if first_line_only:
                         break
@@ -787,7 +801,7 @@ class ParagraphBase(Flowable, Label):
                 line = typeset_line(line, last_line=True)
                 if first_line_only:
                     break
-            prev_state = copy(state)
+            state.save()
         if line:
             typeset_line(line, last_line=True)
 
