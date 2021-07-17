@@ -132,9 +132,7 @@ class DynamicEntryPoint(DynamicEntryPointBase):
 class DynamicRinohDistribution(ilm.Distribution):
     """Distribution for registering resource entry points to at runtime"""
 
-    @property
-    def name(self):
-        return 'rinoh-dynamic-distro'
+    name = 'rinoh-dynamic-distro'
 
     def __init__(self):
         self._templates = {}
