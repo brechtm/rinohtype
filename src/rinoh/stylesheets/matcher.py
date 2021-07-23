@@ -254,6 +254,7 @@ matcher('option argument', MixedStyledText.like('option_arg'))
 
 matcher('admonition', Admonition)
 matcher('admonition title', 'admonition' / Paragraph.like('title'))
+matcher('admonition title paragraph', 'admonition' / +AdmonitionTitleParagraph)
 matcher('admonition inline title', SelectorByName('admonition')
                                    / ... / StyledText.like('inline title'))
 
@@ -263,6 +264,8 @@ for admonition_type in ('attention', 'caution', 'danger', 'error', 'hint',
     matcher(admonition_type + ' admonition', admonition_selector)
     selector = admonition_selector / Paragraph.like('title')
     matcher(admonition_type + ' admonition title', selector)
+    matcher(admonition_type + ' admonition title paragraph',
+            admonition_selector / +AdmonitionTitleParagraph)
     matcher(admonition_type + ' admonition inline title',
             admonition_selector / ... / StyledText.like('inline title'))
 

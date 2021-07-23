@@ -31,7 +31,7 @@ from .structure import HorizontalRule
 from .structure import List, ListItem, ListItemLabel, DefinitionList
 from .structure import Section, TableOfContentsSection, Heading
 from .structure import ListOfEntry
-from .structure import Admonition
+from .structure import Admonition, AdmonitionTitleParagraph
 from .structure import TableOfContents, TableOfContentsEntry
 from .structure import OutOfLineFlowables
 from .table import TableWithCaption, Table, TableSection, TableHead, TableBody

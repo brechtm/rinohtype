@@ -32,6 +32,7 @@ __all__ = ['Section', 'Heading',
            'TableOfContentsSection', 'TableOfContentsStyle', 'TableOfContents',
            'ListOfStyle',
            'TableOfContentsEntry', 'Admonition', 'AdmonitionStyle',
+           'AdmonitionTitleParagraph',
            'HorizontalRule', 'HorizontalRuleStyle', 'OutOfLineFlowables']
 
 
@@ -403,16 +404,19 @@ class Admonition(StaticGroupedFlowables):
         if inline_title and isinstance(first_flowable, Paragraph):
             title = MixedStyledText(title, style='inline title')
             kwargs = dict(id=first_flowable.id, style=first_flowable.style,
-                          parent=self)
+                          source=first_flowable.source, parent=self)
             title_plus_content = title + first_flowable.content
-            paragraph = Paragraph(title_plus_content, **kwargs)
+            paragraph = AdmonitionTitleParagraph(title_plus_content, **kwargs)
             paragraph.secondary_ids = first_flowable.secondary_ids
             yield paragraph
         else:
             yield Paragraph(title, style='title', parent=self)
             yield first_flowable
-        for flowable in flowables:
-            yield flowable
+        yield from flowables
+
+
+class AdmonitionTitleParagraph(Paragraph):
+    pass
 
 
 class HorizontalRuleStyle(FlowableStyle, LineStyle):

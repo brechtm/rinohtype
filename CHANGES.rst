@@ -15,8 +15,10 @@ New Features:
   inline title* style), so it can be overridden (default: space character).
 * Warn about targets in ``rinoh_targets`` that are not defined in
   ``rinoh_documents``.
-* UpDownExpandingContainer: a container that symetrically expands both upwards
+* UpDownExpandingContainer: a container that symmetrically expands both upwards
   and downwards.
+* Admonition: selectors for the first paragraph where the admonition title was
+  prepended to (e.g. *note title paragraph*).
 
 Changed:
 
