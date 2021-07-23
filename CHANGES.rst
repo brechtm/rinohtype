@@ -34,6 +34,8 @@ Fixed:
 * Crash on loading PNGs containing an iTXt chunk (PR #275 by Alex Fargus)
 * Line-wrapped section headings without hyphenation are missing from the page
   header.
+* Sphinx frontend: inline text marked with the :menuselection: role is not
+  styled (now mapped to the *menu cascade style*).
 
 
 Release 0.5.3 (2021-06-16)

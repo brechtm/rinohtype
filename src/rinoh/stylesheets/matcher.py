@@ -38,6 +38,7 @@ matcher = StyledMatcher({
     'literal strong': StyledText.like('literal strong'),
     'inline math': StyledText.like('math'),
 
+    'inline definition': StyledText.like('definition'),
     'quote': StyledText.like('quote'),
     'file path': StyledText.like('file path'),
     'keystrokes': StyledText.like('keystrokes'),

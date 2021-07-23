@@ -104,14 +104,18 @@ class Pending_XRef(DocutilsInlineNode):
 
 
 class Inline(rst.Inline):
-    class_styles = dict(guilabel='UI control',
-                        accelerator='accelerator')
+    class_styles = dict(accelerator='accelerator',
+                        guilabel='UI control',
+                        menuselection='menu cascade')
+
+
+class Emphasis(rst.Emphasis):
+    class_styles = dict(dfn='definition')
 
 
 class Literal(rst.Literal):
     class_styles = dict(file='file path',
                         kbd='keystrokes',
-                        menuselection='menu cascade',
                         regexp='regular expression',
                         samp='code with variable')
 
