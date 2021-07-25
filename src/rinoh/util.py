@@ -268,7 +268,7 @@ class NotImplementedAttribute(object):
 class NamedDescriptor(object):
     """Base class for descriptor's whose name will be derived from the attribute
     name the descriptor instance is assigned to. The `name` attribute will hold
-    the desciptor name."""
+    the descriptor name."""
 
 
 class WithNamedDescriptors(type):

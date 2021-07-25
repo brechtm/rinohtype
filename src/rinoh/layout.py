@@ -18,7 +18,7 @@ page to which :class:`Flowable`\\ s can be rendered.
 * :class:`VirtualContainer`: A container who's rendered content is not
                              automatically placed on the page. Afterwards, it
                              can be manually placed, however.
-* :exc:`EndOfContainer`: Exception raised when a contianer "overflows" during
+* :exc:`EndOfContainer`: Exception raised when a container "overflows" during
                          the rendering of flowables.
 * :class:`Chain`: A chain of containers. When a container overflows, the
                   rendering of the chain's flowables is continued in the next

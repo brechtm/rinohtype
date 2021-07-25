@@ -436,7 +436,7 @@ def check_time(value):
     if isinstance(value, basestring):
         if value.lower() == 'now':
             return time.gmtime()
-        # TODO: parsinng some popular strings
+        # TODO: parsing some popular strings
     raise ValueError("Unsupported time representation:" + repr(value))
 
 
@@ -856,11 +856,11 @@ class Writer(object):
         compression, with 9 being "more compressed" (usually smaller
         and slower, but it doesn't always work out that way).  0 means
         no compression.  -1 and ``None`` both mean that the default
-        level of compession will be picked by the ``zlib`` module
+        level of compression will be picked by the ``zlib`` module
         (which is generally acceptable).
 
         If `interlace` is true then an interlaced image is created
-        (using PNG's so far only interace method, *Adam7*).  This does
+        (using PNG's so far only interface method, *Adam7*).  This does
         not affect how the pixels should be presented to the encoder,
         rather it changes how they are arranged into the PNG file.
         On slow connexions interlaced images can be partially decoded
