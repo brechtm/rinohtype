@@ -96,7 +96,7 @@ class ASCIIHexEncoder(Encoder):
 class ASCIIHexDecoder(Decoder):
     def read(self, n=-1):
         # TODO: remove spaces
-        # TODO: handle odd-lenght input to unhexlify
+        # TODO: handle odd-length input to unhexlify
         # TODO: handler > EOD marker (also after odd-length string)
         return unhexlify(self._source.read(n))
 

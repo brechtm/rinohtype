@@ -264,7 +264,7 @@ class TabStop(object):
     Args:
         position (:class:`Dimension` or :class:`Fraction`): tab stop position
         align (TabAlign): the alignment of text with respect to the tab stop
-            positon
+            position
         fill (str): string pattern to fill the empty tab space with
 
     """
