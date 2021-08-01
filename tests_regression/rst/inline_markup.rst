@@ -14,7 +14,7 @@ intentional).
 .. _example:
 
 The default role for interpreted text is `Title Reference`.  Here are
-some explicit interpreted text roles: a PEP reference (:PEP:`287`); an
+some explicit interpreted text roles: a PEPE reference (:PEP:`287`); an
 RFC reference (:RFC:`2822`); a :sub:`subscript`; a :sup:`superscript`;
 and explicit roles for :emphasis:`standard` :strong:`inline`
 :literal:`markup`.
