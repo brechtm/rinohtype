@@ -447,7 +447,7 @@ pytest = ">=3.10"
 
 [[package]]
 name = "pytest-github-actions-annotate-failures"
-version = "0.1.2"
+version = "0.1.3"
 description = "pytest plugin to annotate failed tests with a workflow command for GitHub Actions"
 category = "dev"
 optional = true
@@ -826,7 +826,7 @@ testing = ["pytest (>=4.6)", "pytest-checkdocs (>=1.2.3)", "pytest-flake8", "pyt
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.6.1"
-content-hash = "7b4674cd3442ff553f0bf48d3067ba58373556c757c0f02bf29e753acf7d04f7"
+content-hash = "7c9764bb50ea9c1db4337a69e75b37c2c765a0ac16de7a14b447a6a26fd4f9a7"
 
 [metadata.files]
 alabaster = [
@@ -1071,8 +1071,8 @@ pytest-forked = [
     {file = "pytest_forked-1.3.0-py2.py3-none-any.whl", hash = "sha256:dc4147784048e70ef5d437951728825a131b81714b398d5d52f17c7c144d8815"},
 ]
 pytest-github-actions-annotate-failures = [
-    {file = "pytest-github-actions-annotate-failures-0.1.2.tar.gz", hash = "sha256:9eb6ee2943ecde2078fe620af7dbf32646c0267f538435cd805fe2e8d735ca3a"},
-    {file = "pytest_github_actions_annotate_failures-0.1.2-py2.py3-none-any.whl", hash = "sha256:e0c4bd8720450fc37c4ee63465023101301980c2d24f14f8ab25358ba1fa68d4"},
+    {file = "pytest-github-actions-annotate-failures-0.1.3.tar.gz", hash = "sha256:e2bbb307b16abb70721046913d18e855fab867c8e490f71e38a6ca6042911822"},
+    {file = "pytest_github_actions_annotate_failures-0.1.3-py2.py3-none-any.whl", hash = "sha256:4c00d1f8182341a0a1a4c94e5ec3ab22098590ae173326ec282729a5e162d6bb"},
 ]
 pytest-xdist = [
     {file = "pytest-xdist-2.3.0.tar.gz", hash = "sha256:e8ecde2f85d88fbcadb7d28cb33da0fa29bca5cf7d5967fa89fc0e97e5299ea5"},
