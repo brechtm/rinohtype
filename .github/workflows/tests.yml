@@ -258,7 +258,7 @@ jobs:
       if: failure()
       uses: actions/upload-artifact@v2
       with:
-        name: ${{ matrix.os }} / ${{ matrix.python-version }} regression tests${{ matrix.name }}
+        name: ${{ matrix.os }} ${{ matrix.python-version }} regression tests${{ matrix.name }}
         path: tests_regression/*_output/
 
     - name: Upload coverage statistics to codecov.io
