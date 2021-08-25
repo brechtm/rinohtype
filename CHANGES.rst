@@ -38,6 +38,8 @@ Fixed:
   header.
 * Sphinx frontend: inline text marked with the :menuselection: role is not
   styled (now mapped to the *menu cascade style*).
+* Typos in code and documentation (PR #277 by Tim Gates, PR #281 by Filipe
+  Tavares)
 
 
 Release 0.5.3 (2021-06-16)
