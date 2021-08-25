@@ -3,7 +3,7 @@
 Sphinx Builder
 ==============
 
-:mod:`rinoh.frontent.sphinx` is a Sphinx extension module. It provides a Sphinx
+:mod:`rinoh.frontend.sphinx` is a Sphinx extension module. It provides a Sphinx
 builder with the name *rinoh*. The builder recognizes the following ``conf.py``
 options. Of these, only :confval:`rinoh_documents` (or
 :confval:`sphinx:latex_documents`) is required.
