@@ -10,7 +10,7 @@ New Features:
   in the source document instead of as footnotes. This is controlled by the
   *location* style property for notes. (issue #269, PR #271 by Alex Fargus)
 * The *before* and *after* style properties are now supported on paragraphs too
-* The separator string between an inline admonition title and the adminition
+* The separator string between an inline admonition title and the admonition
   text is now specified in the style sheet (*after* property of the *admonition
   inline title* style), so it can be overridden (default: space character).
 * Warn about targets in ``rinoh_targets`` that are not defined in
@@ -19,6 +19,8 @@ New Features:
   and downwards.
 * Admonition: selectors for the first paragraph where the admonition title was
   prepended to (e.g. *note title paragraph*).
+* Support interlaced PNG images (#274). Note that this can slow down rendering
+  significantly for many/large interlaced images.
 
 Changed:
 

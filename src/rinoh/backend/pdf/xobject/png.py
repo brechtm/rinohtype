@@ -6,7 +6,7 @@
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
 from io import BytesIO
-from itertools import islice
+from itertools import islice, chain
 from pathlib import Path
 from struct import Struct, pack
 
@@ -14,6 +14,7 @@ from . import purepng
 
 from ..cos import Array, Integer, Stream, Name, Dictionary, Real
 from ..filter import FlateDecode, FlateDecodeParams
+from ....warnings import warn
 
 from . import (XObjectImage, DEVICE_GRAY, DEVICE_RGB, INDEXED, PERCEPTUAL,
                ABSOLUTE_COLORIMETRIC, RELATIVE_COLORIMETRIC, SATURATION)
@@ -32,9 +33,6 @@ class PNGReader(XObjectImage):
             png.preamble()
         except purepng.FormatError as format_error:
             raise ValueError(*format_error.args)
-        assert png.compression == 0
-        assert png.filter == 0
-        assert png.interlace == 0
         color_params = FlateDecodeParams(predictor=10, colors=png.color_planes,
                                          bits_per_component=png.bitdepth,
                                          columns=png.width)
@@ -43,6 +41,25 @@ class PNGReader(XObjectImage):
                          filter=FlateDecode(color_params))
         if png.rendering_intent is not None:
             self['Intent'] = RENDERING_INTENT[png.rendering_intent]
+        idat_decomp = png.idatdecomp()
+        if png.interlace == 1:
+            if isinstance(file_or_filename, Path):
+                warn(f"WARNING: Deinterlacing '{file_or_filename}' for "
+                     "embedding into PDF; this can significantly slow down "
+                     "rendering.")
+            iraw = bytearray(chain(*idat_decomp))
+            raw = png.deinterlace(iraw)
+            bytes_per_row = png.width * png.planes
+            rows = (raw[i*bytes_per_row:(i+1)*bytes_per_row]
+                    for i in range(png.height))
+            writer = purepng.Writer(png.width, png.height,
+                                    alpha=png.alpha, bitdepth=png.bitdepth,
+                                    greyscale=png.greyscale,
+                                    palette=png.palette() if png.plte else None,
+                                    transparent=png.transparent,
+                                    compression=png.compression,
+                                    interlace=False)
+            idat_decomp = writer.idat(rows)
         if png.alpha:  # grayscale/RGB with alpha channel
             smask_params = FlateDecodeParams(predictor=10, colors=1,
                                              bits_per_component=png.bitdepth,
@@ -50,11 +67,13 @@ class PNGReader(XObjectImage):
             self['SMask'] = XObjectImage(png.width, png.height, DEVICE_GRAY,
                                          png.bitdepth,
                                          filter=FlateDecode(smask_params))
-            for color_row, alpha_row in self._split_color_alpha(png):
+            for color_row, alpha_row in self._split_color_alpha(png, idat_decomp):
                 self.write(color_row, bypass_predictor=True)
                 self['SMask'].write(alpha_row, bypass_predictor=True)
         else:
-            for idat_chunk in png.idat():
+            idat = (writer.comp_idat(idat_decomp) if png.interlace
+                    else png.idat())
+            for idat_chunk in idat:
                 self.write_raw(idat_chunk)
             if png.trns:
                 if png.plte:  # alpha values assigned to palette colors
@@ -137,11 +156,11 @@ class PNGReader(XObjectImage):
         else:
             return None
 
-    def _split_color_alpha(self, png):
+    def _split_color_alpha(self, png, idat_decomp):
         bytedepth = png.bitdepth // 8
         num_color_bytes = png.color_planes * bytedepth
         idat = BytesIO()
-        for idat_chunk in png.idatdecomp():
+        for idat_chunk in idat_decomp:
             idat.write(idat_chunk)
         row_num_bytes = 1 + (png.color_planes + 1) * bytedepth * png.width
         pixel_color_fmt = '{}B{}x'.format(num_color_bytes, bytedepth)
