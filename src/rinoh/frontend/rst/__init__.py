@@ -42,11 +42,15 @@ class DocutilsNode(TreeNode, metaclass=TreeNodeMeta):
         return source, self.node.line, self.node.tagname
 
     @property
-    def root(self):
+    def node_document(self):
         node = self.node
         while node.document is None:
             node = node.parent  # https://sourceforge.net/p/docutils/bugs/410/
-        settings = node.document.settings
+        return node.document
+
+    @property
+    def root(self):
+        settings = self.node_document.settings
         try:                    # Sphinx
             sphinx_env = settings.env
         except AttributeError:  # plain docutils
