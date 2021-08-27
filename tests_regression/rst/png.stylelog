@@ -1,0 +1,1224 @@
+---------------------------------- page 1 ----------------------------------
+#### FootnoteContainer('footnotes')
+  StaticGroupedFlowables()
+#### DownExpandingContainer('floats')
+  StaticGroupedFlowables()
+#### ChainedContainer('column1')
+  StaticGroupedFlowables()
+    DocumentTree()   png.rst   <document>
+      Section(id='basic-formats')   png.rst:3   <section>
+           > (0,0,0,1,4) content chapter [Sphinx] > chapter
+             (0,0,0,1,2) chapter [png.rts] > DEFAULT
+        Heading('1 Basic formats')   png.rst:3   <title>
+             > (0,0,0,1,2) heading level 1 [Sphinx] > DEFAULT
+               (0,0,0,0,2) other heading levels [Sphinx] > heading level 5
+            MixedStyledText('1 ')
+              SingleStyledText('1')
+              SingleStyledText(' ')
+            MixedStyledText('Basic formats')
+              MixedStyledText('Basic formats')
+                SingleStyledText('Basic formats')
+        Table()   <table>
+             > (0,0,0,0,2) table [Sphinx] > DEFAULT
+          TableBody()
+            TableRow()
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/basn0g01.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/basn0g02.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/basn0g04.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/basn0g08.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/basn0g16.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/basn2c08.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/basn2c16.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/basn3p01.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+            TableRow()
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/basn3p02.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on even row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/basn3p04.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on even row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/basn3p08.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on even row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/basn4a08.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on even row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/basn4a16.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on even row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/basn6a08.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on even row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/basn6a16.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on even row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on even row
+      Section(id='interlacing')   png.rst:25   <section>
+           > (0,0,0,1,4) content chapter [Sphinx] > chapter
+             (0,0,0,1,2) chapter [png.rts] > DEFAULT
+        Heading('2 Interlacing')   png.rst:25   <title>
+             > (0,0,0,1,2) heading level 1 [Sphinx] > DEFAULT
+               (0,0,0,0,2) other heading levels [Sphinx] > heading level 5
+            MixedStyledText('2 ')
+              SingleStyledText('2')
+              SingleStyledText(' ')
+            MixedStyledText('Interlacing')
+              MixedStyledText('Interlacing')
+                SingleStyledText('Interlacing')
+        Table()   <table>
+             > (0,0,0,0,2) table [Sphinx] > DEFAULT
+          TableBody()
+            TableRow()
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/basi0g01.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/basi0g02.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/basi0g04.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/basi0g08.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/basi0g16.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/basi2c08.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/basi2c16.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/basi3p01.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+            TableRow()
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/basi3p02.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on even row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/basi3p04.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on even row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/basi3p08.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on even row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/basi4a08.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on even row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/basi4a16.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on even row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/basi6a08.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on even row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/basi6a16.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on even row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on even row
+      Section(id='odd-sizes')   png.rst:48   <section>
+           > (0,0,0,1,4) content chapter [Sphinx] > chapter
+             (0,0,0,1,2) chapter [png.rts] > DEFAULT
+        Heading('3 Odd sizes')   png.rst:48   <title>
+             > (0,0,0,1,2) heading level 1 [Sphinx] > DEFAULT
+               (0,0,0,0,2) other heading levels [Sphinx] > heading level 5
+            MixedStyledText('3 ')
+              SingleStyledText('3')
+              SingleStyledText(' ')
+            MixedStyledText('Odd sizes')
+              MixedStyledText('Odd sizes')
+                SingleStyledText('Odd sizes')
+        Table()   <table>
+             > (0,0,0,0,2) table [Sphinx] > DEFAULT
+          TableBody()
+            TableRow()
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/s01i3p01.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/s01n3p01.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/s02i3p01.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/s02n3p01.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/s03i3p01.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/s03n3p01.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/s04i3p01.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/s04n3p01.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/s05i3p02.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+            TableRow()
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/s05n3p02.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on even row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/s06i3p02.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on even row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/s06n3p02.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on even row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/s07i3p02.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on even row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/s07n3p02.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on even row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/s08i3p02.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on even row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/s08n3p02.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on even row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/s09i3p02.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on even row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/s09n3p02.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on even row
+            TableRow()
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/s32i3p04.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/s32n3p04.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/s33i3p04.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/s33n3p04.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/s34i3p04.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/s34n3p04.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/s35i3p04.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/s35n3p04.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/s36i3p04.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+---------------------------------- page 2 ----------------------------------
+#### FootnoteContainer('footnotes')
+  StaticGroupedFlowables()
+#### DownExpandingContainer('floats')
+  StaticGroupedFlowables()
+#### ChainedContainer('column1')
+  (continued) StaticGroupedFlowables()
+    (continued) DocumentTree()   png.rst   <document>
+      (continued) Section(id='odd-sizes')   png.rst:48   <section>
+           > (0,0,0,1,4) content chapter [Sphinx] > chapter
+             (0,0,0,1,2) chapter [png.rts] > DEFAULT
+        (continued) Table()   <table>
+             > (0,0,0,0,2) table [Sphinx] > DEFAULT
+            TableRow()
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/s36n3p04.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on even row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/s37i3p04.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on even row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/s37n3p04.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on even row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/s38i3p04.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on even row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/s38n3p04.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on even row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/s39i3p04.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on even row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/s39n3p04.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on even row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/s40i3p04.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on even row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/s40n3p04.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on even row
+      Section(id='background-colors')   png.rst:91   <section>
+           > (0,0,0,1,4) content chapter [Sphinx] > chapter
+             (0,0,0,1,2) chapter [png.rts] > DEFAULT
+        Heading('4 Background colors')   png.rst:91   <title>
+             > (0,0,0,1,2) heading level 1 [Sphinx] > DEFAULT
+               (0,0,0,0,2) other heading levels [Sphinx] > heading level 5
+            MixedStyledText('4 ')
+              SingleStyledText('4')
+              SingleStyledText(' ')
+            MixedStyledText('Background colors')
+              MixedStyledText('Background colors')
+                SingleStyledText('Background colors')
+        Table()   <table>
+             > (0,0,0,0,2) table [Sphinx] > DEFAULT
+          TableBody()
+            TableRow()
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/bgai4a08.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/bgai4a16.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/bgan6a08.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/bgan6a16.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/bgbn4a08.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/bggn4a16.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/bgwn6a08.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/bgyn6a16.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+      Section(id='transparency')   png.rst:106   <section>
+           > (0,0,0,1,4) content chapter [Sphinx] > chapter
+             (0,0,0,1,2) chapter [png.rts] > DEFAULT
+        Heading('5 Transparency')   png.rst:106   <title>
+             > (0,0,0,1,2) heading level 1 [Sphinx] > DEFAULT
+               (0,0,0,0,2) other heading levels [Sphinx] > heading level 5
+            MixedStyledText('5 ')
+              SingleStyledText('5')
+              SingleStyledText(' ')
+            MixedStyledText('Transparency')
+              MixedStyledText('Transparency')
+                SingleStyledText('Transparency')
+        Table()   <table>
+             > (0,0,0,0,2) table [Sphinx] > DEFAULT
+          TableBody()
+            TableRow()
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/tbbn0g04.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/tbbn2c16.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/tbbn3p08.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/tbgn2c16.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/tbgn3p08.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/tbrn2c08.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/tbwn0g16.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+            TableRow()
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/tbwn3p08.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on even row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/tbyn3p08.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on even row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/tp0n0g08.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on even row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/tp0n2c08.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on even row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/tp0n3p08.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on even row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/tp1n3p08.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on even row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/tm3n3p02.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on even row
+      Section(id='gamma-values')   png.rst:127   <section>
+           > (0,0,0,1,4) content chapter [Sphinx] > chapter
+             (0,0,0,1,2) chapter [png.rts] > DEFAULT
+        Heading('6 Gamma values')   png.rst:127   <title>
+             > (0,0,0,1,2) heading level 1 [Sphinx] > DEFAULT
+               (0,0,0,0,2) other heading levels [Sphinx] > heading level 5
+            MixedStyledText('6 ')
+              SingleStyledText('6')
+              SingleStyledText(' ')
+            MixedStyledText('Gamma values')
+              MixedStyledText('Gamma values')
+                SingleStyledText('Gamma values')
+        Table()   <table>
+             > (0,0,0,0,2) table [Sphinx] > DEFAULT
+          TableBody()
+            TableRow()
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/g03n0g16.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/g03n2c08.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/g03n3p04.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/g04n0g16.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/g04n2c08.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/g04n3p04.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+---------------------------------- page 3 ----------------------------------
+#### FootnoteContainer('footnotes')
+  StaticGroupedFlowables()
+#### DownExpandingContainer('floats')
+  StaticGroupedFlowables()
+#### ChainedContainer('column1')
+  (continued) StaticGroupedFlowables()
+    (continued) DocumentTree()   png.rst   <document>
+      (continued) Section(id='gamma-values')   png.rst:127   <section>
+           > (0,0,0,1,4) content chapter [Sphinx] > chapter
+             (0,0,0,1,2) chapter [png.rts] > DEFAULT
+        (continued) Table()   <table>
+             > (0,0,0,0,2) table [Sphinx] > DEFAULT
+            TableRow()
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/g05n0g16.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on even row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/g05n2c08.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on even row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/g05n3p04.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on even row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/g07n0g16.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on even row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/g07n2c08.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on even row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/g07n3p04.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on even row
+            TableRow()
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/g10n0g16.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/g10n2c08.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/g10n3p04.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/g25n0g16.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/g25n2c08.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/g25n3p04.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+      Section(id='image-filtering')   png.rst:152   <section>
+           > (0,0,0,1,4) content chapter [Sphinx] > chapter
+             (0,0,0,1,2) chapter [png.rts] > DEFAULT
+        Heading('7 Image filtering')   png.rst:152   <title>
+             > (0,0,0,1,2) heading level 1 [Sphinx] > DEFAULT
+               (0,0,0,0,2) other heading levels [Sphinx] > heading level 5
+            MixedStyledText('7 ')
+              SingleStyledText('7')
+              SingleStyledText(' ')
+            MixedStyledText('Image filtering')
+              MixedStyledText('Image filtering')
+                SingleStyledText('Image filtering')
+        Table()   <table>
+             > (0,0,0,0,2) table [Sphinx] > DEFAULT
+          TableBody()
+            TableRow()
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/f00n0g08.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/f00n2c08.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/f01n0g08.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/f01n2c08.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/f02n0g08.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/f02n2c08.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+            TableRow()
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/f03n0g08.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on even row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/f03n2c08.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on even row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/f04n0g08.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on even row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/f04n2c08.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on even row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/f99n0g04.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on even row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on even row
+      Section(id='additional-palettes')   png.rst:170   <section>
+           > (0,0,0,1,4) content chapter [Sphinx] > chapter
+             (0,0,0,1,2) chapter [png.rts] > DEFAULT
+        Heading('8 Additional palettes')   png.rst:170   <title>
+             > (0,0,0,1,2) heading level 1 [Sphinx] > DEFAULT
+               (0,0,0,0,2) other heading levels [Sphinx] > heading level 5
+            MixedStyledText('8 ')
+              SingleStyledText('8')
+              SingleStyledText(' ')
+            MixedStyledText('Additional palettes')
+              MixedStyledText('Additional palettes')
+                SingleStyledText('Additional palettes')
+        Table()   <table>
+             > (0,0,0,0,2) table [Sphinx] > DEFAULT
+          TableBody()
+            TableRow()
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/pp0n2c16.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/pp0n6a08.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/ps1n0g08.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/ps1n2c16.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/ps2n0g08.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/ps2n2c16.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+---------------------------------- page 4 ----------------------------------
+#### FootnoteContainer('footnotes')
+  StaticGroupedFlowables()
+#### DownExpandingContainer('floats')
+  StaticGroupedFlowables()
+#### ChainedContainer('column1')
+  (continued) StaticGroupedFlowables()
+    (continued) DocumentTree()   png.rst   <document>
+      Section(id='ancillary-chunks')   png.rst:183   <section>
+           > (0,0,0,1,4) content chapter [Sphinx] > chapter
+             (0,0,0,1,2) chapter [png.rts] > DEFAULT
+        Heading('9 Ancillary chunks')   png.rst:183   <title>
+             > (0,0,0,1,2) heading level 1 [Sphinx] > DEFAULT
+               (0,0,0,0,2) other heading levels [Sphinx] > heading level 5
+            MixedStyledText('9 ')
+              SingleStyledText('9')
+              SingleStyledText(' ')
+            MixedStyledText('Ancillary chunks')
+              MixedStyledText('Ancillary chunks')
+                SingleStyledText('Ancillary chunks')
+        Table()   <table>
+             > (0,0,0,0,2) table [Sphinx] > DEFAULT
+          TableBody()
+            TableRow()
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/ccwn2c08.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/ccwn3p08.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/cdfn2c08.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/cdhn2c08.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/cdsn2c08.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/cdun2c08.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/ch1n3p04.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+            TableRow()
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/ch2n3p08.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on even row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/cm0n0g04.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on even row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/cm7n0g04.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on even row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/cm9n0g04.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on even row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/cs3n2c16.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on even row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/cs3n3p08.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on even row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/cs5n2c08.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on even row
+            TableRow()
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/cs5n3p08.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/cs8n2c08.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/cs8n3p08.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/ct0n0g04.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/ct1n0g04.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/cten0g04.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/ctfn0g04.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+            TableRow()
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/ctgn0g04.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on even row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/cthn0g04.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on even row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/ctjn0g04.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on even row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/ctzn0g04.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on even row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/exif2c08.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on even row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on even row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on even row
+      Section(id='chunk-ordering')   png.rst:218   <section>
+           > (0,0,0,1,4) content chapter [Sphinx] > chapter
+             (0,0,0,1,2) chapter [png.rts] > DEFAULT
+        Heading('10 Chunk ordering')   png.rst:218   <title>
+             > (0,0,0,1,2) heading level 1 [Sphinx] > DEFAULT
+               (0,0,0,0,2) other heading levels [Sphinx] > heading level 5
+            MixedStyledText('10 ')
+              SingleStyledText('10')
+              SingleStyledText(' ')
+            MixedStyledText('Chunk ordering')
+              MixedStyledText('Chunk ordering')
+                SingleStyledText('Chunk ordering')
+        Table()   <table>
+             > (0,0,0,0,2) table [Sphinx] > DEFAULT
+          TableBody()
+            TableRow()
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/oi1n0g16.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/oi1n2c16.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/oi2n0g16.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/oi2n2c16.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/oi4n0g16.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/oi4n2c16.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/oi9n0g16.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/oi9n2c16.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+---------------------------------- page 5 ----------------------------------
+#### FootnoteContainer('footnotes')
+  StaticGroupedFlowables()
+#### DownExpandingContainer('floats')
+  StaticGroupedFlowables()
+#### ChainedContainer('column1')
+  (continued) StaticGroupedFlowables()
+    (continued) DocumentTree()   png.rst   <document>
+      Section(id='zlib-compression')   png.rst:233   <section>
+           > (0,0,0,1,4) content chapter [Sphinx] > chapter
+             (0,0,0,1,2) chapter [png.rts] > DEFAULT
+        Heading('11 Zlib compression')   png.rst:233   <title>
+             > (0,0,0,1,2) heading level 1 [Sphinx] > DEFAULT
+               (0,0,0,0,2) other heading levels [Sphinx] > heading level 5
+            MixedStyledText('11 ')
+              SingleStyledText('11')
+              SingleStyledText(' ')
+            MixedStyledText('Zlib compression')
+              MixedStyledText('Zlib compression')
+                SingleStyledText('Zlib compression')
+        Table()   <table>
+             > (0,0,0,0,2) table [Sphinx] > DEFAULT
+          TableBody()
+            TableRow()
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/z00n2c08.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/z03n2c08.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/z06n2c08.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Image('../images/png/z09n2c08.png')   <image>
+                     > (0,0,0,0,2) image [Sphinx] > DEFAULT
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
