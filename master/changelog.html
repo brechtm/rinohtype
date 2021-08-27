@@ -215,7 +215,7 @@
 in the source document instead of as footnotes. This is controlled by the
 <em>location</em> style property for notes. (issue #269, PR #271 by Alex Fargus)</p></li>
 <li><p>The <em>before</em> and <em>after</em> style properties are now supported on paragraphs too</p></li>
-<li><p>The separator string between an inline admonition title and the adminition
+<li><p>The separator string between an inline admonition title and the admonition
 text is now specified in the style sheet (<em>after</em> property of the <em>admonition
 inline title</em> style), so it can be overridden (default: space character).</p></li>
 <li><p>Warn about targets in <code class="docutils literal notranslate"><span class="pre">rinoh_targets</span></code> that are not defined in
@@ -224,6 +224,8 @@ inline title</em> style), so it can be overridden (default: space character).</p
 and downwards.</p></li>
 <li><p>Admonition: selectors for the first paragraph where the admonition title was
 prepended to (e.g. <em>note title paragraph</em>).</p></li>
+<li><p>Support interlaced PNG images (#274). Note that this can slow down rendering
+significantly for many/large interlaced images.</p></li>
 </ul>
 <p>Changed:</p>
 <ul class="simple">
@@ -243,6 +245,8 @@ loop when placing a footnote.</p></li>
 header.</p></li>
 <li><p>Sphinx frontend: inline text marked with the :menuselection: role is not
 styled (now mapped to the <em>menu cascade style</em>).</p></li>
+<li><p>Typos in code and documentation (PR #277 by Tim Gates, PR #281 by Filipe
+Tavares)</p></li>
 </ul>
 </div>
 <div class="section" id="release-0-5-3-2021-06-16">
