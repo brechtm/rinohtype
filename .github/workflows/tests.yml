@@ -249,7 +249,7 @@ jobs:
       if: startsWith(runner.os, 'Windows')
       run: |
         choco install mupdf --version=${{ env.MUPDF_VERSION}}
-        choco install imagemagick.tool
+        choco install imagemagick
 
     - name: Run Nox
       run: ${{ env.nox_cmd }} ${{ env.NOXENV }} -- -s
