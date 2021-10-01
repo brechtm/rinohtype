@@ -405,7 +405,7 @@ six = "*"
 
 [[package]]
 name = "pytest-console-scripts"
-version = "1.2.0"
+version = "1.2.1"
 description = "Pytest plugin for testing console scripts"
 category = "dev"
 optional = false
@@ -824,7 +824,7 @@ testing = ["pytest (>=4.6)", "pytest-checkdocs (>=1.2.3)", "pytest-flake8", "pyt
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.6.1"
-content-hash = "f5cf48ad8e950fbdaf40c347e416b705a0d1face80db4d5aa06b2db39eb19b15"
+content-hash = "2fbfc5cb72e5387ad941c5d8126b9b2a34c5a51614ae0a4dd0f59f373113d4f6"
 
 [metadata.files]
 alabaster = [
@@ -1078,7 +1078,7 @@ pytest-assume = [
     {file = "pytest_assume-2.4.3-py3-none-any.whl", hash = "sha256:09074220213b87cf1f400609701a44b75078b4e69588c7227e061ff9b3ecf54b"},
 ]
 pytest-console-scripts = [
-    {file = "pytest-console-scripts-1.2.0.tar.gz", hash = "sha256:4a2138d7d567bc581fe081b6a5975849a2a36b3925cb0f066d2380103e13741c"},
+    {file = "pytest-console-scripts-1.2.1.tar.gz", hash = "sha256:c7f258025110f1337c23499c2f6674b873d4adba2438be55895edf01451c5ce3"},
 ]
 pytest-cov = [
     {file = "pytest-cov-2.12.1.tar.gz", hash = "sha256:261ceeb8c227b726249b376b8526b600f38667ee314f910353fa318caa01f4d7"},
