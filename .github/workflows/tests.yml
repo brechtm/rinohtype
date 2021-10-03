@@ -180,6 +180,7 @@ jobs:
       NOXENV: ${{ matrix.noxenv }}
       WITH_COVERAGE: ${{ matrix.cov }}
       MUPDF_VERSION: 1.18.0
+      IMAGEMAGICK_VERSION: 7.1.0-8
     steps:
     - uses: actions/checkout@v2
     - name: Install Python ${{ env.current_python }}
@@ -221,21 +222,17 @@ jobs:
         path: ${{ steps.cache-dirs-macos.outputs.dir }}
         key: ${{ runner.os }}-homebrew-mupdftools${{ steps.homebrew-versions.outputs.mupdftools }}-im${{ steps.homebrew-versions.outputs.imagemagick }}
 
-    - name: Get Chocolatey cache dir (Windows)
+    - name: Get scoop cache dir (Windows)
       id: cache-dirs-windows
       if: startsWith(runner.os, 'Windows')
       run: |
-        echo "::set-output name=dir::$(echo $env:TEMP\chocolatey)"
-    - name: Delete Chocolatey cache dir to minimize cache size (Windows)
-      if: startsWith(runner.os, 'Windows')
-      run: |
-        Remove-Item ${{ steps.cache-dirs-windows.outputs.dir }} -Verbose -Recurse -Force -ErrorAction Continue
-    - name: Cache Cholocatey downloads
+        echo "::set-output name=dir::$(echo $env:USERPROFILE\scoop\cache)"
+    - name: Cache scoop downloads
       if: startsWith(runner.os, 'Windows')
       uses: actions/cache@v2
       with:
         path: ${{ steps.cache-dirs-windows.outputs.dir }}
-        key: ${{ runner.os }}-chocolatey-mupdf${{ env.MUPDF_VERSION}}
+        key: ${{ runner.os }}-scoop-mupdf${{ env.MUPDF_VERSION}}-imagemgick${{ env.IMAGEMAGICK_VERSION }}
 
     - name: Install tools required by the regression tests (Linux)
       if: startsWith(runner.os, 'Linux')
@@ -245,11 +242,15 @@ jobs:
       if: startsWith(runner.os, 'macOS')
       run: |
         brew install mupdf-tools imagemagick
+    - name: Set up scoop (Windows)
+      if: startsWith(runner.os, 'Windows')
+      uses: MinoruSekine/setup-scoop@v1
     - name: Install tools required by the regression tests (Windows)
       if: startsWith(runner.os, 'Windows')
       run: |
-        choco install mupdf --version=${{ env.MUPDF_VERSION}}
-        choco install imagemagick
+        scoop bucket add extras
+        scoop install mupdf@${{ env.MUPDF_VERSION }}
+        scoop install imagemagick@${{ env.IMAGEMAGICK_VERSION }}
 
     - name: Run Nox
       run: ${{ env.nox_cmd }} ${{ env.NOXENV }} -- -s
