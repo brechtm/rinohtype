@@ -15,4 +15,5 @@ flowables = [
         ListOfFiguresSection(),
         ListOfTablesSection(),
         Section([OutOfLineFlowables('epigraph')]),
+        OutOfLineFlowables('undefined'),
     ]

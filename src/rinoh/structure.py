@@ -12,7 +12,7 @@ from itertools import chain, takewhile
 from .attribute import Attribute, Bool, Integer, OverrideDefault
 from .draw import Line, LineStyle
 from .element import create_destination
-from .flowable import GroupedFlowables, StaticGroupedFlowables
+from .flowable import GroupedFlowables, StaticGroupedFlowables, WarnFlowable
 from .flowable import LabeledFlowable, GroupedLabeledFlowables
 from .flowable import Flowable, FlowableStyle, GroupedFlowablesStyle
 from .layout import PageBreakException
@@ -441,8 +441,13 @@ class OutOfLineFlowables(GroupedFlowables):
         self.name = name
 
     def prepare(self, container):
-        for flowable in container.document.supporting_matter[self.name]:
-            flowable.parent = self
+        with suppress(KeyError):
+            for flowable in container.document.supporting_matter[self.name]:
+                flowable.parent = self
 
     def flowables(self, container):
-        return container.document.supporting_matter[self.name]
+        try:
+            yield from container.document.supporting_matter[self.name]
+        except KeyError:
+            yield WarnFlowable("No out-of-line content is registered for "
+                               f"'{self.name}'", self)
