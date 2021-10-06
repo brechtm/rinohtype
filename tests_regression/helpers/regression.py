@@ -16,7 +16,7 @@ from sphinx.util.docutils import docutils_namespace
 from sphinx.testing.restructuredtext import parse as sphinx_parse
 
 from .diffpdf import diff_pdf
-from .pdf_linkchecker import check_pdf_links
+from .pdf_linkchecker import check_pdf_links, diff_outlines
 from .util import in_directory
 
 from rinoh.frontend.commonmark import CommonMarkReader
@@ -115,12 +115,14 @@ def render_doctree(doctree, out_dir, out_filename, reference_path,
 
 def verify_output(out_filename, output_dir, reference_path):
     pdf_filename = '{}.pdf'.format(out_filename)
-    _, _, _, _, _, _, ref_outlines = \
+    _, _, _, _, _, _, _, ref_outlines = \
         check_pdf_links(reference_path / pdf_filename)
     with in_directory(output_dir):
-        _, _, _, badlinks, _, _, outlines = check_pdf_links(pdf_filename)
-        pytest.assume(badlinks == [])
-        pytest.assume(ref_outlines == outlines,
+        _, _, _, badlinks, badoutlinelinks, _, _, outlines = \
+            check_pdf_links(pdf_filename)
+        pytest.assume(badlinks == [], badlinks)
+        pytest.assume(badoutlinelinks == [], badoutlinelinks)
+        pytest.assume(diff_outlines(ref_outlines, outlines),
                       "Outlines mismatch!          (ref | new)\n"
                       + format_outlines(ref_outlines, outlines))
         if not diff_pdf(reference_path / pdf_filename, pdf_filename):

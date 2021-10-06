@@ -4,15 +4,19 @@
 
 import sys
 
+from itertools import zip_longest
+
 from rinoh.backend.pdf import PDFReader
 
 
 
 def check_pdf(pdf):
-    links = list()
     urls = list()
     badurls = list()
+    anchors = [str(key) for key in pdf.catalog['Names']['Dests']['Names'][::2]]
+    outlines = list(iter_outlines(pdf.catalog['Outlines']))
 
+    links = list()
     for page in pdf.catalog['Pages']['Kids']:
         obj = page.object
         for annot in [x.object for x in obj.get('Annots', [])]:
@@ -20,13 +24,13 @@ def check_pdf(pdf):
                 links.append(str(annot['A']['D']))
             elif 'Dest' in annot:
                 links.append(str(annot['Dest']))
-                
-    anchors = [str(key) for key in pdf.catalog['Names']['Dests']['Names'][::2]]
+
     superfluous_anchors = [x for x in anchors if x not in links]
     badlinks = [x for x in links if x not in anchors]
-    outlines = list(iter_outlines(pdf.catalog['Outlines']))
+    badoutlinelinks = [str(target) for _, _, target in outlines
+                       if str(target) not in anchors]
     return (anchors, links, superfluous_anchors,
-            badlinks, urls, badurls, outlines)
+            badlinks, badoutlinelinks, urls, badurls, outlines)
 
 
 def iter_outlines(outlines, level=0):
@@ -36,6 +40,15 @@ def iter_outlines(outlines, level=0):
         yield from iter_outlines(outlines['First'], level + 1)
     if 'Next' in outlines:
         yield from iter_outlines(outlines['Next'], level)
+
+
+def diff_outlines(reference, outlines):
+    for ref, out in zip_longest(reference, outlines,
+                                fillvalue=(None, None, None)):
+        (l1, title1, id1), (l2, title2, id2) = ref, out
+        if l1 != l2 or title1 != title2:
+            return False
+    return True
 
 
 def check_pdf_links(filename):
