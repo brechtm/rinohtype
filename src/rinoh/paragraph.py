@@ -23,7 +23,7 @@ from os import path
 from . import DATA_PATH
 from .annotation import AnnotatedSpan
 from .attribute import (Attribute, AttributeType, OptionSet, ParseError,
-                        OverrideDefault, Integer, LANGUAGE_DEFAULT)
+                        OverrideDefault, Integer)
 from .dimension import Dimension, PT
 from .flowable import Flowable, FlowableStyle, FlowableState, FlowableWidth
 from .font import MissingGlyphException
@@ -32,7 +32,7 @@ from .inline import InlineFlowableException
 from .layout import EndOfContainer, ContainerOverflow
 from .number import NumberStyle, Label, format_number
 from .text import (TextStyle, StyledText, SingleStyledText, MixedStyledText,
-                   ESCAPE)
+                   ESCAPE, LANGUAGE_DEFAULT)
 from .util import all_subclasses, ReadAliasAttribute
 
 
