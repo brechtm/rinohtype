@@ -547,16 +547,17 @@ def spans_to_words(spans, container):
                         word = Word()
                         continue
                 part = ''.join(chars).replace('\N{NO-BREAK SPACE}', ' ')
+                if word and word[-1].span is span:
+                    prev_glyphs_span = word.pop()
+                    part = str(prev_glyphs_span) + part
                 try:
                     glyphs = [get_glyph_metrics(char) for char in part]
                 except MissingGlyphException:
                     # FIXME: span annotations are lost here
                     rest = ''.join(char for _, group in groups
                                    for char in group)
-                    rest_of_span = SingleStyledText(part + rest,
-                                                    parent=span)
-                    new_spans = handle_missing_glyphs(rest_of_span,
-                                                      container)
+                    rest_of_span = SingleStyledText(part + rest, parent=span)
+                    new_spans = handle_missing_glyphs(rest_of_span, container)
                     spans = chain(new_spans, spans)
                     break
                 glyphs = lig_kern(part, glyphs)
@@ -973,10 +974,14 @@ class Word(LinePart, list):
         span = first_glyphs_span.span
         c2g = first_glyphs_span.chars_to_glyphs
         hyphenate = create_hyphenate(first_glyphs_span.span, container)
-        for first, second in hyphenate(str(self)):
-            first_gs = GlyphsSpan(span, c2g, c2g(first))
-            second_gs = GlyphsSpan(span, c2g, c2g(second))
-            yield Word([first_gs]), Word([second_gs])
+        words = str(self).split()
+        for i, word in enumerate(words):
+            for first, second in hyphenate(word):
+                f = chain(words[:i], [first])
+                s = chain([second], words[i+1:])
+                first_gs = GlyphsSpan(span, c2g, c2g(' '.join(f)))
+                second_gs = GlyphsSpan(span, c2g, c2g(' '.join(s)))
+                yield Word([first_gs]), Word([second_gs])
 
 
 class Line(list):
