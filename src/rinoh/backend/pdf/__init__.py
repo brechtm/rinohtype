@@ -258,7 +258,7 @@ class Canvas(BytesIO):
         self.fonts.setdefault(font_name, font_rsc)
         return font_name, font_rsc
 
-    def show_glyphs(self, left, cursor, span, glyph_and_widths, container):
+    def show_glyphs(self, left, cursor, span, glyphs, container):
         font = span.font(container)
         size = span.height(container)
         color = span.get_style('font_color', container)
@@ -266,8 +266,8 @@ class Canvas(BytesIO):
         string = ''
         current_string = ''
         total_width = 0
-        for glyph_and_width in glyph_and_widths:
-            glyph, width = glyph_and_width.glyph, glyph_and_width.width
+        for glyph in glyphs:
+            glyph, width = glyph.metrics, glyph.width
             total_width += width
             displ = (1000 * width) / size
             if font.encoding:

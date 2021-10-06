@@ -103,7 +103,7 @@ class OpenTypeFont(Font, OpenTypeParser):
     _VARIANTS = {FontVariant.SMALL_CAPITAL: 'smcp',
                  FontVariant.OLDSTYLE_FIGURES: 'onum'}
 
-    def get_glyph(self, char, variant):
+    def get_glyph_metrics(self, char, variant):
         try:
             glyph = self._glyphs[char]
         except KeyError:

@@ -98,8 +98,8 @@ class Font(object):
     def __hash__(self):
         return hash((self.name, self.filename))
 
-    def get_glyph(self, char, variant):
-        """Return the glyph for a particular character
+    def get_glyph_metrics(self, char, variant):
+        """Return the glyph metrics for a particular character
 
         If the glyph of requested font variant is not present in the font, the
         `normal` variant is returned instead. If that is not present either, an
@@ -110,7 +110,7 @@ class Font(object):
             variant (FontVariant): the variant of the glyph to return
 
         Returns:
-            GlyphMetrics: the requested glyph
+            GlyphMetrics: the requested glyph metrics
 
         Raises:
             MissingGlyphException: when the requested glyph is not present in

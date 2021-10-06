@@ -16,7 +16,7 @@ def test_missingglyph_type1():
     times = Typeface('Times')
     font = times.get_font(weight=FontWeight.REGULAR)
     with pytest.raises(MissingGlyphException):
-        font.get_glyph('\u2024', 'normal')
+        font.get_glyph_metrics('\u2024', 'normal')
 
 
 def test_find_closest_font():

@@ -228,14 +228,14 @@ class AdobeFontMetrics(Font, AdobeFontMetricsParser):
             yield name + suffix
 
     @cached
-    def get_glyph(self, char, variant):
+    def get_glyph_metrics(self, char, variant):
         for name in self._char_to_glyph_names(char, variant):
             if name in self._glyphs:
                 return self._glyphs[name]
         if variant != FontVariant.NORMAL:
             warn('No {} variant found for unicode index 0x{:04x} ({}), falling '
                  'back to the standard glyph.'.format(variant, ord(char), char))
-            return self.get_glyph(char, FontVariant.NORMAL)
+            return self.get_glyph_metrics(char, FontVariant.NORMAL)
         else:
             warn('{} does not contain glyph for unicode index 0x{:04x} ({}).'
                  .format(self.name, ord(char), char))
