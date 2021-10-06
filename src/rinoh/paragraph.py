@@ -537,7 +537,8 @@ def spans_to_words(spans, container):
             groups = groupby(iter(span.text(container)), WHITESPACE.get)
             for special, chars in groups:
                 if special:
-                    last_word = str(word).rsplit(maxsplit=1)[-1] if word else ''
+                    word_string = str(word).strip()
+                    last_word = word_string.rsplit(maxsplit=1)[-1] if word_string else ''
                     if not (last_word.lower() in no_break_after
                             and special is Space):
                         if word:
