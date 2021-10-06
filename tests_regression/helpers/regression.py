@@ -8,7 +8,7 @@
 import pytest
 import re
 
-from itertools import chain
+from itertools import chain, zip_longest
 from pathlib import Path
 
 from sphinx.application import Sphinx
@@ -120,8 +120,17 @@ def verify_output(out_filename, output_dir, reference_path):
     with in_directory(output_dir):
         _, _, _, badlinks, _, _, outlines = check_pdf_links(pdf_filename)
         pytest.assume(badlinks == [])
-        pytest.assume(ref_outlines == outlines)
+        pytest.assume(ref_outlines == outlines,
+                      "Outlines mismatch!          (ref | new)\n"
+                      + format_outlines(ref_outlines, outlines))
         if not diff_pdf(reference_path / pdf_filename, pdf_filename):
             pytest.fail('The generated PDF is different from the reference '
                         'PDF.\nGenerated files can be found in {}'
                         .format(output_dir))
+
+
+def format_outlines(reference, outlines):
+    return '\n'.join(f"{'':<{l1 - 1}}{title1!s:{25 - l1}} {id1!s:20}  |  "
+                     f"{'':<{l2 - 1}}{title2!s:{25 - l2}} {id2!s:20}"
+                     for (l1, title1, id1), (l2, title2, id2)
+                     in zip_longest(reference, outlines, fillvalue=(1, '', '')))
