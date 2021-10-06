@@ -45,7 +45,7 @@ class Language(AttributeType):
 
     @classmethod
     def parse_string(cls, string, source):
-        return cls.languages[string]()
+        return cls.languages[string.lower()]()
 
     @classmethod
     def doc_repr(cls, value):

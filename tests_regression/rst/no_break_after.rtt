@@ -4,7 +4,7 @@ template = article
 
 parts = contents
 stylesheet = no_break_after.rts
-language = cs
+language = CS
 
 [VARIABLES]
 paper_size = A5
