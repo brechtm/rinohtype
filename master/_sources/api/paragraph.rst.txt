@@ -32,6 +32,9 @@ Styled Text (:mod:`rinoh.text`)
 .. autoclass:: Locale
     :members:
 
+.. autoclass:: NoBreakAfter
+    :members:
+
 
 .. module:: rinoh.inline
 
