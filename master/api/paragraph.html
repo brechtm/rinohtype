@@ -254,9 +254,9 @@ rest of the paragraph when this method is called with a new container.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>container</strong> (<em>Container</em>) – the container to render to</p></li>
-<li><p><strong>descender</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><em>None</em></a>) – descender height of the preceding line</p></li>
+<li><p><strong>descender</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><em>None</em></a>) – descender height of the preceding line</p></li>
 <li><p><strong>state</strong> (<a class="reference internal" href="#rinoh.paragraph.ParagraphState" title="rinoh.paragraph.ParagraphState"><em>ParagraphState</em></a>) – the state where rendering will continue</p></li>
-<li><p><strong>first_line_only</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a>) – typeset only the first line</p></li>
+<li><p><strong>first_line_only</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><em>bool</em></a>) – typeset only the first line</p></li>
 </ul>
 </dd>
 </dl>
@@ -337,7 +337,7 @@ rest of the paragraph when this method is called with a new container.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>text_or_items</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><a class="reference internal" href="#rinoh.text.StyledText" title="rinoh.text.StyledText"><em>StyledText</em></a><em> or </em><em>iterable of these</em>) – mixed styled text</p></li>
+<li><p><strong>text_or_items</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a><em>, </em><a class="reference internal" href="#rinoh.text.StyledText" title="rinoh.text.StyledText"><em>StyledText</em></a><em> or </em><em>iterable of these</em>) – mixed styled text</p></li>
 <li><p><strong>style</strong> – see <a class="reference internal" href="style.html#rinoh.style.Styled" title="rinoh.style.Styled"><code class="xref py py-class docutils literal notranslate"><span class="pre">Styled</span></code></a></p></li>
 <li><p><strong>parent</strong> – see <code class="xref py py-class docutils literal notranslate"><span class="pre">DocumentElement</span></code></p></li>
 </ul>
@@ -352,7 +352,7 @@ rest of the paragraph when this method is called with a new container.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="rinoh.text.MixedStyledText.append">
 <span class="sig-name descname"><span class="pre">append</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">item</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.text.MixedStyledText.append" title="Permalink to this definition">¶</a></dt>
-<dd><p>Append <cite>item</cite> (<a class="reference internal" href="#rinoh.text.StyledText" title="rinoh.text.StyledText"><code class="xref py py-class docutils literal notranslate"><span class="pre">StyledText</span></code></a> or <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>) to the end of
+<dd><p>Append <cite>item</cite> (<a class="reference internal" href="#rinoh.text.StyledText" title="rinoh.text.StyledText"><code class="xref py py-class docutils literal notranslate"><span class="pre">StyledText</span></code></a> or <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>) to the end of
 this mixed-styled text.</p>
 <p>The parent of <cite>item</cite> is set to this mixed-styled text.</p>
 </dd></dl>
@@ -443,7 +443,7 @@ the baseline of the current line.</p>
 <dd><p>Line spacing proportional to the line height</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>factor</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a>) – amount by which the line height is multiplied to obtain
+<dd class="field-odd"><p><strong>factor</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><em>float</em></a>) – amount by which the line height is multiplied to obtain
 the line spacing</p>
 </dd>
 </dl>
@@ -544,7 +544,7 @@ the baseline of the current line.</p>
 <li><p><strong>position</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Dimension</span></code> or <code class="xref py py-class docutils literal notranslate"><span class="pre">Fraction</span></code>) – tab stop position</p></li>
 <li><p><strong>align</strong> (<a class="reference internal" href="#rinoh.paragraph.TabAlign" title="rinoh.paragraph.TabAlign"><em>TabAlign</em></a>) – the alignment of text with respect to the tab stop
 position</p></li>
-<li><p><strong>fill</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – string pattern to fill the empty tab space with</p></li>
+<li><p><strong>fill</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – string pattern to fill the empty tab space with</p></li>
 </ul>
 </dd>
 </dl>
@@ -568,12 +568,12 @@ position</p></li>
 <h2>Rendering Internals<a class="headerlink" href="#rendering-internals" title="Permalink to this headline">¶</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="rinoh.paragraph.Glyph">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">rinoh.paragraph.</span></span><span class="sig-name descname"><span class="pre">Glyph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">glyph</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">char</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.paragraph.Glyph" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">rinoh.paragraph.</span></span><span class="sig-name descname"><span class="pre">Glyph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">metrics</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">char</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.paragraph.Glyph" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="rinoh.paragraph.GlyphsSpan">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">rinoh.paragraph.</span></span><span class="sig-name descname"><span class="pre">GlyphsSpan</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">span</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chars_to_glyphs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">glyphs_and_widths</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.paragraph.GlyphsSpan" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">rinoh.paragraph.</span></span><span class="sig-name descname"><span class="pre">GlyphsSpan</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">span</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chars_to_glyphs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">glyphs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.paragraph.GlyphsSpan" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </div>
