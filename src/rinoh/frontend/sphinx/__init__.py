@@ -21,7 +21,7 @@ from sphinx import addnodes
 from sphinx.builders import Builder
 from sphinx.errors import SphinxError, NoUri
 from sphinx.locale import _
-from sphinx.util.console import bold, darkgreen, brown
+from sphinx.util.console import darkgreen
 from sphinx.util.nodes import inline_all_toctrees
 from sphinx.util.osutil import ensuredir, os_path, SEP
 from sphinx.util import logging
@@ -41,6 +41,7 @@ from rinoh.util import cached
 
 from . import nodes
 from . import transforms
+from .util import fully_qualified_id
 
 logger = logging.getLogger(__name__)
 
@@ -328,10 +329,6 @@ METADATA_DEFAULTS = dict(
     date=lambda cfg: (cfg.today or format_date(cfg.today_fmt or _('%b %d, %Y'),
                                                language=cfg.language))
 )
-
-
-def fully_qualified_id(docname, id):
-    return id if id.startswith('%') else '%' + docname + '#' + id
 
 
 def rinoh_document_to_document_data(entry, logger):

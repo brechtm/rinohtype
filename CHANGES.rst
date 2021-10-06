@@ -32,6 +32,8 @@ Changed:
 
 Fixed:
 
+* Handle citations and corresponding citation references that are not defined
+  in the same source file.
 * Fix error message for --stylesheet argument with relative path (issue #253,
   PR #266 by Alex Fargus)
 * Descenders affect spacing between top border and content (issue #144)

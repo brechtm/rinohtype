@@ -1,0 +1,283 @@
+---------------------------------- page 1 ----------------------------------
+#### DownExpandingContainer('title')
+  StaticGroupedFlowables()
+    Paragraph('Citations', style='title page title')
+         > (0,0,1,0,2) title page title [Sphinx] > DEFAULT
+           (0,0,0,0,2) body [Sphinx] > default
+        SingleStyledText('Citations')
+    Paragraph('Release ', style='title page subtitle')
+         > (0,0,1,0,2) title page subtitle [Sphinx] > title page title
+           (0,0,0,0,2) body [Sphinx] > default
+        SingleStyledText('Release ')
+    Paragraph('Author', style='title page author')
+         > (0,0,1,0,2) title page author [Sphinx] > DEFAULT
+           (0,0,0,0,2) body [Sphinx] > default
+        SingleStyledText('Author')
+---------------------------------- page i ----------------------------------
+#### FootnoteContainer('footnotes')
+  StaticGroupedFlowables()
+#### DownExpandingContainer('floats')
+  StaticGroupedFlowables()
+#### FlowablesContainer('chapter title')
+  Paragraph('Table of Contents', style='front matter section title')
+       > (0,0,1,0,2) front matter section title [Sphinx] > DEFAULT
+         (0,0,0,0,2) body [Sphinx] > default
+      Field('Table of Contents')
+        StringField('Table of Contents')
+          SingleStyledText('Table of Contents')
+#### ChainedContainer('column1')
+  StaticGroupedFlowables()
+    TableOfContentsSection(style='table of contents')
+         > (0,0,1,0,1) table of contents section [Sphinx] > DEFAULT
+           (0,0,0,1,1) chapter [Sphinx] > DEFAULT
+      TableOfContents()   table of contents
+           > (0,0,0,0,2) table of contents [Sphinx] > default
+        TableOfContentsEntry('1	One	1')
+             > (0,0,0,1,2) toc level 1 [Sphinx] > table of contents
+            ReferenceField('1')
+                 > (0,0,0,1,4) toc entry number reference field [Sphinx] > linked reference
+                   (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+              SingleStyledText('1')
+            Tab('	')
+            ReferenceField('One')
+                 > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+              MixedStyledText('One')
+                MixedStyledText('One')
+                  SingleStyledText('One')
+            Tab('	')
+            ReferenceField('1')
+                 > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+              SingleStyledText('1')
+        TableOfContentsEntry('2	Bibliography	3')
+             > (0,0,0,1,2) toc level 1 [Sphinx] > table of contents
+            ReferenceField('2')
+                 > (0,0,0,1,4) toc entry number reference field [Sphinx] > linked reference
+                   (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+              SingleStyledText('2')
+            Tab('	')
+            ReferenceField('Bibliography')
+                 > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+              MixedStyledText('Bibliography')
+                MixedStyledText('Bibliography')
+                  SingleStyledText('Bibliography')
+            Tab('	')
+            ReferenceField('3')
+                 > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+              SingleStyledText('3')
+#### DownExpandingContainer('footer')
+  StaticGroupedFlowables()
+    Footer('		i')
+         > (0,0,0,0,2) footer [Sphinx] > header_footer
+        MixedStyledText('		i')
+          MixedStyledText('		i')
+            Tab('	')
+            Tab('	')
+            Field('i')
+              SingleStyledText('i')
+---------------------------------- page 1 ----------------------------------
+#### FootnoteContainer('footnotes')
+  StaticGroupedFlowables()
+#### DownExpandingContainer('floats')
+  StaticGroupedFlowables()
+#### FlowablesContainer('chapter title')
+  Paragraph('Chapter 1', style='body matter chapter label')
+       > (0,0,1,0,2) body matter chapter label [Sphinx] > DEFAULT
+         (0,0,0,0,2) body [Sphinx] > default
+      MixedStyledText('Chapter 1')
+        MixedStyledText('Chapter 1')
+          MixedStyledText('Chapter ')
+            StringField('Chapter')
+              SingleStyledText('Chapter')
+            SingleStyledText(' ')
+          Field('1', style='number')
+               > (0,0,2,0,3) body matter chapter number [Sphinx] > DEFAULT
+            SingleStyledText('1')
+  Paragraph('One', style='body matter chapter title')
+       > (0,0,1,0,2) body matter chapter title [Sphinx] > DEFAULT
+         (0,0,0,0,2) body [Sphinx] > default
+      Field('One')
+        MixedStyledText('One')
+          MixedStyledText('One')
+            SingleStyledText('One')
+#### ChainedContainer('column1')
+  StaticGroupedFlowables()
+    DocumentTree()   index.rst   <document>
+      StaticGroupedFlowables()   index.rst   <compound>
+        StaticGroupedFlowables(id='%chapter1')   <start_of_file>
+          Section(id='%chapter1#one')   chapter1.rst:2   <section>
+               > (0,0,0,1,4) content chapter [Sphinx] > chapter
+                 (0,0,0,1,2) chapter [Sphinx] > DEFAULT
+            Paragraph('This is a citation ref; [CITE1] ...')   chapter1.rst:4   <paragraph>
+                 > (0,0,0,0,2) body [Sphinx] > default
+                MixedStyledText('This is a citation ref; [CITE1] ...')
+                  MixedStyledText('This is a citation ref; [CITE1] ...')
+                    SingleStyledText('This is a citation ref; ')
+                    NoteMarkerByID('[CITE1]', id='%chapter1#id1', style='citation')   <citation_reference>
+                         > (0,0,1,0,1) citation marker [Sphinx] > DEFAULT
+                           (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                      MixedStyledText('[CITE1]')
+                        SingleStyledText('[')
+                        MixedStyledText('CITE1')
+                          SingleStyledText('CITE1')
+                        SingleStyledText(']')
+                    SingleStyledText(' and ')
+                    NoteMarkerByID('[CITE2]', id='%chapter1#id2', style='citation')   <citation_reference>
+                         > (0,0,1,0,1) citation marker [Sphinx] > DEFAULT
+                           (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                      MixedStyledText('[CITE2]')
+                        SingleStyledText('[')
+                        MixedStyledText('CITE2')
+                          SingleStyledText('CITE2')
+                        SingleStyledText(']')
+                    SingleStyledText('.')
+            Note(id='%chapter1#cite1', style='citation')   chapter1.rst:6   <citation>
+                 > (0,0,1,0,2) citation [Sphinx minimal] > DEFAULT
+              Paragraph('[CITE1]')
+                   > (0,0,1,0,4) citation label [Sphinx] > citation paragraph
+                     (0,0,0,0,2) body [Sphinx] > default
+                  DirectReference('[CITE1]')
+                       > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                    MixedStyledText('[CITE1]')
+                      SingleStyledText('[')
+                      MixedStyledText('CITE1')
+                        SingleStyledText('CITE1')
+                      SingleStyledText(']')
+              StaticGroupedFlowables()
+                Paragraph('This is a citation')   chapter1.rst:6   <paragraph>
+                     > (0,0,1,0,5) citation paragraph [Sphinx] > footnote paragraph
+                       (0,0,0,0,2) body [Sphinx] > default
+                    MixedStyledText('This is a citation')
+                      MixedStyledText('This is a citation')
+                        SingleStyledText('This is a citation')
+#### DownExpandingContainer('footer')
+  StaticGroupedFlowables()
+    Footer('		1')
+         > (0,0,0,0,2) footer [Sphinx] > header_footer
+        MixedStyledText('		1')
+          MixedStyledText('		1')
+            Tab('	')
+            Tab('	')
+            Field('1')
+              SingleStyledText('1')
+---------------------------------- page 2 ----------------------------------
+#### FootnoteContainer('footnotes')
+  StaticGroupedFlowables()
+#### DownExpandingContainer('floats')
+  StaticGroupedFlowables()
+#### ChainedContainer('column1')
+  (continued) StaticGroupedFlowables()
+    (continued) DocumentTree()   index.rst   <document>
+      (continued) StaticGroupedFlowables()   index.rst   <compound>
+#### UpExpandingContainer('header')
+  StaticGroupedFlowables()
+    Header('Citations, Release ')
+         > (0,0,0,0,2) header [Sphinx] > header_footer
+        MixedStyledText('Citations, Release ')
+          MixedStyledText('Citations, Release ')
+            Field('Citations')
+              SingleStyledText('Citations')
+            SingleStyledText(', ')
+            Field('Release ')
+              SingleStyledText('Release ')
+#### DownExpandingContainer('footer')
+  StaticGroupedFlowables()
+    Footer('2		Chapter 1.  One')
+         > (0,0,0,0,2) footer [Sphinx] > header_footer
+        MixedStyledText('2		Chapter 1.  One')
+          MixedStyledText('2		Chapter 1.  One')
+            Field('2')
+              SingleStyledText('2')
+            Tab('	')
+            Tab('	')
+            StringField('Chapter')
+              SingleStyledText('Chapter')
+            SingleStyledText(' ')
+            Field('1')
+              SingleStyledText('1')
+            SingleStyledText('.  ')
+            Field('One')
+              MixedStyledText('One')
+                MixedStyledText('One')
+                  SingleStyledText('One')
+---------------------------------- page 3 ----------------------------------
+#### FootnoteContainer('footnotes')
+  StaticGroupedFlowables()
+#### DownExpandingContainer('floats')
+  StaticGroupedFlowables()
+#### FlowablesContainer('chapter title')
+  Paragraph('Chapter 2', style='body matter chapter label')
+       > (0,0,1,0,2) body matter chapter label [Sphinx] > DEFAULT
+         (0,0,0,0,2) body [Sphinx] > default
+      MixedStyledText('Chapter 2')
+        MixedStyledText('Chapter 2')
+          MixedStyledText('Chapter ')
+            StringField('Chapter')
+              SingleStyledText('Chapter')
+            SingleStyledText(' ')
+          Field('2', style='number')
+               > (0,0,2,0,3) body matter chapter number [Sphinx] > DEFAULT
+            SingleStyledText('2')
+  Paragraph('Bibliography', style='body matter chapter title')
+       > (0,0,1,0,2) body matter chapter title [Sphinx] > DEFAULT
+         (0,0,0,0,2) body [Sphinx] > default
+      Field('Bibliography')
+        MixedStyledText('Bibliography')
+          MixedStyledText('Bibliography')
+            SingleStyledText('Bibliography')
+#### ChainedContainer('column1')
+  (continued) StaticGroupedFlowables()
+    (continued) DocumentTree()   index.rst   <document>
+      (continued) StaticGroupedFlowables()   index.rst   <compound>
+        StaticGroupedFlowables(id='%bibliography')   <start_of_file>
+          Section(id='%bibliography#bibliography')   bibliography.rst:2   <section>
+               > (0,0,0,1,4) content chapter [Sphinx] > chapter
+                 (0,0,0,1,2) chapter [Sphinx] > DEFAULT
+            Note(id='%bibliography#cite2', style='citation')   bibliography.rst:4   <citation>
+                 > (0,0,1,0,2) citation [Sphinx minimal] > DEFAULT
+              Paragraph('[CITE2]')
+                   > (0,0,1,0,4) citation label [Sphinx] > citation paragraph
+                     (0,0,0,0,2) body [Sphinx] > default
+                  DirectReference('[CITE2]')
+                       > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                    MixedStyledText('[CITE2]')
+                      SingleStyledText('[')
+                      MixedStyledText('CITE2')
+                        SingleStyledText('CITE2')
+                      SingleStyledText(']')
+              StaticGroupedFlowables()
+                Paragraph('This is a multiline citation')   bibliography.rst:4   <paragraph>
+                     > (0,0,1,0,5) citation paragraph [Sphinx] > footnote paragraph
+                       (0,0,0,0,2) body [Sphinx] > default
+                    MixedStyledText('This is a multiline citation')
+                      MixedStyledText('This is a multiline citation')
+                        SingleStyledText('This is a multiline citation')
+#### DownExpandingContainer('footer')
+  StaticGroupedFlowables()
+    Footer('		3')
+         > (0,0,0,0,2) footer [Sphinx] > header_footer
+        MixedStyledText('		3')
+          MixedStyledText('		3')
+            Tab('	')
+            Tab('	')
+            Field('3')
+              SingleStyledText('3')
+---------------------------------- page 5 ----------------------------------
+#### FootnoteContainer('footnotes')
+  StaticGroupedFlowables()
+#### DownExpandingContainer('floats')
+  StaticGroupedFlowables()
+#### ChainedContainer('column1')
+  StaticGroupedFlowables()
+    StaticGroupedFlowables()
+#### ChainedContainer('column2')
+  StaticGroupedFlowables()
+#### DownExpandingContainer('footer')
+  StaticGroupedFlowables()
+    Footer('		5')
+         > (0,0,0,0,2) footer [Sphinx] > header_footer
+        MixedStyledText('		5')
+          MixedStyledText('		5')
+            Tab('	')
+            Tab('	')
+            Field('5')
+              SingleStyledText('5')
