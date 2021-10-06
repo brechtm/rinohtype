@@ -536,7 +536,8 @@ def spans_to_words(spans, container):
             groups = groupby(iter(span.text(container)), WHITESPACE.get)
             for special, chars in groups:
                 if special:
-                    if not (str(word) in no_break_after and special is Space):
+                    if not (str(word).lower() in no_break_after
+                            and special is Space):
                         if word:
                             yield word
                         for _ in chars:
