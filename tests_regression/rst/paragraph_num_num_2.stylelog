@@ -5,91 +5,103 @@
   StaticGroupedFlowables()
 #### ChainedContainer('column1')
   StaticGroupedFlowables()
-    DocumentTree()
-      Section(id='section-1')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/paragraph_num_num_2.rst:3 <section>
-           > (0,0,0,1,2) chapter
-        Heading('1 Section 1')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/paragraph_num_num_2.rst:3 <title>
-             > (0,0,0,1,2) heading level 1
-               (0,0,0,0,2) other heading levels
+    DocumentTree()   paragraph_num_num_2.rst   <document>
+      Section(id='section-1')   paragraph_num_num_2.rst:3   <section>
+           > (0,0,0,1,4) content chapter [Sphinx] > chapter
+             (0,0,0,1,2) chapter [paragraph_none_num_1.rts] > DEFAULT
+        Heading('1 Section 1')   paragraph_num_num_2.rst:3   <title>
+             > (0,0,0,1,2) heading level 1 [paragraph_num_num_2.rts] > DEFAULT
+               (0,0,0,0,2) other heading levels [Sphinx] > heading level 5
             MixedStyledText('1 ')
               SingleStyledText('1')
               SingleStyledText(' ')
             MixedStyledText('Section 1')
-              SingleStyledText('Section 1')
-        Paragraph('	1.1	Alice was beginning to get ...')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/paragraph_num_num_2.rst:5 <paragraph>
-             > (0,0,0,0,2) body
+              MixedStyledText('Section 1')
+                SingleStyledText('Section 1')
+        Paragraph('	1.1	Alice was beginning to get ...')   paragraph_num_num_2.rst:5   <paragraph>
+             > (0,0,0,0,2) body [paragraph_num_num_2.rts] > DEFAULT
             MixedStyledText('	1.1	')
               Tab('	')
               SingleStyledText('1.1')
               Tab('	')
             MixedStyledText('Alice was beginning to get very ...')
-              SingleStyledText('Alice was beginning to get very ...')
-        Section(id='subsection-a')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/paragraph_num_num_2.rst:11 <section>
-          Heading('1.1 Subsection A')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/paragraph_num_num_2.rst:11 <title>
-               > (0,0,0,1,2) heading level 2
-                 (0,0,0,0,2) other heading levels
+              MixedStyledText('Alice was beginning to get very ...')
+                SingleStyledText('Alice was beginning to get very ...')
+        Section(id='subsection-a')   paragraph_num_num_2.rst:11   <section>
+          Heading('1.1 Subsection A')   paragraph_num_num_2.rst:11   <title>
+               > (0,0,0,1,2) heading level 2 [paragraph_none_num_1.rts] > DEFAULT
+                 (0,0,0,0,2) other heading levels [Sphinx] > heading level 5
               MixedStyledText('1.1 ')
                 SingleStyledText('1.1')
                 SingleStyledText(' ')
               MixedStyledText('Subsection A')
-                SingleStyledText('Subsection A')
-          Paragraph('	1.1.1	So she was considering in...')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/paragraph_num_num_2.rst:13 <paragraph>
-               > (0,0,0,0,2) body
+                MixedStyledText('Subsection A')
+                  SingleStyledText('Subsection A')
+          Paragraph('	1.1.1	So she was considering in...')   paragraph_num_num_2.rst:13   <paragraph>
+               > (0,0,0,0,2) body [paragraph_num_num_2.rts] > DEFAULT
               MixedStyledText('	1.1.1	')
                 Tab('	')
                 SingleStyledText('1.1.1')
                 Tab('	')
               MixedStyledText('So she was considering in her ow...')
-                SingleStyledText('So she was considering in her ow...')
-      Section(id='section-2')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/paragraph_num_num_2.rst:19 <section>
-           > (0,0,0,1,2) chapter
-        Heading('2 Section 2')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/paragraph_num_num_2.rst:19 <title>
-             > (0,0,0,1,2) heading level 1
-               (0,0,0,0,2) other heading levels
+                MixedStyledText('So she was considering in her ow...')
+                  SingleStyledText('So she was considering in her ow...')
+      Section(id='section-2')   paragraph_num_num_2.rst:19   <section>
+           > (0,0,0,1,4) content chapter [Sphinx] > chapter
+             (0,0,0,1,2) chapter [paragraph_none_num_1.rts] > DEFAULT
+        Heading('2 Section 2')   paragraph_num_num_2.rst:19   <title>
+             > (0,0,0,1,2) heading level 1 [paragraph_num_num_2.rts] > DEFAULT
+               (0,0,0,0,2) other heading levels [Sphinx] > heading level 5
             MixedStyledText('2 ')
               SingleStyledText('2')
               SingleStyledText(' ')
             MixedStyledText('Section 2')
-              SingleStyledText('Section 2')
-        Paragraph('	2.1	There was nothing very rema...')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/paragraph_num_num_2.rst:21 <paragraph>
-             > (0,0,0,0,2) body
+              MixedStyledText('Section 2')
+                SingleStyledText('Section 2')
+        Paragraph('	2.1	There was nothing very rema...')   paragraph_num_num_2.rst:21   <paragraph>
+             > (0,0,0,0,2) body [paragraph_num_num_2.rts] > DEFAULT
             MixedStyledText('	2.1	')
               Tab('	')
               SingleStyledText('2.1')
               Tab('	')
             MixedStyledText('There was nothing very remarkabl...')
-              SingleStyledText('There was nothing very remarkabl...')
-        Section(id='subsection-b')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/paragraph_num_num_2.rst:28 <section>
-          Heading('2.1 Subsection B')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/paragraph_num_num_2.rst:28 <title>
-               > (0,0,0,1,2) heading level 2
-                 (0,0,0,0,2) other heading levels
+              MixedStyledText('There was nothing very remarkabl...')
+                SingleStyledText('There was nothing very remarkabl...')
+        Section(id='subsection-b')   paragraph_num_num_2.rst:28   <section>
+          Heading('2.1 Subsection B')   paragraph_num_num_2.rst:28   <title>
+               > (0,0,0,1,2) heading level 2 [paragraph_none_num_1.rts] > DEFAULT
+                 (0,0,0,0,2) other heading levels [Sphinx] > heading level 5
               MixedStyledText('2.1 ')
                 SingleStyledText('2.1')
                 SingleStyledText(' ')
               MixedStyledText('Subsection B')
-                SingleStyledText('Subsection B')
-          Paragraph('	2.1.1	But when the rabbit actua...')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/paragraph_num_num_2.rst:30 <paragraph>
-               > (0,0,0,0,2) body
+                MixedStyledText('Subsection B')
+                  SingleStyledText('Subsection B')
+          Paragraph('	2.1.1	But when the rabbit actua...')   paragraph_num_num_2.rst:30   <paragraph>
+               > (0,0,0,0,2) body [paragraph_num_num_2.rts] > DEFAULT
               MixedStyledText('	2.1.1	')
                 Tab('	')
                 SingleStyledText('2.1.1')
                 Tab('	')
               MixedStyledText('But when the rabbit actually too...')
-                SingleStyledText('But when the rabbit actually too...')
-        Section(id='subsection-c')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/paragraph_num_num_2.rst:39 <section>
-          Heading('2.2 Subsection C')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/paragraph_num_num_2.rst:39 <title>
-               > (0,0,0,1,2) heading level 2
-                 (0,0,0,0,2) other heading levels
+                MixedStyledText('But when the rabbit actually too...')
+                  SingleStyledText('But when the rabbit actually too...')
+        Section(id='subsection-c')   paragraph_num_num_2.rst:39   <section>
+          Heading('2.2 Subsection C')   paragraph_num_num_2.rst:39   <title>
+               > (0,0,0,1,2) heading level 2 [paragraph_none_num_1.rts] > DEFAULT
+                 (0,0,0,0,2) other heading levels [Sphinx] > heading level 5
               MixedStyledText('2.2 ')
                 SingleStyledText('2.2')
                 SingleStyledText(' ')
               MixedStyledText('Subsection C')
-                SingleStyledText('Subsection C')
-          Paragraph('	2.2.1	In a moment down went Ali...')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/paragraph_num_num_2.rst:41 <paragraph>
-               > (0,0,0,0,2) body
+                MixedStyledText('Subsection C')
+                  SingleStyledText('Subsection C')
+          Paragraph('	2.2.1	In a moment down went Ali...')   paragraph_num_num_2.rst:41   <paragraph>
+               > (0,0,0,0,2) body [paragraph_num_num_2.rts] > DEFAULT
               MixedStyledText('	2.2.1	')
                 Tab('	')
                 SingleStyledText('2.2.1')
                 Tab('	')
               MixedStyledText('In a moment down went Alice afte...')
-                SingleStyledText('In a moment down went Alice afte...')
+                MixedStyledText('In a moment down went Alice afte...')
+                  SingleStyledText('In a moment down went Alice afte...')

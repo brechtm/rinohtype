@@ -25,7 +25,8 @@ from .util import (NamedDescriptor, WithNamedDescriptors,
 __all__ = ['AttributeType', 'AcceptNoneAttributeType', 'OptionSet',
            'OptionSetMeta', 'Attribute', 'OverrideDefault',
            'AttributesDictionary', 'Configurable', 'RuleSet', 'RuleSetFile',
-           'Bool', 'Integer', 'ParseError', 'Var']
+           'Bool', 'Integer', 'NoBreakAfter', 'LANGUAGE_DEFAULT',
+           'ParseError', 'Var']
 
 
 class AttributeType(object):
@@ -572,6 +573,32 @@ class Integer(AttributeType):
     @classmethod
     def doc_format(cls):
         return 'a natural number (positive integer)'
+
+
+LANGUAGE_DEFAULT = 'language-default'
+
+
+class NoBreakAfter(AttributeType, list):
+    """List of words after which no line break will be allowed"""
+
+    def __str__(self):
+        return ', '.join(str(word) for word in self)
+
+    @classmethod
+    def check_type(cls, value):
+        return (value == LANGUAGE_DEFAULT
+                or (isinstance(value, (list, tuple))
+                    and all(isinstance(item, str) for item in value)))
+
+    @classmethod
+    def from_string(cls, string, source=None):
+        if string.strip().lower() == LANGUAGE_DEFAULT:
+            return LANGUAGE_DEFAULT
+        return string.split()
+
+    @classmethod
+    def doc_format(cls):
+        return f'``{LANGUAGE_DEFAULT}``, or a space-separated list of words'
 
 
 class TokenIterator(PeekIterator):

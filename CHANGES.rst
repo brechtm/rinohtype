@@ -6,6 +6,10 @@ Release 0.5.4 (in development)
 
 New Features:
 
+* The StyledText *no_break_after* style property accepts a list of words after
+  which no line break is allowed. The default is to use a list of words specific
+  to the language configured for the template (articles, prepositions,
+  conjunctions - only provided for English and Czech for now).
 * Footnotes and citations can now optionally be rendered where they are located
   in the source document instead of as footnotes. This is controlled by the
   *location* style property for notes. (issue #269, PR #271 by Alex Fargus)

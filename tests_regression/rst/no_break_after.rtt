@@ -1,0 +1,10 @@
+[TEMPLATE_CONFIGURATION]
+name = no_break_after.rst
+template = article
+
+parts = contents
+stylesheet = no_break_after.rts
+language = cs
+
+[VARIABLES]
+paper_size = A5

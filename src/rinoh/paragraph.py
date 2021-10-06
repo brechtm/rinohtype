@@ -23,7 +23,7 @@ from os import path
 from . import DATA_PATH
 from .annotation import AnnotatedSpan
 from .attribute import (Attribute, AttributeType, OptionSet, ParseError,
-                        OverrideDefault, Integer)
+                        OverrideDefault, Integer, LANGUAGE_DEFAULT)
 from .dimension import Dimension, PT
 from .flowable import Flowable, FlowableStyle, FlowableState, FlowableWidth
 from .font import MissingGlyphException
@@ -517,6 +517,7 @@ WHITESPACE = {' ': Space,
 # TODO: shouldn't take a container (but needed by flow_inline)
 # (return InlineFlowableSpan that raises InlineFlowableException later)
 def spans_to_words(spans, container):
+    language = container.document.language
     word = Word()
     spans = iter(spans)
     while True:
@@ -525,32 +526,39 @@ def spans_to_words(spans, container):
         except StopIteration:
             break
         try:
+            no_break_after = span.get_style('no_break_after', container)
+        except KeyError:    # InlineFlowable
+            no_break_after = []
+        if no_break_after == LANGUAGE_DEFAULT:
+            no_break_after = language.no_break_after
+        try:
             get_glyph, lig_kern = create_lig_kern(span, container)
             groups = groupby(iter(span.text(container)), WHITESPACE.get)
             for special, chars in groups:
                 if special:
-                    if word:
-                        yield word
-                    for _ in chars:
-                        yield special(span, lig_kern)
-                    word = Word()
-                else:
-                    part = ''.join(chars).replace('\N{NO-BREAK SPACE}', ' ')
-                    try:
-                        glyphs = [get_glyph(char) for char in part]
-                    except MissingGlyphException:
-                        # FIXME: span annotations are lost here
-                        rest = ''.join(char for _, group in groups
-                                       for char in group)
-                        rest_of_span = SingleStyledText(part + rest,
-                                                        parent=span)
-                        new_spans = handle_missing_glyphs(rest_of_span,
-                                                          container)
-                        spans = chain(new_spans, spans)
-                        break
-                    glyphs_and_widths = lig_kern(part, glyphs)
-                    glyphs_span = GlyphsSpan(span, lig_kern, glyphs_and_widths)
-                    word.append(glyphs_span)
+                    if not (str(word) in no_break_after and special is Space):
+                        if word:
+                            yield word
+                        for _ in chars:
+                            yield special(span, lig_kern)
+                        word = Word()
+                        continue
+                part = ''.join(chars).replace('\N{NO-BREAK SPACE}', ' ')
+                try:
+                    glyphs = [get_glyph(char) for char in part]
+                except MissingGlyphException:
+                    # FIXME: span annotations are lost here
+                    rest = ''.join(char for _, group in groups
+                                   for char in group)
+                    rest_of_span = SingleStyledText(part + rest,
+                                                    parent=span)
+                    new_spans = handle_missing_glyphs(rest_of_span,
+                                                      container)
+                    spans = chain(new_spans, spans)
+                    break
+                glyphs_and_widths = lig_kern(part, glyphs)
+                glyphs_span = GlyphsSpan(span, lig_kern, glyphs_and_widths)
+                word.append(glyphs_span)
         except InlineFlowableException:
             glyphs_span = span.flow_inline(container, 0)
             word.append(glyphs_span)
@@ -901,7 +909,8 @@ class GlyphsSpan(list):
         self.filled_tabs = {}
         self.chars_to_glyphs = chars_to_glyphs
         self.space, = chars_to_glyphs(' ')
-        super().__init__(glyphs_and_widths)
+        super().__init__(self.space if gw.char == ' ' else gw
+                         for gw in glyphs_and_widths)
 
     def __str__(self):
         return ''.join(glyph_and_width.char for glyph_and_width in self)

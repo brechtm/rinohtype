@@ -5,12 +5,11 @@
   StaticGroupedFlowables()
 #### ChainedContainer('column1')
   StaticGroupedFlowables()
-    DocumentTree()
-      TableWithCaption()   None:None <table>
+    DocumentTree()   table_auto_column_widths.rst   <document>
+      TableWithCaption()   <table>
            x (0,0,0,0,2) table with caption
-           > fallback to default style
         Caption('Table 1. 80% width')
-             > (0,0,0,0,4) table caption
+             > (0,0,0,0,4) table caption [Sphinx] > caption
             SingleStyledText('Table')
             SingleStyledText(' ')
             MixedStyledText('1. ')
@@ -20,48 +19,44 @@
               MixedStyledText('80% width')
                 SingleStyledText('80% width')
         Table()
-             > (0,0,0,0,2) table
+             > (0,0,0,0,2) table [Sphinx] > DEFAULT
           TableBody()
             TableRow()
-              TableCell()   None:None <entry>
-                   > (0,0,0,0,7) table cell
-                Paragraph('short')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table_auto_column_widths.rst:5 <paragraph>
-                     > (0,0,0,1,8) table first column paragraph
-                       (0,0,0,0,9) table body cell paragraph
-                       (0,0,0,0,2) body
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Paragraph('short')   table_auto_column_widths.rst:5   <paragraph>
+                     > (0,0,0,1,8) table first column paragraph [Sphinx] > table body cell paragraph
+                       (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                       (0,0,0,0,2) body [Sphinx] > default
                     MixedStyledText('short')
                       MixedStyledText('short')
                         SingleStyledText('short')
                 TableCellBackground()
                      x (0,0,0,2,8) table body cell background on odd row
-                     > fallback to default style
-              TableCell()   None:None <entry>
-                   > (0,0,0,0,7) table cell
-                Paragraph('a bit longer')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table_auto_column_widths.rst:6 <paragraph>
-                     > (0,0,0,0,9) table body cell paragraph
-                       (0,0,0,0,2) body
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Paragraph('a bit longer')   table_auto_column_widths.rst:6   <paragraph>
+                     > (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                       (0,0,0,0,2) body [Sphinx] > default
                     MixedStyledText('a bit longer')
                       MixedStyledText('a bit longer')
                         SingleStyledText('a bit longer')
                 TableCellBackground()
                      x (0,0,0,2,8) table body cell background on odd row
-                     > fallback to default style
-              TableCell()   None:None <entry>
-                   > (0,0,0,0,7) table cell
-                Paragraph('much, much longer')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table_auto_column_widths.rst:7 <paragraph>
-                     > (0,0,0,0,9) table body cell paragraph
-                       (0,0,0,0,2) body
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Paragraph('much, much longer')   table_auto_column_widths.rst:7   <paragraph>
+                     > (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                       (0,0,0,0,2) body [Sphinx] > default
                     MixedStyledText('much, much longer')
                       MixedStyledText('much, much longer')
                         SingleStyledText('much, much longer')
                 TableCellBackground()
                      x (0,0,0,2,8) table body cell background on odd row
-                     > fallback to default style
-      TableWithCaption()   None:None <table>
+      TableWithCaption()   <table>
            x (0,0,0,0,2) table with caption
-           > fallback to default style
         Caption('Table 2. 70% width')
-             > (0,0,0,0,4) table caption
+             > (0,0,0,0,4) table caption [Sphinx] > caption
             SingleStyledText('Table')
             SingleStyledText(' ')
             MixedStyledText('2. ')
@@ -71,48 +66,44 @@
               MixedStyledText('70% width')
                 SingleStyledText('70% width')
         Table()
-             > (0,0,0,0,2) table
+             > (0,0,0,0,2) table [Sphinx] > DEFAULT
           TableBody()
             TableRow()
-              TableCell()   None:None <entry>
-                   > (0,0,0,0,7) table cell
-                Paragraph('short')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table_auto_column_widths.rst:13 <paragraph>
-                     > (0,0,0,1,8) table first column paragraph
-                       (0,0,0,0,9) table body cell paragraph
-                       (0,0,0,0,2) body
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Paragraph('short')   table_auto_column_widths.rst:13   <paragraph>
+                     > (0,0,0,1,8) table first column paragraph [Sphinx] > table body cell paragraph
+                       (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                       (0,0,0,0,2) body [Sphinx] > default
                     MixedStyledText('short')
                       MixedStyledText('short')
                         SingleStyledText('short')
                 TableCellBackground()
                      x (0,0,0,2,8) table body cell background on odd row
-                     > fallback to default style
-              TableCell()   None:None <entry>
-                   > (0,0,0,0,7) table cell
-                Paragraph('a bit longer')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table_auto_column_widths.rst:14 <paragraph>
-                     > (0,0,0,0,9) table body cell paragraph
-                       (0,0,0,0,2) body
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Paragraph('a bit longer')   table_auto_column_widths.rst:14   <paragraph>
+                     > (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                       (0,0,0,0,2) body [Sphinx] > default
                     MixedStyledText('a bit longer')
                       MixedStyledText('a bit longer')
                         SingleStyledText('a bit longer')
                 TableCellBackground()
                      x (0,0,0,2,8) table body cell background on odd row
-                     > fallback to default style
-              TableCell()   None:None <entry>
-                   > (0,0,0,0,7) table cell
-                Paragraph('much, much longer')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table_auto_column_widths.rst:15 <paragraph>
-                     > (0,0,0,0,9) table body cell paragraph
-                       (0,0,0,0,2) body
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Paragraph('much, much longer')   table_auto_column_widths.rst:15   <paragraph>
+                     > (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                       (0,0,0,0,2) body [Sphinx] > default
                     MixedStyledText('much, much longer')
                       MixedStyledText('much, much longer')
                         SingleStyledText('much, much longer')
                 TableCellBackground()
                      x (0,0,0,2,8) table body cell background on odd row
-                     > fallback to default style
-      TableWithCaption()   None:None <table>
+      TableWithCaption()   <table>
            x (0,0,0,0,2) table with caption
-           > fallback to default style
         Caption('Table 3. auto width')
-             > (0,0,0,0,4) table caption
+             > (0,0,0,0,4) table caption [Sphinx] > caption
             SingleStyledText('Table')
             SingleStyledText(' ')
             MixedStyledText('3. ')
@@ -120,53 +111,49 @@
               SingleStyledText('. ')
             MixedStyledText('auto width')
               MixedStyledText('auto width')
-                MixedStyledText('auto', style='strong')   None:None <strong>
-                     > (0,0,1,0,1) strong
+                MixedStyledText('auto', style='strong')   <strong>
+                     > (0,0,1,0,1) strong [Sphinx] > DEFAULT
                   SingleStyledText('auto')
                 SingleStyledText(' width')
         Table()
-             > (0,0,0,0,2) table
+             > (0,0,0,0,2) table [Sphinx] > DEFAULT
           TableBody()
             TableRow()
-              TableCell()   None:None <entry>
-                   > (0,0,0,0,7) table cell
-                Paragraph('short')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table_auto_column_widths.rst:20 <paragraph>
-                     > (0,0,0,1,8) table first column paragraph
-                       (0,0,0,0,9) table body cell paragraph
-                       (0,0,0,0,2) body
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Paragraph('short')   table_auto_column_widths.rst:20   <paragraph>
+                     > (0,0,0,1,8) table first column paragraph [Sphinx] > table body cell paragraph
+                       (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                       (0,0,0,0,2) body [Sphinx] > default
                     MixedStyledText('short')
                       MixedStyledText('short')
                         SingleStyledText('short')
                 TableCellBackground()
                      x (0,0,0,2,8) table body cell background on odd row
-                     > fallback to default style
-              TableCell()   None:None <entry>
-                   > (0,0,0,0,7) table cell
-                Paragraph('a bit longer')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table_auto_column_widths.rst:21 <paragraph>
-                     > (0,0,0,0,9) table body cell paragraph
-                       (0,0,0,0,2) body
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Paragraph('a bit longer')   table_auto_column_widths.rst:21   <paragraph>
+                     > (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                       (0,0,0,0,2) body [Sphinx] > default
                     MixedStyledText('a bit longer')
                       MixedStyledText('a bit longer')
                         SingleStyledText('a bit longer')
                 TableCellBackground()
                      x (0,0,0,2,8) table body cell background on odd row
-                     > fallback to default style
-              TableCell()   None:None <entry>
-                   > (0,0,0,0,7) table cell
-                Paragraph('much, much longer')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table_auto_column_widths.rst:22 <paragraph>
-                     > (0,0,0,0,9) table body cell paragraph
-                       (0,0,0,0,2) body
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Paragraph('much, much longer')   table_auto_column_widths.rst:22   <paragraph>
+                     > (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                       (0,0,0,0,2) body [Sphinx] > default
                     MixedStyledText('much, much longer')
                       MixedStyledText('much, much longer')
                         SingleStyledText('much, much longer')
                 TableCellBackground()
                      x (0,0,0,2,8) table body cell background on odd row
-                     > fallback to default style
-      TableWithCaption()   None:None <table>
+      TableWithCaption()   <table>
            x (0,0,0,0,2) table with caption
-           > fallback to default style
         Caption('Table 4. 65% width')
-             > (0,0,0,0,4) table caption
+             > (0,0,0,0,4) table caption [Sphinx] > caption
             SingleStyledText('Table')
             SingleStyledText(' ')
             MixedStyledText('4. ')
@@ -176,48 +163,44 @@
               MixedStyledText('65% width')
                 SingleStyledText('65% width')
         Table()
-             > (0,0,0,0,2) table
+             > (0,0,0,0,2) table [Sphinx] > DEFAULT
           TableBody()
             TableRow()
-              TableCell()   None:None <entry>
-                   > (0,0,0,0,7) table cell
-                Paragraph('short')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table_auto_column_widths.rst:28 <paragraph>
-                     > (0,0,0,1,8) table first column paragraph
-                       (0,0,0,0,9) table body cell paragraph
-                       (0,0,0,0,2) body
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Paragraph('short')   table_auto_column_widths.rst:28   <paragraph>
+                     > (0,0,0,1,8) table first column paragraph [Sphinx] > table body cell paragraph
+                       (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                       (0,0,0,0,2) body [Sphinx] > default
                     MixedStyledText('short')
                       MixedStyledText('short')
                         SingleStyledText('short')
                 TableCellBackground()
                      x (0,0,0,2,8) table body cell background on odd row
-                     > fallback to default style
-              TableCell()   None:None <entry>
-                   > (0,0,0,0,7) table cell
-                Paragraph('a bit longer')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table_auto_column_widths.rst:29 <paragraph>
-                     > (0,0,0,0,9) table body cell paragraph
-                       (0,0,0,0,2) body
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Paragraph('a bit longer')   table_auto_column_widths.rst:29   <paragraph>
+                     > (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                       (0,0,0,0,2) body [Sphinx] > default
                     MixedStyledText('a bit longer')
                       MixedStyledText('a bit longer')
                         SingleStyledText('a bit longer')
                 TableCellBackground()
                      x (0,0,0,2,8) table body cell background on odd row
-                     > fallback to default style
-              TableCell()   None:None <entry>
-                   > (0,0,0,0,7) table cell
-                Paragraph('much, much longer')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table_auto_column_widths.rst:30 <paragraph>
-                     > (0,0,0,0,9) table body cell paragraph
-                       (0,0,0,0,2) body
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Paragraph('much, much longer')   table_auto_column_widths.rst:30   <paragraph>
+                     > (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                       (0,0,0,0,2) body [Sphinx] > default
                     MixedStyledText('much, much longer')
                       MixedStyledText('much, much longer')
                         SingleStyledText('much, much longer')
                 TableCellBackground()
                      x (0,0,0,2,8) table body cell background on odd row
-                     > fallback to default style
-      TableWithCaption()   None:None <table>
+      TableWithCaption()   <table>
            x (0,0,0,0,2) table with caption
-           > fallback to default style
         Caption('Table 5. 50% width')
-             > (0,0,0,0,4) table caption
+             > (0,0,0,0,4) table caption [Sphinx] > caption
             SingleStyledText('Table')
             SingleStyledText(' ')
             MixedStyledText('5. ')
@@ -227,48 +210,44 @@
               MixedStyledText('50% width')
                 SingleStyledText('50% width')
         Table()
-             > (0,0,0,0,2) table
+             > (0,0,0,0,2) table [Sphinx] > DEFAULT
           TableBody()
             TableRow()
-              TableCell()   None:None <entry>
-                   > (0,0,0,0,7) table cell
-                Paragraph('short')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table_auto_column_widths.rst:35 <paragraph>
-                     > (0,0,0,1,8) table first column paragraph
-                       (0,0,0,0,9) table body cell paragraph
-                       (0,0,0,0,2) body
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Paragraph('short')   table_auto_column_widths.rst:35   <paragraph>
+                     > (0,0,0,1,8) table first column paragraph [Sphinx] > table body cell paragraph
+                       (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                       (0,0,0,0,2) body [Sphinx] > default
                     MixedStyledText('short')
                       MixedStyledText('short')
                         SingleStyledText('short')
                 TableCellBackground()
                      x (0,0,0,2,8) table body cell background on odd row
-                     > fallback to default style
-              TableCell()   None:None <entry>
-                   > (0,0,0,0,7) table cell
-                Paragraph('a bit longer')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table_auto_column_widths.rst:36 <paragraph>
-                     > (0,0,0,0,9) table body cell paragraph
-                       (0,0,0,0,2) body
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Paragraph('a bit longer')   table_auto_column_widths.rst:36   <paragraph>
+                     > (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                       (0,0,0,0,2) body [Sphinx] > default
                     MixedStyledText('a bit longer')
                       MixedStyledText('a bit longer')
                         SingleStyledText('a bit longer')
                 TableCellBackground()
                      x (0,0,0,2,8) table body cell background on odd row
-                     > fallback to default style
-              TableCell()   None:None <entry>
-                   > (0,0,0,0,7) table cell
-                Paragraph('much, much longer')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table_auto_column_widths.rst:37 <paragraph>
-                     > (0,0,0,0,9) table body cell paragraph
-                       (0,0,0,0,2) body
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Paragraph('much, much longer')   table_auto_column_widths.rst:37   <paragraph>
+                     > (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                       (0,0,0,0,2) body [Sphinx] > default
                     MixedStyledText('much, much longer')
                       MixedStyledText('much, much longer')
                         SingleStyledText('much, much longer')
                 TableCellBackground()
                      x (0,0,0,2,8) table body cell background on odd row
-                     > fallback to default style
-      TableWithCaption()   None:None <table>
+      TableWithCaption()   <table>
            x (0,0,0,0,2) table with caption
-           > fallback to default style
         Caption('Table 6. 40% width')
-             > (0,0,0,0,4) table caption
+             > (0,0,0,0,4) table caption [Sphinx] > caption
             SingleStyledText('Table')
             SingleStyledText(' ')
             MixedStyledText('6. ')
@@ -278,48 +257,44 @@
               MixedStyledText('40% width')
                 SingleStyledText('40% width')
         Table()
-             > (0,0,0,0,2) table
+             > (0,0,0,0,2) table [Sphinx] > DEFAULT
           TableBody()
             TableRow()
-              TableCell()   None:None <entry>
-                   > (0,0,0,0,7) table cell
-                Paragraph('short')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table_auto_column_widths.rst:43 <paragraph>
-                     > (0,0,0,1,8) table first column paragraph
-                       (0,0,0,0,9) table body cell paragraph
-                       (0,0,0,0,2) body
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Paragraph('short')   table_auto_column_widths.rst:43   <paragraph>
+                     > (0,0,0,1,8) table first column paragraph [Sphinx] > table body cell paragraph
+                       (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                       (0,0,0,0,2) body [Sphinx] > default
                     MixedStyledText('short')
                       MixedStyledText('short')
                         SingleStyledText('short')
                 TableCellBackground()
                      x (0,0,0,2,8) table body cell background on odd row
-                     > fallback to default style
-              TableCell()   None:None <entry>
-                   > (0,0,0,0,7) table cell
-                Paragraph('a bit longer')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table_auto_column_widths.rst:44 <paragraph>
-                     > (0,0,0,0,9) table body cell paragraph
-                       (0,0,0,0,2) body
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Paragraph('a bit longer')   table_auto_column_widths.rst:44   <paragraph>
+                     > (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                       (0,0,0,0,2) body [Sphinx] > default
                     MixedStyledText('a bit longer')
                       MixedStyledText('a bit longer')
                         SingleStyledText('a bit longer')
                 TableCellBackground()
                      x (0,0,0,2,8) table body cell background on odd row
-                     > fallback to default style
-              TableCell()   None:None <entry>
-                   > (0,0,0,0,7) table cell
-                Paragraph('much, much longer')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table_auto_column_widths.rst:45 <paragraph>
-                     > (0,0,0,0,9) table body cell paragraph
-                       (0,0,0,0,2) body
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Paragraph('much, much longer')   table_auto_column_widths.rst:45   <paragraph>
+                     > (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                       (0,0,0,0,2) body [Sphinx] > default
                     MixedStyledText('much, much longer')
                       MixedStyledText('much, much longer')
                         SingleStyledText('much, much longer')
                 TableCellBackground()
                      x (0,0,0,2,8) table body cell background on odd row
-                     > fallback to default style
-      TableWithCaption()   None:None <table>
+      TableWithCaption()   <table>
            x (0,0,0,0,2) table with caption
-           > fallback to default style
         Caption('Table 7. 35% width')
-             > (0,0,0,0,4) table caption
+             > (0,0,0,0,4) table caption [Sphinx] > caption
             SingleStyledText('Table')
             SingleStyledText(' ')
             MixedStyledText('7. ')
@@ -329,48 +304,44 @@
               MixedStyledText('35% width')
                 SingleStyledText('35% width')
         Table()
-             > (0,0,0,0,2) table
+             > (0,0,0,0,2) table [Sphinx] > DEFAULT
           TableBody()
             TableRow()
-              TableCell()   None:None <entry>
-                   > (0,0,0,0,7) table cell
-                Paragraph('short')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table_auto_column_widths.rst:51 <paragraph>
-                     > (0,0,0,1,8) table first column paragraph
-                       (0,0,0,0,9) table body cell paragraph
-                       (0,0,0,0,2) body
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Paragraph('short')   table_auto_column_widths.rst:51   <paragraph>
+                     > (0,0,0,1,8) table first column paragraph [Sphinx] > table body cell paragraph
+                       (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                       (0,0,0,0,2) body [Sphinx] > default
                     MixedStyledText('short')
                       MixedStyledText('short')
                         SingleStyledText('short')
                 TableCellBackground()
                      x (0,0,0,2,8) table body cell background on odd row
-                     > fallback to default style
-              TableCell()   None:None <entry>
-                   > (0,0,0,0,7) table cell
-                Paragraph('a bit longer')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table_auto_column_widths.rst:52 <paragraph>
-                     > (0,0,0,0,9) table body cell paragraph
-                       (0,0,0,0,2) body
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Paragraph('a bit longer')   table_auto_column_widths.rst:52   <paragraph>
+                     > (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                       (0,0,0,0,2) body [Sphinx] > default
                     MixedStyledText('a bit longer')
                       MixedStyledText('a bit longer')
                         SingleStyledText('a bit longer')
                 TableCellBackground()
                      x (0,0,0,2,8) table body cell background on odd row
-                     > fallback to default style
-              TableCell()   None:None <entry>
-                   > (0,0,0,0,7) table cell
-                Paragraph('much, much longer')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table_auto_column_widths.rst:53 <paragraph>
-                     > (0,0,0,0,9) table body cell paragraph
-                       (0,0,0,0,2) body
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Paragraph('much, much longer')   table_auto_column_widths.rst:53   <paragraph>
+                     > (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                       (0,0,0,0,2) body [Sphinx] > default
                     MixedStyledText('much, much longer')
                       MixedStyledText('much, much longer')
                         SingleStyledText('much, much longer')
                 TableCellBackground()
                      x (0,0,0,2,8) table body cell background on odd row
-                     > fallback to default style
-      TableWithCaption()   None:None <table>
+      TableWithCaption()   <table>
            x (0,0,0,0,2) table with caption
-           > fallback to default style
         Caption('Table 8. 30% width')
-             > (0,0,0,0,4) table caption
+             > (0,0,0,0,4) table caption [Sphinx] > caption
             SingleStyledText('Table')
             SingleStyledText(' ')
             MixedStyledText('8. ')
@@ -380,40 +351,37 @@
               MixedStyledText('30% width')
                 SingleStyledText('30% width')
         Table()
-             > (0,0,0,0,2) table
+             > (0,0,0,0,2) table [Sphinx] > DEFAULT
           TableBody()
             TableRow()
-              TableCell()   None:None <entry>
-                   > (0,0,0,0,7) table cell
-                Paragraph('short')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table_auto_column_widths.rst:59 <paragraph>
-                     > (0,0,0,1,8) table first column paragraph
-                       (0,0,0,0,9) table body cell paragraph
-                       (0,0,0,0,2) body
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Paragraph('short')   table_auto_column_widths.rst:59   <paragraph>
+                     > (0,0,0,1,8) table first column paragraph [Sphinx] > table body cell paragraph
+                       (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                       (0,0,0,0,2) body [Sphinx] > default
                     MixedStyledText('short')
                       MixedStyledText('short')
                         SingleStyledText('short')
                 TableCellBackground()
                      x (0,0,0,2,8) table body cell background on odd row
-                     > fallback to default style
-              TableCell()   None:None <entry>
-                   > (0,0,0,0,7) table cell
-                Paragraph('a bit longer')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table_auto_column_widths.rst:60 <paragraph>
-                     > (0,0,0,0,9) table body cell paragraph
-                       (0,0,0,0,2) body
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Paragraph('a bit longer')   table_auto_column_widths.rst:60   <paragraph>
+                     > (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                       (0,0,0,0,2) body [Sphinx] > default
                     MixedStyledText('a bit longer')
                       MixedStyledText('a bit longer')
                         SingleStyledText('a bit longer')
                 TableCellBackground()
                      x (0,0,0,2,8) table body cell background on odd row
-                     > fallback to default style
-              TableCell()   None:None <entry>
-                   > (0,0,0,0,7) table cell
-                Paragraph('much, much longer')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table_auto_column_widths.rst:61 <paragraph>
-                     > (0,0,0,0,9) table body cell paragraph
-                       (0,0,0,0,2) body
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Paragraph('much, much longer')   table_auto_column_widths.rst:61   <paragraph>
+                     > (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                       (0,0,0,0,2) body [Sphinx] > default
                     MixedStyledText('much, much longer')
                       MixedStyledText('much, much longer')
                         SingleStyledText('much, much longer')
                 TableCellBackground()
                      x (0,0,0,2,8) table body cell background on odd row
-                     > fallback to default style

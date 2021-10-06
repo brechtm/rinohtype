@@ -1,0 +1,22 @@
+[STYLESHEET]
+base = sphinx_base14
+
+
+[chapter]
+page_break = any
+
+[heading level 1]
+number_format = none
+
+
+[empty : +Paragraph(has_class='empty')]
+base = body
+no_break_after =
+
+[a : +Paragraph(has_class='a')]
+base = body
+no_break_after = a
+
+[v_do : +Paragraph(has_class='v-do')]
+base = body
+no_break_after = v do

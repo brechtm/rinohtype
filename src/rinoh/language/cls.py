@@ -31,6 +31,7 @@ class Language(AttributeType):
         self.code = code
         self.name = name
         self.strings = {}
+        self.no_break_after = []
 
     def __repr__(self):
         return "{}('{}', '{}')".format(type(self).__name__,

@@ -32,3 +32,5 @@ AdmonitionTitles(
     warning='Warning',
     seealso='See also',
 ) in EN
+
+EN.no_break_after = "a an the".split()

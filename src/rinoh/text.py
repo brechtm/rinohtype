@@ -33,7 +33,8 @@ from token import NAME, STRING, NEWLINE, LPAR, RPAR, ENDMARKER
 
 from .annotation import AnchorAnnotation, LinkAnnotation, AnnotatedSpan
 from .attribute import (AttributeType, AcceptNoneAttributeType, Attribute,
-                        Bool, Integer, ParseError)
+                        Bool, Integer, ParseError, NoBreakAfter,
+                        LANGUAGE_DEFAULT)
 from .color import Color, BLACK, RED
 from .dimension import Dimension, PT
 from .font import Typeface
@@ -319,6 +320,9 @@ class TextStyle(InlineStyle):
     hyphen_lang = Attribute(Locale, 'en_US', 'Language to use for hyphenation. '
                                              'Accepts locale codes such as '
                                              "'en_US'")
+    no_break_after = Attribute(NoBreakAfter, LANGUAGE_DEFAULT,
+                               'Prevent a line break after these words')
+
 
 
 StyledText.style_class = TextStyle
