@@ -17,6 +17,6 @@ no_break_after =
 base = body
 no_break_after = a
 
-[v_do : +Paragraph(has_class='v-do')]
+[s_v_do : +Paragraph(has_class='s-v-do')]
 base = body
-no_break_after = v do
+no_break_after = s v do
