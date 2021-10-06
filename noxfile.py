@@ -54,7 +54,7 @@ def build_docs(session):
     _install(session, dependencies=['sphinx', 'sphinx_rtd_theme',
                                     'sphinxcontrib-autoprogram'])
     session.chdir('doc')
-    session.run('python', 'build.py')
+    session.run('python', 'build.py', *session.posargs)
     for pdf in glob.glob("_build/rinoh/*.pdf"):
         shutil.copy(pdf, "_build/html")
 
