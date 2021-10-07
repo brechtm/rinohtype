@@ -9,6 +9,8 @@
 import re
 from datetime import datetime
 
+from sphinx.ext.graphviz import render_dot
+
 import rinoh as rt
 
 from . import (DocutilsInlineNode, DocutilsNode, DocutilsBodyNode,
@@ -625,6 +627,23 @@ class Image(DocutilsBodyNode, DocutilsInlineNode):
         options = self.options
         baseline = self.ALIGN_TO_BASELINE.get(options.pop('align'))
         return rt.InlineImage(self.image_path, baseline=baseline, **options)
+
+
+class Graphviz(Image):
+    def __init__(self, doctree_node, **context):
+        super().__init__(doctree_node, **context)
+        self.code = doctree_node.attributes['code']
+        # any of the layout impacting options (caption, alignment, etc.) are
+        # held in a containing figure element, layout (which dot executable to use)
+        # is really the only significant option that reaches this point
+        self.gv_options = doctree_node.attributes['options']
+        # TODO: not sure if/how to handle classes, should they be worked into the image style?? see render_dot_html
+        self.gv_classes = doctree_node.attributes['classes']
+
+    def build_flowable(self):
+        sphinx_app = self.context['sphinx_builder'].app
+        fname, outfn = render_dot(sphinx_app, self.code, self.gv_options, sphinx_app.config.graphviz_output_format)
+        return rt.Image(outfn, **self.options)
 
 
 class Figure(DocutilsGroupingNode):
