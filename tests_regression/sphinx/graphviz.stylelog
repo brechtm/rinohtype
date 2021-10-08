@@ -1,0 +1,85 @@
+---------------------------------- page 1 ----------------------------------
+#### DownExpandingContainer('title')
+  StaticGroupedFlowables()
+    Paragraph('Graphviz', style='title page title')
+         > (0,0,1,0,2) title page title [Sphinx] > DEFAULT
+           (0,0,0,0,2) body [Sphinx] > default
+        SingleStyledText('Graphviz')
+    Paragraph('Release ', style='title page subtitle')
+         > (0,0,1,0,2) title page subtitle [Sphinx] > title page title
+           (0,0,0,0,2) body [Sphinx] > default
+        SingleStyledText('Release ')
+    Paragraph('Author', style='title page author')
+         > (0,0,1,0,2) title page author [Sphinx] > DEFAULT
+           (0,0,0,0,2) body [Sphinx] > default
+        SingleStyledText('Author')
+---------------------------------- page i ----------------------------------
+#### FootnoteContainer('footnotes')
+  StaticGroupedFlowables()
+#### DownExpandingContainer('floats')
+  StaticGroupedFlowables()
+#### FlowablesContainer('chapter title')
+  Paragraph('Table of Contents', style='front matter section title')
+       > (0,0,1,0,2) front matter section title [Sphinx] > DEFAULT
+         (0,0,0,0,2) body [Sphinx] > default
+      Field('Table of Contents')
+        StringField('Table of Contents')
+          SingleStyledText('Table of Contents')
+#### ChainedContainer('column1')
+  StaticGroupedFlowables()
+    TableOfContentsSection(style='table of contents')
+         > (0,0,1,0,1) table of contents section [Sphinx] > DEFAULT
+           (0,0,0,1,1) chapter [Sphinx] > DEFAULT
+      TableOfContents()   table of contents
+           > (0,0,0,0,2) table of contents [Sphinx] > default
+#### DownExpandingContainer('footer')
+  StaticGroupedFlowables()
+    Footer('		i')
+         > (0,0,0,0,2) footer [Sphinx] > header_footer
+        MixedStyledText('		i')
+          MixedStyledText('		i')
+            Tab('	')
+            Tab('	')
+            Field('i')
+              SingleStyledText('i')
+---------------------------------- page 1 ----------------------------------
+#### FootnoteContainer('footnotes')
+  StaticGroupedFlowables()
+#### DownExpandingContainer('floats')
+  StaticGroupedFlowables()
+#### ChainedContainer('column1')
+  StaticGroupedFlowables()
+    DocumentTree()   index.rst   <document>
+      StaticGroupedFlowables()   index.rst   <compound>
+      Image('/private/var/folders/g8/kff4hh951bn5jjlmhwrtrbc40000gp/T/pytest-of-drapp/pytest-17/popen-gw4/graphviz/_build/rinoh/graphviz-ed6d45d9c44a3b261c080ffebc5e8850973a97ec.png')   index.rst:12   <graphviz>
+           > (0,0,0,0,2) image [Sphinx] > DEFAULT
+#### DownExpandingContainer('footer')
+  StaticGroupedFlowables()
+    Footer('		1')
+         > (0,0,0,0,2) footer [Sphinx] > header_footer
+        MixedStyledText('		1')
+          MixedStyledText('		1')
+            Tab('	')
+            Tab('	')
+            Field('1')
+              SingleStyledText('1')
+---------------------------------- page 3 ----------------------------------
+#### FootnoteContainer('footnotes')
+  StaticGroupedFlowables()
+#### DownExpandingContainer('floats')
+  StaticGroupedFlowables()
+#### ChainedContainer('column1')
+  StaticGroupedFlowables()
+    StaticGroupedFlowables()
+#### ChainedContainer('column2')
+  StaticGroupedFlowables()
+#### DownExpandingContainer('footer')
+  StaticGroupedFlowables()
+    Footer('		3')
+         > (0,0,0,0,2) footer [Sphinx] > header_footer
+        MixedStyledText('		3')
+          MixedStyledText('		3')
+            Tab('	')
+            Tab('	')
+            Field('3')
+              SingleStyledText('3')
