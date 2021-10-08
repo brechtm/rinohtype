@@ -187,6 +187,11 @@ else:
     raise SystemExit(2)
 
 
+if (MAGICK and not which(*MAGICK)) or not which('compare'):
+    print("ImageMagick is required", file=sys.stderr)
+    raise SystemExit(2)
+
+
 parser = argparse.ArgumentParser(description='Visual PDF diff.')
 parser.add_argument('file1', metavar='FILE1', type=str,
                     help='Path to the reference PDF')
