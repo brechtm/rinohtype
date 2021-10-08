@@ -1,0 +1,4 @@
+[TEMPLATE_CONFIGURATION]
+name=graphviz
+template=book
+stylesheet=stylesheet.rts
