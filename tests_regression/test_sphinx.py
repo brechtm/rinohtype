@@ -8,7 +8,9 @@
 import pytest
 
 import shutil
+import sys
 
+from contextlib import suppress
 from pathlib import Path
 
 from helpers.regression import verify_output
@@ -20,12 +22,22 @@ OUTPUT_PATH = TESTS_PATH / 'sphinx_output'
 OUTPUT_PATH.mkdir(exist_ok=True)
 
 
+# run these tests on on specific platforms
+PLATFORMS = {
+    'graphviz': ('darwin'),
+}
+
+
 def collect_tests():
     for root_path in sorted(ROOTS_PATH.glob('test-*')):
         test_name = root_path.stem.replace('test-', '')
-        yield pytest.param(test_name,
-                           marks=pytest.mark.sphinx(buildername='rinoh',
-                                                    testroot=test_name))
+        marks = [pytest.mark.sphinx(buildername='rinoh', testroot=test_name)]
+        with suppress(KeyError):
+            platforms = PLATFORMS[test_name]
+            marks.append(pytest.mark.skipif(sys.platform not in platforms,
+                                            reason='skipping test on '
+                                                   f'{sys.platform}'))
+        yield pytest.param(test_name, marks=marks)
 
 
 @pytest.mark.with_sphinx
