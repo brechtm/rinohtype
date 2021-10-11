@@ -74,7 +74,7 @@ pygments_style = 'sphinx'
 
 rinoh_documents = [{
     'doc': master_doc,          # top-level file (index.rst)
-    'target': 'graphviz',        # output (target.pdf)
+    'target': 'graphviz',       # output (target.pdf)
     'title': project,           # document title
     'author': author,           # document author
     'template': 'template.rtt'  # document template

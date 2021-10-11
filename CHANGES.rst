@@ -6,6 +6,8 @@ Release 0.5.4 (in development)
 
 New Features:
 
+* Sphinx Graphviz extension (``sphinx.ext.graphviz``) support (PR #300 by
+  Daniel Rapp)
 * The StyledText *no_break_after* style property accepts a list of words after
   which no line break is allowed. The default is to use a list of words
   specific to the language configured for the template (articles, prepositions,

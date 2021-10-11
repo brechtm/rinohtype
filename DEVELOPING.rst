@@ -45,8 +45,9 @@ The following sessions execute unit tests and regression tests:
     Runs integration/regression tests. Each of these tests render a tiny
     document (often a single page) focusing on a specific feature, which means
     they also execute quickly. Their PDF output is compared to a reference PDF
-    that is known to be good. This requires ImageMagick, Graphviz and either MuPDF's
-    *mutool* or poppler's *pdftoppm* to be available from the search path.
+    that is known to be good. This requires Graphviz, ImageMagick and either
+    MuPDF's *mutool* or poppler's *pdftoppm* to be available from the search
+    path.
 
 These sessions are parametrized_ in order to run the tests against both the
 source and wheel distributions, and against all supported Python versions.

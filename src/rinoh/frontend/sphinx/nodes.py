@@ -17,9 +17,12 @@ from pygments.lexers.python import (PythonLexer, Python3Lexer,
 from pygments.lexers.special import TextLexer
 from pygments.util import ClassNotFound
 
+from sphinx.ext.graphviz import render_dot
+
 from ...annotation import HyperLink
 from ...flowable import LabeledFlowable, StaticGroupedFlowables
 from ...glossary import GlossaryTerm
+from ...image import Image, Figure
 from ...index import IndexTerm, IndexTarget, InlineIndexTarget
 from ...paragraph import Paragraph
 from ...reference import Reference
@@ -391,3 +394,13 @@ class Number_Reference(DocutilsInlineNode):
 class Footnotes_Rubric(DocutilsDummyNode):
     """A custom rinohtype-specific node that allows easily excluding footnote
     rubrics from the output"""
+
+
+class Graphviz(DocutilsBodyNode):
+    def build_flowable(self):
+        sphinx_app = self.context['sphinx_builder'].app
+        fname, outfn = render_dot(sphinx_app, self.get('code'),
+                                  self.get('options'), 'pdf')
+        image = Image(outfn, align=self.get('align'))
+        image.classes.extend(['graphviz'])
+        return image
