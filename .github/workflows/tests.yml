@@ -11,7 +11,7 @@ on:
 
 env:
   current_python: '3.9'
-  poetry_version: '1.1.8'
+  poetry_version: '1.1.11'
   nox_cmd: 'nox --verbose --error-on-missing-interpreters --session'
 jobs:
   check:
@@ -180,6 +180,7 @@ jobs:
       NOXENV: ${{ matrix.noxenv }}
       WITH_COVERAGE: ${{ matrix.cov }}
       MUPDF_VERSION: 1.18.0
+      GRAPHVIZ_VERSION: 2.49.1
     steps:
     - uses: actions/checkout@v2
     - name: Install Python ${{ env.current_python }}
@@ -214,12 +215,13 @@ jobs:
       run: |
         echo "::set-output name=mupdftools::$(brew info --json mupdf-tools | jq -r '.[0].versions.stable')"
         echo "::set-output name=imagemagick::$(brew info --json imagemagick | jq -r '.[0].versions.stable')"
+        echo "::set-output name=graphviz::$(brew info --json graphviz | jq -r '.[0].versions.stable')"
     - name: Cache Homebrew downloads
       if: startsWith(runner.os, 'macOS')
       uses: actions/cache@v2
       with:
         path: ${{ steps.cache-dirs-macos.outputs.dir }}
-        key: ${{ runner.os }}-homebrew-mupdftools${{ steps.homebrew-versions.outputs.mupdftools }}-im${{ steps.homebrew-versions.outputs.imagemagick }}
+        key: ${{ runner.os }}-homebrew-mupdftools${{ steps.homebrew-versions.outputs.mupdftools }}-im${{ steps.homebrew-versions.outputs.imagemagick }}-graphviz${{ steps.homebrew-versions.outputs.graphviz }}
 
     - name: Get scoop cache dir (Windows)
       id: cache-dirs-windows
@@ -231,16 +233,16 @@ jobs:
       uses: actions/cache@v2
       with:
         path: ${{ steps.cache-dirs-windows.outputs.dir }}
-        key: ${{ runner.os }}-scoop-mupdf${{ env.MUPDF_VERSION}}
+        key: ${{ runner.os }}-scoop-mupdf${{ env.MUPDF_VERSION}}-graphviz${{ env.GRAPHVIZ_VERSION }}
 
     - name: Install tools required by the regression tests (Linux)
       if: startsWith(runner.os, 'Linux')
       run: |
-        sudo apt-get install mupdf-tools imagemagick
+        sudo apt-get install mupdf-tools imagemagick graphviz
     - name: Install tools required by the regression tests (macOS)
       if: startsWith(runner.os, 'macOS')
       run: |
-        brew install mupdf-tools imagemagick
+        brew install mupdf-tools imagemagick graphviz
     - name: Set up scoop (Windows)
       if: startsWith(runner.os, 'Windows')
       uses: MinoruSekine/setup-scoop@v1
@@ -250,6 +252,7 @@ jobs:
         scoop bucket add extras
         scoop install mupdf@${{ env.MUPDF_VERSION }}
         scoop install imagemagick
+        scoop install graphviz@${{ env.GRAPHVIZ_VERSION }}
 
     - name: Run Nox
       run: ${{ env.nox_cmd }} ${{ env.NOXENV }} -- -s
