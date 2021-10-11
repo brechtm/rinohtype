@@ -399,8 +399,10 @@ class Footnotes_Rubric(DocutilsDummyNode):
 class Graphviz(DocutilsBodyNode):
     def build_flowable(self):
         sphinx_app = self.context['sphinx_builder'].app
-        fname, outfn = render_dot(sphinx_app, self.get('code'),
-                                  self.get('options'), 'pdf')
+        code = self.get('code')
+        fname, outfn = render_dot(sphinx_app, code, self.get('options'), 'pdf')
+        if fname is None:
+            return Paragraph(code, style='graphviz')
         image = Image(outfn, align=self.get('align'))
         image.classes.extend(['graphviz'])
         return image

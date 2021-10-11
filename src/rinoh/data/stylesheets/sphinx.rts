@@ -164,6 +164,10 @@ keep_with_next=true
 base=code block
 border=none
 
+[graphviz code block]
+base=code block
+border=none
+
 [block quote]
 margin_left=1cm
 
