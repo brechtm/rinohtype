@@ -36,6 +36,8 @@ Changed:
 
 Fixed:
 
+* Setting 'number_format' to *none* caused a crash; now it causes the caption
+  label to be omitted.
 * Handle citations and corresponding citation references that are not defined
   in the same source file.
 * Fix error message for --stylesheet argument with relative path (issue #253,
