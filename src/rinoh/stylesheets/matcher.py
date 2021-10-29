@@ -90,6 +90,8 @@ matcher('content chapter', DocumentTree / ... / Section.like(level=1))
 
 for i in range(1, 6):
     matcher('heading level {}'.format(i), Heading.like(level=i))
+    matcher('heading level {} label'.format(i),
+            Heading.like(level=i) / ... / StyledText.like('label'))
     matcher('unnumbered heading level {}'.format(i),
             Heading.like('unnumbered', level=i))
 matcher('other heading levels', Heading)

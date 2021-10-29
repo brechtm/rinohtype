@@ -6,6 +6,8 @@ Release 0.5.4 (in development)
 
 New Features:
 
+* Heading labels (numbers) can be styled separately by means of the 'heading
+  level *X* label' selectors for each heading level *X*.
 * Sphinx Graphviz extension (``sphinx.ext.graphviz``) support (PR #300 by
   Daniel Rapp)
 * The StyledText *no_break_after* style property accepts a list of words after

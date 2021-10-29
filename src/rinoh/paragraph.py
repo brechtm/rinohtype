@@ -692,7 +692,9 @@ class ParagraphBase(Flowable, Label):
         target_id = self.referenceable.get_id(document)
         formatted_number = document.get_reference(target_id, 'number')
         if formatted_number:
-            return self.format_label(formatted_number, container)
+            label = self.format_label(formatted_number, container)
+            label.style = 'label'
+            return label
         else:
             return ''
 
