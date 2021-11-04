@@ -257,7 +257,7 @@ class FlowablesContainerBase(Container):
         """Advance the cursor by `height`. If this would cause the cursor to
         point beyond the bottom of the container, an :class:`EndOfContainer`
         exception is raised."""
-        if height <= self.remaining_height:
+        if height <= self.remaining_height + FLOATING_POINT_FUZZ:
             self._self_cursor.grow(height)
         elif ignore_overflow:
             self._self_cursor.grow(float(self.remaining_height))
@@ -271,7 +271,7 @@ class FlowablesContainerBase(Container):
         bottom of the container.
 
         """
-        if height <= self.remaining_height:
+        if height <= self.remaining_height + FLOATING_POINT_FUZZ:
             self._self_cursor.grow(height)
         elif ignore_overflow:
             self._self_cursor.grow(float(self.remaining_height))
@@ -303,6 +303,9 @@ class FlowablesContainerBase(Container):
         for i, child in enumerate(self.children, start=1):
             child.before_placing()
             log_styleds(i)
+
+
+FLOATING_POINT_FUZZ = 1e-10
 
 
 class _FlowablesContainer(FlowableTarget, FlowablesContainerBase):

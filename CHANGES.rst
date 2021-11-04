@@ -36,6 +36,7 @@ Changed:
 
 Fixed:
 
+* Crash due to floating point rounding error (#302 by Sam Hartman)
 * Setting 'number_format' to *none* caused a crash; now it causes the caption
   label to be omitted.
 * Handle citations and corresponding citation references that are not defined
