@@ -1000,7 +1000,12 @@ class ToUnicode(Stream):
         self.print(' def')
 
     def _value(self, value, number_of_bytes=2):
-        hex_str = HexString((value).to_bytes(number_of_bytes, byteorder='big'))
+        try:
+            hex_str = HexString((value).to_bytes(number_of_bytes, byteorder='big'))
+        except OverflowError:
+            # This is a hack to deal with 4-byte codepoints.
+            # A better method of specifying the expected byte size should be used here.
+            hex_str = HexString((value).to_bytes(2 * number_of_bytes, byteorder='big')) 
         self.write(hex_str.bytes(None))
 
     def print(self, strng, end='\n'):
