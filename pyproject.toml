@@ -108,7 +108,7 @@ restview = "^2.9.3"
 Sphinx = "^4.0.2"
 sphinx-rtd-theme = "^0.5.1"
 sphinxcontrib-autoprogram = "^0.1.7"
-pytest-github-actions-annotate-failures = { version = "^0.1.5", optional = true }
+pytest-github-actions-annotate-failures = { version = "^0.1.6", optional = true }
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
