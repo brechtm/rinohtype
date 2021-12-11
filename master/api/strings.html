@@ -215,7 +215,7 @@
 <span id="strings"></span><h1>Strings (<a class="reference internal" href="#module-rinoh.strings" title="rinoh.strings"><code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.strings</span></code></a>)<a class="headerlink" href="#strings-rinoh-strings" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="rinoh.strings.String">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">rinoh.strings.</span></span><span class="sig-name descname"><span class="pre">String</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">description</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.strings.String" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rinoh.strings.</span></span><span class="sig-name descname"><span class="pre">String</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">description</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.strings.String" title="Permalink to this definition">¶</a></dt>
 <dd><p>Descriptor used to describe a configurable string</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -226,7 +226,7 @@
 
 <dl class="py class">
 <dt class="sig sig-object py" id="rinoh.strings.StringCollection">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">rinoh.strings.</span></span><span class="sig-name descname"><span class="pre">StringCollection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">strings</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.strings.StringCollection" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rinoh.strings.</span></span><span class="sig-name descname"><span class="pre">StringCollection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">strings</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.strings.StringCollection" title="Permalink to this definition">¶</a></dt>
 <dd><p>A collection of related configurable strings</p>
 <dl class="field-list simple">
 <dt class="field-odd">Subclasses</dt>
@@ -241,7 +241,7 @@
 
 <dl class="py class">
 <dt class="sig sig-object py" id="rinoh.strings.UserStrings">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">rinoh.strings.</span></span><span class="sig-name descname"><span class="pre">UserStrings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">strings</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.strings.UserStrings" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rinoh.strings.</span></span><span class="sig-name descname"><span class="pre">UserStrings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">strings</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.strings.UserStrings" title="Permalink to this definition">¶</a></dt>
 <dd><p>Collection of user-specified strings</p>
 <p>Unlike other string collections, these are not limited to a predefined set.</p>
 <p>Attributes:</p>
@@ -249,13 +249,13 @@
 
 <dl class="py class">
 <dt class="sig sig-object py" id="rinoh.strings.Strings">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">rinoh.strings.</span></span><span class="sig-name descname"><span class="pre">Strings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">string_collections</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.strings.Strings" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rinoh.strings.</span></span><span class="sig-name descname"><span class="pre">Strings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">string_collections</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.strings.Strings" title="Permalink to this definition">¶</a></dt>
 <dd><p>Stores several <a class="reference internal" href="#rinoh.strings.StringCollection" title="rinoh.strings.StringCollection"><code class="xref py py-class docutils literal notranslate"><span class="pre">StringCollection</span></code></a>s</p>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="rinoh.strings.StringField">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">rinoh.strings.</span></span><span class="sig-name descname"><span class="pre">StringField</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">strings_class</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">style</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.strings.StringField" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rinoh.strings.</span></span><span class="sig-name descname"><span class="pre">StringField</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">strings_class</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">style</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.strings.StringField" title="Permalink to this definition">¶</a></dt>
 <dd><p>Styled text that will be substituted with a configured string</p>
 <p>The displayed string is either the localized string as determined by the
 language set for the document or the user-supplied string passed to the
