@@ -65,7 +65,7 @@ def unit(session, dist):
     _unit(session, dist=dist)
 
 
-@nox_poetry.session()
+@nox_poetry.session(python='3.9')   # Sphinx 3.5, 4.0 and 4.1 fail on 3.10
 @parametrize('sphinx')
 def unit_sphinx(session, sphinx):
     _unit(session, sphinx=sphinx)
@@ -83,7 +83,7 @@ def regression_docutils(session, docutils):
     _regression(session, docutils=docutils)
 
 
-@nox_poetry.session()
+@nox_poetry.session(python='3.9')   # Sphinx 3.5, 4.0 and 4.1 fail on 3.10
 @parametrize('sphinx')
 def regression_sphinx(session, sphinx):
     _regression(session, sphinx=sphinx)
