@@ -499,6 +499,17 @@ python-versions = "*"
 pytest = ">=4.0.0"
 
 [[package]]
+name = "pytest-pycharm"
+version = "0.7.0"
+description = "Plugin for py.test to enter PyCharm debugger on uncaught exceptions"
+category = "dev"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+pytest = ">=2.3"
+
+[[package]]
 name = "pytest-xdist"
 version = "2.5.0"
 description = "pytest xdist plugin for distributed testing and loop-on-failing modes"
@@ -888,7 +899,7 @@ testing = ["pytest (>=4.6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytes
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.6.1"
-content-hash = "33c9fa7183cc5d485c703ad0a61b96ddfdc07d6841da8975926e6ed14f89c2ca"
+content-hash = "03dfc48c607fe4d4362f1fe4a8eec9f1ba96f82bc9706502d387798a13e64bf0"
 
 [metadata.files]
 alabaster = [
@@ -1158,6 +1169,10 @@ pytest-forked = [
 pytest-github-actions-annotate-failures = [
     {file = "pytest-github-actions-annotate-failures-0.1.6.tar.gz", hash = "sha256:162e2fe18b8ab24716c4c3a8d88c29aa67126dc75b4e54be54b58e6fa04653c2"},
     {file = "pytest_github_actions_annotate_failures-0.1.6-py2.py3-none-any.whl", hash = "sha256:5222dfa315c49d705912826335488ac1c75946c4b06782ab9a99379a7ee3af66"},
+]
+pytest-pycharm = [
+    {file = "pytest-pycharm-0.7.0.tar.gz", hash = "sha256:d920c016a2b14449b68943762d0fa42dc03cb0060b5c375336e5e2b1bebda0dd"},
+    {file = "pytest_pycharm-0.7.0-py3-none-any.whl", hash = "sha256:5a642e3e21487cb2e1bf78464edb7f1b31996f8fce34780786f218144de9d7cf"},
 ]
 pytest-xdist = [
     {file = "pytest-xdist-2.5.0.tar.gz", hash = "sha256:4580deca3ff04ddb2ac53eba39d76cb5dd5edeac050cb6fbc768b0dd712b4edf"},
