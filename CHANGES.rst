@@ -32,6 +32,7 @@ New Features:
 
 Changed:
 
+* Support for Python 3.6 was dropped (end-of-life in December 2021)
 * Provide a more informative exception message when Pillow cannot be imported.
 
 Fixed:
