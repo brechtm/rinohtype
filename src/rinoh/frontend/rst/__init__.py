@@ -36,10 +36,15 @@ class DocutilsNode(TreeNode, metaclass=TreeNodeMeta):
     def node_children(node):
         return node.children
 
+    @staticmethod
+    def node_location(node):
+        return node.source, node.line, node.tagname
+
     @property
     def location(self):
-        source = self.node.source or self.node.get('source')
-        return source, self.node.line, self.node.tagname
+        node_source, line, tag_name = self.node_location(self.node)
+        source = node_source or self.node.get('source')
+        return source, line, tag_name
 
     @property
     def node_document(self):

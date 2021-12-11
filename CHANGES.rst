@@ -37,6 +37,7 @@ Changed:
 
 Fixed:
 
+* Regression in handling of unsupported docutils nodes
 * Crash due to floating point rounding error (#302 by Sam Hartman)
 * Setting 'number_format' to *none* caused a crash; now it causes the caption
   label to be omitted.
