@@ -40,7 +40,8 @@ __all__ = ['Compact_Paragraph', 'Centered', 'HList', 'Index', 'Pending_XRef',
            'Literal_Emphasis', 'Abbreviation', 'Download_Reference', 'SeeAlso',
            'Glossary', 'Start_of_File', 'Todo_Node', 'HighlightLang',
            'Literal_Strong', 'ProductionList', 'Production', 'TermSep', 'Desc',
-           'Desc_Signature', 'Desc_Signature_Line', 'Desc_Name',
+           'Desc_Signature', 'Desc_Signature_Line', 'Desc_Sig_Name',
+           'Desc_Sig_Operator', 'Desc_Sig_Punctuation', 'Desc_Name',
            'Desc_AddName', 'Desc_Type', 'Desc_ParameterList', 'Desc_Parameter',
            'Desc_Optional', 'Desc_Annotation', 'Desc_Content', 'Desc_Returns',
            'VersionModified', 'Tabular_Col_Spec', 'AutoSummary_Table',
@@ -308,6 +309,18 @@ class Desc_Signature(DocutilsBodyNode):
 
 
 class Desc_Signature_Line(DocutilsInlineNode):
+    pass
+
+
+class Desc_Sig_Name(DocutilsInlineNode):
+    pass
+
+
+class Desc_Sig_Operator(DocutilsInlineNode):
+    pass
+
+
+class Desc_Sig_Punctuation(DocutilsInlineNode):
     pass
 
 
