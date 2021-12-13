@@ -5,7 +5,7 @@
 # Use of this source code is subject to the terms of the GNU Affero General
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
-from distutils.version import LooseVersion
+from packaging.version import Version
 
 from .color import HexColor
 from .flowable import (StaticGroupedFlowables, GroupedFlowablesStyle,
@@ -21,7 +21,7 @@ MIN_PYGMENTS_VERSION = '2.5.1'
 
 try:
     from pygments import __version__ as _pygments_version
-    if LooseVersion(_pygments_version) < MIN_PYGMENTS_VERSION:
+    if Version(_pygments_version) < Version(MIN_PYGMENTS_VERSION):
         raise VersionError('rinohtype requires pygments >= {}'
                            .format(MIN_PYGMENTS_VERSION))
     from pygments import lex

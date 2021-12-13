@@ -60,6 +60,7 @@ Fixed:
   Tavares)
 * Handle deprecation of importlib SelectableGroups dict interface (Python 3.10
   and importlib_metadata 3.6)
+* Handle deprecation of distutils in Python 3.10 (use the packaging package)
 
 
 Release 0.5.3 (2021-06-16)
