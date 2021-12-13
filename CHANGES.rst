@@ -58,6 +58,8 @@ Fixed:
   styled (now mapped to the *menu cascade style*).
 * Typos in code and documentation (PR #277 by Tim Gates, PR #281 by Filipe
   Tavares)
+* Handle deprecation of importlib SelectableGroups dict interface (Python 3.10
+  and importlib_metadata 3.6)
 
 
 Release 0.5.3 (2021-06-16)

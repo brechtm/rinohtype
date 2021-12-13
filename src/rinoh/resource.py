@@ -51,7 +51,11 @@ class Resource(AttributeType):
 
     @class_property
     def installed_resources(cls):
-        for entry_point in ilm.entry_points()[cls.entry_point_group]:
+        try:    # Python >= 3.10 and importlib_metadata >= 3.6
+            entry_points = ilm.entry_points(group=cls.entry_point_group)
+        except TypeError:
+            entry_points = ilm.entry_points()[cls.entry_point_group]
+        for entry_point in entry_points:
             yield entry_point.name, entry_point
 
     @classmethod
