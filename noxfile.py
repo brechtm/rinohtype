@@ -68,7 +68,7 @@ def unit(session, dist):
 @nox_poetry.session(python='3.9')   # Sphinx 3.5, 4.0 and 4.1 fail on 3.10
 @parametrize('sphinx')
 def unit_sphinx(session, sphinx):
-    _unit(session, sphinx=sphinx)
+    _unit(session, sphinx=sphinx, ignore_deprecation_warnings=True)
 
 
 @nox_poetry.session(python=PYTHONS)
@@ -80,13 +80,13 @@ def regression(session, dist):
 @nox_poetry.session()
 @parametrize('docutils')
 def regression_docutils(session, docutils):
-    _regression(session, docutils=docutils)
+    _regression(session, docutils=docutils, ignore_deprecation_warnings=True)
 
 
 @nox_poetry.session(python='3.9')   # Sphinx 3.5, 4.0 and 4.1 fail on 3.10
 @parametrize('sphinx')
 def regression_sphinx(session, sphinx):
-    _regression(session, sphinx=sphinx)
+    _regression(session, sphinx=sphinx, ignore_deprecation_warnings=True)
 
 
 # utility functions
@@ -102,26 +102,34 @@ def _install(session, docutils=None, sphinx=None, dist='wheel',
         session.run("pip", "install", f"sphinx=={sphinx}")
 
 
-def _unit(session, docutils=None, sphinx=None, dist='wheel'):
+def _unit(session, docutils=None, sphinx=None, dist='wheel',
+          ignore_deprecation_warnings=False):
     _install(session, docutils=docutils, sphinx=sphinx, dist=dist,
              dependencies=DEPENDENCIES)
     mark_expr = ['-m', 'with_sphinx'] if sphinx else []
     if dist == 'sdist':
         session.env['WITH_COVERAGE'] = '0'
-    session.run('python', 'run_tests.py', *mark_expr, *session.posargs,
-                'tests')
+    _run_tests(session, 'tests', *mark_expr,
+               ignore_deprecation_warnings=ignore_deprecation_warnings)
 
 
-def _regression(session, docutils=None, sphinx=None, dist='wheel'):
+def _regression(session, docutils=None, sphinx=None, dist='wheel',
+                ignore_deprecation_warnings=False):
     _install(session, docutils=docutils, sphinx=sphinx, dist=dist,
              dependencies=[*DEPENDENCIES, 'pytest-assume',
                            'pytest-console-scripts'])
     mark_expr = ['-m', 'with_sphinx'] if sphinx else ['-m', 'not longrunning']
     if dist == 'sdist':
         session.env['WITH_COVERAGE'] = '0'
-    session.run('python', 'run_tests.py', *mark_expr,
-                '--script-launch-mode=subprocess', *session.posargs,
-                'tests_regression')
+    _run_tests(session, 'tests_regression', *mark_expr,
+               '--script-launch-mode=subprocess',
+               ignore_deprecation_warnings=ignore_deprecation_warnings)
+
+    
+def _run_tests(session, tests_dir, *args, ignore_deprecation_warnings=False):
+    filterwarnings = ['-W', ''] if ignore_deprecation_warnings else []
+    session.run('python', 'run_tests.py', *args, *filterwarnings,
+                *session.posargs, tests_dir)
 
 
 # currently unmaintained sessions
