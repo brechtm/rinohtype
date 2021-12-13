@@ -6,7 +6,6 @@
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
 
-import codecs
 import hashlib, time
 
 from binascii import hexlify
@@ -967,17 +966,25 @@ class ToUnicode(Stream):
                         self._value(0xFFFF)
                         self.write(b'\n')
                     #with self._begin('bfrange', 1):
-                    #    # TODO: limit to sets of 100 entries
                     #    # TODO: ranges should not cross first-byte limits
                     #    self._value(0x0000)
                     #    self._value(0xFFFF)
                     #    self._value(0x0000)
-                    with self._begin('bfchar', len(mapping)):
-                        # TODO: limit to sets of 100 entries
-                        for unicode, cid in mapping.items():
-                            self._value(cid)
-                            self._value(unicode)
-                            self.write(b'\n')
+                    # TODO: handle ligatures
+                    cid_to_unicode = {unicode: cid
+                                      for cid, unicode in mapping.items()}
+                    cids = sorted(cid_to_unicode.keys())
+                    num_sections, last = divmod(len(cids), 100)
+                    section_sizes = num_sections * [100]
+                    if last:
+                        section_sizes += [last]
+                    for i, size in enumerate(section_sizes):
+                        with self._begin('bfchar', size):
+                            for cid in cids[100 * i:100 * (i + 1)]:
+                                char = chr(cid_to_unicode[cid])
+                                self._value(cid)
+                                self._hex(char.encode('utf-16-be'))
+                                self.write(b'\n')
                 self.print('CMapName currentdict /CMap defineresource pop')
 
     @contextmanager
@@ -1000,12 +1007,10 @@ class ToUnicode(Stream):
         self.print(' def')
 
     def _value(self, value, number_of_bytes=2):
-        try:
-            hex_str = HexString((value).to_bytes(number_of_bytes, byteorder='big'))
-        except OverflowError:
-            # This is a hack to deal with 4-byte codepoints.
-            # A better method of specifying the expected byte size should be used here.
-            hex_str = HexString((value).to_bytes(2 * number_of_bytes, byteorder='big')) 
+        self._hex(value.to_bytes(number_of_bytes, byteorder='big'))
+
+    def _hex(self, bytes):
+        hex_str = HexString(bytes)
         self.write(hex_str.bytes(None))
 
     def print(self, strng, end='\n'):
