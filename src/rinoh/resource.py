@@ -196,7 +196,7 @@ class DynamicDistributionFinder(ilm.DistributionFinder):
         yield _DISTRIBUTION
 
     @classmethod
-    def find_module(cls, fullname, path=None):
+    def find_spec(cls, fullname, path=None, target=None):
         return None
 
 
