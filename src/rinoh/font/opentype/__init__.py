@@ -84,8 +84,9 @@ class OpenTypeFont(Font, OpenTypeParser):
         # TODO: properly handle encodings
         glyphs_by_char = {}
         cmap_tables = self['cmap']
-        for encoding in [UNICODE_20_NONBMP, UNICODE_20_BMP, WINDOWS_UNICODE_BMP,
-                         UNICODE_ISO, UNICODE_11, UNICODE_10, WINDOWS_SYMBOL]:
+        for encoding in [UNICODE_20_FULL, WINDOWS_UNICODE_FULL,
+                         UNICODE_20_BMP, WINDOWS_UNICODE_BMP, UNICODE_ISO,
+                         UNICODE_11, UNICODE_10, WINDOWS_SYMBOL]:
             try:
                 for ordinal, index in cmap_tables[encoding].mapping.items():
                     glyphs_by_char[chr(ordinal)] = glyphs_by_code[index]
@@ -193,6 +194,9 @@ UNICODE_10 = (0, 0)
 UNICODE_11 = (0, 1)
 UNICODE_ISO = (0, 2)
 UNICODE_20_BMP = (0, 3)
-UNICODE_20_NONBMP = (0, 4)
+UNICODE_20_FULL = (0, 4)
+UNICODE_UVS = (0, 5)
+UNICODE_FULL = (0, 6)
 WINDOWS_UNICODE_BMP = (3, 1)
 WINDOWS_SYMBOL = (3, 0)
+WINDOWS_UNICODE_FULL = (3, 10)
