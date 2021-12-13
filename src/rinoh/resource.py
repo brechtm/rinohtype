@@ -8,7 +8,6 @@
 import string
 import sys
 
-from collections import namedtuple
 from subprocess import Popen, PIPE
 
 try:
@@ -102,7 +101,7 @@ def entry_point_name_to_identifier(entry_point_name):
 
 
 def find_entry_points(group, name=None):
-    """Find all entry points with in `group`, optionally filtered by `name`
+    """Find all entry points in `group`, optionally filtered by `name`
 
     Yields:
         (EntryPoint, Distribution): entry point and distribution it belongs to
@@ -123,10 +122,7 @@ _installed_entry_points = {(ep.group, ep.name): dist
                            if ep.group in GROUPS}
 
 
-DynamicEntryPointBase = namedtuple('DynamicEntryPointBase', 'name value group')
-
-
-class DynamicEntryPoint(DynamicEntryPointBase):
+class DynamicEntryPoint(ilm.EntryPoint):
     """An entry point defined by value instead of by module:attribute"""
 
     def load(self):
