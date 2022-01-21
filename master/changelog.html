@@ -244,7 +244,9 @@ significantly for many/large interlaced images.</p></li>
 </ul>
 <p>Fixed:</p>
 <ul class="simple">
-<li><p>Compatibility with Sphinx 3.4 (crash on rendering object descriptions)</p></li>
+<li><p>Handle PDF output filenames containing a dot in the stem (the final dot and
+characters following it were interpreted as an extension and dropped)</p></li>
+<li><p>Compatibility with Sphinx 4.4 (crash on rendering object descriptions)</p></li>
 <li><p>Regression in handling of unsupported docutils nodes</p></li>
 <li><p>Crash due to floating point rounding error (#302 by Sam Hartman)</p></li>
 <li><p>Setting ‘number_format’ to <em>none</em> caused a crash; now it causes the caption
@@ -770,7 +772,7 @@ rinohtype variable is not set</p></li>
 
   <div role="contentinfo">
     <p>
-        &#169; Copyright 2021, Brecht Machiels and contributors.
+        &#169; Copyright 2022, Brecht Machiels and contributors.
 
     </p>
   </div>
