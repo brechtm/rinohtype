@@ -39,7 +39,9 @@ Changed:
 
 Fixed:
 
-* Compatibility with Sphinx 3.4 (crash on rendering object descriptions)
+* Handle PDF output filenames containing a dot in the stem (the final dot and
+  characters following it were interpreted as an extension and dropped)
+* Compatibility with Sphinx 4.4 (crash on rendering object descriptions)
 * Regression in handling of unsupported docutils nodes
 * Crash due to floating point rounding error (#302 by Sam Hartman)
 * Setting 'number_format' to *none* caused a crash; now it causes the caption

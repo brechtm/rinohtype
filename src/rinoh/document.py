@@ -391,8 +391,8 @@ to the terms of the GNU Affero General Public License version 3.''')
         self.error = False
         filename_root = Path(filename_root) if filename_root else None
         if filename_root and file is None:
-            extension = self.backend.Document.extension
-            filename = filename_root.with_suffix(extension)
+            ext = self.backend.Document.extension
+            filename = filename_root.parent / (filename_root.name + ext)
             file = filename.open('wb')
         elif file and filename_root is None:
             filename = getattr(file, 'name', None)
