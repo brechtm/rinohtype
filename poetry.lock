@@ -580,7 +580,7 @@ docutils = ">=0.11,<1.0"
 
 [[package]]
 name = "restview"
-version = "2.9.3"
+version = "3.0.0"
 description = "ReStructuredText viewer"
 category = "dev"
 optional = false
@@ -590,9 +590,6 @@ python-versions = "*"
 docutils = "*"
 pygments = "*"
 readme-renderer = "*"
-
-[package.extras]
-test = ["mock"]
 
 [[package]]
 name = "rinoh-typeface-dejavuserif"
@@ -883,7 +880,7 @@ testing = ["pytest (>=4.6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytes
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7.0"
-content-hash = "ab713f6f635d1786909482703decc9064d7573fed71d52d988702b460fbdbb93"
+content-hash = "bd4e6e9df9741dee0ef2ef0137acd65ec9d872c9cb901a1d168718dc8917e219"
 
 [metadata.files]
 alabaster = [
@@ -1190,8 +1187,8 @@ restructuredtext-lint = [
     {file = "restructuredtext_lint-1.3.2.tar.gz", hash = "sha256:d3b10a1fe2ecac537e51ae6d151b223b78de9fafdd50e5eb6b08c243df173c80"},
 ]
 restview = [
-    {file = "restview-2.9.3-py2.py3-none-any.whl", hash = "sha256:ce5a56e81ccb6e2197d735501981cb9a6ffc79b63296b7db719e8c9eb9b09769"},
-    {file = "restview-2.9.3.tar.gz", hash = "sha256:5951aa2182e7a9aa3ab906dbd0f0d33df8fe93e66318a8689649c1228ad74cd8"},
+    {file = "restview-3.0.0-py2.py3-none-any.whl", hash = "sha256:9cd358c3ddf7ef82174d90a64e82e8c1b82630269cb750c166ef94bd73cf3162"},
+    {file = "restview-3.0.0.tar.gz", hash = "sha256:2b989610aaed2fd42da64f6cdc539cf3ee70ce370bcba872db72421ad515dd1e"},
 ]
 rinoh-typeface-dejavuserif = [
     {file = "rinoh-typeface-dejavuserif-0.1.3.tar.gz", hash = "sha256:8be129230ac98ab2ebfbf5b570575052ba7069e4087ce36a2d4c1d85182833ce"},
