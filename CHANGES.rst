@@ -6,6 +6,8 @@ Release 0.5.4 (in development)
 
 New Features:
 
+* The GroupedFlowables *same_page* style property forces all of a
+  GroupedFlowables' content to be placed on the same page (if possible).
 * Support for OpenType fonts with non-BMP Unicode characters (PR #308 by James
   Robinson)
 * Heading labels (numbers) can be styled separately by means of the 'heading

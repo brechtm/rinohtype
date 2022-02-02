@@ -475,6 +475,8 @@ class GroupedFlowablesStyle(FlowableStyle):
 
     title = Attribute(StyledText, None, 'Title to precede the flowables')
     flowable_spacing = Attribute(Dimension, 0, 'Spacing between flowables')
+    same_page = Attribute(Bool, False, "Keep all flowables on a single page,"
+                                       " if possible.")
 
 
 class GroupedFlowables(Flowable):
@@ -509,6 +511,9 @@ class GroupedFlowables(Flowable):
         max_flowable_width = 0
         first_top_to_baseline = None
         item_spacing = self.get_style('flowable_spacing', container)
+        same_page = self.get_style('same_page', container)
+        empty_page = container.page._empty
+        initial_state = copy(state)
         saved_state = copy(state)
         try:
             while True:
@@ -528,6 +533,8 @@ class GroupedFlowables(Flowable):
         except KeepWithNextException:
             raise EndOfContainer(saved_state)
         except (EndOfContainer, PageBreakException) as exc:
+            if same_page and not empty_page:
+                raise EndOfContainer(initial_state)
             state.prepend(exc.flowable_state)
             exc.flowable_state = state
             raise exc
