@@ -297,7 +297,8 @@ class Table(Flowable):
     def _widths_from_content(self, fixed, max_cell_width, container):
         """Calculate required column widths given a maximum cell width"""
         def cell_content_width(cell):
-            buffer = VirtualContainer(container, width=max_cell_width)
+            buffer = VirtualContainer(container, width=max_cell_width,
+                                      never_placed=True)
             width, _, _ = cell.flow(buffer, None)
             return float(width)
 

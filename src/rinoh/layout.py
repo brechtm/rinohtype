@@ -110,6 +110,8 @@ class Container(object):
 
     register_with_parent = True
 
+    _never_placed = False
+
     def __init__(self, name, parent, left=None, top=None, width=None,
                  height=None, right=None, bottom=None):
         """Initialize a this container as a child of the `parent` container.
@@ -157,6 +159,11 @@ class Container(object):
     @property
     def document(self):
         return self.document_part.document
+
+    @property
+    def never_placed(self):
+        return self._never_placed or (self.parent.never_placed if self.parent
+                                      else False)
 
     @property
     def page(self):
@@ -501,10 +508,11 @@ class VirtualContainer(ConditionalDownExpandingContainerBase):
 
     register_with_parent = False
 
-    def __init__(self, parent, width=None):
+    def __init__(self, parent, width=None, never_placed=False):
         """`width` specifies the width of the container."""
         super().__init__('VIRTUAL', None, parent, width=width,
                          max_height=float('+inf'), place=False)
+        self._never_placed = never_placed
 
     def place_at(self, parent_container, left, top):
         self.parent = parent_container

@@ -1110,8 +1110,9 @@ class Line(list):
         # Temporarily advance with descender so that overflow on
         # before_placing (e.g. footnotes) can be detected
         assert container.advance2(- descender)
-        for glyph_span in self:
-            glyph_span.span.before_placing(container)
+        if not container.never_placed:
+            for glyph_span in self:
+                glyph_span.span.before_placing(container)
         assert container.advance2(descender)
 
         # horizontal displacement
