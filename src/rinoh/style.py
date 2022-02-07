@@ -526,9 +526,9 @@ class Styled(DocumentElement, Configurable, metaclass=StyledMeta):
         """Filter selection on a set of classes of this :class:`Styled`"""
         return HasClasses(self)
 
-    def before_placing(self, container):
+    def before_placing(self, container, preallocate=False):
         if self.parent:
-            self.parent.before_placing(container)
+            self.parent.before_placing(container, preallocate)
 
 
 class HasID(object):

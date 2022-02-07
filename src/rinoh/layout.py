@@ -205,9 +205,9 @@ class Container(object):
         self.canvas.append(self.parent.canvas,
                            float(self.left), float(self.top))
 
-    def before_placing(self):
+    def before_placing(self, preallocate=False):
         for child in self.children:
-            child.before_placing()
+            child.before_placing(preallocate)
 
 
 BACKGROUND = 'background'
@@ -300,15 +300,15 @@ class FlowablesContainerBase(Container):
         styleds = self._placed_styleds.setdefault(len(self.children), [])
         styleds.append((styled, continued))
 
-    def before_placing(self):
+    def before_placing(self, preallocate=False):
         def log_styleds(index):
             for styled, continued in self._placed_styleds.get(index, ()):
                 self.document.style_log.log_styled(styled, self, continued)
-                styled.before_placing(self)
+                styled.before_placing(self, preallocate)
 
         log_styleds(0)
         for i, child in enumerate(self.children, start=1):
-            child.before_placing()
+            child.before_placing(preallocate)
             log_styleds(i)
 
 
@@ -407,9 +407,9 @@ class ConditionalDownExpandingContainerBase(DownExpandingContainerBase):
         if self._do_place:
             super().place()
 
-    def before_placing(self):
+    def before_placing(self, preallocate=False):
         if self._do_place:
-            super().before_placing()
+            super().before_placing(preallocate)
 
 
 class InlineDownExpandingContainer(ConditionalDownExpandingContainerBase):
@@ -542,45 +542,50 @@ class FootnoteContainer(UpExpandingContainer):
                          width=width, right=right, max_height=max_height)
         self._footnote_number = 0
         self._footnote_space = self
-        self.footnote_queue = deque()
+        self.footnotes = []
         self._flowing_footnotes = False
         self._reflowed = False
         self._descenders = [0]
+        self._allocation_phase = True
+        self._placed_footnotes = set()
 
-    def add_footnote(self, footnote):
-        self.footnote_queue.append(footnote)
+    def add_footnote(self, footnote, preallocate):
+        self.footnotes.append(footnote)
         if not self._flowing_footnotes:
             self._flowing_footnotes = True
-            if not self.flow_footnotes():
+            if not self.flow_footnotes(preallocate):
                 return False
             self._flowing_footnotes = False
         return True
 
-    def flow_footnotes(self):
+    def flow_footnotes(self, preallocate=False):
+        if self._allocation_phase and not preallocate:
+            self.clear()
+            self._descenders = [0]
+            self._allocation_phase = False
+            self._placed_footnotes.clear()
         if self._reflowed:
             self._cursor.addends.pop()
             self._descenders.pop()
         maybe_container = _MaybeContainer(self)
-        while self.footnote_queue:
-            footnote = self.footnote_queue.popleft()
+        for i, footnote in enumerate(self.footnotes):
             footnote_id = footnote.get_id(self.document)
-            if footnote_id not in self.document.placed_footnotes:
+            if footnote_id not in (self._placed_footnotes
+                                   | self.document.placed_footnotes):
                 _, _, descender = footnote.flow(maybe_container,
                                                 self._descenders[-1],
                                                 footnote=True)
                 self._descenders.append(descender)
                 self._reflowed = True
                 if not self.page.check_overflow():
+                    assert self._allocation_phase
                     return False
                 self._reflowed = False
-                self.document.placed_footnotes.add(footnote_id)
-        maybe_container.do_place()
+                self._placed_footnotes.add(footnote_id)
+        if not self._allocation_phase:
+            self.document.placed_footnotes |= self._placed_footnotes
+            maybe_container.do_place()
         return True
-
-    @property
-    def next_number(self):
-        self._footnote_number += 1
-        return self._footnote_number
 
 
 class Chain(FlowableTarget):

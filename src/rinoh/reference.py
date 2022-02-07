@@ -267,12 +267,12 @@ class NoteMarkerBase(ReferenceBase, Label):
             formatted_label = self.format_label(label, flowable_target)
             document.set_reference(target_id, 'number', formatted_label)
 
-    def before_placing(self, container):
+    def before_placing(self, container, preallocate=False):
         note = container.document.elements[self.target_id(container.document)]
         if note.get_style('location', container) == NoteLocation.FOOTER:
-            if not container._footnote_space.add_footnote(note):
+            if not container._footnote_space.add_footnote(note, preallocate):
                 raise ContainerOverflow
-        super().before_placing(container)
+        super().before_placing(container, preallocate)
 
 
 class NoteMarkerByID(Reference, NoteMarkerBase):

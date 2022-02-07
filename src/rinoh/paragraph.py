@@ -1112,7 +1112,7 @@ class Line(list):
         assert container.advance2(- descender)
         if not container.never_placed:
             for glyph_span in self:
-                glyph_span.span.before_placing(container)
+                glyph_span.span.before_placing(container, preallocate=True)
         assert container.advance2(descender)
 
         # horizontal displacement

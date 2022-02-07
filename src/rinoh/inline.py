@@ -122,7 +122,7 @@ class InlineFlowableSpan(DocumentElement):
     def line_gap(self, document):
         return 0
 
-    def before_placing(self, container):
+    def before_placing(self, container, preallocate=False):
         pass
 
     # TODO: get_style and word_to_glyphs may need proper implementations
