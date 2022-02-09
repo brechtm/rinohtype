@@ -1,0 +1,383 @@
+---------------------------------- page 1 ----------------------------------
+#### FootnoteContainer('footnotes')
+  StaticGroupedFlowables()
+#### DownExpandingContainer('floats')
+  StaticGroupedFlowables()
+#### ChainedContainer('column1')
+  StaticGroupedFlowables()
+    DocumentTree()   footnote_in_table.rst   <document>
+      Paragraph('spacer')   footnote_in_table.rst:4   <paragraph>
+           > (0,0,0,1,2) spacer [footnote_in_table.rts] > DEFAULT
+             (0,0,0,0,2) body [Sphinx] > default
+          MixedStyledText('spacer')
+            MixedStyledText('spacer')
+              SingleStyledText('spacer')
+      Table()   <table>
+           > (0,0,0,0,2) table [Sphinx] > DEFAULT
+        TableBody()
+          TableRow()
+            TableCell()   <entry>
+                 > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+              Paragraph('one')   footnote_in_table.rst:9   <paragraph>
+                   > (0,0,0,1,8) table first column paragraph [Sphinx] > table body cell paragraph
+                     (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                     (0,0,0,0,2) body [Sphinx] > default
+                  MixedStyledText('one')
+                    MixedStyledText('one')
+                      SingleStyledText('one')
+              TableCellBackground()
+                   x (0,0,0,2,8) table body cell background on odd row
+            TableCell()   <entry>
+                 > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+              Paragraph('two')   footnote_in_table.rst:10   <paragraph>
+                   > (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                     (0,0,0,0,2) body [Sphinx] > default
+                  MixedStyledText('two')
+                    MixedStyledText('two')
+                      SingleStyledText('two')
+              TableCellBackground()
+                   x (0,0,0,2,8) table body cell background on odd row
+            TableCell()   <entry>
+                 > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+              Paragraph('three')   footnote_in_table.rst:11   <paragraph>
+                   > (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                     (0,0,0,0,2) body [Sphinx] > default
+                  MixedStyledText('three')
+                    MixedStyledText('three')
+                      SingleStyledText('three')
+              TableCellBackground()
+                   x (0,0,0,2,8) table body cell background on odd row
+          TableRow()
+            TableCell()   <entry>
+                 > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+              Paragraph('one')   footnote_in_table.rst:12   <paragraph>
+                   > (0,0,0,1,8) table first column paragraph [Sphinx] > table body cell paragraph
+                     (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                     (0,0,0,0,2) body [Sphinx] > default
+                  MixedStyledText('one')
+                    MixedStyledText('one')
+                      SingleStyledText('one')
+              TableCellBackground()
+                   x (0,0,0,2,8) table body cell background on even row
+            TableCell()   <entry>
+                 > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+              Paragraph('two')   footnote_in_table.rst:13   <paragraph>
+                   > (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                     (0,0,0,0,2) body [Sphinx] > default
+                  MixedStyledText('two')
+                    MixedStyledText('two')
+                      SingleStyledText('two')
+              TableCellBackground()
+                   x (0,0,0,2,8) table body cell background on even row
+            TableCell()   <entry>
+                 > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+              Paragraph('three')   footnote_in_table.rst:14   <paragraph>
+                   > (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                     (0,0,0,0,2) body [Sphinx] > default
+                  MixedStyledText('three')
+                    MixedStyledText('three')
+                      SingleStyledText('three')
+              TableCellBackground()
+                   x (0,0,0,2,8) table body cell background on even row
+---------------------------------- page 2 ----------------------------------
+#### FootnoteContainer('footnotes')
+  StaticGroupedFlowables()
+#### DownExpandingContainer('floats')
+  StaticGroupedFlowables()
+#### ChainedContainer('column1')
+  (continued) StaticGroupedFlowables()
+    (continued) DocumentTree()   footnote_in_table.rst   <document>
+      (continued) Table()   <table>
+           > (0,0,0,0,2) table [Sphinx] > DEFAULT
+          TableRow()
+            TableCell()   <entry>
+                 > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+              Paragraph('one')   footnote_in_table.rst:15   <paragraph>
+                   > (0,0,0,1,8) table first column paragraph [Sphinx] > table body cell paragraph
+                     (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                     (0,0,0,0,2) body [Sphinx] > default
+                  MixedStyledText('one')
+                    MixedStyledText('one')
+                      SingleStyledText('one')
+              TableCellBackground()
+                   x (0,0,0,2,8) table body cell background on odd row
+            TableCell()   <entry>
+                 > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+              Paragraph('two')   footnote_in_table.rst:16   <paragraph>
+                   > (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                     (0,0,0,0,2) body [Sphinx] > default
+                  MixedStyledText('two')
+                    MixedStyledText('two')
+                      SingleStyledText('two')
+              TableCellBackground()
+                   x (0,0,0,2,8) table body cell background on odd row
+            TableCell()   <entry>
+                 > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+              Paragraph('three')   footnote_in_table.rst:17   <paragraph>
+                   > (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                     (0,0,0,0,2) body [Sphinx] > default
+                  MixedStyledText('three')
+                    MixedStyledText('three')
+                      SingleStyledText('three')
+              TableCellBackground()
+                   x (0,0,0,2,8) table body cell background on odd row
+          TableRow()
+            TableCell()   <entry>
+                 > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+              Paragraph('one')   footnote_in_table.rst:18   <paragraph>
+                   > (0,0,0,1,8) table first column paragraph [Sphinx] > table body cell paragraph
+                     (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                     (0,0,0,0,2) body [Sphinx] > default
+                  MixedStyledText('one')
+                    MixedStyledText('one')
+                      SingleStyledText('one')
+              TableCellBackground()
+                   x (0,0,0,2,8) table body cell background on even row
+            TableCell()   <entry>
+                 > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+              Paragraph('two')   footnote_in_table.rst:19   <paragraph>
+                   > (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                     (0,0,0,0,2) body [Sphinx] > default
+                  MixedStyledText('two')
+                    MixedStyledText('two')
+                      SingleStyledText('two')
+              TableCellBackground()
+                   x (0,0,0,2,8) table body cell background on even row
+            TableCell()   <entry>
+                 > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+              Paragraph('three1')   footnote_in_table.rst:20   <paragraph>
+                   > (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                     (0,0,0,0,2) body [Sphinx] > default
+                  MixedStyledText('three1')
+                    MixedStyledText('three1')
+                      SingleStyledText('three')
+                      NoteMarkerByID('1', id='id1', style='footnote')   <footnote_reference>
+                           > (0,0,1,0,1) footnote marker [Sphinx] > linked reference
+                             (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                        SingleStyledText('1')
+              TableCellBackground()
+                   x (0,0,0,2,8) table body cell background on even row
+          TableRow()
+            TableCell()   <entry>
+                 > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+              Paragraph('one')   footnote_in_table.rst:21   <paragraph>
+                   > (0,0,0,1,8) table first column paragraph [Sphinx] > table body cell paragraph
+                     (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                     (0,0,0,0,2) body [Sphinx] > default
+                  MixedStyledText('one')
+                    MixedStyledText('one')
+                      SingleStyledText('one')
+              TableCellBackground()
+                   x (0,0,0,2,8) table body cell background on odd row
+            TableCell()   <entry>
+                 > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+              Paragraph('two')   footnote_in_table.rst:22   <paragraph>
+                   > (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                     (0,0,0,0,2) body [Sphinx] > default
+                  MixedStyledText('two')
+                    MixedStyledText('two')
+                      SingleStyledText('two')
+              TableCellBackground()
+                   x (0,0,0,2,8) table body cell background on odd row
+            TableCell()   <entry>
+                 > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+              Paragraph('three')   footnote_in_table.rst:23   <paragraph>
+                   > (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                     (0,0,0,0,2) body [Sphinx] > default
+                  MixedStyledText('three')
+                    MixedStyledText('three')
+                      SingleStyledText('three')
+              TableCellBackground()
+                   x (0,0,0,2,8) table body cell background on odd row
+---------------------------------- page 3 ----------------------------------
+#### FootnoteContainer('footnotes')
+  StaticGroupedFlowables()
+#### DownExpandingContainer('floats')
+  StaticGroupedFlowables()
+#### ChainedContainer('column1')
+  (continued) StaticGroupedFlowables()
+    (continued) DocumentTree()   footnote_in_table.rst   <document>
+      PageBreak(style=FlowableStyle)   footnote_in_table.rst:29   <raw>
+      Paragraph('spacer')   footnote_in_table.rst:36   <paragraph>
+           > (0,0,0,1,2) spacer [footnote_in_table.rts] > DEFAULT
+             (0,0,0,0,2) body [Sphinx] > default
+          MixedStyledText('spacer')
+            MixedStyledText('spacer')
+              SingleStyledText('spacer')
+      Table()   <table>
+           > (0,0,0,0,2) table [Sphinx] > DEFAULT
+        TableBody()
+          TableRow()
+            TableCell()   <entry>
+                 > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+              Paragraph('one')   footnote_in_table.rst:41   <paragraph>
+                   > (0,0,0,1,8) table first column paragraph [Sphinx] > table body cell paragraph
+                     (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                     (0,0,0,0,2) body [Sphinx] > default
+                  MixedStyledText('one')
+                    MixedStyledText('one')
+                      SingleStyledText('one')
+              TableCellBackground()
+                   x (0,0,0,2,8) table body cell background on odd row
+            TableCell()   <entry>
+                 > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+              Paragraph('two')   footnote_in_table.rst:42   <paragraph>
+                   > (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                     (0,0,0,0,2) body [Sphinx] > default
+                  MixedStyledText('two')
+                    MixedStyledText('two')
+                      SingleStyledText('two')
+              TableCellBackground()
+                   x (0,0,0,2,8) table body cell background on odd row
+            TableCell()   <entry>
+                 > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+              Paragraph('three')   footnote_in_table.rst:43   <paragraph>
+                   > (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                     (0,0,0,0,2) body [Sphinx] > default
+                  MixedStyledText('three')
+                    MixedStyledText('three')
+                      SingleStyledText('three')
+              TableCellBackground()
+                   x (0,0,0,2,8) table body cell background on odd row
+          TableRow()
+            TableCell()   <entry>
+                 > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+              Paragraph('one')   footnote_in_table.rst:44   <paragraph>
+                   > (0,0,0,1,8) table first column paragraph [Sphinx] > table body cell paragraph
+                     (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                     (0,0,0,0,2) body [Sphinx] > default
+                  MixedStyledText('one')
+                    MixedStyledText('one')
+                      SingleStyledText('one')
+              TableCellBackground()
+                   x (0,0,0,2,8) table body cell background on even row
+            TableCell()   <entry>
+                 > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+              Paragraph('two')   footnote_in_table.rst:45   <paragraph>
+                   > (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                     (0,0,0,0,2) body [Sphinx] > default
+                  MixedStyledText('two')
+                    MixedStyledText('two')
+                      SingleStyledText('two')
+              TableCellBackground()
+                   x (0,0,0,2,8) table body cell background on even row
+            TableCell()   <entry>
+                 > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+              Paragraph('three')   footnote_in_table.rst:46   <paragraph>
+                   > (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                     (0,0,0,0,2) body [Sphinx] > default
+                  MixedStyledText('three')
+                    MixedStyledText('three')
+                      SingleStyledText('three')
+              TableCellBackground()
+                   x (0,0,0,2,8) table body cell background on even row
+---------------------------------- page 4 ----------------------------------
+#### FootnoteContainer('footnotes')
+  StaticGroupedFlowables()
+#### DownExpandingContainer('floats')
+  StaticGroupedFlowables()
+#### ChainedContainer('column1')
+  (continued) StaticGroupedFlowables()
+    (continued) DocumentTree()   footnote_in_table.rst   <document>
+      (continued) Table()   <table>
+           > (0,0,0,0,2) table [Sphinx] > DEFAULT
+          TableRow()
+            TableCell()   <entry>
+                 > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+              Paragraph('one')   footnote_in_table.rst:47   <paragraph>
+                   > (0,0,0,1,8) table first column paragraph [Sphinx] > table body cell paragraph
+                     (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                     (0,0,0,0,2) body [Sphinx] > default
+                  MixedStyledText('one')
+                    MixedStyledText('one')
+                      SingleStyledText('one')
+              TableCellBackground()
+                   x (0,0,0,2,8) table body cell background on odd row
+            TableCell()   <entry>
+                 > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+              Paragraph('two')   footnote_in_table.rst:48   <paragraph>
+                   > (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                     (0,0,0,0,2) body [Sphinx] > default
+                  MixedStyledText('two')
+                    MixedStyledText('two')
+                      SingleStyledText('two')
+              TableCellBackground()
+                   x (0,0,0,2,8) table body cell background on odd row
+            TableCell()   <entry>
+                 > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+              Paragraph('three2')   footnote_in_table.rst:49   <paragraph>
+                   > (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                     (0,0,0,0,2) body [Sphinx] > default
+                  MixedStyledText('three2')
+                    MixedStyledText('three2')
+                      SingleStyledText('three')
+                      NoteMarkerByID('2', id='id3', style='footnote')   <footnote_reference>
+                           > (0,0,1,0,1) footnote marker [Sphinx] > linked reference
+                             (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                        SingleStyledText('2')
+              TableCellBackground()
+                   x (0,0,0,2,8) table body cell background on odd row
+          TableRow()
+            TableCell()   <entry>
+                 > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+              Paragraph('one')   footnote_in_table.rst:50   <paragraph>
+                   > (0,0,0,1,8) table first column paragraph [Sphinx] > table body cell paragraph
+                     (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                     (0,0,0,0,2) body [Sphinx] > default
+                  MixedStyledText('one')
+                    MixedStyledText('one')
+                      SingleStyledText('one')
+              TableCellBackground()
+                   x (0,0,0,2,8) table body cell background on even row
+            TableCell()   <entry>
+                 > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+              Paragraph('two')   footnote_in_table.rst:51   <paragraph>
+                   > (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                     (0,0,0,0,2) body [Sphinx] > default
+                  MixedStyledText('two')
+                    MixedStyledText('two')
+                      SingleStyledText('two')
+              TableCellBackground()
+                   x (0,0,0,2,8) table body cell background on even row
+            TableCell()   <entry>
+                 > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+              Paragraph('three')   footnote_in_table.rst:52   <paragraph>
+                   > (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                     (0,0,0,0,2) body [Sphinx] > default
+                  MixedStyledText('three')
+                    MixedStyledText('three')
+                      SingleStyledText('three')
+              TableCellBackground()
+                   x (0,0,0,2,8) table body cell background on even row
+          TableRow()
+            TableCell()   <entry>
+                 > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+              Paragraph('one')   footnote_in_table.rst:53   <paragraph>
+                   > (0,0,0,1,8) table first column paragraph [Sphinx] > table body cell paragraph
+                     (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                     (0,0,0,0,2) body [Sphinx] > default
+                  MixedStyledText('one')
+                    MixedStyledText('one')
+                      SingleStyledText('one')
+              TableCellBackground()
+                   x (0,0,0,2,8) table body cell background on odd row
+            TableCell()   <entry>
+                 > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+              Paragraph('two')   footnote_in_table.rst:54   <paragraph>
+                   > (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                     (0,0,0,0,2) body [Sphinx] > default
+                  MixedStyledText('two')
+                    MixedStyledText('two')
+                      SingleStyledText('two')
+              TableCellBackground()
+                   x (0,0,0,2,8) table body cell background on odd row
+            TableCell()   <entry>
+                 > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+              Paragraph('three')   footnote_in_table.rst:55   <paragraph>
+                   > (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                     (0,0,0,0,2) body [Sphinx] > default
+                  MixedStyledText('three')
+                    MixedStyledText('three')
+                      SingleStyledText('three')
+              TableCellBackground()
+                   x (0,0,0,2,8) table body cell background on odd row

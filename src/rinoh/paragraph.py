@@ -17,7 +17,7 @@ from ast import literal_eval
 from collections.abc import Iterable
 from copy import copy
 from functools import partial
-from itertools import tee, chain, groupby, count
+from itertools import tee, chain, groupby, count, islice
 from os import path
 
 from . import DATA_PATH
@@ -33,7 +33,7 @@ from .layout import EndOfContainer, ContainerOverflow
 from .number import NumberStyle, Label, format_number
 from .text import (TextStyle, StyledText, SingleStyledText, MixedStyledText,
                    ESCAPE, LANGUAGE_DEFAULT)
-from .util import all_subclasses, ReadAliasAttribute
+from .util import all_subclasses, ReadAliasAttribute, consumer
 
 
 __all__ = ['Paragraph', 'ParagraphStyle', 'TabStop',
@@ -515,60 +515,6 @@ WHITESPACE = {' ': Space,
               '\N{ZERO WIDTH SPACE}': ZeroWidthSpace}
 
 
-# TODO: shouldn't take a container (but needed by flow_inline)
-# (return InlineFlowableSpan that raises InlineFlowableException later)
-def spans_to_words(spans, container):
-    language = container.document.language
-    word = Word()
-    spans = iter(spans)
-    while True:
-        try:
-            span = next(spans)
-        except StopIteration:
-            break
-        try:
-            no_break_after = span.get_style('no_break_after', container)
-        except KeyError:    # InlineFlowable
-            no_break_after = []
-        if no_break_after == LANGUAGE_DEFAULT:
-            no_break_after = language.no_break_after
-        try:
-            get_glyph_metrics, lig_kern = create_lig_kern(span, container)
-            groups = groupby(iter(span.text(container)), WHITESPACE.get)
-            for special, chars in groups:
-                if special:
-                    word_string = str(word).strip()
-                    last_word = word_string.rsplit(maxsplit=1)[-1] if word_string else ''
-                    if not (last_word.lower() in no_break_after
-                            and special is Space):
-                        if word:
-                            yield word
-                        for _ in chars:
-                            yield special(span, lig_kern)
-                        word = Word()
-                        continue
-                part = ''.join(chars).replace('\N{NO-BREAK SPACE}', ' ')
-                if word and word[-1].span is span:
-                    prev_glyphs_span = word.pop()
-                    part = str(prev_glyphs_span) + part
-                try:
-                    glyphs = [get_glyph_metrics(char) for char in part]
-                except MissingGlyphException:
-                    # FIXME: span annotations are lost here
-                    rest = ''.join(char for _, group in groups
-                                   for char in group)
-                    rest_of_span = SingleStyledText(part + rest, parent=span)
-                    new_spans = handle_missing_glyphs(rest_of_span, container)
-                    spans = chain(new_spans, spans)
-                    break
-                glyphs = lig_kern(part, glyphs)
-                glyphs_span = GlyphsSpan(span, lig_kern, glyphs)
-                word.append(glyphs_span)
-        except InlineFlowableException:
-            glyphs_span = span.flow_inline(container, 0)
-            word.append(glyphs_span)
-    if word:
-        yield word
 
 
 class DefaultTabStops(object):
@@ -580,10 +526,14 @@ class DefaultTabStops(object):
 
 
 class ParagraphState(FlowableState):
-    def __init__(self, paragraph, words, nested_flowable_state=None,
-                 _first_word=None, _initial=True):
+    def __init__(self, paragraph, language, span_index=0, group_index=None,
+                 nested_flowable_state=None, _first_word=None, _initial=True):
         super().__init__(paragraph, _initial)
-        self._words = words
+        self.language = language
+        self._words = None
+        self.span_index = max(span_index, 0)
+        self.group_index = group_index
+        self.start_group_index = group_index
         self.nested_flowable_state = nested_flowable_state
         self._first_word = _first_word
         self._saved = None
@@ -591,33 +541,111 @@ class ParagraphState(FlowableState):
     paragraph = ReadAliasAttribute('flowable')
 
     def __copy__(self):
-        copy_words, self._words = tee(self._words)
-        copy_nested_flowable_state = copy(self.nested_flowable_state)
-        return self.__class__(self.paragraph, copy_words,
-                              copy_nested_flowable_state,
+        return self.__class__(self.paragraph, self.language,
+                              self.span_index, self.group_index,
+                              copy(self.nested_flowable_state),
                               _first_word=self._first_word,
                               _initial=self.initial)
 
-    def next_word(self):
+    def next_word(self, container):
         if self._first_word:
             word = self._first_word
             self._first_word = None
         else:
-            word = next(self._words)
+            if not self._words:
+                spans = self.paragraph.text(container).wrapped_spans(container)
+                for _ in islice(spans, 0, self.span_index): pass
+                self._words = self._spans_to_words(spans)
+            word = self._words.send(container)
         return word
+
+    # TODO: shouldn't take a container (but needed by flow_inline)
+    # (return InlineFlowableSpan that raises InlineFlowableException later)
+    @consumer
+    def _spans_to_words(self, spans):
+        missing_glyphs_spans = None
+        container = yield
+        word = Word()
+        group_index = 0
+        self.span_index -= 1
+        while True:
+            if group_index:
+                self.start_group_index = None
+            group_index = 0
+            if missing_glyphs_spans:
+                try:
+                    span = next(missing_glyphs_spans)
+                except StopIteration:
+                    missing_glyphs_spans = None
+            if not missing_glyphs_spans:
+                try:
+                    span = next(spans)
+                    self.span_index += 1
+                except StopIteration:
+                    break
+            try:
+                no_break_after = span.get_style('no_break_after', container)
+            except KeyError:  # InlineFlowable
+                no_break_after = []
+            if no_break_after == LANGUAGE_DEFAULT:
+                no_break_after = self.language.no_break_after
+            try:
+                get_glyph_metrics, lig_kern = create_lig_kern(span, container)
+                groups = groupby(iter(span.text(container)), WHITESPACE.get)
+                if self.start_group_index:
+                    for _ in islice(groups, 0, self.start_group_index):
+                        group_index += 1
+                for special, chars in groups:
+                    group_index += 1
+                    if special:
+                        word_string = str(word).strip()
+                        last_word = (word_string.rsplit(maxsplit=1)[-1]
+                                     if word_string else '')
+                        if not (last_word.lower() in no_break_after
+                                and special is Space):
+                            self.group_index = group_index
+                            if word:
+                                container = yield word
+                            for _ in chars:
+                                container = yield special(span, lig_kern)
+                            word = Word()
+                            continue
+                    part = ''.join(chars).replace('\N{NO-BREAK SPACE}', ' ')
+                    if word and word[-1].span is span:
+                        prev_glyphs_span = word.pop()
+                        part = str(prev_glyphs_span) + part
+                    try:
+                        glyphs = [get_glyph_metrics(char) for char in part]
+                    except MissingGlyphException:
+                        # FIXME: span annotations are lost here
+                        rest = ''.join(char for _, group in groups
+                                       for char in group)
+                        rest_of_span = SingleStyledText(part + rest, parent=span)
+                        missing_glyphs_spans = handle_missing_glyphs(rest_of_span, container)
+                        break
+                    glyphs = lig_kern(part, glyphs)
+                    glyphs_span = GlyphsSpan(span, lig_kern, glyphs)
+                    word.append(glyphs_span)
+            except InlineFlowableException:
+                glyphs_span = span.flow_inline(container, 0)
+                word.append(glyphs_span)
+        if word:
+            yield word
 
     def prepend_word(self, word):
         self._first_word = word
 
     def save(self):
-        self._words, saved_words,  = tee(self._words)
-        self._saved = (self._first_word, saved_words,
+        self._saved = (self._first_word, self.span_index, self.group_index,
                        copy(self.nested_flowable_state), self.initial)
 
     def restore(self):
-        first_word, words, nested_state, initial = self._saved
+        first_word, span_index, group_index, nested_state, initial = self._saved
         self._first_word = first_word
-        self._words = words
+        self._words = None
+        self.span_index = span_index
+        self.start_group_index = group_index
+        self.group_index = group_index
         self.nested_flowable_state = nested_state
         self.initial = initial
         self._saved = None
@@ -716,8 +744,7 @@ class ParagraphBase(Flowable, Label):
         return self
 
     def initial_state(self, container):
-        spans = self.text(container).wrapped_spans(container)
-        return ParagraphState(self, spans_to_words(spans, container))
+        return ParagraphState(self, container.document.language)
 
     def _short_repr_args(self, flowable_target):
         yield self._short_repr_string(flowable_target)
@@ -796,7 +823,7 @@ class ParagraphBase(Flowable, Label):
         state.save()
         while True:
             try:
-                word = state.next_word()
+                word = state.next_word(container)
             except StopIteration:
                 break
             try:
@@ -965,6 +992,9 @@ class Word(LinePart, list):
     def __str__(self):
         return ''.join(str(glyphs_span) for glyphs_span in self)
 
+    def __repr__(self):
+        return f"{type(self).__name__}('{self}')"
+
     @property
     def width(self):
         return sum(glyph_span.width for glyph_span in self)
@@ -1014,6 +1044,12 @@ class Line(list):
         self._has_tab = False
         self._current_tab = None
         self._current_tab_stop = None
+
+    def __str__(self):
+        return ''.join(str(word) for word in self)
+
+    def __repr__(self):
+        return f"{type(self).__name__}('{self}')"
 
     def _handle_tab(self, glyphs_span):
         span = glyphs_span.span

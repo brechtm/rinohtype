@@ -41,6 +41,8 @@ Changed:
 
 Fixed:
 
+* In some cases, footnotes referenced in a table were placed on the page
+  preceding the footnote reference.
 * Handle PDF output filenames containing a dot in the stem (the final dot and
   characters following it were interpreted as an extension and dropped)
 * Compatibility with Sphinx 4.4 (crash on rendering object descriptions)
