@@ -246,11 +246,13 @@ significantly for many/large interlaced images.</p></li>
 </ul>
 <p>Fixed:</p>
 <ul class="simple">
+<li><p>Compatibility with Sphinx 4.4 on Python &lt;3.10 (<code class="docutils literal notranslate"><span class="pre">AttributeError:</span>
+<span class="pre">'DynamicRinohDistribution'</span> <span class="pre">object</span> <span class="pre">has</span> <span class="pre">no</span> <span class="pre">attribute</span> <span class="pre">'_normalized_name'</span></code>)</p></li>
 <li><p>In some cases, footnotes referenced in a table were placed on the page
 preceding the footnote reference.</p></li>
 <li><p>Handle PDF output filenames containing a dot in the stem (the final dot and
 characters following it were interpreted as an extension and dropped)</p></li>
-<li><p>Compatibility with Sphinx 4.4 (crash on rendering object descriptions)</p></li>
+<li><p>Compatibility with Sphinx 4.3 (crash on rendering object descriptions)</p></li>
 <li><p>Regression in handling of unsupported docutils nodes</p></li>
 <li><p>Crash due to floating point rounding error (#302 by Sam Hartman)</p></li>
 <li><p>Setting ‘number_format’ to <em>none</em> caused a crash; now it causes the caption
