@@ -211,6 +211,8 @@
 <h2>Release 0.5.4 (in development)<a class="headerlink" href="#release-0-5-4-in-development" title="Permalink to this headline">¶</a></h2>
 <p>New Features:</p>
 <ul class="simple">
+<li><p>The GroupedFlowables <em>same_page</em> style property forces all of a
+GroupedFlowables’ content to be placed on the same page (if possible).</p></li>
 <li><p>Support for OpenType fonts with non-BMP Unicode characters (PR #308 by James
 Robinson)</p></li>
 <li><p>Heading labels (numbers) can be styled separately by means of the ‘heading
@@ -244,6 +246,8 @@ significantly for many/large interlaced images.</p></li>
 </ul>
 <p>Fixed:</p>
 <ul class="simple">
+<li><p>In some cases, footnotes referenced in a table were placed on the page
+preceding the footnote reference.</p></li>
 <li><p>Handle PDF output filenames containing a dot in the stem (the final dot and
 characters following it were interpreted as an extension and dropped)</p></li>
 <li><p>Compatibility with Sphinx 4.4 (crash on rendering object descriptions)</p></li>
