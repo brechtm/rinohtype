@@ -10,10 +10,10 @@ import sys
 
 from subprocess import Popen, PIPE
 
-try:
-    from importlib import metadata as ilm
-except ImportError:     # Python < 3.8
+try:         # required on Python < 3.8, but always used if available
     import importlib_metadata as ilm
+except ImportError:
+    from importlib import metadata as ilm
 from warnings import warn
 
 from .attribute import AttributeType
