@@ -10,7 +10,7 @@ from ..attribute import Attribute, Bool, OverrideDefault, Var
 from ..dimension import CM
 from ..structure import TableOfContentsSection
 from ..stylesheets import sphinx_article
-from ..template import (DocumentTemplate, PageTemplate, TitlePageTemplate,
+from ..template import (DocumentTemplate, BodyPageTemplate, TitlePageTemplate,
                         ContentsPartTemplate, DocumentPartTemplate,
                         TitlePartTemplate, AbstractLocation)
 
@@ -46,8 +46,8 @@ class Article(DocumentTemplate):
     contents = ContentsPartTemplate(page_number_format='continue')
 
     # default page templates
-    page = PageTemplate(page_size=Var('paper_size'))
+    page = BodyPageTemplate(page_size=Var('paper_size'))
     title_page = TitlePageTemplate(base='page',
                                    top_margin=8*CM)
-    front_matter_page = PageTemplate(base='page')
-    contents_page = PageTemplate(base='page')
+    front_matter_page = BodyPageTemplate(base='page')
+    contents_page = BodyPageTemplate(base='page')

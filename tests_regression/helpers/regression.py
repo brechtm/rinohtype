@@ -24,7 +24,7 @@ from rinoh.frontend.rst import ReStructuredTextReader, from_doctree
 from rinoh.frontend.sphinx import nodes    # load Sphinx docutils nodes
 from rinoh.attribute import OverrideDefault, Var
 from rinoh.template import (DocumentTemplate, TemplateConfiguration,
-                            ContentsPartTemplate, PageTemplate,
+                            ContentsPartTemplate, BodyPageTemplate,
                             TemplateConfigurationFile)
 
 
@@ -39,11 +39,11 @@ class MinimalTemplate(DocumentTemplate):
     stylesheet = OverrideDefault('sphinx_base14')
     parts = OverrideDefault(['contents'])
     contents = ContentsPartTemplate()
-    page = PageTemplate(page_size=Var('paper_size'),
-                        chapter_title_flowables=None,
-                        header_text=None,
-                        footer_text=None)
-    contents_page = PageTemplate(base='page')
+    page = BodyPageTemplate(page_size=Var('paper_size'),
+                            chapter_title_flowables=None,
+                            header_text=None,
+                            footer_text=None)
+    contents_page = BodyPageTemplate(base='page')
 
 
 def render_md_file(md_path, out_filename, reference_path):

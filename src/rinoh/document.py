@@ -28,7 +28,7 @@ import re
 import sys
 import time
 
-from collections import OrderedDict
+from collections import OrderedDict, deque
 from contextlib import suppress
 from copy import copy
 from itertools import count
@@ -93,16 +93,19 @@ class Page(Container):
         number (int): the 1-based index of this page in the document part
         paper (Paper): determines the dimensions of this page
         orientation (PageOrientation): the orientation of this page
+        display_sideways (Sideways): display the page rotated
 
     """
 
     register_with_parent = False
 
-    def __init__(self, document_part, number, paper, orientation='portrait'):
+    def __init__(self, document_part, number, paper, orientation='portrait',
+                 display_sideways=None):
         self._document_part = document_part
         self.number = number
         self.paper = paper
         self.orientation = orientation
+        self.display_sideways = display_sideways
         if orientation == PageOrientation.PORTRAIT:
             width, height = paper.width, paper.height
         elif orientation == PageOrientation.LANDSCAPE:
@@ -385,6 +388,13 @@ to the terms of the GNU Affero General Public License version 3.''')
                                                   self.language.code))
             return EN.strings[strings_class][key]
 
+    def add_sideways_float(self, float):
+        self.sideways_floats.append(float)
+        self.registered_sideways_floats.add(float.get_id(self))
+
+    def next_sideways_float(self):
+        return self.sideways_floats.popleft() if self.sideways_floats else None
+
     def render(self, filename_root=None, file=None):
         """Render the document repeatedly until the output no longer changes due
         to cross-references that need some iterations to converge."""
@@ -443,6 +453,8 @@ to the terms of the GNU Affero General Public License version 3.''')
         rendered."""
         self.style_log = StyleLog(self.stylesheet)
         self.floats = set()
+        self.sideways_floats = deque()
+        self.registered_sideways_floats = set()
         self.placed_footnotes = set()
         self._start_time = time.time()
 

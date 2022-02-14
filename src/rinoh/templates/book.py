@@ -17,7 +17,7 @@ from ..strings import StringField
 from ..structure import TableOfContentsSection, SectionTitles
 from ..stylesheets import sphinx
 from ..table import ListOfTablesSection
-from ..template import (TitlePageTemplate, PageTemplate, DocumentTemplate,
+from ..template import (TitlePageTemplate, BodyPageTemplate, DocumentTemplate,
                         FixedDocumentPartTemplate, ContentsPartTemplate,
                         TitlePartTemplate, DocumentPartTemplate)
 from ..text import Tab
@@ -67,76 +67,82 @@ class Book(DocumentTemplate):
 
     # default page templates
     page =  \
-        PageTemplate(page_size=Var('paper_size'),
-                     left_margin=1*INCH,
-                     right_margin=1*INCH,
-                     top_margin=1*INCH,
-                     bottom_margin=1*INCH)
+        BodyPageTemplate(page_size=Var('paper_size'),
+                         left_margin=1*INCH,
+                         right_margin=1*INCH,
+                         top_margin=1*INCH,
+                         bottom_margin=1*INCH)
 
-    cover_page = PageTemplate(base='page')
+    cover_page = BodyPageTemplate(base='page')
     title_page = TitlePageTemplate(base='page')
     
     front_matter_page =  \
-        PageTemplate(base='page',
-                     header_footer_distance=0,
-                     header_text=None)
+        BodyPageTemplate(base='page',
+                         header_footer_distance=0,
+                         header_text=None)
     
     front_matter_right_page =  \
-        PageTemplate(base='front_matter_page',
-                     footer_text=Tab() + Tab() + Field(PAGE_NUMBER),
-                     chapter_header_text=None,
-                     chapter_footer_text=Tab() + Tab() + Field(PAGE_NUMBER),
-                     chapter_title_height=2.5*INCH,
-                     chapter_title_flowables=FRONT_MATTER_TITLE)
+        BodyPageTemplate(base='front_matter_page',
+                         footer_text=Tab() + Tab() + Field(PAGE_NUMBER),
+                         chapter_header_text=None,
+                         chapter_footer_text=Tab() + Tab() + Field(PAGE_NUMBER),
+                         chapter_title_height=2.5*INCH,
+                         chapter_title_flowables=FRONT_MATTER_TITLE,
+                         sideways='right')
     
     front_matter_left_page =  \
-        PageTemplate(base='front_matter_page',
-                     footer_text=Field(PAGE_NUMBER))
+        BodyPageTemplate(base='front_matter_page',
+                         footer_text=Field(PAGE_NUMBER),
+                         sideways='left')
     
     contents_page =  \
-        PageTemplate(base='page',
-                     header_footer_distance=0)
+        BodyPageTemplate(base='page',
+                         header_footer_distance=0)
     
     contents_right_page =  \
-        PageTemplate(base='contents_page',
-                     header_text=(Tab() + Tab() + Field(DOCUMENT_TITLE)
+        BodyPageTemplate(base='contents_page',
+                         header_text=(Tab() + Tab() + Field(DOCUMENT_TITLE)
                                   + ', ' + Field(DOCUMENT_SUBTITLE)),
-                     footer_text=(Field(SECTION_NUMBER(2))
+                         footer_text=(Field(SECTION_NUMBER(2))
                                   + '.  ' + Field(SECTION_TITLE(2))
                                   + Tab() + Tab() + Field(PAGE_NUMBER)),
-                     chapter_header_text=None,
-                     chapter_footer_text=Tab() + Tab() + Field(PAGE_NUMBER),
-                     chapter_title_height=2.4*INCH,
-                     chapter_title_flowables=BODY_TITLE)
+                         chapter_header_text=None,
+                         chapter_footer_text=Tab() + Tab() + Field(PAGE_NUMBER),
+                         chapter_title_height=2.4*INCH,
+                         chapter_title_flowables=BODY_TITLE,
+                         sideways='right')
     
     contents_left_page = \
-        PageTemplate(base='contents_page',
-                     header_text=(Field(DOCUMENT_TITLE) + ', '
+        BodyPageTemplate(base='contents_page',
+                         header_text=(Field(DOCUMENT_TITLE) + ', '
                                   + Field(DOCUMENT_SUBTITLE)),
-                     footer_text=(Field(PAGE_NUMBER) + Tab() + Tab() +
+                         footer_text=(Field(PAGE_NUMBER) + Tab() + Tab() +
                                   StringField(SectionTitles, 'chapter')
                                   + ' ' + Field(SECTION_NUMBER(1))
-                                  + '.  ' + Field(SECTION_TITLE(1))))
+                                  + '.  ' + Field(SECTION_TITLE(1))),
+                         sideways='left')
     
     back_matter_page = \
-        PageTemplate(base='page',
-                     columns=2,
-                     header_footer_distance=0)
+        BodyPageTemplate(base='page',
+                         columns=2,
+                         header_footer_distance=0)
     
     back_matter_right_page = \
-        PageTemplate(base='back_matter_page',
-                     header_text=(Tab() + Tab() + Field(DOCUMENT_TITLE)
+        BodyPageTemplate(base='back_matter_page',
+                         header_text=(Tab() + Tab() + Field(DOCUMENT_TITLE)
                                   + ', ' + Field(DOCUMENT_SUBTITLE)),
-                     footer_text=(Field(SECTION_TITLE(1))
+                         footer_text=(Field(SECTION_TITLE(1))
                                   + Tab() + Tab() + Field(PAGE_NUMBER)),
-                     chapter_header_text=None,
-                     chapter_footer_text=Tab() + Tab() + Field(PAGE_NUMBER),
-                     chapter_title_height=2.5*INCH,
-                     chapter_title_flowables=FRONT_MATTER_TITLE)
+                         chapter_header_text=None,
+                         chapter_footer_text=Tab() + Tab() + Field(PAGE_NUMBER),
+                         chapter_title_height=2.5*INCH,
+                         chapter_title_flowables=FRONT_MATTER_TITLE,
+                         sideways='right')
     
     back_matter_left_page = \
-        PageTemplate(base='back_matter_page',
-                     header_text=(Field(DOCUMENT_TITLE) + ', '
+        BodyPageTemplate(base='back_matter_page',
+                         header_text=(Field(DOCUMENT_TITLE) + ', '
                                   + Field(DOCUMENT_SUBTITLE)),
-                     footer_text=(Field(PAGE_NUMBER) + Tab() + Tab()
-                                  + Field(SECTION_TITLE(1))))
+                         footer_text=(Field(PAGE_NUMBER) + Tab() + Tab()
+                                  + Field(SECTION_TITLE(1))),
+                         sideways='left')

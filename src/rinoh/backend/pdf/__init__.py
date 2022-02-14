@@ -140,12 +140,17 @@ PAGE_NUMBER_FORMATS = {NumberFormatBase.NUMBER: cos.DECIMAL_ARABIC,
                        NumberFormatBase.LOWERCASE_ROMAN: cos.LOWERCASE_ROMAN,
                        NumberFormatBase.UPPERCASE_ROMAN: cos.UPPERCASE_ROMAN}
 
+SIDEWAYS_TO_ROTATE = {None: 0,
+                      'left': -90,
+                      'right': 90}
+
 
 class Page(object):
     def __init__(self, backend_document, width, height, rinoh_page):
         self.backend_document = backend_document
+        rotate = SIDEWAYS_TO_ROTATE[rinoh_page.display_sideways]
         cos_pages = backend_document.cos_document.catalog['Pages']
-        self.cos_page = cos_pages.new_page(float(width), float(height))
+        self.cos_page = cos_pages.new_page(float(width), float(height), rotate)
         self.width = width
         self.height = height
         self.rinoh_page = rinoh_page

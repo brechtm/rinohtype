@@ -43,7 +43,7 @@ from .stylesheets import sphinx
 from .util import NamedDescriptor
 
 
-__all__ = ['SimplePage', 'TitlePage', 'PageTemplate', 'PageNumberFormat',
+__all__ = ['BodyPage', 'TitlePage', 'BodyPageTemplate', 'PageNumberFormat',
            'TitlePageTemplate', 'ContentsPartTemplate',
            'FixedDocumentPartTemplate', 'Option', 'AbstractLocation',
            'DocumentTemplate', 'TemplateConfiguration',
@@ -73,8 +73,15 @@ class Template(AttributesDictionary, NamedDescriptor):
 class Templated(Configurable):
     configuration_class = Template
 
+    def __init__(self, template):
+        self.template = template
+
     def configuration_name(self, document):
-        return self.template_name
+        return self.template.name
+
+
+class Sideways(OptionSet):
+    values = ('left', 'right')
 
 
 class PageTemplateBase(Template):
@@ -93,9 +100,14 @@ class PageTemplateBase(Template):
                                                'background of the page')
     after_break_background = Option(BackgroundImage, None, 'An image to place '
                                     'in the background after a page break')
+    sideways = Option(Sideways, Sideways.RIGHT, 'Rotate sideways pages to the '
+                                                'left or right')
 
-    def page(self, document_part, page_number, chain, after_break, **kwargs):
+    def page(self, document_part, page_number, chain):
         raise NotImplementedError
+
+    def new_chapter_page(self, document_part, page_number, chain):
+        return self.page(document_part, page_number, chain)
 
 
 class FlowablesList(AcceptNoneAttributeType):
@@ -119,7 +131,7 @@ class FlowablesList(AcceptNoneAttributeType):
                 ':class:`.Flowable`\\ s')
 
 
-class PageTemplate(PageTemplateBase):
+class BodyPageTemplate(PageTemplateBase):
     header_footer_distance = Option(Dimension, 14*PT, 'Distance of the '
                                     'header and footer to the content area')
     columns = Option(Integer, 1, 'The number of columns for the body text')
@@ -140,36 +152,55 @@ class PageTemplate(PageTemplateBase):
     chapter_title_height = Option(Dimension, 150*PT, 'The height of the '
                                   'container holding the chapter title')
 
-    def page(self, document_part, page_number, chain, after_break, **kwargs):
-        return SimplePage(document_part, self.name, page_number, chain,
-                          after_break, **kwargs)
+    def page(self, document_part, page_number, chain):
+        return BodyPage(document_part, self, page_number, chain)
+
+    def new_chapter_page(self, document_part, page_number, chain):
+        document = document_part.document
+        ruleset = self.get_ruleset(document)
+        try:
+            ctf = ruleset.get_value(self.name, 'chapter_title_flowables')
+        except DefaultValueException:
+            ctf = self._get_default('chapter_title_flowables')
+        if ctf:
+            return NewChapterBodyPage(document_part, self, page_number, chain)
+        else:
+            return self.page(document_part, page_number, chain)
+
+    def sideways_page(self, document_part, page_number):
+        return SidewaysBodyPage(document_part, self, page_number)
 
 
 class PageBase(Page, Templated):
     configuration_class = PageTemplateBase
 
-    def __init__(self, document_part, template_name, page_number, after_break):
-        get_option = partial(self.get_config_value,
-                             document=document_part.document)
-        self.template_name = template_name
-        paper = get_option('page_size')
-        orientation = get_option('page_orientation')
-        super().__init__(document_part, page_number, paper, orientation)
-        self.left_margin = get_option('left_margin')
-        self.right_margin = get_option('right_margin')
-        self.top_margin = get_option('top_margin')
-        self.bottom_margin = get_option('bottom_margin')
+    def __init__(self, document_part, template, page_number,
+                 enable_sideways=False):
+        Templated.__init__(self, template)
+        document = document_part.document
+        paper = self.get_config_value('page_size', document)
+        orientation = self.get_config_value('page_orientation', document)
+        sideways = (self.get_config_value('sideways', document)
+                    if enable_sideways else None)
+        Page.__init__(self, document_part, page_number, paper, orientation,
+                      display_sideways=sideways)
+        self.left_margin = self.get_option('left_margin')
+        self.right_margin = self.get_option('right_margin')
+        self.top_margin = self.get_option('top_margin')
+        self.bottom_margin = self.get_option('bottom_margin')
         self.body_width = self.width - (self.left_margin + self.right_margin)
         self.body_height = self.height - (self.top_margin + self.bottom_margin)
-        background = get_option('background')
-        after_break_background = get_option('after_break_background')
-        bg = after_break_background or background
-        if after_break and bg:
-            self.background = FlowablesContainer('background', BACKGROUND, self)
-            self.background << bg
-        elif background:
-            self.background = FlowablesContainer('background', BACKGROUND, self)
-            self.background << background
+        self.background = FlowablesContainer('background', BACKGROUND, self)
+        background_image = self.background_image
+        if background_image:
+            self.background << background_image
+
+    @property
+    def background_image(self):
+        return self.get_option('background')
+
+    def get_option(self, name, document=None):
+        return self.get_config_value(name, document or self.document)
 
 
 def try_copy(obj, parent=None):
@@ -179,48 +210,23 @@ def try_copy(obj, parent=None):
         return obj
 
 
-class SimplePage(PageBase):
-    configuration_class = PageTemplate
+class BodyPageBase(PageBase):
+    configuration_class = BodyPageTemplate
 
-    def __init__(self, document_part, template_name, page_number, chain,
-                 new_chapter):
-        super().__init__(document_part, template_name, page_number, new_chapter)
-        get_option = partial(self.get_config_value, document=self.document)
-        num_cols = get_option('columns')
-        header_footer_distance = get_option('header_footer_distance')
-        column_spacing = get_option('column_spacing')
-        total_column_spacing = column_spacing * (num_cols - 1)
-        column_width = (self.body_width - total_column_spacing) / num_cols
+    float_space = None
+    chapter_title = None
+
+    def __init__(self, document_part, template, page_number,
+                 enable_sideways=False):
+        super().__init__(document_part, template, page_number, enable_sideways)
+        header_footer_distance = self.get_option('header_footer_distance')
         self.body = Container('body', self, self.left_margin, self.top_margin,
-                              self.body_width, self.body_height)
-        footnote_space = FootnoteContainer('footnotes', self.body, 0*PT,
-                                           self.body.height)
-        float_space = DownExpandingContainer('floats', CONTENT, self.body, 0, 0,
-                                             max_height=self.body_height / 2)
-        self.body.float_space = float_space
-        if get_option('chapter_title_flowables') and new_chapter:
-            height = get_option('chapter_title_height')
-            self.chapter_title = FlowablesContainer('chapter title',
-                                                    CHAPTER_TITLE, self.body,
-                                                    0, 0, height=height)
-            column_top = self.chapter_title.bottom
-            header = try_copy(get_option('chapter_header_text'))
-            footer = try_copy(get_option('chapter_footer_text'))
-        else:
-            self.chapter_title = None
-            column_top = float_space.bottom
-            header = try_copy(get_option('header_text'))
-            footer = try_copy(get_option('footer_text'))
-        self.columns = [ChainedContainer('column{}'.format(i + 1), CONTENT,
-                                         self.body, chain,
-                                         left=i * (column_width
-                                                   + column_spacing),
-                                         top=column_top, width=column_width,
-                                         bottom=footnote_space.top)
-                        for i in range(num_cols)]
-        for column in self.columns:
-            column._footnote_space = footnote_space
-
+                              self.body_width, self.body_height,
+                              sideways=self.display_sideways)
+        self.footnote_space = FootnoteContainer('footnotes', self.body, 0*PT,
+                                                self.body.height)
+        self.body._footnote_space = self.footnote_space
+        header, footer, self.content_top = self.get_header_footer_contenttop()
         if header:
             header_bottom = self.body.top - header_footer_distance
             self.header = UpExpandingContainer('header', HEADER_FOOTER, self,
@@ -236,6 +242,47 @@ class SimplePage(PageBase):
                                                  width=self.body_width)
             self.footer.append_flowable(Footer(footer))
 
+    def get_header_footer_contenttop(self):
+        max_height = self.body_height / 2
+        self.float_space = DownExpandingContainer('floats', CONTENT, self.body,
+                                                  0, 0, max_height=max_height)
+        self.body.float_space = self.float_space
+        header = try_copy(self.get_option('header_text'))
+        footer = try_copy(self.get_option('footer_text'))
+        return header, footer, self.float_space.bottom
+
+
+class BodyPage(BodyPageBase):
+    configuration_class = BodyPageTemplate
+
+    def __init__(self, document_part, template, page_number, chain):
+        super().__init__(document_part, template, page_number)
+        num_cols = self.get_option('columns')
+        column_spacing = self.get_option('column_spacing')
+        total_column_spacing = column_spacing * (num_cols - 1)
+        column_width = (self.body_width - total_column_spacing) / num_cols
+        self.columns = [ChainedContainer('column{}'.format(i + 1), CONTENT,
+                                         self.body, chain,
+                                         left=i * (column_width + column_spacing),
+                                         top=self.content_top, width=column_width,
+                                         bottom=self.footnote_space.top)
+                        for i in range(num_cols)]
+
+
+class NewChapterBodyPage(BodyPage):
+    @property
+    def background_image(self):
+        return self.get_option('after_break_background')
+
+    def get_header_footer_contenttop(self):
+        height = self.get_option('chapter_title_height')
+        self.chapter_title = FlowablesContainer('chapter title',
+                                                CHAPTER_TITLE, self.body,
+                                                0, 0, height=height)
+        header = try_copy(self.get_option('chapter_header_text'))
+        footer = try_copy(self.get_option('chapter_footer_text'))
+        return header, footer, self.chapter_title.bottom
+
     def create_chapter_title(self, heading):
         create_destination(heading.section, self.chapter_title, False)
         create_destination(heading, self.chapter_title, False)
@@ -245,22 +292,30 @@ class SimplePage(PageBase):
             _, _, descender = flowable.flow(self.chapter_title, descender)
 
 
+class SidewaysBodyPage(BodyPageBase):
+
+    def __init__(self, document_part, template, page_number):
+        super().__init__(document_part, template, page_number, True)
+        self.content = FlowablesContainer('content', CONTENT, self.body,
+                                          top=self.content_top,
+                                          bottom=self.footnote_space.top)
+
+
 class TitlePageTemplate(PageTemplateBase):
     show_date = Option(Bool, True, "Show or hide the document's date")
     show_author = Option(Bool, True, "Show or hide the document's author")
     extra = Option(StyledText, None, 'Extra text to include on the title '
                                      'page below the title')
 
-    def page(self, document_part, page_number, chain, after_break, **kwargs):
-        return TitlePage(document_part, self.name, page_number, after_break)
+    def page(self, document_part, page_number, chain):
+        return TitlePage(document_part, self, page_number)
 
 
 class TitlePage(PageBase):
     configuration_class = TitlePageTemplate
 
-    def __init__(self, document_part, template_name, page_number, after_break):
-        super().__init__(document_part, template_name, page_number,
-                         after_break)
+    def __init__(self, document_part, template, page_number):
+        super().__init__(document_part, template, page_number)
         get_option = partial(self.get_config_value, document=self.document)
         metadata = self.document.metadata
         get_metadata = self.document.get_metadata
@@ -364,8 +419,7 @@ class DocumentPart(Templated, metaclass=DocumentLocationType):
     configuration_class = DocumentPartTemplate
 
     def __init__(self, template, document, flowables, last_number_format):
-        self.template = template
-        self.template_name = template.name
+        super().__init__(template)
         self.document = document
         page_number_format = self.get_config_value('page_number_format',
                                                    self.document)
@@ -404,7 +458,12 @@ class DocumentPart(Templated, metaclass=DocumentLocationType):
             except PageBreakException as pbe:
                 break_type = None
             page.place()
-            if self.chain and not self.chain.done:
+            sideways_float = self.document.next_sideways_float()
+            if sideways_float:
+                page = self.new_page(page_number, False, sideways=True)
+                page.content.append_flowable(sideways_float)
+                self.add_page(page)
+            elif self.chain and not self.chain.done:
                 next_page_type = 'left' if page.number % 2 else 'right'
                 next_page_breaks = next_page_type == break_type
                 if restart and next_page_breaks:
@@ -424,15 +483,20 @@ class DocumentPart(Templated, metaclass=DocumentLocationType):
     def first_page(self, page_number):
         return self.new_page(page_number, new_chapter=True)
 
-    def new_page(self, page_number, new_chapter, **kwargs):
+    def new_page(self, page_number, new_chapter, sideways=False, **kwargs):
         """Called by :meth:`render` with the :class:`Chain`s that need more
         :class:`Container`s. This method should create a new :class:`Page` which
         contains a container associated with `chain`."""
         right_template = self.document.get_page_template(self, 'right')
         left_template = self.document.get_page_template(self, 'left')
         page_template = right_template if page_number % 2 else left_template
-        return page_template.page(self, page_number, self.chain, new_chapter,
-                                  **kwargs)
+        if sideways:
+            page = page_template.sideways_page(self, page_number)
+        elif new_chapter:
+            page = page_template.new_chapter_page(self, page_number, self.chain)
+        else:
+            page = page_template.page(self, page_number, self.chain)
+        return page
 
     @classmethod
     def match(cls, styled, container):
@@ -746,7 +810,7 @@ class DocumentTemplate(Document, AttributesDictionary, Resource,
         template = next(self._find_templates(name))
         return type(template)
 
-    def get_page_template(self, part, right_or_left):
+    def get_page_template(self, part, right_or_left, sideways=False):
         part_template_name = part.template.name
         label = '{}_page'.format(right_or_left) if right_or_left else 'page'
         templates = self._find_templates(part_template_name + '_' + label)

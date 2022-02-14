@@ -113,7 +113,7 @@ class Container(object):
     _never_placed = False
 
     def __init__(self, name, parent, left=None, top=None, width=None,
-                 height=None, right=None, bottom=None):
+                 height=None, right=None, bottom=None, sideways=None):
         """Initialize a this container as a child of the `parent` container.
 
         The horizontal position and width of the container are determined from
@@ -131,9 +131,6 @@ class Container(object):
             width = (parent.width - left) if right is None else (right - left)
         if right is None:
             right = left + width
-        self.left = left
-        self.width = width
-        self.right = right
 
         if top is None:
             top = 0*PT if (bottom and height) is None else (bottom - height)
@@ -141,12 +138,20 @@ class Container(object):
             height = (parent.height - top) if bottom is None else (bottom - top)
         if bottom is None:
             bottom = top + height
+
+        if sideways:
+            width, height = height, width
+
+        self.left = left
+        self.width = width
+        self.right = right
         self.top = top
         self.height = height
         self.bottom = bottom
 
         self.name = name
         self.parent = parent
+        self.sideways = sideways
         if self.register_with_parent:
             self.parent.children.append(self)
         self.children = []
@@ -201,6 +206,12 @@ class Container(object):
 
     def place(self):
         """Place this container's canvas onto the parent container's canvas."""
+        if self.sideways == 'left':
+            self.canvas.translate(float(self.height), 0)
+            self.canvas.rotate(-90)
+        elif self.sideways == 'right':
+            self.canvas.translate(0, float(self.width))
+            self.canvas.rotate(90)
         self.place_children()
         self.canvas.append(self.parent.canvas,
                            float(self.left), float(self.top))
@@ -548,6 +559,7 @@ class FootnoteContainer(UpExpandingContainer):
         self._descenders = [0]
         self._allocation_phase = True
         self._placed_footnotes = set()
+        parent._footnote_space = self
 
     def add_footnote(self, footnote, preallocate):
         self.footnotes.append(footnote)

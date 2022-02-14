@@ -606,8 +606,8 @@ class Pages(Dictionary):
         self['Count'] = Integer(0)
         self['Kids'] = Array()
 
-    def new_page(self, width, height):
-        page = Page(self, width, height)
+    def new_page(self, width, height, rotate=None):
+        page = Page(self, width, height, rotate)
         self['Kids'].append(page)
         self['Count'] = Integer(self['Count'] + 1)
         return page
@@ -621,12 +621,14 @@ class Pages(Dictionary):
 class Page(Dictionary):
     type = 'Page'
 
-    def __init__(self, parent, width, height):
+    def __init__(self, parent, width, height, rotate=0):
         super().__init__(indirect=True)
         self['Parent'] = parent
         self['Resources'] = Dictionary()
         self['MediaBox'] = Array([Integer(0), Integer(0),
                                   Real(width), Real(height)])
+        if rotate:
+            self['Rotate'] = Integer(rotate)
 
     @property
     def pages(self):

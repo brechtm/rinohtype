@@ -6,6 +6,9 @@ Release 0.5.4 (in development)
 
 New Features:
 
+* Support for sideways figures and tables; these are placed on a separate page,
+  rotated 90 degrees. This is useful for figures/tables that do not fit within
+  the page width.
 * The GroupedFlowables *same_page* style property forces all of a
   GroupedFlowables' content to be placed on the same page (if possible).
 * Support for OpenType fonts with non-BMP Unicode characters (PR #308 by James
