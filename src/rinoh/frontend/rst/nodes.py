@@ -699,6 +699,7 @@ class Table(DocutilsBodyNode):
         except AttributeError:
             return table
         table_with_caption = rt.TableWithCaption([caption, table])
+        table_with_caption.classes.extend(self.get('classes'))
         return table_with_caption
 
     def flowables(self):
