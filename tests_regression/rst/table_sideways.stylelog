@@ -1,0 +1,1085 @@
+---------------------------------- page 1 ----------------------------------
+#### FlowablesContainer('background')
+  StaticGroupedFlowables()
+#### FootnoteContainer('footnotes')
+  StaticGroupedFlowables()
+#### DownExpandingContainer('floats')
+  StaticGroupedFlowables()
+#### ChainedContainer('column1')
+  StaticGroupedFlowables()
+    DocumentTree()   table_sideways.rst   <document>
+      Paragraph('Paragraph preceding the first si...')   table_sideways.rst:2   <paragraph>
+           > (0,0,0,0,2) body [Sphinx] > default
+          MixedStyledText('Paragraph preceding the first si...')
+            MixedStyledText('Paragraph preceding the first si...')
+              SingleStyledText('Paragraph preceding the first si...')
+      Paragraph('Paragraph following the first si...')   table_sideways.rst:28   <paragraph>
+           > (0,0,0,0,2) body [Sphinx] > default
+          MixedStyledText('Paragraph following the first si...')
+            MixedStyledText('Paragraph following the first si...')
+              SingleStyledText('Paragraph following the first si...')
+          MixedStyledText('Paragraph following the first si...')
+            MixedStyledText('Paragraph following the first si...')
+              SingleStyledText('Paragraph following the first si...')
+---------------------------------- page 2 ----------------------------------
+#### FlowablesContainer('background')
+  StaticGroupedFlowables()
+#### FootnoteContainer('footnotes')
+  StaticGroupedFlowables()
+#### DownExpandingContainer('floats')
+  StaticGroupedFlowables()
+#### ChainedContainer('content')
+  StaticGroupedFlowables()
+    TableWithCaption()   table_sideways.rst   <table>
+         > (0,0,0,1,2) sideways table [table_sideways.rts] > NEXT_MATCH
+           (0,0,0,1,1) sideways float [Sphinx] > NEXT_MATCH
+         x (0,0,0,0,2) table with caption
+      Caption('Table 1. Sideways table')
+           > (0,0,0,0,4) table caption [Sphinx] > caption
+          SingleStyledText('Table')
+          SingleStyledText(' ')
+          MixedStyledText('1. ', style='label')
+            SingleStyledText('1')
+            SingleStyledText('. ')
+          MixedStyledText('Sideways table')
+            MixedStyledText('Sideways table')
+              SingleStyledText('Sideways table')
+      Table()
+           > (0,0,0,0,2) table [Sphinx] > DEFAULT
+        TableHead()
+          TableRow()
+            TableCell()   <entry>
+                 x (0,0,0,0,8) table head cell
+                 > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+              Paragraph('Header row, column 1 (header row...')   table_sideways.rst:9   <paragraph>
+                   > (0,0,0,0,10) table head cell paragraph [Sphinx] > table body cell paragraph
+                     (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                     (0,0,0,0,2) body [Sphinx] > default
+                  MixedStyledText('Header row, column 1 (header row...')
+                    MixedStyledText('Header row, column 1 (header row...')
+                      SingleStyledText('Header row, column 1 (header row...')
+              TableCellBackground()
+                   x (0,0,0,0,10) table head cell background
+            TableCell()   <entry>
+                 x (0,0,0,0,8) table head cell
+                 > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+              Paragraph('Header 2')   table_sideways.rst:9   <paragraph>
+                   > (0,0,0,0,10) table head cell paragraph [Sphinx] > table body cell paragraph
+                     (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                     (0,0,0,0,2) body [Sphinx] > default
+                  MixedStyledText('Header 2')
+                    MixedStyledText('Header 2')
+                      SingleStyledText('Header 2')
+              TableCellBackground()
+                   x (0,0,0,0,10) table head cell background
+            TableCell()   <entry>
+                 x (0,0,0,0,8) table head cell
+                 > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+              Paragraph('Header 3')   table_sideways.rst:9   <paragraph>
+                   > (0,0,0,0,10) table head cell paragraph [Sphinx] > table body cell paragraph
+                     (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                     (0,0,0,0,2) body [Sphinx] > default
+                  MixedStyledText('Header 3')
+                    MixedStyledText('Header 3')
+                      SingleStyledText('Header 3')
+              TableCellBackground()
+                   x (0,0,0,0,10) table head cell background
+            TableCell()   <entry>
+                 x (0,0,0,0,8) table head cell
+                 > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+              Paragraph('Header 4')   table_sideways.rst:9   <paragraph>
+                   > (0,0,0,0,10) table head cell paragraph [Sphinx] > table body cell paragraph
+                     (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                     (0,0,0,0,2) body [Sphinx] > default
+                  MixedStyledText('Header 4')
+                    MixedStyledText('Header 4')
+                      SingleStyledText('Header 4')
+              TableCellBackground()
+                   x (0,0,0,0,10) table head cell background
+        TableBody()
+          TableRow()
+            TableCell()   <entry>
+                 > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+              Paragraph('body row 1, column 1')   table_sideways.rst:12   <paragraph>
+                   > (0,0,0,1,8) table first column paragraph [Sphinx] > table body cell paragraph
+                     (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                     (0,0,0,0,2) body [Sphinx] > default
+                  MixedStyledText('body row 1, column 1')
+                    MixedStyledText('body row 1, column 1')
+                      SingleStyledText('body row 1, column 1')
+              TableCellBackground()
+                   x (0,0,0,2,8) table body cell background on odd row
+            TableCell()   <entry>
+                 > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+              Paragraph('column 2')   table_sideways.rst:12   <paragraph>
+                   > (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                     (0,0,0,0,2) body [Sphinx] > default
+                  MixedStyledText('column 2')
+                    MixedStyledText('column 2')
+                      SingleStyledText('column 2')
+              TableCellBackground()
+                   x (0,0,0,2,8) table body cell background on odd row
+            TableCell()   <entry>
+                 > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+              Paragraph('column 3')   table_sideways.rst:12   <paragraph>
+                   > (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                     (0,0,0,0,2) body [Sphinx] > default
+                  MixedStyledText('column 3')
+                    MixedStyledText('column 3')
+                      SingleStyledText('column 3')
+              TableCellBackground()
+                   x (0,0,0,2,8) table body cell background on odd row
+            TableCell()   <entry>
+                 > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+              Paragraph('column 4')   table_sideways.rst:12   <paragraph>
+                   > (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                     (0,0,0,0,2) body [Sphinx] > default
+                  MixedStyledText('column 4')
+                    MixedStyledText('column 4')
+                      SingleStyledText('column 4')
+              TableCellBackground()
+                   x (0,0,0,2,8) table body cell background on odd row
+          TableRow()
+            TableCell()   <entry>
+                 > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+              Paragraph('body row 2')   table_sideways.rst:14   <paragraph>
+                   > (0,0,0,1,8) table first column paragraph [Sphinx] > table body cell paragraph
+                     (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                     (0,0,0,0,2) body [Sphinx] > default
+                  MixedStyledText('body row 2')
+                    MixedStyledText('body row 2')
+                      SingleStyledText('body row 2')
+              TableCellBackground()
+                   x (0,0,0,2,8) table body cell background on even row
+            TableCell()   <entry>
+                 > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+              Paragraph('Cells may span columns.')   table_sideways.rst:14   <paragraph>
+                   > (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                     (0,0,0,0,2) body [Sphinx] > default
+                  MixedStyledText('Cells may span columns.')
+                    MixedStyledText('Cells may span columns.')
+                      SingleStyledText('Cells may span columns.')
+              TableCellBackground()
+                   x (0,0,0,2,8) table body cell background on even row
+          TableRow()
+            TableCell()   <entry>
+                 > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+              Paragraph('body row 31')   table_sideways.rst:16   <paragraph>
+                   > (0,0,0,1,8) table first column paragraph [Sphinx] > table body cell paragraph
+                     (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                     (0,0,0,0,2) body [Sphinx] > default
+                  MixedStyledText('body row 31')
+                    MixedStyledText('body row 31')
+                      SingleStyledText('body row 3')
+                      NoteMarkerByID('1', id='id1', style='footnote')   <footnote_reference>
+                           > (0,0,1,0,1) footnote marker [Sphinx] > linked reference
+                             (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                        SingleStyledText('1')
+              TableCellBackground()
+                   x (0,0,0,2,8) table body cell background on odd row
+            TableCell()   <entry>
+                 > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+              Paragraph('Cells may span rows.')   table_sideways.rst:16   <paragraph>
+                   > (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                     (0,0,0,0,2) body [Sphinx] > default
+                  MixedStyledText('Cells may span rows.')
+                    MixedStyledText('Cells may span rows.')
+                      SingleStyledText('Cells may span rows.')
+              TableCellBackground()
+            TableCell()   <entry>
+                 > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+              List(style='bulleted')   table_sideways.rst:16   <bullet_list>
+                   x (0,0,1,0,4) (table) bulleted list
+                   > (0,0,1,0,2) bulleted list [Sphinx] > enumerated list
+                ListItem()   <list_item>
+                     x (0,0,1,0,6) (table) bulleted list item
+                     x (0,0,1,0,4) bulleted list item
+                  ListItemLabel('•')
+                       x (0,0,1,0,8) (table) bulleted list item label
+                       > (0,0,1,0,6) bulleted list item label [Sphinx] > list item label
+                         (0,0,0,0,2) list item label [Sphinx] > default
+                      MixedStyledText('•')
+                        SingleStyledText('')
+                        SingleStyledText('•')
+                        SingleStyledText('')
+                  StaticGroupedFlowables()
+                       > (0,0,0,0,3) list item body [Sphinx] > DEFAULT
+                    Paragraph('Table cells')   table_sideways.rst:16   <paragraph>
+                         > (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                           (0,0,0,0,5) list item paragraph [Sphinx] > default
+                           (0,0,0,0,2) body [Sphinx] > default
+                        MixedStyledText('Table cells')
+                          MixedStyledText('Table cells')
+                            SingleStyledText('Table cells')
+                ListItem()   <list_item>
+                     x (0,0,1,0,6) (table) bulleted list item
+                     x (0,0,1,0,4) bulleted list item
+                  ListItemLabel('•')
+                       x (0,0,1,0,8) (table) bulleted list item label
+                       > (0,0,1,0,6) bulleted list item label [Sphinx] > list item label
+                         (0,0,0,0,2) list item label [Sphinx] > default
+                      MixedStyledText('•')
+                        SingleStyledText('')
+                        SingleStyledText('•')
+                        SingleStyledText('')
+                  StaticGroupedFlowables()
+                       > (0,0,0,0,3) list item body [Sphinx] > DEFAULT
+                    Paragraph('contain')   table_sideways.rst:17   <paragraph>
+                         > (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                           (0,0,0,0,5) list item paragraph [Sphinx] > default
+                           (0,0,0,0,2) body [Sphinx] > default
+                        MixedStyledText('contain')
+                          MixedStyledText('contain')
+                            SingleStyledText('contain')
+                ListItem()   <list_item>
+                     x (0,0,1,0,6) (table) bulleted list item
+                     x (0,0,1,0,4) bulleted list item
+                  ListItemLabel('•')
+                       x (0,0,1,0,8) (table) bulleted list item label
+                       > (0,0,1,0,6) bulleted list item label [Sphinx] > list item label
+                         (0,0,0,0,2) list item label [Sphinx] > default
+                      MixedStyledText('•')
+                        SingleStyledText('')
+                        SingleStyledText('•')
+                        SingleStyledText('')
+                  StaticGroupedFlowables()
+                       > (0,0,0,0,3) list item body [Sphinx] > DEFAULT
+                    Paragraph('body elements.')   table_sideways.rst:18   <paragraph>
+                         > (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                           (0,0,0,0,5) list item paragraph [Sphinx] > default
+                           (0,0,0,0,2) body [Sphinx] > default
+                        MixedStyledText('body elements.')
+                          MixedStyledText('body elements.')
+                            SingleStyledText('body elements.')
+              TableCellBackground()
+          TableRow()
+            TableCell()   <entry>
+                 > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+              Paragraph('body row 4')   table_sideways.rst:18   <paragraph>
+                   > (0,0,0,1,8) table first column paragraph [Sphinx] > table body cell paragraph
+                     (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                     (0,0,0,0,2) body [Sphinx] > default
+                  MixedStyledText('body row 4')
+                    MixedStyledText('body row 4')
+                      SingleStyledText('body row 4')
+              TableCellBackground()
+                   x (0,0,0,2,8) table body cell background on even row
+          TableRow()
+            TableCell()   <entry>
+                 > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+              Paragraph('body row 5')   table_sideways.rst:20   <paragraph>
+                   > (0,0,0,1,8) table first column paragraph [Sphinx] > table body cell paragraph
+                     (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                     (0,0,0,0,2) body [Sphinx] > default
+                  MixedStyledText('body row 5')
+                    MixedStyledText('body row 5')
+                      SingleStyledText('body row 5')
+              TableCellBackground()
+                   x (0,0,0,2,8) table body cell background on odd row
+            TableCell()   <entry>
+                 > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+              Paragraph('Cells may also be empty: -->')   table_sideways.rst:20   <paragraph>
+                   > (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                     (0,0,0,0,2) body [Sphinx] > default
+                  MixedStyledText('Cells may also be empty: -->')
+                    MixedStyledText('Cells may also be empty: -->')
+                      SingleStyledText('Cells may also be empty: ')
+                      MixedStyledText('-->', style='monospaced')   <literal>
+                           > (0,0,1,0,1) monospaced [Sphinx] > DEFAULT
+                        SingleStyledText('-->')
+              TableCellBackground()
+                   x (0,0,0,2,8) table body cell background on odd row
+            TableCell()   <entry>
+                 > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+              TableCellBackground()
+                   x (0,0,0,2,8) table body cell background on odd row
+---------------------------------- page 3 ----------------------------------
+#### FlowablesContainer('background')
+  StaticGroupedFlowables()
+#### FootnoteContainer('footnotes')
+  StaticGroupedFlowables()
+#### DownExpandingContainer('floats')
+  StaticGroupedFlowables()
+#### ChainedContainer('content')
+  StaticGroupedFlowables()
+    TableWithCaption()   table_sideways.rst   <table>
+         > (0,0,0,1,2) sideways table [table_sideways.rts] > NEXT_MATCH
+           (0,0,0,1,1) sideways float [Sphinx] > NEXT_MATCH
+         x (0,0,0,0,2) table with caption
+      Caption('Table 2. Another sideways table')
+           > (0,0,0,0,4) table caption [Sphinx] > caption
+          SingleStyledText('Table')
+          SingleStyledText(' ')
+          MixedStyledText('2. ', style='label')
+            SingleStyledText('2')
+            SingleStyledText('. ')
+          MixedStyledText('Another sideways table')
+            MixedStyledText('Another sideways table')
+              SingleStyledText('Another sideways table')
+      Table()
+           > (0,0,0,0,2) table [Sphinx] > DEFAULT
+        TableHead()
+          TableRow()
+            TableCell()   <entry>
+                 x (0,0,0,0,8) table head cell
+                 > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+              Paragraph('A')   table_sideways.rst:35   <paragraph>
+                   > (0,0,0,0,10) table head cell paragraph [Sphinx] > table body cell paragraph
+                     (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                     (0,0,0,0,2) body [Sphinx] > default
+                  MixedStyledText('A')
+                    MixedStyledText('A')
+                      SingleStyledText('A')
+              TableCellBackground()
+                   x (0,0,0,0,10) table head cell background
+            TableCell()   <entry>
+                 x (0,0,0,0,8) table head cell
+                 > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+              Paragraph('not A')   table_sideways.rst:35   <paragraph>
+                   > (0,0,0,0,10) table head cell paragraph [Sphinx] > table body cell paragraph
+                     (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                     (0,0,0,0,2) body [Sphinx] > default
+                  MixedStyledText('not A')
+                    MixedStyledText('not A')
+                      SingleStyledText('not A')
+              TableCellBackground()
+                   x (0,0,0,0,10) table head cell background
+        TableBody()
+          TableRow()
+            TableCell()   <entry>
+                 > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+              Paragraph('False')   table_sideways.rst:37   <paragraph>
+                   > (0,0,0,1,8) table first column paragraph [Sphinx] > table body cell paragraph
+                     (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                     (0,0,0,0,2) body [Sphinx] > default
+                  MixedStyledText('False')
+                    MixedStyledText('False')
+                      SingleStyledText('False')
+              TableCellBackground()
+                   x (0,0,0,2,8) table body cell background on odd row
+            TableCell()   <entry>
+                 > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+              Paragraph('True')   table_sideways.rst:37   <paragraph>
+                   > (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                     (0,0,0,0,2) body [Sphinx] > default
+                  MixedStyledText('True')
+                    MixedStyledText('True')
+                      SingleStyledText('True')
+              TableCellBackground()
+                   x (0,0,0,2,8) table body cell background on odd row
+          TableRow()
+            TableCell()   <entry>
+                 > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+              Paragraph('True')   table_sideways.rst:38   <paragraph>
+                   > (0,0,0,1,8) table first column paragraph [Sphinx] > table body cell paragraph
+                     (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                     (0,0,0,0,2) body [Sphinx] > default
+                  MixedStyledText('True')
+                    MixedStyledText('True')
+                      SingleStyledText('True')
+              TableCellBackground()
+                   x (0,0,0,2,8) table body cell background on even row
+            TableCell()   <entry>
+                 > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+              Paragraph('False')   table_sideways.rst:38   <paragraph>
+                   > (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                     (0,0,0,0,2) body [Sphinx] > default
+                  MixedStyledText('False')
+                    MixedStyledText('False')
+                      SingleStyledText('False')
+              TableCellBackground()
+                   x (0,0,0,2,8) table body cell background on even row
+---------------------------------- page 4 ----------------------------------
+#### FlowablesContainer('background')
+  StaticGroupedFlowables()
+#### FootnoteContainer('footnotes')
+  StaticGroupedFlowables()
+#### DownExpandingContainer('floats')
+  StaticGroupedFlowables()
+#### ChainedContainer('column1')
+  (continued) StaticGroupedFlowables()
+    (continued) DocumentTree()   table_sideways.rst   <document>
+      PageBreak(style=FlowableStyle)   table_sideways.rst:42   <raw>
+      Paragraph('Paragraph preceding the third si...')   table_sideways.rst:47   <paragraph>
+           > (0,0,0,0,2) body [Sphinx] > default
+          MixedStyledText('Paragraph preceding the third si...')
+            MixedStyledText('Paragraph preceding the third si...')
+              SingleStyledText('Paragraph preceding the third si...')
+          MixedStyledText('Paragraph preceding the third si...')
+            MixedStyledText('Paragraph preceding the third si...')
+              SingleStyledText('Paragraph preceding the third si...')
+---------------------------------- page 5 ----------------------------------
+#### FlowablesContainer('background')
+  StaticGroupedFlowables()
+#### FootnoteContainer('footnotes')
+  StaticGroupedFlowables()
+#### DownExpandingContainer('floats')
+  StaticGroupedFlowables()
+#### ChainedContainer('content')
+  StaticGroupedFlowables()
+    TableWithCaption()   table_sideways.rst   <table>
+         > (0,0,0,1,2) sideways table [table_sideways.rts] > NEXT_MATCH
+           (0,0,0,1,1) sideways float [Sphinx] > NEXT_MATCH
+         x (0,0,0,0,2) table with caption
+      Caption('Table 3. Sideways table spanning...')
+           > (0,0,0,0,4) table caption [Sphinx] > caption
+          SingleStyledText('Table')
+          SingleStyledText(' ')
+          MixedStyledText('3. ', style='label')
+            SingleStyledText('3')
+            SingleStyledText('. ')
+          MixedStyledText('Sideways table spanning two page...')
+            MixedStyledText('Sideways table spanning two page...')
+              SingleStyledText('Sideways table spanning two page...')
+      Table()
+           > (0,0,0,0,2) table [Sphinx] > DEFAULT
+        TableHead()
+          TableRow()
+            TableCell()   <entry>
+                 x (0,0,0,0,8) table head cell
+                 > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+              Paragraph('Header row, column 1 (header row...')   table_sideways.rst:54   <paragraph>
+                   > (0,0,0,0,10) table head cell paragraph [Sphinx] > table body cell paragraph
+                     (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                     (0,0,0,0,2) body [Sphinx] > default
+                  MixedStyledText('Header row, column 1 (header row...')
+                    MixedStyledText('Header row, column 1 (header row...')
+                      SingleStyledText('Header row, column 1 (header row...')
+              TableCellBackground()
+                   x (0,0,0,0,10) table head cell background
+            TableCell()   <entry>
+                 x (0,0,0,0,8) table head cell
+                 > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+              Paragraph('Header 2')   table_sideways.rst:54   <paragraph>
+                   > (0,0,0,0,10) table head cell paragraph [Sphinx] > table body cell paragraph
+                     (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                     (0,0,0,0,2) body [Sphinx] > default
+                  MixedStyledText('Header 2')
+                    MixedStyledText('Header 2')
+                      SingleStyledText('Header 2')
+              TableCellBackground()
+                   x (0,0,0,0,10) table head cell background
+            TableCell()   <entry>
+                 x (0,0,0,0,8) table head cell
+                 > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+              Paragraph('Header 3')   table_sideways.rst:54   <paragraph>
+                   > (0,0,0,0,10) table head cell paragraph [Sphinx] > table body cell paragraph
+                     (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                     (0,0,0,0,2) body [Sphinx] > default
+                  MixedStyledText('Header 3')
+                    MixedStyledText('Header 3')
+                      SingleStyledText('Header 3')
+              TableCellBackground()
+                   x (0,0,0,0,10) table head cell background
+            TableCell()   <entry>
+                 x (0,0,0,0,8) table head cell
+                 > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+              Paragraph('Header 4')   table_sideways.rst:54   <paragraph>
+                   > (0,0,0,0,10) table head cell paragraph [Sphinx] > table body cell paragraph
+                     (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                     (0,0,0,0,2) body [Sphinx] > default
+                  MixedStyledText('Header 4')
+                    MixedStyledText('Header 4')
+                      SingleStyledText('Header 4')
+              TableCellBackground()
+                   x (0,0,0,0,10) table head cell background
+        TableBody()
+          TableRow()
+            TableCell()   <entry>
+                 > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+              Paragraph('body row 1, column 1')   table_sideways.rst:57   <paragraph>
+                   > (0,0,0,1,8) table first column paragraph [Sphinx] > table body cell paragraph
+                     (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                     (0,0,0,0,2) body [Sphinx] > default
+                  MixedStyledText('body row 1, column 1')
+                    MixedStyledText('body row 1, column 1')
+                      SingleStyledText('body row 1, column 1')
+              TableCellBackground()
+                   x (0,0,0,2,8) table body cell background on odd row
+            TableCell()   <entry>
+                 > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+              Paragraph('column 2')   table_sideways.rst:57   <paragraph>
+                   > (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                     (0,0,0,0,2) body [Sphinx] > default
+                  MixedStyledText('column 2')
+                    MixedStyledText('column 2')
+                      SingleStyledText('column 2')
+              TableCellBackground()
+                   x (0,0,0,2,8) table body cell background on odd row
+            TableCell()   <entry>
+                 > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+              Paragraph('column 3')   table_sideways.rst:57   <paragraph>
+                   > (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                     (0,0,0,0,2) body [Sphinx] > default
+                  MixedStyledText('column 3')
+                    MixedStyledText('column 3')
+                      SingleStyledText('column 3')
+              TableCellBackground()
+                   x (0,0,0,2,8) table body cell background on odd row
+            TableCell()   <entry>
+                 > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+              Paragraph('column 4')   table_sideways.rst:57   <paragraph>
+                   > (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                     (0,0,0,0,2) body [Sphinx] > default
+                  MixedStyledText('column 4')
+                    MixedStyledText('column 4')
+                      SingleStyledText('column 4')
+              TableCellBackground()
+                   x (0,0,0,2,8) table body cell background on odd row
+          TableRow()
+            TableCell()   <entry>
+                 > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+              Paragraph('body row 2')   table_sideways.rst:59   <paragraph>
+                   > (0,0,0,1,8) table first column paragraph [Sphinx] > table body cell paragraph
+                     (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                     (0,0,0,0,2) body [Sphinx] > default
+                  MixedStyledText('body row 2')
+                    MixedStyledText('body row 2')
+                      SingleStyledText('body row 2')
+              TableCellBackground()
+                   x (0,0,0,2,8) table body cell background on even row
+            TableCell()   <entry>
+                 > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+              Paragraph('Cells may span columns.')   table_sideways.rst:59   <paragraph>
+                   > (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                     (0,0,0,0,2) body [Sphinx] > default
+                  MixedStyledText('Cells may span columns.')
+                    MixedStyledText('Cells may span columns.')
+                      SingleStyledText('Cells may span columns.')
+              TableCellBackground()
+                   x (0,0,0,2,8) table body cell background on even row
+          TableRow()
+            TableCell()   <entry>
+                 > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+              Paragraph('body row 32')   table_sideways.rst:61   <paragraph>
+                   > (0,0,0,1,8) table first column paragraph [Sphinx] > table body cell paragraph
+                     (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                     (0,0,0,0,2) body [Sphinx] > default
+                  MixedStyledText('body row 32')
+                    MixedStyledText('body row 32')
+                      SingleStyledText('body row 3')
+                      NoteMarkerByID('2', id='id2', style='footnote')   <footnote_reference>
+                           > (0,0,1,0,1) footnote marker [Sphinx] > linked reference
+                             (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                        SingleStyledText('2')
+              TableCellBackground()
+                   x (0,0,0,2,8) table body cell background on odd row
+            TableCell()   <entry>
+                 > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+              Paragraph('Cells may span rows.')   table_sideways.rst:61   <paragraph>
+                   > (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                     (0,0,0,0,2) body [Sphinx] > default
+                  MixedStyledText('Cells may span rows.')
+                    MixedStyledText('Cells may span rows.')
+                      SingleStyledText('Cells may span rows.')
+              TableCellBackground()
+            TableCell()   <entry>
+                 > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+              List(style='bulleted')   table_sideways.rst:61   <bullet_list>
+                   x (0,0,1,0,4) (table) bulleted list
+                   > (0,0,1,0,2) bulleted list [Sphinx] > enumerated list
+                ListItem()   <list_item>
+                     x (0,0,1,0,6) (table) bulleted list item
+                     x (0,0,1,0,4) bulleted list item
+                  ListItemLabel('•')
+                       x (0,0,1,0,8) (table) bulleted list item label
+                       > (0,0,1,0,6) bulleted list item label [Sphinx] > list item label
+                         (0,0,0,0,2) list item label [Sphinx] > default
+                      MixedStyledText('•')
+                        SingleStyledText('')
+                        SingleStyledText('•')
+                        SingleStyledText('')
+                  StaticGroupedFlowables()
+                       > (0,0,0,0,3) list item body [Sphinx] > DEFAULT
+                    Paragraph('Table cells')   table_sideways.rst:61   <paragraph>
+                         > (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                           (0,0,0,0,5) list item paragraph [Sphinx] > default
+                           (0,0,0,0,2) body [Sphinx] > default
+                        MixedStyledText('Table cells')
+                          MixedStyledText('Table cells')
+                            SingleStyledText('Table cells')
+                ListItem()   <list_item>
+                     x (0,0,1,0,6) (table) bulleted list item
+                     x (0,0,1,0,4) bulleted list item
+                  ListItemLabel('•')
+                       x (0,0,1,0,8) (table) bulleted list item label
+                       > (0,0,1,0,6) bulleted list item label [Sphinx] > list item label
+                         (0,0,0,0,2) list item label [Sphinx] > default
+                      MixedStyledText('•')
+                        SingleStyledText('')
+                        SingleStyledText('•')
+                        SingleStyledText('')
+                  StaticGroupedFlowables()
+                       > (0,0,0,0,3) list item body [Sphinx] > DEFAULT
+                    Paragraph('contain')   table_sideways.rst:62   <paragraph>
+                         > (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                           (0,0,0,0,5) list item paragraph [Sphinx] > default
+                           (0,0,0,0,2) body [Sphinx] > default
+                        MixedStyledText('contain')
+                          MixedStyledText('contain')
+                            SingleStyledText('contain')
+                ListItem()   <list_item>
+                     x (0,0,1,0,6) (table) bulleted list item
+                     x (0,0,1,0,4) bulleted list item
+                  ListItemLabel('•')
+                       x (0,0,1,0,8) (table) bulleted list item label
+                       > (0,0,1,0,6) bulleted list item label [Sphinx] > list item label
+                         (0,0,0,0,2) list item label [Sphinx] > default
+                      MixedStyledText('•')
+                        SingleStyledText('')
+                        SingleStyledText('•')
+                        SingleStyledText('')
+                  StaticGroupedFlowables()
+                       > (0,0,0,0,3) list item body [Sphinx] > DEFAULT
+                    Paragraph('body elements.')   table_sideways.rst:63   <paragraph>
+                         > (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                           (0,0,0,0,5) list item paragraph [Sphinx] > default
+                           (0,0,0,0,2) body [Sphinx] > default
+                        MixedStyledText('body elements.')
+                          MixedStyledText('body elements.')
+                            SingleStyledText('body elements.')
+              TableCellBackground()
+          TableRow()
+            TableCell()   <entry>
+                 > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+              Paragraph('body row 4')   table_sideways.rst:63   <paragraph>
+                   > (0,0,0,1,8) table first column paragraph [Sphinx] > table body cell paragraph
+                     (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                     (0,0,0,0,2) body [Sphinx] > default
+                  MixedStyledText('body row 4')
+                    MixedStyledText('body row 4')
+                      SingleStyledText('body row 4')
+              TableCellBackground()
+                   x (0,0,0,2,8) table body cell background on even row
+          TableRow()
+            TableCell()   <entry>
+                 > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+              Paragraph('body row 5')   table_sideways.rst:65   <paragraph>
+                   > (0,0,0,1,8) table first column paragraph [Sphinx] > table body cell paragraph
+                     (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                     (0,0,0,0,2) body [Sphinx] > default
+                  MixedStyledText('body row 5')
+                    MixedStyledText('body row 5')
+                      SingleStyledText('body row 5')
+              TableCellBackground()
+                   x (0,0,0,2,8) table body cell background on odd row
+            TableCell()   <entry>
+                 > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+              Paragraph('Cells may also be empty: -->')   table_sideways.rst:65   <paragraph>
+                   > (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                     (0,0,0,0,2) body [Sphinx] > default
+                  MixedStyledText('Cells may also be empty: -->')
+                    MixedStyledText('Cells may also be empty: -->')
+                      SingleStyledText('Cells may also be empty: ')
+                      MixedStyledText('-->', style='monospaced')   <literal>
+                           > (0,0,1,0,1) monospaced [Sphinx] > DEFAULT
+                        SingleStyledText('-->')
+              TableCellBackground()
+                   x (0,0,0,2,8) table body cell background on odd row
+            TableCell()   <entry>
+                 > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+              TableCellBackground()
+                   x (0,0,0,2,8) table body cell background on odd row
+          TableRow()
+            TableCell()   <entry>
+                 > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+              Paragraph('body row 6, column 1')   table_sideways.rst:68   <paragraph>
+                   > (0,0,0,1,8) table first column paragraph [Sphinx] > table body cell paragraph
+                     (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                     (0,0,0,0,2) body [Sphinx] > default
+                  MixedStyledText('body row 6, column 1')
+                    MixedStyledText('body row 6, column 1')
+                      SingleStyledText('body row 6, column 1')
+              TableCellBackground()
+                   x (0,0,0,2,8) table body cell background on even row
+            TableCell()   <entry>
+                 > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+              Paragraph('column 2')   table_sideways.rst:68   <paragraph>
+                   > (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                     (0,0,0,0,2) body [Sphinx] > default
+                  MixedStyledText('column 2')
+                    MixedStyledText('column 2')
+                      SingleStyledText('column 2')
+              TableCellBackground()
+                   x (0,0,0,2,8) table body cell background on even row
+            TableCell()   <entry>
+                 > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+              Paragraph('column 3')   table_sideways.rst:68   <paragraph>
+                   > (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                     (0,0,0,0,2) body [Sphinx] > default
+                  MixedStyledText('column 3')
+                    MixedStyledText('column 3')
+                      SingleStyledText('column 3')
+              TableCellBackground()
+                   x (0,0,0,2,8) table body cell background on even row
+            TableCell()   <entry>
+                 > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+              Paragraph('column 4')   table_sideways.rst:68   <paragraph>
+                   > (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                     (0,0,0,0,2) body [Sphinx] > default
+                  MixedStyledText('column 4')
+                    MixedStyledText('column 4')
+                      SingleStyledText('column 4')
+              TableCellBackground()
+                   x (0,0,0,2,8) table body cell background on even row
+          TableRow()
+            TableCell()   <entry>
+                 > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+              Paragraph('body row 7')   table_sideways.rst:70   <paragraph>
+                   > (0,0,0,1,8) table first column paragraph [Sphinx] > table body cell paragraph
+                     (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                     (0,0,0,0,2) body [Sphinx] > default
+                  MixedStyledText('body row 7')
+                    MixedStyledText('body row 7')
+                      SingleStyledText('body row 7')
+              TableCellBackground()
+                   x (0,0,0,2,8) table body cell background on odd row
+            TableCell()   <entry>
+                 > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+              Paragraph('Cells may span columns.')   table_sideways.rst:70   <paragraph>
+                   > (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                     (0,0,0,0,2) body [Sphinx] > default
+                  MixedStyledText('Cells may span columns.')
+                    MixedStyledText('Cells may span columns.')
+                      SingleStyledText('Cells may span columns.')
+              TableCellBackground()
+                   x (0,0,0,2,8) table body cell background on odd row
+          TableRow()
+            TableCell()   <entry>
+                 > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+              Paragraph('body row 83')   table_sideways.rst:72   <paragraph>
+                   > (0,0,0,1,8) table first column paragraph [Sphinx] > table body cell paragraph
+                     (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                     (0,0,0,0,2) body [Sphinx] > default
+                  MixedStyledText('body row 83')
+                    MixedStyledText('body row 83')
+                      SingleStyledText('body row 8')
+                      NoteMarkerByID('3', id='id3', style='footnote')   <footnote_reference>
+                           > (0,0,1,0,1) footnote marker [Sphinx] > linked reference
+                             (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                        SingleStyledText('3')
+              TableCellBackground()
+                   x (0,0,0,2,8) table body cell background on even row
+            TableCell()   <entry>
+                 > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+              Paragraph('Cells may span rows.')   table_sideways.rst:72   <paragraph>
+                   > (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                     (0,0,0,0,2) body [Sphinx] > default
+                  MixedStyledText('Cells may span rows.')
+                    MixedStyledText('Cells may span rows.')
+                      SingleStyledText('Cells may span rows.')
+              TableCellBackground()
+            TableCell()   <entry>
+                 > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+              List(style='bulleted')   table_sideways.rst:72   <bullet_list>
+                   x (0,0,1,0,4) (table) bulleted list
+                   > (0,0,1,0,2) bulleted list [Sphinx] > enumerated list
+                ListItem()   <list_item>
+                     x (0,0,1,0,6) (table) bulleted list item
+                     x (0,0,1,0,4) bulleted list item
+                  ListItemLabel('•')
+                       x (0,0,1,0,8) (table) bulleted list item label
+                       > (0,0,1,0,6) bulleted list item label [Sphinx] > list item label
+                         (0,0,0,0,2) list item label [Sphinx] > default
+                      MixedStyledText('•')
+                        SingleStyledText('')
+                        SingleStyledText('•')
+                        SingleStyledText('')
+                  StaticGroupedFlowables()
+                       > (0,0,0,0,3) list item body [Sphinx] > DEFAULT
+                    Paragraph('Table cells')   table_sideways.rst:72   <paragraph>
+                         > (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                           (0,0,0,0,5) list item paragraph [Sphinx] > default
+                           (0,0,0,0,2) body [Sphinx] > default
+                        MixedStyledText('Table cells')
+                          MixedStyledText('Table cells')
+                            SingleStyledText('Table cells')
+                ListItem()   <list_item>
+                     x (0,0,1,0,6) (table) bulleted list item
+                     x (0,0,1,0,4) bulleted list item
+                  ListItemLabel('•')
+                       x (0,0,1,0,8) (table) bulleted list item label
+                       > (0,0,1,0,6) bulleted list item label [Sphinx] > list item label
+                         (0,0,0,0,2) list item label [Sphinx] > default
+                      MixedStyledText('•')
+                        SingleStyledText('')
+                        SingleStyledText('•')
+                        SingleStyledText('')
+                  StaticGroupedFlowables()
+                       > (0,0,0,0,3) list item body [Sphinx] > DEFAULT
+                    Paragraph('contain')   table_sideways.rst:73   <paragraph>
+                         > (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                           (0,0,0,0,5) list item paragraph [Sphinx] > default
+                           (0,0,0,0,2) body [Sphinx] > default
+                        MixedStyledText('contain')
+                          MixedStyledText('contain')
+                            SingleStyledText('contain')
+                ListItem()   <list_item>
+                     x (0,0,1,0,6) (table) bulleted list item
+                     x (0,0,1,0,4) bulleted list item
+                  ListItemLabel('•')
+                       x (0,0,1,0,8) (table) bulleted list item label
+                       > (0,0,1,0,6) bulleted list item label [Sphinx] > list item label
+                         (0,0,0,0,2) list item label [Sphinx] > default
+                      MixedStyledText('•')
+                        SingleStyledText('')
+                        SingleStyledText('•')
+                        SingleStyledText('')
+                  StaticGroupedFlowables()
+                       > (0,0,0,0,3) list item body [Sphinx] > DEFAULT
+                    Paragraph('body elements.')   table_sideways.rst:74   <paragraph>
+                         > (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                           (0,0,0,0,5) list item paragraph [Sphinx] > default
+                           (0,0,0,0,2) body [Sphinx] > default
+                        MixedStyledText('body elements.')
+                          MixedStyledText('body elements.')
+                            SingleStyledText('body elements.')
+              TableCellBackground()
+          TableRow()
+            TableCell()   <entry>
+                 > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+              Paragraph('body row 9')   table_sideways.rst:74   <paragraph>
+                   > (0,0,0,1,8) table first column paragraph [Sphinx] > table body cell paragraph
+                     (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                     (0,0,0,0,2) body [Sphinx] > default
+                  MixedStyledText('body row 9')
+                    MixedStyledText('body row 9')
+                      SingleStyledText('body row 9')
+              TableCellBackground()
+                   x (0,0,0,2,8) table body cell background on odd row
+---------------------------------- page 6 ----------------------------------
+#### FlowablesContainer('background')
+  StaticGroupedFlowables()
+#### FootnoteContainer('footnotes')
+  StaticGroupedFlowables()
+#### DownExpandingContainer('floats')
+  StaticGroupedFlowables()
+#### ChainedContainer('content')
+  (continued) StaticGroupedFlowables()
+    (continued) TableWithCaption()   table_sideways.rst   <table>
+         > (0,0,0,1,2) sideways table [table_sideways.rts] > NEXT_MATCH
+           (0,0,0,1,1) sideways float [Sphinx] > NEXT_MATCH
+         x (0,0,0,0,2) table with caption
+      (continued) Table()
+           > (0,0,0,0,2) table [Sphinx] > DEFAULT
+          TableRow()
+            TableCell()   <entry>
+                 > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+              Paragraph('body row 10')   table_sideways.rst:76   <paragraph>
+                   > (0,0,0,1,8) table first column paragraph [Sphinx] > table body cell paragraph
+                     (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                     (0,0,0,0,2) body [Sphinx] > default
+                  MixedStyledText('body row 10')
+                    MixedStyledText('body row 10')
+                      SingleStyledText('body row 10')
+              TableCellBackground()
+                   x (0,0,0,2,8) table body cell background on even row
+            TableCell()   <entry>
+                 > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+              Paragraph('Cells may also be empty: -->')   table_sideways.rst:76   <paragraph>
+                   > (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                     (0,0,0,0,2) body [Sphinx] > default
+                  MixedStyledText('Cells may also be empty: -->')
+                    MixedStyledText('Cells may also be empty: -->')
+                      SingleStyledText('Cells may also be empty: ')
+                      MixedStyledText('-->', style='monospaced')   <literal>
+                           > (0,0,1,0,1) monospaced [Sphinx] > DEFAULT
+                        SingleStyledText('-->')
+              TableCellBackground()
+                   x (0,0,0,2,8) table body cell background on even row
+            TableCell()   <entry>
+                 > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+              TableCellBackground()
+                   x (0,0,0,2,8) table body cell background on even row
+          TableRow()
+            TableCell()   <entry>
+                 > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+              Paragraph('body row 11, column 1')   table_sideways.rst:79   <paragraph>
+                   > (0,0,0,1,8) table first column paragraph [Sphinx] > table body cell paragraph
+                     (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                     (0,0,0,0,2) body [Sphinx] > default
+                  MixedStyledText('body row 11, column 1')
+                    MixedStyledText('body row 11, column 1')
+                      SingleStyledText('body row 11, column 1')
+              TableCellBackground()
+                   x (0,0,0,2,8) table body cell background on odd row
+            TableCell()   <entry>
+                 > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+              Paragraph('column 2')   table_sideways.rst:79   <paragraph>
+                   > (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                     (0,0,0,0,2) body [Sphinx] > default
+                  MixedStyledText('column 2')
+                    MixedStyledText('column 2')
+                      SingleStyledText('column 2')
+              TableCellBackground()
+                   x (0,0,0,2,8) table body cell background on odd row
+            TableCell()   <entry>
+                 > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+              Paragraph('column 3')   table_sideways.rst:79   <paragraph>
+                   > (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                     (0,0,0,0,2) body [Sphinx] > default
+                  MixedStyledText('column 3')
+                    MixedStyledText('column 3')
+                      SingleStyledText('column 3')
+              TableCellBackground()
+                   x (0,0,0,2,8) table body cell background on odd row
+            TableCell()   <entry>
+                 > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+              Paragraph('column 4')   table_sideways.rst:79   <paragraph>
+                   > (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                     (0,0,0,0,2) body [Sphinx] > default
+                  MixedStyledText('column 4')
+                    MixedStyledText('column 4')
+                      SingleStyledText('column 4')
+              TableCellBackground()
+                   x (0,0,0,2,8) table body cell background on odd row
+          TableRow()
+            TableCell()   <entry>
+                 > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+              Paragraph('body row 12')   table_sideways.rst:81   <paragraph>
+                   > (0,0,0,1,8) table first column paragraph [Sphinx] > table body cell paragraph
+                     (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                     (0,0,0,0,2) body [Sphinx] > default
+                  MixedStyledText('body row 12')
+                    MixedStyledText('body row 12')
+                      SingleStyledText('body row 12')
+              TableCellBackground()
+                   x (0,0,0,2,8) table body cell background on even row
+            TableCell()   <entry>
+                 > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+              Paragraph('Cells may span columns.')   table_sideways.rst:81   <paragraph>
+                   > (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                     (0,0,0,0,2) body [Sphinx] > default
+                  MixedStyledText('Cells may span columns.')
+                    MixedStyledText('Cells may span columns.')
+                      SingleStyledText('Cells may span columns.')
+              TableCellBackground()
+                   x (0,0,0,2,8) table body cell background on even row
+          TableRow()
+            TableCell()   <entry>
+                 > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+              Paragraph('body row 13')   table_sideways.rst:83   <paragraph>
+                   > (0,0,0,1,8) table first column paragraph [Sphinx] > table body cell paragraph
+                     (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                     (0,0,0,0,2) body [Sphinx] > default
+                  MixedStyledText('body row 13')
+                    MixedStyledText('body row 13')
+                      SingleStyledText('body row 13')
+              TableCellBackground()
+                   x (0,0,0,2,8) table body cell background on odd row
+            TableCell()   <entry>
+                 > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+              Paragraph('Cells may span rows.')   table_sideways.rst:83   <paragraph>
+                   > (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                     (0,0,0,0,2) body [Sphinx] > default
+                  MixedStyledText('Cells may span rows.')
+                    MixedStyledText('Cells may span rows.')
+                      SingleStyledText('Cells may span rows.')
+              TableCellBackground()
+            TableCell()   <entry>
+                 > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+              List(style='bulleted')   table_sideways.rst:83   <bullet_list>
+                   x (0,0,1,0,4) (table) bulleted list
+                   > (0,0,1,0,2) bulleted list [Sphinx] > enumerated list
+                ListItem()   <list_item>
+                     x (0,0,1,0,6) (table) bulleted list item
+                     x (0,0,1,0,4) bulleted list item
+                  ListItemLabel('•')
+                       x (0,0,1,0,8) (table) bulleted list item label
+                       > (0,0,1,0,6) bulleted list item label [Sphinx] > list item label
+                         (0,0,0,0,2) list item label [Sphinx] > default
+                      MixedStyledText('•')
+                        SingleStyledText('')
+                        SingleStyledText('•')
+                        SingleStyledText('')
+                  StaticGroupedFlowables()
+                       > (0,0,0,0,3) list item body [Sphinx] > DEFAULT
+                    Paragraph('Table cells')   table_sideways.rst:83   <paragraph>
+                         > (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                           (0,0,0,0,5) list item paragraph [Sphinx] > default
+                           (0,0,0,0,2) body [Sphinx] > default
+                        MixedStyledText('Table cells')
+                          MixedStyledText('Table cells')
+                            SingleStyledText('Table cells')
+                ListItem()   <list_item>
+                     x (0,0,1,0,6) (table) bulleted list item
+                     x (0,0,1,0,4) bulleted list item
+                  ListItemLabel('•')
+                       x (0,0,1,0,8) (table) bulleted list item label
+                       > (0,0,1,0,6) bulleted list item label [Sphinx] > list item label
+                         (0,0,0,0,2) list item label [Sphinx] > default
+                      MixedStyledText('•')
+                        SingleStyledText('')
+                        SingleStyledText('•')
+                        SingleStyledText('')
+                  StaticGroupedFlowables()
+                       > (0,0,0,0,3) list item body [Sphinx] > DEFAULT
+                    Paragraph('contain')   table_sideways.rst:84   <paragraph>
+                         > (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                           (0,0,0,0,5) list item paragraph [Sphinx] > default
+                           (0,0,0,0,2) body [Sphinx] > default
+                        MixedStyledText('contain')
+                          MixedStyledText('contain')
+                            SingleStyledText('contain')
+                ListItem()   <list_item>
+                     x (0,0,1,0,6) (table) bulleted list item
+                     x (0,0,1,0,4) bulleted list item
+                  ListItemLabel('•')
+                       x (0,0,1,0,8) (table) bulleted list item label
+                       > (0,0,1,0,6) bulleted list item label [Sphinx] > list item label
+                         (0,0,0,0,2) list item label [Sphinx] > default
+                      MixedStyledText('•')
+                        SingleStyledText('')
+                        SingleStyledText('•')
+                        SingleStyledText('')
+                  StaticGroupedFlowables()
+                       > (0,0,0,0,3) list item body [Sphinx] > DEFAULT
+                    Paragraph('body elements.')   table_sideways.rst:85   <paragraph>
+                         > (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                           (0,0,0,0,5) list item paragraph [Sphinx] > default
+                           (0,0,0,0,2) body [Sphinx] > default
+                        MixedStyledText('body elements.')
+                          MixedStyledText('body elements.')
+                            SingleStyledText('body elements.')
+              TableCellBackground()
+          TableRow()
+            TableCell()   <entry>
+                 > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+              Paragraph('body row 14')   table_sideways.rst:85   <paragraph>
+                   > (0,0,0,1,8) table first column paragraph [Sphinx] > table body cell paragraph
+                     (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                     (0,0,0,0,2) body [Sphinx] > default
+                  MixedStyledText('body row 14')
+                    MixedStyledText('body row 14')
+                      SingleStyledText('body row 14')
+              TableCellBackground()
+                   x (0,0,0,2,8) table body cell background on even row
+          TableRow()
+            TableCell()   <entry>
+                 > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+              Paragraph('body row 15')   table_sideways.rst:87   <paragraph>
+                   > (0,0,0,1,8) table first column paragraph [Sphinx] > table body cell paragraph
+                     (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                     (0,0,0,0,2) body [Sphinx] > default
+                  MixedStyledText('body row 15')
+                    MixedStyledText('body row 15')
+                      SingleStyledText('body row 15')
+              TableCellBackground()
+                   x (0,0,0,2,8) table body cell background on odd row
+            TableCell()   <entry>
+                 > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+              Paragraph('Cells may also be empty: -->')   table_sideways.rst:87   <paragraph>
+                   > (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                     (0,0,0,0,2) body [Sphinx] > default
+                  MixedStyledText('Cells may also be empty: -->')
+                    MixedStyledText('Cells may also be empty: -->')
+                      SingleStyledText('Cells may also be empty: ')
+                      MixedStyledText('-->', style='monospaced')   <literal>
+                           > (0,0,1,0,1) monospaced [Sphinx] > DEFAULT
+                        SingleStyledText('-->')
+              TableCellBackground()
+                   x (0,0,0,2,8) table body cell background on odd row
+            TableCell()   <entry>
+                 > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+              TableCellBackground()
+                   x (0,0,0,2,8) table body cell background on odd row

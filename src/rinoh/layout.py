@@ -233,13 +233,15 @@ class FlowablesContainerBase(Container):
     The next flowable is rendered below the first one, and so on."""
 
     def __init__(self, name, type, parent, left=None, top=None,
-                 width=None, height=None, right=None, bottom=None):
+                 width=None, height=None, right=None, bottom=None,
+                 vertically_center_content=False):
         self._self_cursor = Dimension(0)  # initialized at container's top edge
         self._cursor = DimensionAddition(self._self_cursor)
         self._placed_styleds = {}
         super().__init__(name, parent, left=left, top=top, width=width,
                          height=height, right=right, bottom=bottom)
         self.type = type
+        self.vertically_center_content = vertically_center_content
 
     @property
     def top_level_container(self):
@@ -303,6 +305,8 @@ class FlowablesContainerBase(Container):
     def render(self, type, rerender=False):
         if type in (self.type, None):
             self._render(type, rerender)
+        if self.vertically_center_content and type is CONTENT:
+            self.top += float(self.remaining_height) / 2
 
     def _render(self, type, rerender):
         raise NotImplementedError('{}.render()'.format(self.__class__.__name__))
@@ -342,14 +346,8 @@ class FlowablesContainer(_FlowablesContainer):
                  height=None, right=None, bottom=None,
                  vertically_center_content=False):
         super().__init__(name, type, parent, left=left, top=top,
-                         width=width, height=height, right=right, bottom=bottom)
-        self.vertically_center_content = vertically_center_content
-
-    def _render(self, type, rerender):
-        super()._render(type, rerender)
-        if self.vertically_center_content:
-            self.top += float(self.remaining_height) / 2
-
+                         width=width, height=height, right=right, bottom=bottom,
+                         vertically_center_content=vertically_center_content)
 
 
 class ChainedContainer(FlowablesContainerBase):
@@ -357,9 +355,11 @@ class ChainedContainer(FlowablesContainerBase):
     of."""
 
     def __init__(self, name, type, parent, chain, left=None, top=None,
-                 width=None, height=None, right=None, bottom=None):
+                 width=None, height=None, right=None, bottom=None,
+                 vertically_center_content=False):
         super().__init__(name, type, parent, left=left, top=top, width=width,
-                         height=height, right=right, bottom=bottom)
+                         height=height, right=right, bottom=bottom,
+                         vertically_center_content=vertically_center_content)
         chain.containers.append(self)
         self.chain = chain
 

@@ -848,9 +848,12 @@ class Float(Flowable):
 
     """
 
+    style_class = FloatStyle
+
     def flow(self, container, last_descender, state=None, **kwargs):
         if (self.get_style('sideways', container)
-                and self.get_id(container.document) not in container.document.registered_sideways_floats):
+                and (self.get_id(container.document)
+                     not in container.document.registered_sideways_floats)):
             container.document.add_sideways_float(self)
             return 0, 0, last_descender
         if self.get_style('float', container):

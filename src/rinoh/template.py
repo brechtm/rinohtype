@@ -167,8 +167,8 @@ class BodyPageTemplate(PageTemplateBase):
         else:
             return self.page(document_part, page_number, chain)
 
-    def sideways_page(self, document_part, page_number):
-        return SidewaysBodyPage(document_part, self, page_number)
+    def sideways_page(self, document_part, page_number, chain):
+        return SidewaysBodyPage(document_part, self, page_number, chain)
 
 
 class PageBase(Page, Templated):
@@ -294,12 +294,12 @@ class NewChapterBodyPage(BodyPage):
 
 class SidewaysBodyPage(BodyPageBase):
 
-    def __init__(self, document_part, template, page_number):
+    def __init__(self, document_part, template, page_number, chain):
         super().__init__(document_part, template, page_number, True)
-        self.content = FlowablesContainer('content', CONTENT, self.body,
-                                          top=self.content_top,
-                                          bottom=self.footnote_space.top,
-                                          vertically_center_content=True)
+        self.content = ChainedContainer('content', CONTENT, self.body, chain,
+                                        top=self.content_top,
+                                        bottom=self.footnote_space.top,
+                                        vertically_center_content=True)
 
 
 class TitlePageTemplate(PageTemplateBase):
@@ -446,6 +446,7 @@ class DocumentPart(Templated, metaclass=DocumentLocationType):
     def render(self, first_page_number):
         self.add_page(self.first_page(first_page_number))
         page_number = first_page_number
+        sideways_chain = None
         for page in self.pages:
             restart = None
             page_number += 1
@@ -459,17 +460,20 @@ class DocumentPart(Templated, metaclass=DocumentLocationType):
             except PageBreakException as pbe:
                 break_type = None
             page.place()
-            sideways_float = self.document.next_sideways_float()
-            if sideways_float:
-                page = self.new_page(page_number, False, sideways=True)
-                page.content.append_flowable(sideways_float)
+            next_page_type = 'left' if page.number % 2 else 'right'
+            if not sideways_chain or sideways_chain.done:
+                sideways_float = self.document.next_sideways_float()
+                sideways_chain = (Chain(self) << sideways_float
+                                  if sideways_float else None)
+            if sideways_chain:
+                page = self.new_page(page_number, sideways_chain,
+                                     new_chapter=False, sideways=True)
                 self.add_page(page)
             elif self.chain and not self.chain.done:
-                next_page_type = 'left' if page.number % 2 else 'right'
                 next_page_breaks = next_page_type == break_type
                 if restart and next_page_breaks:
                     page_number = 1
-                page = self.new_page(page_number, next_page_breaks)
+                page = self.new_page(page_number, self.chain, next_page_breaks)
                 self.add_page(page)     # this grows self.pages!
         next_page_type = 'right' if page_number % 2 else 'left'
         end_at_page = self.get_config_value('end_at_page', self.document)
@@ -482,9 +486,9 @@ class DocumentPart(Templated, metaclass=DocumentLocationType):
         self.pages.append(page)
 
     def first_page(self, page_number):
-        return self.new_page(page_number, new_chapter=True)
+        return self.new_page(page_number, self.chain, new_chapter=True)
 
-    def new_page(self, page_number, new_chapter, sideways=False, **kwargs):
+    def new_page(self, page_number, chain, new_chapter, sideways=False):
         """Called by :meth:`render` with the :class:`Chain`s that need more
         :class:`Container`s. This method should create a new :class:`Page` which
         contains a container associated with `chain`."""
@@ -492,11 +496,11 @@ class DocumentPart(Templated, metaclass=DocumentLocationType):
         left_template = self.document.get_page_template(self, 'left')
         page_template = right_template if page_number % 2 else left_template
         if sideways:
-            page = page_template.sideways_page(self, page_number)
+            page = page_template.sideways_page(self, page_number, chain)
         elif new_chapter:
-            page = page_template.new_chapter_page(self, page_number, self.chain)
+            page = page_template.new_chapter_page(self, page_number, chain)
         else:
-            page = page_template.page(self, page_number, self.chain)
+            page = page_template.page(self, page_number, chain)
         return page
 
     @classmethod
