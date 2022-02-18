@@ -636,6 +636,7 @@ class Figure(DocutilsGroupingNode):
             image = figure.children[0]
             figure.id = image.id
             figure.secondary_ids = image.secondary_ids
+            figure.classes.extend(image.classes)
         yield figure
 
 

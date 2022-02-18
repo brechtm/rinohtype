@@ -1,0 +1,40 @@
+---------------------------------- page 1 ----------------------------------
+#### FlowablesContainer('background')
+  StaticGroupedFlowables()
+#### FootnoteContainer('footnotes')
+  StaticGroupedFlowables()
+#### DownExpandingContainer('floats')
+  StaticGroupedFlowables()
+#### ChainedContainer('column1')
+  StaticGroupedFlowables()
+    DocumentTree()   figure_sideways.rst   <document>
+      Paragraph('Paragraph preceding the first si...')   figure_sideways.rst:2   <paragraph>
+           > (0,0,0,0,2) body [Sphinx] > default
+          MixedStyledText('Paragraph preceding the first si...')
+            MixedStyledText('Paragraph preceding the first si...')
+              SingleStyledText('Paragraph preceding the first si...')
+---------------------------------- page 2 ----------------------------------
+#### FlowablesContainer('background')
+  StaticGroupedFlowables()
+#### FootnoteContainer('footnotes')
+  StaticGroupedFlowables()
+#### DownExpandingContainer('floats')
+  StaticGroupedFlowables()
+#### ChainedContainer('content')
+  StaticGroupedFlowables()
+    Figure()   figure_sideways.rst   <figure>
+         > (0,0,0,1,1) sideways float [Sphinx] > NEXT_MATCH
+           (0,0,0,0,2) figure [Sphinx] > DEFAULT
+      Image('../images/title.png')   <image>
+           > (0,0,0,0,4) figure image [Sphinx] > image
+             (0,0,0,0,2) image [Sphinx] > DEFAULT
+      Caption('Figure 1. Caption')   figure_sideways.rst:7   <caption>
+           > (0,0,0,0,4) figure caption [Sphinx] > caption
+          SingleStyledText('Figure')
+          SingleStyledText(' ')
+          MixedStyledText('1. ', style='label')
+            SingleStyledText('1')
+            SingleStyledText('. ')
+          MixedStyledText('Caption')
+            MixedStyledText('Caption')
+              SingleStyledText('Caption')
