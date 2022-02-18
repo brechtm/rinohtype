@@ -7,16 +7,15 @@ from rinoh.template import PageTemplateBase, PageBase
 
 
 class MyTitlePageTemplate(PageTemplateBase):
-    def page(self, document_part, page_number, chain, after_break, **kwargs):
-        return MyTitlePage(document_part, self.name, page_number, after_break)
+    def page(self, document_part, page_number, chain):
+        return MyTitlePage(document_part, self, page_number)
 
 
 class MyTitlePage(PageBase):
     configuration_class = MyTitlePageTemplate
 
-    def __init__(self, document_part, template_name, page_number, after_break):
-        super().__init__(document_part, template_name, page_number,
-                         after_break)
+    def __init__(self, document_part, template_name, page_number):
+        super().__init__(document_part, template_name, page_number)
         metadata = self.document.metadata
         get_metadata = self.document.get_metadata
         self.title = DownExpandingContainer('title', CONTENT, self,

@@ -6,7 +6,7 @@ from rinoh.dimension import CM
 from rinoh.image import Image
 from rinoh.stylesheets import sphinx_article
 from rinoh.template import (DocumentTemplate, ContentsPartTemplate,
-                            PageTemplate, DocumentPartTemplate,
+                            BodyPageTemplate, DocumentPartTemplate,
                             FixedDocumentPartTemplate)
 
 from . page import MyTitlePageTemplate
@@ -32,10 +32,10 @@ class MyDocumentTemplate(DocumentTemplate):
     contents = ContentsPartTemplate(page_number_format='continue')
 
     # default page templates
-    page = PageTemplate(page_size=Var('paper_size'))
+    page = BodyPageTemplate(page_size=Var('paper_size'))
     title_page = MyTitlePageTemplate(base='page', top_margin=8*CM)
-    front_matter_page = PageTemplate(base='page')
-    contents_page = PageTemplate(base='page')
+    front_matter_page = BodyPageTemplate(base='page')
+    contents_page = BodyPageTemplate(base='page')
 
     TEMPLATE_IMAGE = Image(Path(__file__).parent / 'template.png')
 
