@@ -298,7 +298,8 @@ class SidewaysBodyPage(BodyPageBase):
         super().__init__(document_part, template, page_number, True)
         self.content = FlowablesContainer('content', CONTENT, self.body,
                                           top=self.content_top,
-                                          bottom=self.footnote_space.top)
+                                          bottom=self.footnote_space.top,
+                                          vertically_center_content=True)
 
 
 class TitlePageTemplate(PageTemplateBase):

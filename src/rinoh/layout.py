@@ -339,9 +339,16 @@ class FlowablesContainer(_FlowablesContainer):
     """A container that renders a predefined series of flowables."""
 
     def __init__(self, name, type, parent, left=None, top=None, width=None,
-                 height=None, right=None, bottom=None):
+                 height=None, right=None, bottom=None,
+                 vertically_center_content=False):
         super().__init__(name, type, parent, left=left, top=top,
                          width=width, height=height, right=right, bottom=bottom)
+        self.vertically_center_content = vertically_center_content
+
+    def _render(self, type, rerender):
+        super()._render(type, rerender)
+        if self.vertically_center_content:
+            self.top += float(self.remaining_height) / 2
 
 
 
