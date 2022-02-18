@@ -1,7 +1,0 @@
-[STYLESHEET]
-base = sphinx_base14
-
-
-[sideways table : TableWithCaption(has_class='sideways')]
-base = NEXT_MATCH
-sideways = true
