@@ -20,7 +20,7 @@ with custom templates. The following example subclasses :class:`.Article`.
 .. testcode:: subclass_article
 
     from rinoh.attribute import OverrideDefault
-    from rinoh.template import DocumentPartTemplate, PageTemplate
+    from rinoh.template import DocumentPartTemplate, BodyPageTemplate
     from rinoh.templates import Article
 
 
@@ -28,7 +28,7 @@ with custom templates. The following example subclasses :class:`.Article`.
         ...
 
 
-    class MyTitlePageTemplate(PageTemplate):
+    class MyTitlePageTemplate(BodyPageTemplate):
         ...
 
 
@@ -40,7 +40,7 @@ with custom templates. The following example subclasses :class:`.Article`.
 
         # default page templates
         title_page = MyTitlePageTemplate(base='page')
-        bibliography_page = PageTemplate(base='page')
+        bibliography_page = BodyPageTemplate(base='page')
 
 
 :class:`MyArticle` extends the :class:`.Article` template, adding the extra

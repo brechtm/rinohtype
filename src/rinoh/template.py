@@ -84,8 +84,12 @@ class Templated(Configurable):
     def __init__(self, template):
         self.template = template
 
-    def configuration_name(self, document):
+    @property
+    def template_name(self):
         return self.template.name
+
+    def configuration_name(self, document):
+        return self.template_name
 
 
 class Sideways(OptionSet):

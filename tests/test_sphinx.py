@@ -61,7 +61,7 @@ def get_contents_page_size(template_configuration):
     part_template = doc.part_templates[2]
     part = part_template.document_part(doc, 'number')
     assert part.template_name == 'contents'
-    page = part.new_page(1, new_chapter=False)
+    page = part.new_page(1, part.chain, new_chapter=False)
     return page.get_config_value('page_size', doc)
 
 

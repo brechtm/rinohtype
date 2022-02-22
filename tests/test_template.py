@@ -17,7 +17,7 @@ from rinoh.document import DocumentTree
 from rinoh.paper import A5
 from rinoh.reference import (Field, SECTION_NUMBER, SECTION_TITLE, PAGE_NUMBER,
                              NUMBER_OF_PAGES)
-from rinoh.template import (DocumentTemplate, PageTemplate,
+from rinoh.template import (DocumentTemplate, BodyPageTemplate,
                             ContentsPartTemplate, TemplateConfigurationFile)
 from rinoh.text import SingleStyledText
 
@@ -31,7 +31,7 @@ class MyDocumentTemplate(DocumentTemplate):
 
     contents = ContentsPartTemplate()
 
-    contents_page = PageTemplate(page_size=Var('paper_size'),
+    contents_page = BodyPageTemplate(page_size=Var('paper_size'),
                                  column_spacing=1*PT)
 
 
@@ -56,7 +56,7 @@ def test_template_configuration():
     part_template, = doc.part_templates
     part = part_template.document_part(doc, 'number')
     assert part.template_name == 'contents'
-    page = part.new_page(1, new_chapter=False)
+    page = part.new_page(1, part.chain, new_chapter=False)
     assert page.template_name == 'contents_page'
     assert page.get_config_value('columns', doc) == 1
     assert page.get_config_value('column_spacing', doc) == 1*PT
@@ -73,7 +73,7 @@ def test_template_configuration_base():
     part_template, = doc.part_templates
     part = part_template.document_part(doc, 'number')
     assert part.template_name == 'contents'
-    page = part.new_page(1, new_chapter=False)
+    page = part.new_page(1, part.chain, new_chapter=False)
     assert page.template_name == 'contents_page'
     assert page.get_config_value('columns', doc) == 1
     assert page.get_config_value('column_spacing', doc) == 10*PT
@@ -117,7 +117,7 @@ def test_template_configuration_file():
             a.write(CONFIGURATION_A)
         conf = TemplateConfigurationFile(a.name)
     assert conf.template == MyDocumentTemplate
-    header_text = conf.get_variable(PageTemplate, 'header_text',
+    header_text = conf.get_variable(BodyPageTemplate, 'header_text',
                                     Var('my_header_text'))
     expected_header_text = (Field(SECTION_NUMBER(1)) + ' '
                             + Field(SECTION_TITLE(1)))
@@ -129,7 +129,7 @@ def test_template_configuration_file():
     part_template, = doc.part_templates
     part = part_template.document_part(doc, 'number')
     assert part.template_name == 'contents'
-    page = part.new_page(1, new_chapter=False)
+    page = part.new_page(1, part.chain, new_chapter=False)
     assert page.template_name == 'contents_page'
     assert page.get_config_value('columns', doc) == 1
     assert page.get_config_value('column_spacing', doc) == 1*PT
@@ -150,7 +150,7 @@ def test_template_configuration_file_base():
             b.write(CONFIGURATION_B)
         conf = TemplateConfigurationFile(b.name)
     assert conf.template == MyDocumentTemplate
-    header_text = conf.get_variable(PageTemplate, 'header_text',
+    header_text = conf.get_variable(BodyPageTemplate, 'header_text',
                                     Var('my_header_text'))
     expected_header_text = SingleStyledText('Configuration B Header')
     assert header_text == expected_header_text
@@ -161,7 +161,7 @@ def test_template_configuration_file_base():
     part_template, = doc.part_templates
     part = part_template.document_part(doc, 'number')
     assert part.template_name == 'contents'
-    page = part.new_page(1, new_chapter=False)
+    page = part.new_page(1, part.chain, new_chapter=False)
     assert page.template_name == 'contents_page'
     assert page.get_config_value('columns', doc) == 1
     assert page.get_config_value('column_spacing', doc) == 1*PT
@@ -188,7 +188,7 @@ def test_template_configuration_var():
     part_template, = doc.part_templates
     part = part_template.document_part(doc, 'number')
     assert part.template_name == 'contents'
-    page = part.new_page(1, new_chapter=False)
+    page = part.new_page(1, part.chain, new_chapter=False)
     assert page.template_name == 'contents_page'
     assert page.get_config_value('page_size', doc) == A5
 
@@ -204,6 +204,6 @@ def test_template_configuration_var2():
     part_template, = doc.part_templates
     part = part_template.document_part(doc, 'number')
     assert part.template_name == 'contents'
-    page = part.new_page(1, new_chapter=False)
+    page = part.new_page(1, part.chain, new_chapter=False)
     assert page.template_name == 'contents_page'
     assert page.get_config_value('page_size', doc) == A5
