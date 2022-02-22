@@ -845,11 +845,16 @@ class GroupedLabeledFlowables(GroupedFlowables):
             raise
 
 
+class FloatLocation(OptionSet):
+
+    values = (None, 'here', 'sideways')
+
+
 class FloatStyle(FlowableStyle):
-    float = Attribute(Bool, False, 'Float the flowable to the top or bottom '
-                                   'of the page')
-    sideways = Attribute(Bool, False, 'Render the flowable onto a separate '
-                                      'page, rotated 90 degrees')
+    float = Attribute(FloatLocation, None, 'Float the flowable to the top or '
+                                           'bottom of the current page, to a '
+                                           'dedicated page, or sideways to a '
+                                           'dedicated page')
 
 
 class Float(Flowable):
@@ -870,14 +875,14 @@ class Float(Flowable):
     def flow(self, container, last_descender, state=None, **kwargs):
         document = container.document
         id = self.get_id(document)
-        if self.get_style('sideways', container):
+        float = self.get_style('float', container)
+        if float == FloatLocation.SIDEWAYS:
             if id not in document.registered_sideways_floats:
                 document.add_sideways_float(self)
                 state = CompletedFlowableState()
                 self.page_break(container, state)
                 return 0, 0, last_descender
-        elif (self.get_style('float', container)
-              and id not in document.floats):
+        elif (float == FloatLocation.HERE and id not in document.floats):
             super().flow(container.float_space, None)
             document.floats.add(id)
             if not container.page.check_overflow():

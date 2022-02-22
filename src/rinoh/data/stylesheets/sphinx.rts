@@ -645,7 +645,7 @@ horizontal_align=CENTER
 ; sideways figures and tables
 [sideways float : Float(has_class='sideways')]
 base = NEXT_MATCH
-sideways = true
+float = sideways
 
 [figure]
 space_above=10pt

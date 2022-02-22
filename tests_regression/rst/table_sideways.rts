@@ -4,5 +4,5 @@ base = sphinx_base14
 
 [sideways-break float : Float(has_class='sideways-break')]
 base = NEXT_MATCH
-sideways = true
+float = sideways
 page_break = any
