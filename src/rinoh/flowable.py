@@ -459,10 +459,11 @@ class GroupedFlowablesState(FlowableState):
 
     def next_flowable(self):
         try:
-            result = self.flowables[self._index]
+            result = self.flowables[self._index], self.first_flowable_state
         except IndexError:
             raise StopIteration
         self._index += 1
+        self.first_flowable_state = None
         return result
 
     def prepend(self, first_flowable_state):
@@ -545,16 +546,15 @@ class GroupedFlowables(Flowable):
     def _flow_with_next(self, state, container, descender, space_below=0,
                         **kwargs):
         try:
-            flowable = state.next_flowable()
+            flowable, flowable_state = state.next_flowable()
             while flowable.is_hidden(container):
-                flowable = state.next_flowable()
+                flowable, flowable_state = state.next_flowable()
         except StopIteration:
             raise LastFlowableException(descender)
         flowable.parent = self
         with MaybeContainer(container) as maybe_container:
             max_flowable_width, top_to_baseline, descender = \
-                flowable.flow(maybe_container, descender,
-                              state=state.first_flowable_state,
+                flowable.flow(maybe_container, descender, state=flowable_state,
                               space_below=space_below if state.at_end else 0,
                               **kwargs)
         state.initial = False
