@@ -608,11 +608,11 @@ class Chain(FlowableTarget):
         `document` is the :class:`Document` this chain is part of."""
         super().__init__(document_part)
         self.document_part = document_part
-        self._init_state()
+        self.init_state()
         self.containers = []
         self.done = True
 
-    def _init_state(self):
+    def init_state(self):
         """Reset the state of this chain: empty the list of containers, and zero
         the counter keeping track of which flowable needs to be rendered next.
         """
@@ -639,8 +639,6 @@ class Chain(FlowableTarget):
             # all flowables have been rendered
             from .flowable import GroupedFlowablesState
             self._state = GroupedFlowablesState(None, [])
-            if container == self.last_container:
-                self._init_state()    # reset state for the next rendering loop
             self.done = True
         except PageBreakException as exc:
             self._state = exc.flowable_state

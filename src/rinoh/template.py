@@ -444,6 +444,7 @@ class DocumentPart(Templated, metaclass=DocumentLocationType):
             flowable.prepare(self)
 
     def render(self, first_page_number):
+        self.chain.init_state()
         self.add_page(self.first_page(first_page_number))
         page_number = first_page_number
         sideways_chain = None
