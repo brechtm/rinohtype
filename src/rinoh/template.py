@@ -69,6 +69,14 @@ class Template(AttributesDictionary, NamedDescriptor):
     def get_ruleset(self, document):
         return document.configuration
 
+    def get_option(self, name, document):
+        ruleset = self.get_ruleset(document)
+        try:
+            value = ruleset.get_value(self.name, name)
+        except DefaultValueException:
+            value = self._get_default(name)
+        return value
+
 
 class Templated(Configurable):
     configuration_class = Template
@@ -156,13 +164,7 @@ class BodyPageTemplate(PageTemplateBase):
         return BodyPage(document_part, self, page_number, chain)
 
     def new_chapter_page(self, document_part, page_number, chain):
-        document = document_part.document
-        ruleset = self.get_ruleset(document)
-        try:
-            ctf = ruleset.get_value(self.name, 'chapter_title_flowables')
-        except DefaultValueException:
-            ctf = self._get_default('chapter_title_flowables')
-        if ctf:
+        if self.get_option('chapter_title_flowables', document_part.document):
             return NewChapterBodyPage(document_part, self, page_number, chain)
         else:
             return self.page(document_part, page_number, chain)
@@ -547,7 +549,7 @@ class FixedDocumentPartTemplate(DocumentPartTemplate):
         return kwargs
 
     def _flowables(self, document):
-        return document.get_template_option(self.name, 'flowables')
+        return self.get_option('flowables', document)
 
 
 class TemplateConfiguration(RuleSet):
@@ -808,9 +810,6 @@ class DocumentTemplate(Document, AttributesDictionary, Resource,
 
     def get_option(self, option_name):
         return self.configuration.get_attribute_value(option_name)
-
-    def get_template_option(self, template_name, option_name):
-        return self.configuration.get_value(template_name, option_name)
 
     def get_entry_class(self, name):
         template = next(self._find_templates(name))
