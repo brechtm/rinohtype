@@ -29,7 +29,7 @@ Paragraph following the first sideways table and preceding the second sideways
 table.
 
 .. table:: Another sideways table
-   :class: sideways
+   :class: sideways-break
 
    =====  =====
      A    not A
@@ -38,10 +38,6 @@ table.
    True   False
    =====  =====
 
-
-.. raw:: pdf
-
-   PageBreak
 
 
 Paragraph preceding the third sideways table which spans two pages.

@@ -119,6 +119,19 @@ class FlowableState(object):
     def __copy__(self):
         return self.__class__(self.flowable, _initial=self.initial)
 
+    completed = False
+
+
+class CompletedFlowableState(FlowableState):
+
+    def __init__(self):
+        super().__init__(None, _initial=False)
+
+    def __copy__(self):
+        return self.__class__()
+
+    completed = True
+
 
 class Flowable(Styled):
     """A document element that can be "flowed" into a container on the page.
@@ -549,6 +562,8 @@ class GroupedFlowables(Flowable):
             flowable, flowable_state = state.next_flowable()
             while flowable.is_hidden(container):
                 flowable, flowable_state = state.next_flowable()
+            if flowable_state and flowable_state.completed:
+                flowable, flowable_state = state.next_flowable()
         except StopIteration:
             raise LastFlowableException(descender)
         flowable.parent = self
@@ -853,22 +868,22 @@ class Float(Flowable):
     style_class = FloatStyle
 
     def flow(self, container, last_descender, state=None, **kwargs):
-        if (self.get_style('sideways', container)
-                and (self.get_id(container.document)
-                     not in container.document.registered_sideways_floats)):
-            container.document.add_sideways_float(self)
+        document = container.document
+        id = self.get_id(document)
+        if self.get_style('sideways', container):
+            if id not in document.registered_sideways_floats:
+                document.add_sideways_float(self)
+                state = CompletedFlowableState()
+                self.page_break(container, state)
+                return 0, 0, last_descender
+        elif (self.get_style('float', container)
+              and id not in document.floats):
+            super().flow(container.float_space, None)
+            document.floats.add(id)
+            if not container.page.check_overflow():
+                raise ReflowRequired
             return 0, 0, last_descender
-        if self.get_style('float', container):
-            id = self.get_id(container.document)
-            if id not in container.document.floats:
-                super().flow(container.float_space, None)
-                container.document.floats.add(id)
-                if not container.page.check_overflow():
-                    raise ReflowRequired
-            return 0, 0, last_descender
-        else:
-            return super().flow(container, last_descender, state=state,
-                                **kwargs)
+        return super().flow(container, last_descender, state=state, **kwargs)
 
 
 class PageBreak(Flowable):
