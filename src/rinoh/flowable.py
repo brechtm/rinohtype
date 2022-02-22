@@ -184,6 +184,20 @@ class Flowable(Styled):
             offset = float(container.width - bordered_width)
         container.left += offset
 
+    def page_break(self, container, state):
+        page_break = self.get_style('page_break', container)
+        break_type = page_break.split()[0] if page_break else None
+        if page_break:
+            page_number = container.page.number
+            this_page_type = 'left' if page_number % 2 == 0 else 'right'
+            if not (container.page._empty
+                    and break_type in (Break.ANY, this_page_type)):
+                if break_type == Break.ANY:
+                    break_type = 'left' if page_number % 2 else 'right'
+                    page_break = page_break.replace('any', break_type)
+                chain = container.top_level_container.chain
+                raise self.break_exception(page_break, chain, state)
+
     def flow(self, container, last_descender, state=None, space_below=0,
              **kwargs):
         """Flow this flowable into `container` and return the vertical space
@@ -194,20 +208,9 @@ class Flowable(Styled):
         flowed content is followed by a vertical space with a height given
         by the `space_below` style attribute."""
         top_to_baseline = 0
-        page_break = self.get_style('page_break', container)
-        break_type = page_break.split()[0] if page_break else None
         state = state or self.initial_state(container)
         if state.initial:
-            if page_break:
-                page_number = container.page.number
-                this_page_type = 'left' if page_number % 2 == 0 else 'right'
-                if not (container.page._empty
-                        and break_type in (Break.ANY, this_page_type)):
-                    if break_type == Break.ANY:
-                        break_type = 'left' if page_number % 2 else 'right'
-                        page_break = page_break.replace('any', break_type)
-                    chain = container.top_level_container.chain
-                    raise self.break_exception(page_break, chain, state)
+            self.page_break(container, state)
             space_above = self.get_style('space_above', container)
             if not container.advance2(float(space_above)):
                 raise EndOfContainer(state)
