@@ -17,7 +17,6 @@ that make up the content of a document and are rendered onto its pages.
 """
 
 
-from contextlib import suppress
 from copy import copy
 from itertools import chain
 from token import NAME

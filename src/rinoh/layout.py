@@ -39,8 +39,7 @@ __all__ = ['Container', 'FlowablesContainer', 'ChainedContainer',
            'DownExpandingContainer', 'InlineDownExpandingContainer',
            'UpExpandingContainer', 'UpDownExpandingContainer',
            'VirtualContainer', 'Chain', 'FootnoteContainer', 'MaybeContainer',
-           'discard_state', 'ContainerOverflow', 'EndOfContainer',
-           'PageBreakException']
+           'ContainerOverflow', 'EndOfContainer', 'PageBreakException']
 
 
 class ContainerOverflow(Exception):
@@ -508,15 +507,6 @@ class MaybeContainer(ContextManager):
                                                        PageBreakException))
                                  and not exc_value.flowable_state.initial)):
             self._container.do_place()
-
-
-@contextmanager
-def discard_state(initial_state):
-    saved_state = copy(initial_state)
-    try:
-        yield
-    except EndOfContainer:
-        raise EndOfContainer(saved_state)
 
 
 class VirtualContainer(ConditionalDownExpandingContainerBase):

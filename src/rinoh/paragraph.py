@@ -17,7 +17,7 @@ from ast import literal_eval
 from collections.abc import Iterable
 from copy import copy
 from functools import partial
-from itertools import tee, chain, groupby, count, islice
+from itertools import chain, groupby, count, islice
 from os import path
 
 from . import DATA_PATH
