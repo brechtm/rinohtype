@@ -205,7 +205,7 @@ programming.</p>
 you can subclass a template class and override document part and page templates
 with custom templates. The following example subclasses <a class="reference internal" href="article.html#rinoh.templates.article.Article" title="rinoh.templates.article.Article"><code class="xref py py-class docutils literal notranslate"><span class="pre">Article</span></code></a>.</p>
 <div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rinoh.attribute</span> <span class="kn">import</span> <span class="n">OverrideDefault</span>
-<span class="kn">from</span> <span class="nn">rinoh.template</span> <span class="kn">import</span> <span class="n">DocumentPartTemplate</span><span class="p">,</span> <span class="n">PageTemplate</span>
+<span class="kn">from</span> <span class="nn">rinoh.template</span> <span class="kn">import</span> <span class="n">DocumentPartTemplate</span><span class="p">,</span> <span class="n">BodyPageTemplate</span>
 <span class="kn">from</span> <span class="nn">rinoh.templates</span> <span class="kn">import</span> <span class="n">Article</span>
 
 
@@ -213,7 +213,7 @@ with custom templates. The following example subclasses <a class="reference inte
     <span class="o">...</span>
 
 
-<span class="k">class</span> <span class="nc">MyTitlePageTemplate</span><span class="p">(</span><span class="n">PageTemplate</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">MyTitlePageTemplate</span><span class="p">(</span><span class="n">BodyPageTemplate</span><span class="p">):</span>
     <span class="o">...</span>
 
 
@@ -225,7 +225,7 @@ with custom templates. The following example subclasses <a class="reference inte
 
     <span class="c1"># default page templates</span>
     <span class="n">title_page</span> <span class="o">=</span> <span class="n">MyTitlePageTemplate</span><span class="p">(</span><span class="n">base</span><span class="o">=</span><span class="s1">&#39;page&#39;</span><span class="p">)</span>
-    <span class="n">bibliography_page</span> <span class="o">=</span> <span class="n">PageTemplate</span><span class="p">(</span><span class="n">base</span><span class="o">=</span><span class="s1">&#39;page&#39;</span><span class="p">)</span>
+    <span class="n">bibliography_page</span> <span class="o">=</span> <span class="n">BodyPageTemplate</span><span class="p">(</span><span class="n">base</span><span class="o">=</span><span class="s1">&#39;page&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p><code class="xref py py-class docutils literal notranslate"><span class="pre">MyArticle</span></code> extends the <a class="reference internal" href="article.html#rinoh.templates.article.Article" title="rinoh.templates.article.Article"><code class="xref py py-class docutils literal notranslate"><span class="pre">Article</span></code></a> template, adding the extra
@@ -263,11 +263,11 @@ along with page templates:</p>
     <span class="n">contents</span> <span class="o">=</span> <span class="n">ContentsPartTemplate</span><span class="p">(</span><span class="n">page_number_format</span><span class="o">=</span><span class="s1">&#39;continue&#39;</span><span class="p">)</span>
 
     <span class="c1"># default page templates</span>
-    <span class="n">page</span> <span class="o">=</span> <span class="n">PageTemplate</span><span class="p">(</span><span class="n">page_size</span><span class="o">=</span><span class="n">Var</span><span class="p">(</span><span class="s1">&#39;paper_size&#39;</span><span class="p">))</span>
+    <span class="n">page</span> <span class="o">=</span> <span class="n">BodyPageTemplate</span><span class="p">(</span><span class="n">page_size</span><span class="o">=</span><span class="n">Var</span><span class="p">(</span><span class="s1">&#39;paper_size&#39;</span><span class="p">))</span>
     <span class="n">title_page</span> <span class="o">=</span> <span class="n">TitlePageTemplate</span><span class="p">(</span><span class="n">base</span><span class="o">=</span><span class="s1">&#39;page&#39;</span><span class="p">,</span>
                                    <span class="n">top_margin</span><span class="o">=</span><span class="mi">8</span><span class="o">*</span><span class="n">CM</span><span class="p">)</span>
-    <span class="n">front_matter_page</span> <span class="o">=</span> <span class="n">PageTemplate</span><span class="p">(</span><span class="n">base</span><span class="o">=</span><span class="s1">&#39;page&#39;</span><span class="p">)</span>
-    <span class="n">contents_page</span> <span class="o">=</span> <span class="n">PageTemplate</span><span class="p">(</span><span class="n">base</span><span class="o">=</span><span class="s1">&#39;page&#39;</span><span class="p">)</span>
+    <span class="n">front_matter_page</span> <span class="o">=</span> <span class="n">BodyPageTemplate</span><span class="p">(</span><span class="n">base</span><span class="o">=</span><span class="s1">&#39;page&#39;</span><span class="p">)</span>
+    <span class="n">contents_page</span> <span class="o">=</span> <span class="n">BodyPageTemplate</span><span class="p">(</span><span class="n">base</span><span class="o">=</span><span class="s1">&#39;page&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>The custom <code class="xref py py-class docutils literal notranslate"><span class="pre">ArticleFrontMatter</span></code> template reads the values for the

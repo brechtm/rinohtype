@@ -258,7 +258,7 @@ to cross-references that need some iterations to converge.</p>
 <h2>Pages<a class="headerlink" href="#pages" title="Permalink to this headline">¶</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="rinoh.document.Page">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rinoh.document.</span></span><span class="sig-name descname"><span class="pre">Page</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">document_part</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">number</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">paper</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">orientation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'portrait'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.document.Page" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rinoh.document.</span></span><span class="sig-name descname"><span class="pre">Page</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">document_part</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">number</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">paper</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">orientation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'portrait'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">display_sideways</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.document.Page" title="Permalink to this definition">¶</a></dt>
 <dd><p>A single page in a document.</p>
 <p>A <a class="reference internal" href="#rinoh.document.Page" title="rinoh.document.Page"><code class="xref py py-class docutils literal notranslate"><span class="pre">Page</span></code></a> is a <code class="xref py py-class docutils literal notranslate"><span class="pre">Container</span></code>, so other containers can be added
 as children.</p>
@@ -269,6 +269,7 @@ as children.</p>
 <li><p><strong>number</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – the 1-based index of this page in the document part</p></li>
 <li><p><strong>paper</strong> (<a class="reference internal" href="paper.html#rinoh.paper.Paper" title="rinoh.paper.Paper"><em>Paper</em></a>) – determines the dimensions of this page</p></li>
 <li><p><strong>orientation</strong> (<a class="reference internal" href="#rinoh.document.PageOrientation" title="rinoh.document.PageOrientation"><em>PageOrientation</em></a>) – the orientation of this page</p></li>
+<li><p><strong>display_sideways</strong> (<em>Sideways</em>) – display the page rotated</p></li>
 </ul>
 </dd>
 </dl>
