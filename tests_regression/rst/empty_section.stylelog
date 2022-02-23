@@ -1,0 +1,41 @@
+---------------------------------- page 1 ----------------------------------
+#### FlowablesContainer('background')
+  StaticGroupedFlowables()
+#### FootnoteContainer('footnotes')
+  StaticGroupedFlowables()
+#### DownExpandingContainer('floats')
+  StaticGroupedFlowables()
+#### ChainedContainer('column1')
+  StaticGroupedFlowables()
+    DocumentTree()   empty_section.rst   <document>
+      Section(id='empty-section')   empty_section.rst:2   <section>
+           > (0,0,0,1,4) content chapter [Sphinx] > chapter
+             (0,0,0,1,2) chapter [Sphinx] > DEFAULT
+        Heading('1 Empty Section')   empty_section.rst:2   <title>
+             > (0,0,0,1,2) heading level 1 [Sphinx] > DEFAULT
+               (0,0,0,0,2) other heading levels [Sphinx] > heading level 5
+            MixedStyledText('1 ', style='label')
+                 x (0,0,1,1,3) heading level 1 label
+              SingleStyledText('1')
+              SingleStyledText(' ')
+            MixedStyledText('Empty Section')
+              MixedStyledText('Empty Section')
+                SingleStyledText('Empty Section')
+      Section(id='section-with-content')   empty_section.rst:6   <section>
+           > (0,0,0,1,4) content chapter [Sphinx] > chapter
+             (0,0,0,1,2) chapter [Sphinx] > DEFAULT
+        Heading('2 Section with Content')   empty_section.rst:6   <title>
+             > (0,0,0,1,2) heading level 1 [Sphinx] > DEFAULT
+               (0,0,0,0,2) other heading levels [Sphinx] > heading level 5
+            MixedStyledText('2 ', style='label')
+                 x (0,0,1,1,3) heading level 1 label
+              SingleStyledText('2')
+              SingleStyledText(' ')
+            MixedStyledText('Section with Content')
+              MixedStyledText('Section with Content')
+                SingleStyledText('Section with Content')
+        Paragraph('This section contains a paragrap...')   empty_section.rst:8   <paragraph>
+             > (0,0,0,0,2) body [Sphinx] > default
+            MixedStyledText('This section contains a paragrap...')
+              MixedStyledText('This section contains a paragrap...')
+                SingleStyledText('This section contains a paragrap...')

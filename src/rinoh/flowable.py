@@ -202,12 +202,10 @@ class Flowable(Styled):
         break_type = page_break.split()[0] if page_break else None
         if page_break:
             page_number = container.page.number
-            this_page_type = 'left' if page_number % 2 == 0 else 'right'
-            if not (container.page._empty
-                    and break_type in (Break.ANY, this_page_type)):
+            next_page_type = 'right' if page_number % 2 == 0 else 'left'
+            if not container.page._empty or break_type == next_page_type:
                 if break_type == Break.ANY:
-                    break_type = 'left' if page_number % 2 else 'right'
-                    page_break = page_break.replace('any', break_type)
+                    page_break = page_break.replace('any', next_page_type)
                 chain = container.top_level_container.chain
                 raise self.break_exception(page_break, chain, state)
 
@@ -546,6 +544,8 @@ class GroupedFlowables(Flowable):
                 container.advance2(item_spacing, ignore_overflow=True)
         except LastFlowableException as exc:
             descender = exc.last_descender
+            if first_top_to_baseline is not None:  # if something was rendered
+                super().mark_page_nonempty(container)
         except KeepWithNextException:
             raise EndOfContainer(saved_state)
         except (EndOfContainer, PageBreakException) as exc:

@@ -44,6 +44,7 @@ Changed:
 
 Fixed:
 
+* Page breaks for sections following an empty section were not respected.
 * Compatibility with Sphinx 4.4 on Python <3.10 (``AttributeError:
   'DynamicRinohDistribution' object has no attribute '_normalized_name'``)
 * In some cases, footnotes referenced in a table were placed on the page

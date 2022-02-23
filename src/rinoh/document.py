@@ -117,6 +117,10 @@ class Page(Container):
         self._empty = True
         super().__init__('PAGE', None, 0, 0, width, height)
 
+    def __repr__(self):
+        return "{}('{}', {})".format(self.__class__.__name__, self.name,
+                                     self.number)
+
     @property
     def document_part(self):
         return self._document_part
