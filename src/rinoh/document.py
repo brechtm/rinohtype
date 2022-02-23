@@ -330,8 +330,10 @@ to the terms of the GNU Affero General Public License version 3.''')
             for match in matches:
                 if (match.specificity == last_match.specificity
                         and match.style_name != last_match.style_name):
-                    styled.warn('Multiple selectors match with the same '
-                              'specificity. See the style log for details.')
+                    styled.warn("Multiple selectors match with the same "
+                                f"specificity: {last_match.style_name}, "
+                                f"{match.style_name}. See the style log for "
+                                "details.")
                 match.stylesheet = stylesheet.find_source(match.style_name)
                 last_match = match
             styled_matches[styled] = matches
