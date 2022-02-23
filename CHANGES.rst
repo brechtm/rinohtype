@@ -49,8 +49,9 @@ Fixed:
   'DynamicRinohDistribution' object has no attribute '_normalized_name'``)
 * In some cases, footnotes referenced in a table were placed on the page
   preceding the footnote reference.
-* Handle PDF output filenames containing a dot in the stem (the final dot and
-  characters following it were interpreted as an extension and dropped)
+* Handle output (PDF, style log and cache) filenames containing a dot in the
+  stem (the final dot and characters following it were interpreted as an
+  extension and dropped)
 * Compatibility with Sphinx 4.3 (crash on rendering object descriptions)
 * Regression in handling of unsupported docutils nodes
 * Crash due to floating point rounding error (#302 by Sam Hartman)

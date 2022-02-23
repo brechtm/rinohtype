@@ -353,12 +353,15 @@ to the terms of the GNU Affero General Public License version 3.''')
             return self._glossary[term], id
         return self._glossary[term], first_id
 
+    def cache_path(self, filename):
+        return filename.parent / (filename.name + self.CACHE_EXTENSION)
+
     def _load_cache(self, filename):
         """Load the cached page references from `<filename>.ptc`."""
         if self._no_cache:
             print('Loading/saving of the references cache is disabled')
             return {}, {}
-        cache_path = filename.with_suffix(self.CACHE_EXTENSION)
+        cache_path = self.cache_path(filename)
         try:
             with cache_path.open('rb') as file:
                 part_page_counts, page_references = pickle.load(file)
@@ -371,8 +374,7 @@ to the terms of the GNU Affero General Public License version 3.''')
         """Save the current state of the page references to `<filename>.rtc`"""
         if self._no_cache:
             return
-        cache_path = Path(filename).with_suffix(self.CACHE_EXTENSION)
-        with cache_path.open('wb') as file:
+        with self.cache_path(filename).open('wb') as file:
             cache = (self.part_page_counts, self.page_references)
             pickle.dump(cache, file)
 

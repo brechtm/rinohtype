@@ -1048,8 +1048,8 @@ class StyleLog(object):
         raise NotImplementedError
 
     def write_log(self, document_source_root, filename_root):
-        stylelog_path = filename_root.with_suffix('.stylelog')
-        with stylelog_path.open('w', encoding='utf-8') as log:
+        log_path = filename_root.parent / (filename_root.name + '.stylelog')
+        with log_path.open('w', encoding='utf-8') as log:
             current_page = None
             current_container = None
             for entry in self.entries:
