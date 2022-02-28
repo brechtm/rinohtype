@@ -8,19 +8,32 @@
 #### ChainedContainer('column1')
   StaticGroupedFlowables()
     DocumentTree()   table_sideways.rst   <document>
-      Paragraph('Paragraph preceding the first si...')   table_sideways.rst:2   <paragraph>
-           > (0,0,0,0,2) body [Sphinx] > default
-          MixedStyledText('Paragraph preceding the first si...')
+      Section(id='first-section')   table_sideways.rst:3   <section>
+           > (0,0,0,1,4) content chapter [Sphinx] > chapter
+             (0,0,0,1,2) chapter [table_sideways.rts] > DEFAULT
+        Heading('1 First Section')   table_sideways.rst:3   <title>
+             > (0,0,0,1,2) heading level 1 [Sphinx] > DEFAULT
+               (0,0,0,0,2) other heading levels [Sphinx] > heading level 5
+            MixedStyledText('1 ', style='label')
+                 x (0,0,1,1,3) heading level 1 label
+              SingleStyledText('1')
+              SingleStyledText(' ')
+            MixedStyledText('First Section')
+              MixedStyledText('First Section')
+                SingleStyledText('First Section')
+        Paragraph('Paragraph preceding the first si...')   table_sideways.rst:5   <paragraph>
+             > (0,0,0,0,2) body [Sphinx] > default
             MixedStyledText('Paragraph preceding the first si...')
-              SingleStyledText('Paragraph preceding the first si...')
-      Paragraph('Paragraph following the first si...')   table_sideways.rst:28   <paragraph>
-           > (0,0,0,0,2) body [Sphinx] > default
-          MixedStyledText('Paragraph following the first si...')
+              MixedStyledText('Paragraph preceding the first si...')
+                SingleStyledText('Paragraph preceding the first si...')
+        Paragraph('Paragraph following the first si...')   table_sideways.rst:31   <paragraph>
+             > (0,0,0,0,2) body [Sphinx] > default
             MixedStyledText('Paragraph following the first si...')
-              SingleStyledText('Paragraph following the first si...')
-          MixedStyledText('Paragraph following the first si...')
+              MixedStyledText('Paragraph following the first si...')
+                SingleStyledText('Paragraph following the first si...')
             MixedStyledText('Paragraph following the first si...')
-              SingleStyledText('Paragraph following the first si...')
+              MixedStyledText('Paragraph following the first si...')
+                SingleStyledText('Paragraph following the first si...')
 ---------------------------------- page 2 ----------------------------------
 #### FlowablesContainer('background')
   StaticGroupedFlowables()
@@ -31,15 +44,14 @@
 #### ChainedContainer('content')
   StaticGroupedFlowables()
     TableWithCaption()   table_sideways.rst   <table>
-         > (0,0,0,1,2) sideways table [table_sideways.rts] > NEXT_MATCH
-           (0,0,0,1,1) sideways float [Sphinx] > NEXT_MATCH
+         > (0,0,0,1,1) sideways float [Sphinx] > NEXT_MATCH
          x (0,0,0,0,2) table with caption
-      Caption('Table 1. Sideways table')
+      Caption('Table 1.1. Sideways table')
            > (0,0,0,0,4) table caption [Sphinx] > caption
           SingleStyledText('Table')
           SingleStyledText(' ')
-          MixedStyledText('1. ', style='label')
-            SingleStyledText('1')
+          MixedStyledText('1.1. ', style='label')
+            SingleStyledText('1.1')
             SingleStyledText('. ')
           MixedStyledText('Sideways table')
             MixedStyledText('Sideways table')
@@ -48,10 +60,26 @@
            > (0,0,0,0,2) table [Sphinx] > DEFAULT
         TableHead()
           TableRow()
+              TableCellBackground()
+                   x (0,0,0,0,10) table head cell background
+              TableCellBorder('top')
+                   > (0,0,0,2,8) table top border [Sphinx] > DEFAULT
+                     (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+              TableCellBorder('right')
+                   x (0,0,0,1,8) table head cell right border
+                   > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+              TableCellBorder('bottom')
+                   > (0,0,0,2,8) table head bottom border [Sphinx] > table top border
+                     (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+              TableCellBorder('left')
+                   x (0,0,0,2,8) table head left border
+                   x (0,0,0,2,4) table left border
+                   x (0,0,0,1,8) table head cell left border
+                   > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
             TableCell()   <entry>
                  x (0,0,0,0,8) table head cell
                  > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
-              Paragraph('Header row, column 1 (header row...')   table_sideways.rst:9   <paragraph>
+              Paragraph('Header row, column 1 (header row...')   table_sideways.rst:12   <paragraph>
                    > (0,0,0,0,10) table head cell paragraph [Sphinx] > table body cell paragraph
                      (0,0,0,0,9) table body cell paragraph [Sphinx] > default
                      (0,0,0,0,2) body [Sphinx] > default
@@ -60,10 +88,22 @@
                       SingleStyledText('Header row, column 1 (header row...')
               TableCellBackground()
                    x (0,0,0,0,10) table head cell background
+              TableCellBorder('top')
+                   > (0,0,0,2,8) table top border [Sphinx] > DEFAULT
+                     (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+              TableCellBorder('right')
+                   x (0,0,0,1,8) table head cell right border
+                   > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+              TableCellBorder('bottom')
+                   > (0,0,0,2,8) table head bottom border [Sphinx] > table top border
+                     (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+              TableCellBorder('left')
+                   x (0,0,0,1,8) table head cell left border
+                   > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
             TableCell()   <entry>
                  x (0,0,0,0,8) table head cell
                  > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
-              Paragraph('Header 2')   table_sideways.rst:9   <paragraph>
+              Paragraph('Header 2')   table_sideways.rst:12   <paragraph>
                    > (0,0,0,0,10) table head cell paragraph [Sphinx] > table body cell paragraph
                      (0,0,0,0,9) table body cell paragraph [Sphinx] > default
                      (0,0,0,0,2) body [Sphinx] > default
@@ -72,10 +112,22 @@
                       SingleStyledText('Header 2')
               TableCellBackground()
                    x (0,0,0,0,10) table head cell background
+              TableCellBorder('top')
+                   > (0,0,0,2,8) table top border [Sphinx] > DEFAULT
+                     (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+              TableCellBorder('right')
+                   x (0,0,0,1,8) table head cell right border
+                   > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+              TableCellBorder('bottom')
+                   > (0,0,0,2,8) table head bottom border [Sphinx] > table top border
+                     (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+              TableCellBorder('left')
+                   x (0,0,0,1,8) table head cell left border
+                   > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
             TableCell()   <entry>
                  x (0,0,0,0,8) table head cell
                  > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
-              Paragraph('Header 3')   table_sideways.rst:9   <paragraph>
+              Paragraph('Header 3')   table_sideways.rst:12   <paragraph>
                    > (0,0,0,0,10) table head cell paragraph [Sphinx] > table body cell paragraph
                      (0,0,0,0,9) table body cell paragraph [Sphinx] > default
                      (0,0,0,0,2) body [Sphinx] > default
@@ -84,23 +136,48 @@
                       SingleStyledText('Header 3')
               TableCellBackground()
                    x (0,0,0,0,10) table head cell background
+              TableCellBorder('top')
+                   > (0,0,0,2,8) table top border [Sphinx] > DEFAULT
+                     (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+              TableCellBorder('right')
+                   x (0,0,0,2,8) table head right border
+                   x (0,0,0,2,4) table right border
+                   x (0,0,0,1,8) table head cell right border
+                   > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+              TableCellBorder('bottom')
+                   > (0,0,0,2,8) table head bottom border [Sphinx] > table top border
+                     (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+              TableCellBorder('left')
+                   x (0,0,0,1,8) table head cell left border
+                   > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
             TableCell()   <entry>
                  x (0,0,0,0,8) table head cell
                  > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
-              Paragraph('Header 4')   table_sideways.rst:9   <paragraph>
+              Paragraph('Header 4')   table_sideways.rst:12   <paragraph>
                    > (0,0,0,0,10) table head cell paragraph [Sphinx] > table body cell paragraph
                      (0,0,0,0,9) table body cell paragraph [Sphinx] > default
                      (0,0,0,0,2) body [Sphinx] > default
                   MixedStyledText('Header 4')
                     MixedStyledText('Header 4')
                       SingleStyledText('Header 4')
-              TableCellBackground()
-                   x (0,0,0,0,10) table head cell background
         TableBody()
           TableRow()
+              TableCellBackground()
+                   x (0,0,0,2,8) table body cell background on odd row
+              TableCellBorder('top')
+                   > (0,0,0,2,8) table body top border [Sphinx] > table head bottom border
+                     (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+              TableCellBorder('right')
+                   > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+              TableCellBorder('bottom')
+                   > (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+              TableCellBorder('left')
+                   x (0,0,0,2,8) table body left border
+                   x (0,0,0,2,4) table left border
+                   > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
             TableCell()   <entry>
                  > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
-              Paragraph('body row 1, column 1')   table_sideways.rst:12   <paragraph>
+              Paragraph('body row 1, column 1')   table_sideways.rst:15   <paragraph>
                    > (0,0,0,1,8) table first column paragraph [Sphinx] > table body cell paragraph
                      (0,0,0,0,9) table body cell paragraph [Sphinx] > default
                      (0,0,0,0,2) body [Sphinx] > default
@@ -109,9 +186,18 @@
                       SingleStyledText('body row 1, column 1')
               TableCellBackground()
                    x (0,0,0,2,8) table body cell background on odd row
+              TableCellBorder('top')
+                   > (0,0,0,2,8) table body top border [Sphinx] > table head bottom border
+                     (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+              TableCellBorder('right')
+                   > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+              TableCellBorder('bottom')
+                   > (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+              TableCellBorder('left')
+                   > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
             TableCell()   <entry>
                  > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
-              Paragraph('column 2')   table_sideways.rst:12   <paragraph>
+              Paragraph('column 2')   table_sideways.rst:15   <paragraph>
                    > (0,0,0,0,9) table body cell paragraph [Sphinx] > default
                      (0,0,0,0,2) body [Sphinx] > default
                   MixedStyledText('column 2')
@@ -119,9 +205,18 @@
                       SingleStyledText('column 2')
               TableCellBackground()
                    x (0,0,0,2,8) table body cell background on odd row
+              TableCellBorder('top')
+                   > (0,0,0,2,8) table body top border [Sphinx] > table head bottom border
+                     (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+              TableCellBorder('right')
+                   > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+              TableCellBorder('bottom')
+                   > (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+              TableCellBorder('left')
+                   > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
             TableCell()   <entry>
                  > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
-              Paragraph('column 3')   table_sideways.rst:12   <paragraph>
+              Paragraph('column 3')   table_sideways.rst:15   <paragraph>
                    > (0,0,0,0,9) table body cell paragraph [Sphinx] > default
                      (0,0,0,0,2) body [Sphinx] > default
                   MixedStyledText('column 3')
@@ -129,20 +224,41 @@
                       SingleStyledText('column 3')
               TableCellBackground()
                    x (0,0,0,2,8) table body cell background on odd row
+              TableCellBorder('top')
+                   > (0,0,0,2,8) table body top border [Sphinx] > table head bottom border
+                     (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+              TableCellBorder('right')
+                   x (0,0,0,2,8) table body right border
+                   x (0,0,0,2,4) table right border
+                   > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+              TableCellBorder('bottom')
+                   > (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+              TableCellBorder('left')
+                   > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
             TableCell()   <entry>
                  > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
-              Paragraph('column 4')   table_sideways.rst:12   <paragraph>
+              Paragraph('column 4')   table_sideways.rst:15   <paragraph>
                    > (0,0,0,0,9) table body cell paragraph [Sphinx] > default
                      (0,0,0,0,2) body [Sphinx] > default
                   MixedStyledText('column 4')
                     MixedStyledText('column 4')
                       SingleStyledText('column 4')
-              TableCellBackground()
-                   x (0,0,0,2,8) table body cell background on odd row
           TableRow()
+              TableCellBackground()
+                   x (0,0,0,2,8) table body cell background on even row
+              TableCellBorder('top')
+                   > (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+              TableCellBorder('right')
+                   > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+              TableCellBorder('bottom')
+                   > (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+              TableCellBorder('left')
+                   x (0,0,0,2,8) table body left border
+                   x (0,0,0,2,4) table left border
+                   > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
             TableCell()   <entry>
                  > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
-              Paragraph('body row 2')   table_sideways.rst:14   <paragraph>
+              Paragraph('body row 2')   table_sideways.rst:17   <paragraph>
                    > (0,0,0,1,8) table first column paragraph [Sphinx] > table body cell paragraph
                      (0,0,0,0,9) table body cell paragraph [Sphinx] > default
                      (0,0,0,0,2) body [Sphinx] > default
@@ -151,20 +267,40 @@
                       SingleStyledText('body row 2')
               TableCellBackground()
                    x (0,0,0,2,8) table body cell background on even row
+              TableCellBorder('top')
+                   > (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+              TableCellBorder('right')
+                   x (0,0,0,2,8) table body right border
+                   x (0,0,0,2,4) table right border
+                   > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+              TableCellBorder('bottom')
+                   > (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+              TableCellBorder('left')
+                   > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
             TableCell()   <entry>
                  > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
-              Paragraph('Cells may span columns.')   table_sideways.rst:14   <paragraph>
+              Paragraph('Cells may span columns.')   table_sideways.rst:17   <paragraph>
                    > (0,0,0,0,9) table body cell paragraph [Sphinx] > default
                      (0,0,0,0,2) body [Sphinx] > default
                   MixedStyledText('Cells may span columns.')
                     MixedStyledText('Cells may span columns.')
                       SingleStyledText('Cells may span columns.')
-              TableCellBackground()
-                   x (0,0,0,2,8) table body cell background on even row
           TableRow()
+              TableCellBackground()
+                   x (0,0,0,2,8) table body cell background on odd row
+              TableCellBorder('top')
+                   > (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+              TableCellBorder('right')
+                   > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+              TableCellBorder('bottom')
+                   > (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+              TableCellBorder('left')
+                   x (0,0,0,2,8) table body left border
+                   x (0,0,0,2,4) table left border
+                   > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
             TableCell()   <entry>
                  > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
-              Paragraph('body row 31')   table_sideways.rst:16   <paragraph>
+              Paragraph('body row 31')   table_sideways.rst:19   <paragraph>
                    > (0,0,0,1,8) table first column paragraph [Sphinx] > table body cell paragraph
                      (0,0,0,0,9) table body cell paragraph [Sphinx] > default
                      (0,0,0,0,2) body [Sphinx] > default
@@ -176,19 +312,36 @@
                              (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
                         SingleStyledText('1')
               TableCellBackground()
-                   x (0,0,0,2,8) table body cell background on odd row
+              TableCellBorder('top')
+                   > (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+              TableCellBorder('right')
+                   > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+              TableCellBorder('bottom')
+                   > (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+              TableCellBorder('left')
+                   > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
             TableCell()   <entry>
                  > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
-              Paragraph('Cells may span rows.')   table_sideways.rst:16   <paragraph>
+              Paragraph('Cells may span rows.')   table_sideways.rst:19   <paragraph>
                    > (0,0,0,0,9) table body cell paragraph [Sphinx] > default
                      (0,0,0,0,2) body [Sphinx] > default
                   MixedStyledText('Cells may span rows.')
                     MixedStyledText('Cells may span rows.')
                       SingleStyledText('Cells may span rows.')
               TableCellBackground()
+              TableCellBorder('top')
+                   > (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+              TableCellBorder('right')
+                   x (0,0,0,2,8) table body right border
+                   x (0,0,0,2,4) table right border
+                   > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+              TableCellBorder('bottom')
+                   > (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+              TableCellBorder('left')
+                   > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
             TableCell()   <entry>
                  > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
-              List(style='bulleted')   table_sideways.rst:16   <bullet_list>
+              List(style='bulleted')   table_sideways.rst:19   <bullet_list>
                    x (0,0,1,0,4) (table) bulleted list
                    > (0,0,1,0,2) bulleted list [Sphinx] > enumerated list
                 ListItem()   <list_item>
@@ -204,7 +357,7 @@
                         SingleStyledText('')
                   StaticGroupedFlowables()
                        > (0,0,0,0,3) list item body [Sphinx] > DEFAULT
-                    Paragraph('Table cells')   table_sideways.rst:16   <paragraph>
+                    Paragraph('Table cells')   table_sideways.rst:19   <paragraph>
                          > (0,0,0,0,9) table body cell paragraph [Sphinx] > default
                            (0,0,0,0,5) list item paragraph [Sphinx] > default
                            (0,0,0,0,2) body [Sphinx] > default
@@ -224,7 +377,7 @@
                         SingleStyledText('')
                   StaticGroupedFlowables()
                        > (0,0,0,0,3) list item body [Sphinx] > DEFAULT
-                    Paragraph('contain')   table_sideways.rst:17   <paragraph>
+                    Paragraph('contain')   table_sideways.rst:20   <paragraph>
                          > (0,0,0,0,9) table body cell paragraph [Sphinx] > default
                            (0,0,0,0,5) list item paragraph [Sphinx] > default
                            (0,0,0,0,2) body [Sphinx] > default
@@ -244,30 +397,52 @@
                         SingleStyledText('')
                   StaticGroupedFlowables()
                        > (0,0,0,0,3) list item body [Sphinx] > DEFAULT
-                    Paragraph('body elements.')   table_sideways.rst:18   <paragraph>
+                    Paragraph('body elements.')   table_sideways.rst:21   <paragraph>
                          > (0,0,0,0,9) table body cell paragraph [Sphinx] > default
                            (0,0,0,0,5) list item paragraph [Sphinx] > default
                            (0,0,0,0,2) body [Sphinx] > default
                         MixedStyledText('body elements.')
                           MixedStyledText('body elements.')
                             SingleStyledText('body elements.')
-              TableCellBackground()
           TableRow()
+              TableCellBackground()
+                   x (0,0,0,2,8) table body cell background on even row
+              TableCellBorder('top')
+                   > (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+              TableCellBorder('right')
+                   > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+              TableCellBorder('bottom')
+                   > (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+              TableCellBorder('left')
+                   x (0,0,0,2,8) table body left border
+                   x (0,0,0,2,4) table left border
+                   > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
             TableCell()   <entry>
                  > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
-              Paragraph('body row 4')   table_sideways.rst:18   <paragraph>
+              Paragraph('body row 4')   table_sideways.rst:21   <paragraph>
                    > (0,0,0,1,8) table first column paragraph [Sphinx] > table body cell paragraph
                      (0,0,0,0,9) table body cell paragraph [Sphinx] > default
                      (0,0,0,0,2) body [Sphinx] > default
                   MixedStyledText('body row 4')
                     MixedStyledText('body row 4')
                       SingleStyledText('body row 4')
-              TableCellBackground()
-                   x (0,0,0,2,8) table body cell background on even row
           TableRow()
+              TableCellBackground()
+                   x (0,0,0,2,8) table body cell background on odd row
+              TableCellBorder('top')
+                   > (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+              TableCellBorder('right')
+                   > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+              TableCellBorder('bottom')
+                   > (0,0,0,2,8) table bottom border [Sphinx] > table top border
+                     (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+              TableCellBorder('left')
+                   x (0,0,0,2,8) table body left border
+                   x (0,0,0,2,4) table left border
+                   > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
             TableCell()   <entry>
                  > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
-              Paragraph('body row 5')   table_sideways.rst:20   <paragraph>
+              Paragraph('body row 5')   table_sideways.rst:23   <paragraph>
                    > (0,0,0,1,8) table first column paragraph [Sphinx] > table body cell paragraph
                      (0,0,0,0,9) table body cell paragraph [Sphinx] > default
                      (0,0,0,0,2) body [Sphinx] > default
@@ -276,9 +451,18 @@
                       SingleStyledText('body row 5')
               TableCellBackground()
                    x (0,0,0,2,8) table body cell background on odd row
+              TableCellBorder('top')
+                   > (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+              TableCellBorder('right')
+                   > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+              TableCellBorder('bottom')
+                   > (0,0,0,2,8) table bottom border [Sphinx] > table top border
+                     (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+              TableCellBorder('left')
+                   > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
             TableCell()   <entry>
                  > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
-              Paragraph('Cells may also be empty: -->')   table_sideways.rst:20   <paragraph>
+              Paragraph('Cells may also be empty: -->')   table_sideways.rst:23   <paragraph>
                    > (0,0,0,0,9) table body cell paragraph [Sphinx] > default
                      (0,0,0,0,2) body [Sphinx] > default
                   MixedStyledText('Cells may also be empty: -->')
@@ -289,10 +473,19 @@
                         SingleStyledText('-->')
               TableCellBackground()
                    x (0,0,0,2,8) table body cell background on odd row
+              TableCellBorder('top')
+                   > (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+              TableCellBorder('right')
+                   x (0,0,0,2,8) table body right border
+                   x (0,0,0,2,4) table right border
+                   > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+              TableCellBorder('bottom')
+                   > (0,0,0,2,8) table bottom border [Sphinx] > table top border
+                     (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+              TableCellBorder('left')
+                   > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
             TableCell()   <entry>
                  > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
-              TableCellBackground()
-                   x (0,0,0,2,8) table body cell background on odd row
 ---------------------------------- page 3 ----------------------------------
 #### FlowablesContainer('background')
   StaticGroupedFlowables()
@@ -303,15 +496,14 @@
 #### ChainedContainer('content')
   StaticGroupedFlowables()
     TableWithCaption()   table_sideways.rst   <table>
-         > (0,0,0,1,2) sideways table [table_sideways.rts] > NEXT_MATCH
-           (0,0,0,1,1) sideways float [Sphinx] > NEXT_MATCH
+         > (0,0,0,1,1) sideways-break float [table_sideways.rts] > NEXT_MATCH
          x (0,0,0,0,2) table with caption
-      Caption('Table 2. Another sideways table')
+      Caption('Table 1.2. Another sideways tabl...')
            > (0,0,0,0,4) table caption [Sphinx] > caption
           SingleStyledText('Table')
           SingleStyledText(' ')
-          MixedStyledText('2. ', style='label')
-            SingleStyledText('2')
+          MixedStyledText('1.2. ', style='label')
+            SingleStyledText('1.2')
             SingleStyledText('. ')
           MixedStyledText('Another sideways table')
             MixedStyledText('Another sideways table')
@@ -320,10 +512,26 @@
            > (0,0,0,0,2) table [Sphinx] > DEFAULT
         TableHead()
           TableRow()
+              TableCellBackground()
+                   x (0,0,0,0,10) table head cell background
+              TableCellBorder('top')
+                   > (0,0,0,2,8) table top border [Sphinx] > DEFAULT
+                     (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+              TableCellBorder('right')
+                   x (0,0,0,1,8) table head cell right border
+                   > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+              TableCellBorder('bottom')
+                   > (0,0,0,2,8) table head bottom border [Sphinx] > table top border
+                     (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+              TableCellBorder('left')
+                   x (0,0,0,2,8) table head left border
+                   x (0,0,0,2,4) table left border
+                   x (0,0,0,1,8) table head cell left border
+                   > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
             TableCell()   <entry>
                  x (0,0,0,0,8) table head cell
                  > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
-              Paragraph('A')   table_sideways.rst:35   <paragraph>
+              Paragraph('A')   table_sideways.rst:38   <paragraph>
                    > (0,0,0,0,10) table head cell paragraph [Sphinx] > table body cell paragraph
                      (0,0,0,0,9) table body cell paragraph [Sphinx] > default
                      (0,0,0,0,2) body [Sphinx] > default
@@ -332,23 +540,48 @@
                       SingleStyledText('A')
               TableCellBackground()
                    x (0,0,0,0,10) table head cell background
+              TableCellBorder('top')
+                   > (0,0,0,2,8) table top border [Sphinx] > DEFAULT
+                     (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+              TableCellBorder('right')
+                   x (0,0,0,2,8) table head right border
+                   x (0,0,0,2,4) table right border
+                   x (0,0,0,1,8) table head cell right border
+                   > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+              TableCellBorder('bottom')
+                   > (0,0,0,2,8) table head bottom border [Sphinx] > table top border
+                     (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+              TableCellBorder('left')
+                   x (0,0,0,1,8) table head cell left border
+                   > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
             TableCell()   <entry>
                  x (0,0,0,0,8) table head cell
                  > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
-              Paragraph('not A')   table_sideways.rst:35   <paragraph>
+              Paragraph('not A')   table_sideways.rst:38   <paragraph>
                    > (0,0,0,0,10) table head cell paragraph [Sphinx] > table body cell paragraph
                      (0,0,0,0,9) table body cell paragraph [Sphinx] > default
                      (0,0,0,0,2) body [Sphinx] > default
                   MixedStyledText('not A')
                     MixedStyledText('not A')
                       SingleStyledText('not A')
-              TableCellBackground()
-                   x (0,0,0,0,10) table head cell background
         TableBody()
           TableRow()
+              TableCellBackground()
+                   x (0,0,0,2,8) table body cell background on odd row
+              TableCellBorder('top')
+                   > (0,0,0,2,8) table body top border [Sphinx] > table head bottom border
+                     (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+              TableCellBorder('right')
+                   > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+              TableCellBorder('bottom')
+                   > (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+              TableCellBorder('left')
+                   x (0,0,0,2,8) table body left border
+                   x (0,0,0,2,4) table left border
+                   > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
             TableCell()   <entry>
                  > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
-              Paragraph('False')   table_sideways.rst:37   <paragraph>
+              Paragraph('False')   table_sideways.rst:40   <paragraph>
                    > (0,0,0,1,8) table first column paragraph [Sphinx] > table body cell paragraph
                      (0,0,0,0,9) table body cell paragraph [Sphinx] > default
                      (0,0,0,0,2) body [Sphinx] > default
@@ -357,20 +590,42 @@
                       SingleStyledText('False')
               TableCellBackground()
                    x (0,0,0,2,8) table body cell background on odd row
+              TableCellBorder('top')
+                   > (0,0,0,2,8) table body top border [Sphinx] > table head bottom border
+                     (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+              TableCellBorder('right')
+                   x (0,0,0,2,8) table body right border
+                   x (0,0,0,2,4) table right border
+                   > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+              TableCellBorder('bottom')
+                   > (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+              TableCellBorder('left')
+                   > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
             TableCell()   <entry>
                  > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
-              Paragraph('True')   table_sideways.rst:37   <paragraph>
+              Paragraph('True')   table_sideways.rst:40   <paragraph>
                    > (0,0,0,0,9) table body cell paragraph [Sphinx] > default
                      (0,0,0,0,2) body [Sphinx] > default
                   MixedStyledText('True')
                     MixedStyledText('True')
                       SingleStyledText('True')
-              TableCellBackground()
-                   x (0,0,0,2,8) table body cell background on odd row
           TableRow()
+              TableCellBackground()
+                   x (0,0,0,2,8) table body cell background on even row
+              TableCellBorder('top')
+                   > (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+              TableCellBorder('right')
+                   > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+              TableCellBorder('bottom')
+                   > (0,0,0,2,8) table bottom border [Sphinx] > table top border
+                     (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+              TableCellBorder('left')
+                   x (0,0,0,2,8) table body left border
+                   x (0,0,0,2,4) table left border
+                   > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
             TableCell()   <entry>
                  > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
-              Paragraph('True')   table_sideways.rst:38   <paragraph>
+              Paragraph('True')   table_sideways.rst:41   <paragraph>
                    > (0,0,0,1,8) table first column paragraph [Sphinx] > table body cell paragraph
                      (0,0,0,0,9) table body cell paragraph [Sphinx] > default
                      (0,0,0,0,2) body [Sphinx] > default
@@ -379,16 +634,25 @@
                       SingleStyledText('True')
               TableCellBackground()
                    x (0,0,0,2,8) table body cell background on even row
+              TableCellBorder('top')
+                   > (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+              TableCellBorder('right')
+                   x (0,0,0,2,8) table body right border
+                   x (0,0,0,2,4) table right border
+                   > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+              TableCellBorder('bottom')
+                   > (0,0,0,2,8) table bottom border [Sphinx] > table top border
+                     (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+              TableCellBorder('left')
+                   > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
             TableCell()   <entry>
                  > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
-              Paragraph('False')   table_sideways.rst:38   <paragraph>
+              Paragraph('False')   table_sideways.rst:41   <paragraph>
                    > (0,0,0,0,9) table body cell paragraph [Sphinx] > default
                      (0,0,0,0,2) body [Sphinx] > default
                   MixedStyledText('False')
                     MixedStyledText('False')
                       SingleStyledText('False')
-              TableCellBackground()
-                   x (0,0,0,2,8) table body cell background on even row
 ---------------------------------- page 4 ----------------------------------
 #### FlowablesContainer('background')
   StaticGroupedFlowables()
@@ -399,15 +663,30 @@
 #### ChainedContainer('column1')
   (continued) StaticGroupedFlowables()
     (continued) DocumentTree()   table_sideways.rst   <document>
-      PageBreak(style=FlowableStyle)   table_sideways.rst:42   <raw>
-      Paragraph('Paragraph preceding the third si...')   table_sideways.rst:47   <paragraph>
-           > (0,0,0,0,2) body [Sphinx] > default
-          MixedStyledText('Paragraph preceding the third si...')
+      (continued) Section(id='first-section')   table_sideways.rst:3   <section>
+           > (0,0,0,1,4) content chapter [Sphinx] > chapter
+             (0,0,0,1,2) chapter [table_sideways.rts] > DEFAULT
+      Section(id='second-section')   table_sideways.rst:46   <section>
+           > (0,0,0,1,4) content chapter [Sphinx] > chapter
+             (0,0,0,1,2) chapter [table_sideways.rts] > DEFAULT
+        Heading('2 Second Section')   table_sideways.rst:46   <title>
+             > (0,0,0,1,2) heading level 1 [Sphinx] > DEFAULT
+               (0,0,0,0,2) other heading levels [Sphinx] > heading level 5
+            MixedStyledText('2 ', style='label')
+                 x (0,0,1,1,3) heading level 1 label
+              SingleStyledText('2')
+              SingleStyledText(' ')
+            MixedStyledText('Second Section')
+              MixedStyledText('Second Section')
+                SingleStyledText('Second Section')
+        Paragraph('Paragraph preceding the third si...')   table_sideways.rst:48   <paragraph>
+             > (0,0,0,0,2) body [Sphinx] > default
             MixedStyledText('Paragraph preceding the third si...')
-              SingleStyledText('Paragraph preceding the third si...')
-          MixedStyledText('Paragraph preceding the third si...')
+              MixedStyledText('Paragraph preceding the third si...')
+                SingleStyledText('Paragraph preceding the third si...')
             MixedStyledText('Paragraph preceding the third si...')
-              SingleStyledText('Paragraph preceding the third si...')
+              MixedStyledText('Paragraph preceding the third si...')
+                SingleStyledText('Paragraph preceding the third si...')
 ---------------------------------- page 5 ----------------------------------
 #### FlowablesContainer('background')
   StaticGroupedFlowables()
@@ -418,15 +697,14 @@
 #### ChainedContainer('content')
   StaticGroupedFlowables()
     TableWithCaption()   table_sideways.rst   <table>
-         > (0,0,0,1,2) sideways table [table_sideways.rts] > NEXT_MATCH
-           (0,0,0,1,1) sideways float [Sphinx] > NEXT_MATCH
+         > (0,0,0,1,1) sideways-break float [table_sideways.rts] > NEXT_MATCH
          x (0,0,0,0,2) table with caption
-      Caption('Table 3. Sideways table spanning...')
+      Caption('Table 2.1. Sideways table spanni...')
            > (0,0,0,0,4) table caption [Sphinx] > caption
           SingleStyledText('Table')
           SingleStyledText(' ')
-          MixedStyledText('3. ', style='label')
-            SingleStyledText('3')
+          MixedStyledText('2.1. ', style='label')
+            SingleStyledText('2.1')
             SingleStyledText('. ')
           MixedStyledText('Sideways table spanning two page...')
             MixedStyledText('Sideways table spanning two page...')
@@ -435,6 +713,22 @@
            > (0,0,0,0,2) table [Sphinx] > DEFAULT
         TableHead()
           TableRow()
+              TableCellBackground()
+                   x (0,0,0,0,10) table head cell background
+              TableCellBorder('top')
+                   > (0,0,0,2,8) table top border [Sphinx] > DEFAULT
+                     (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+              TableCellBorder('right')
+                   x (0,0,0,1,8) table head cell right border
+                   > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+              TableCellBorder('bottom')
+                   > (0,0,0,2,8) table head bottom border [Sphinx] > table top border
+                     (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+              TableCellBorder('left')
+                   x (0,0,0,2,8) table head left border
+                   x (0,0,0,2,4) table left border
+                   x (0,0,0,1,8) table head cell left border
+                   > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
             TableCell()   <entry>
                  x (0,0,0,0,8) table head cell
                  > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
@@ -447,6 +741,18 @@
                       SingleStyledText('Header row, column 1 (header row...')
               TableCellBackground()
                    x (0,0,0,0,10) table head cell background
+              TableCellBorder('top')
+                   > (0,0,0,2,8) table top border [Sphinx] > DEFAULT
+                     (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+              TableCellBorder('right')
+                   x (0,0,0,1,8) table head cell right border
+                   > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+              TableCellBorder('bottom')
+                   > (0,0,0,2,8) table head bottom border [Sphinx] > table top border
+                     (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+              TableCellBorder('left')
+                   x (0,0,0,1,8) table head cell left border
+                   > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
             TableCell()   <entry>
                  x (0,0,0,0,8) table head cell
                  > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
@@ -459,6 +765,18 @@
                       SingleStyledText('Header 2')
               TableCellBackground()
                    x (0,0,0,0,10) table head cell background
+              TableCellBorder('top')
+                   > (0,0,0,2,8) table top border [Sphinx] > DEFAULT
+                     (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+              TableCellBorder('right')
+                   x (0,0,0,1,8) table head cell right border
+                   > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+              TableCellBorder('bottom')
+                   > (0,0,0,2,8) table head bottom border [Sphinx] > table top border
+                     (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+              TableCellBorder('left')
+                   x (0,0,0,1,8) table head cell left border
+                   > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
             TableCell()   <entry>
                  x (0,0,0,0,8) table head cell
                  > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
@@ -471,6 +789,20 @@
                       SingleStyledText('Header 3')
               TableCellBackground()
                    x (0,0,0,0,10) table head cell background
+              TableCellBorder('top')
+                   > (0,0,0,2,8) table top border [Sphinx] > DEFAULT
+                     (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+              TableCellBorder('right')
+                   x (0,0,0,2,8) table head right border
+                   x (0,0,0,2,4) table right border
+                   x (0,0,0,1,8) table head cell right border
+                   > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+              TableCellBorder('bottom')
+                   > (0,0,0,2,8) table head bottom border [Sphinx] > table top border
+                     (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+              TableCellBorder('left')
+                   x (0,0,0,1,8) table head cell left border
+                   > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
             TableCell()   <entry>
                  x (0,0,0,0,8) table head cell
                  > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
@@ -481,10 +813,21 @@
                   MixedStyledText('Header 4')
                     MixedStyledText('Header 4')
                       SingleStyledText('Header 4')
-              TableCellBackground()
-                   x (0,0,0,0,10) table head cell background
         TableBody()
           TableRow()
+              TableCellBackground()
+                   x (0,0,0,2,8) table body cell background on odd row
+              TableCellBorder('top')
+                   > (0,0,0,2,8) table body top border [Sphinx] > table head bottom border
+                     (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+              TableCellBorder('right')
+                   > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+              TableCellBorder('bottom')
+                   > (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+              TableCellBorder('left')
+                   x (0,0,0,2,8) table body left border
+                   x (0,0,0,2,4) table left border
+                   > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
             TableCell()   <entry>
                  > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
               Paragraph('body row 1, column 1')   table_sideways.rst:57   <paragraph>
@@ -496,6 +839,15 @@
                       SingleStyledText('body row 1, column 1')
               TableCellBackground()
                    x (0,0,0,2,8) table body cell background on odd row
+              TableCellBorder('top')
+                   > (0,0,0,2,8) table body top border [Sphinx] > table head bottom border
+                     (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+              TableCellBorder('right')
+                   > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+              TableCellBorder('bottom')
+                   > (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+              TableCellBorder('left')
+                   > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
             TableCell()   <entry>
                  > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
               Paragraph('column 2')   table_sideways.rst:57   <paragraph>
@@ -506,6 +858,15 @@
                       SingleStyledText('column 2')
               TableCellBackground()
                    x (0,0,0,2,8) table body cell background on odd row
+              TableCellBorder('top')
+                   > (0,0,0,2,8) table body top border [Sphinx] > table head bottom border
+                     (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+              TableCellBorder('right')
+                   > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+              TableCellBorder('bottom')
+                   > (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+              TableCellBorder('left')
+                   > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
             TableCell()   <entry>
                  > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
               Paragraph('column 3')   table_sideways.rst:57   <paragraph>
@@ -516,6 +877,17 @@
                       SingleStyledText('column 3')
               TableCellBackground()
                    x (0,0,0,2,8) table body cell background on odd row
+              TableCellBorder('top')
+                   > (0,0,0,2,8) table body top border [Sphinx] > table head bottom border
+                     (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+              TableCellBorder('right')
+                   x (0,0,0,2,8) table body right border
+                   x (0,0,0,2,4) table right border
+                   > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+              TableCellBorder('bottom')
+                   > (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+              TableCellBorder('left')
+                   > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
             TableCell()   <entry>
                  > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
               Paragraph('column 4')   table_sideways.rst:57   <paragraph>
@@ -524,9 +896,19 @@
                   MixedStyledText('column 4')
                     MixedStyledText('column 4')
                       SingleStyledText('column 4')
-              TableCellBackground()
-                   x (0,0,0,2,8) table body cell background on odd row
           TableRow()
+              TableCellBackground()
+                   x (0,0,0,2,8) table body cell background on even row
+              TableCellBorder('top')
+                   > (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+              TableCellBorder('right')
+                   > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+              TableCellBorder('bottom')
+                   > (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+              TableCellBorder('left')
+                   x (0,0,0,2,8) table body left border
+                   x (0,0,0,2,4) table left border
+                   > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
             TableCell()   <entry>
                  > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
               Paragraph('body row 2')   table_sideways.rst:59   <paragraph>
@@ -538,6 +920,16 @@
                       SingleStyledText('body row 2')
               TableCellBackground()
                    x (0,0,0,2,8) table body cell background on even row
+              TableCellBorder('top')
+                   > (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+              TableCellBorder('right')
+                   x (0,0,0,2,8) table body right border
+                   x (0,0,0,2,4) table right border
+                   > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+              TableCellBorder('bottom')
+                   > (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+              TableCellBorder('left')
+                   > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
             TableCell()   <entry>
                  > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
               Paragraph('Cells may span columns.')   table_sideways.rst:59   <paragraph>
@@ -546,9 +938,19 @@
                   MixedStyledText('Cells may span columns.')
                     MixedStyledText('Cells may span columns.')
                       SingleStyledText('Cells may span columns.')
-              TableCellBackground()
-                   x (0,0,0,2,8) table body cell background on even row
           TableRow()
+              TableCellBackground()
+                   x (0,0,0,2,8) table body cell background on odd row
+              TableCellBorder('top')
+                   > (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+              TableCellBorder('right')
+                   > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+              TableCellBorder('bottom')
+                   > (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+              TableCellBorder('left')
+                   x (0,0,0,2,8) table body left border
+                   x (0,0,0,2,4) table left border
+                   > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
             TableCell()   <entry>
                  > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
               Paragraph('body row 32')   table_sideways.rst:61   <paragraph>
@@ -563,7 +965,14 @@
                              (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
                         SingleStyledText('2')
               TableCellBackground()
-                   x (0,0,0,2,8) table body cell background on odd row
+              TableCellBorder('top')
+                   > (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+              TableCellBorder('right')
+                   > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+              TableCellBorder('bottom')
+                   > (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+              TableCellBorder('left')
+                   > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
             TableCell()   <entry>
                  > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
               Paragraph('Cells may span rows.')   table_sideways.rst:61   <paragraph>
@@ -573,6 +982,16 @@
                     MixedStyledText('Cells may span rows.')
                       SingleStyledText('Cells may span rows.')
               TableCellBackground()
+              TableCellBorder('top')
+                   > (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+              TableCellBorder('right')
+                   x (0,0,0,2,8) table body right border
+                   x (0,0,0,2,4) table right border
+                   > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+              TableCellBorder('bottom')
+                   > (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+              TableCellBorder('left')
+                   > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
             TableCell()   <entry>
                  > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
               List(style='bulleted')   table_sideways.rst:61   <bullet_list>
@@ -638,8 +1057,19 @@
                         MixedStyledText('body elements.')
                           MixedStyledText('body elements.')
                             SingleStyledText('body elements.')
-              TableCellBackground()
           TableRow()
+              TableCellBackground()
+                   x (0,0,0,2,8) table body cell background on even row
+              TableCellBorder('top')
+                   > (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+              TableCellBorder('right')
+                   > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+              TableCellBorder('bottom')
+                   > (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+              TableCellBorder('left')
+                   x (0,0,0,2,8) table body left border
+                   x (0,0,0,2,4) table left border
+                   > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
             TableCell()   <entry>
                  > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
               Paragraph('body row 4')   table_sideways.rst:63   <paragraph>
@@ -649,9 +1079,19 @@
                   MixedStyledText('body row 4')
                     MixedStyledText('body row 4')
                       SingleStyledText('body row 4')
-              TableCellBackground()
-                   x (0,0,0,2,8) table body cell background on even row
           TableRow()
+              TableCellBackground()
+                   x (0,0,0,2,8) table body cell background on odd row
+              TableCellBorder('top')
+                   > (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+              TableCellBorder('right')
+                   > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+              TableCellBorder('bottom')
+                   > (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+              TableCellBorder('left')
+                   x (0,0,0,2,8) table body left border
+                   x (0,0,0,2,4) table left border
+                   > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
             TableCell()   <entry>
                  > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
               Paragraph('body row 5')   table_sideways.rst:65   <paragraph>
@@ -663,6 +1103,14 @@
                       SingleStyledText('body row 5')
               TableCellBackground()
                    x (0,0,0,2,8) table body cell background on odd row
+              TableCellBorder('top')
+                   > (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+              TableCellBorder('right')
+                   > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+              TableCellBorder('bottom')
+                   > (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+              TableCellBorder('left')
+                   > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
             TableCell()   <entry>
                  > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
               Paragraph('Cells may also be empty: -->')   table_sideways.rst:65   <paragraph>
@@ -676,11 +1124,31 @@
                         SingleStyledText('-->')
               TableCellBackground()
                    x (0,0,0,2,8) table body cell background on odd row
+              TableCellBorder('top')
+                   > (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+              TableCellBorder('right')
+                   x (0,0,0,2,8) table body right border
+                   x (0,0,0,2,4) table right border
+                   > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+              TableCellBorder('bottom')
+                   > (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+              TableCellBorder('left')
+                   > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
             TableCell()   <entry>
                  > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
-              TableCellBackground()
-                   x (0,0,0,2,8) table body cell background on odd row
           TableRow()
+              TableCellBackground()
+                   x (0,0,0,2,8) table body cell background on even row
+              TableCellBorder('top')
+                   > (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+              TableCellBorder('right')
+                   > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+              TableCellBorder('bottom')
+                   > (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+              TableCellBorder('left')
+                   x (0,0,0,2,8) table body left border
+                   x (0,0,0,2,4) table left border
+                   > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
             TableCell()   <entry>
                  > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
               Paragraph('body row 6, column 1')   table_sideways.rst:68   <paragraph>
@@ -692,6 +1160,14 @@
                       SingleStyledText('body row 6, column 1')
               TableCellBackground()
                    x (0,0,0,2,8) table body cell background on even row
+              TableCellBorder('top')
+                   > (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+              TableCellBorder('right')
+                   > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+              TableCellBorder('bottom')
+                   > (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+              TableCellBorder('left')
+                   > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
             TableCell()   <entry>
                  > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
               Paragraph('column 2')   table_sideways.rst:68   <paragraph>
@@ -702,6 +1178,14 @@
                       SingleStyledText('column 2')
               TableCellBackground()
                    x (0,0,0,2,8) table body cell background on even row
+              TableCellBorder('top')
+                   > (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+              TableCellBorder('right')
+                   > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+              TableCellBorder('bottom')
+                   > (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+              TableCellBorder('left')
+                   > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
             TableCell()   <entry>
                  > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
               Paragraph('column 3')   table_sideways.rst:68   <paragraph>
@@ -712,6 +1196,16 @@
                       SingleStyledText('column 3')
               TableCellBackground()
                    x (0,0,0,2,8) table body cell background on even row
+              TableCellBorder('top')
+                   > (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+              TableCellBorder('right')
+                   x (0,0,0,2,8) table body right border
+                   x (0,0,0,2,4) table right border
+                   > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+              TableCellBorder('bottom')
+                   > (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+              TableCellBorder('left')
+                   > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
             TableCell()   <entry>
                  > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
               Paragraph('column 4')   table_sideways.rst:68   <paragraph>
@@ -720,9 +1214,19 @@
                   MixedStyledText('column 4')
                     MixedStyledText('column 4')
                       SingleStyledText('column 4')
-              TableCellBackground()
-                   x (0,0,0,2,8) table body cell background on even row
           TableRow()
+              TableCellBackground()
+                   x (0,0,0,2,8) table body cell background on odd row
+              TableCellBorder('top')
+                   > (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+              TableCellBorder('right')
+                   > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+              TableCellBorder('bottom')
+                   > (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+              TableCellBorder('left')
+                   x (0,0,0,2,8) table body left border
+                   x (0,0,0,2,4) table left border
+                   > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
             TableCell()   <entry>
                  > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
               Paragraph('body row 7')   table_sideways.rst:70   <paragraph>
@@ -734,6 +1238,16 @@
                       SingleStyledText('body row 7')
               TableCellBackground()
                    x (0,0,0,2,8) table body cell background on odd row
+              TableCellBorder('top')
+                   > (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+              TableCellBorder('right')
+                   x (0,0,0,2,8) table body right border
+                   x (0,0,0,2,4) table right border
+                   > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+              TableCellBorder('bottom')
+                   > (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+              TableCellBorder('left')
+                   > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
             TableCell()   <entry>
                  > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
               Paragraph('Cells may span columns.')   table_sideways.rst:70   <paragraph>
@@ -742,9 +1256,19 @@
                   MixedStyledText('Cells may span columns.')
                     MixedStyledText('Cells may span columns.')
                       SingleStyledText('Cells may span columns.')
-              TableCellBackground()
-                   x (0,0,0,2,8) table body cell background on odd row
           TableRow()
+              TableCellBackground()
+                   x (0,0,0,2,8) table body cell background on even row
+              TableCellBorder('top')
+                   > (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+              TableCellBorder('right')
+                   > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+              TableCellBorder('bottom')
+                   > (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+              TableCellBorder('left')
+                   x (0,0,0,2,8) table body left border
+                   x (0,0,0,2,4) table left border
+                   > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
             TableCell()   <entry>
                  > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
               Paragraph('body row 83')   table_sideways.rst:72   <paragraph>
@@ -759,7 +1283,14 @@
                              (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
                         SingleStyledText('3')
               TableCellBackground()
-                   x (0,0,0,2,8) table body cell background on even row
+              TableCellBorder('top')
+                   > (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+              TableCellBorder('right')
+                   > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+              TableCellBorder('bottom')
+                   > (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+              TableCellBorder('left')
+                   > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
             TableCell()   <entry>
                  > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
               Paragraph('Cells may span rows.')   table_sideways.rst:72   <paragraph>
@@ -769,6 +1300,16 @@
                     MixedStyledText('Cells may span rows.')
                       SingleStyledText('Cells may span rows.')
               TableCellBackground()
+              TableCellBorder('top')
+                   > (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+              TableCellBorder('right')
+                   x (0,0,0,2,8) table body right border
+                   x (0,0,0,2,4) table right border
+                   > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+              TableCellBorder('bottom')
+                   > (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+              TableCellBorder('left')
+                   > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
             TableCell()   <entry>
                  > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
               List(style='bulleted')   table_sideways.rst:72   <bullet_list>
@@ -834,8 +1375,19 @@
                         MixedStyledText('body elements.')
                           MixedStyledText('body elements.')
                             SingleStyledText('body elements.')
-              TableCellBackground()
           TableRow()
+              TableCellBackground()
+                   x (0,0,0,2,8) table body cell background on odd row
+              TableCellBorder('top')
+                   > (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+              TableCellBorder('right')
+                   > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+              TableCellBorder('bottom')
+                   > (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+              TableCellBorder('left')
+                   x (0,0,0,2,8) table body left border
+                   x (0,0,0,2,4) table left border
+                   > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
             TableCell()   <entry>
                  > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
               Paragraph('body row 9')   table_sideways.rst:74   <paragraph>
@@ -845,8 +1397,6 @@
                   MixedStyledText('body row 9')
                     MixedStyledText('body row 9')
                       SingleStyledText('body row 9')
-              TableCellBackground()
-                   x (0,0,0,2,8) table body cell background on odd row
 ---------------------------------- page 6 ----------------------------------
 #### FlowablesContainer('background')
   StaticGroupedFlowables()
@@ -857,12 +1407,23 @@
 #### ChainedContainer('content')
   (continued) StaticGroupedFlowables()
     (continued) TableWithCaption()   table_sideways.rst   <table>
-         > (0,0,0,1,2) sideways table [table_sideways.rts] > NEXT_MATCH
-           (0,0,0,1,1) sideways float [Sphinx] > NEXT_MATCH
+         > (0,0,0,1,1) sideways-break float [table_sideways.rts] > NEXT_MATCH
          x (0,0,0,0,2) table with caption
       (continued) Table()
            > (0,0,0,0,2) table [Sphinx] > DEFAULT
           TableRow()
+              TableCellBackground()
+                   x (0,0,0,2,8) table body cell background on even row
+              TableCellBorder('top')
+                   > (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+              TableCellBorder('right')
+                   > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+              TableCellBorder('bottom')
+                   > (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+              TableCellBorder('left')
+                   x (0,0,0,2,8) table body left border
+                   x (0,0,0,2,4) table left border
+                   > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
             TableCell()   <entry>
                  > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
               Paragraph('body row 10')   table_sideways.rst:76   <paragraph>
@@ -874,6 +1435,14 @@
                       SingleStyledText('body row 10')
               TableCellBackground()
                    x (0,0,0,2,8) table body cell background on even row
+              TableCellBorder('top')
+                   > (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+              TableCellBorder('right')
+                   > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+              TableCellBorder('bottom')
+                   > (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+              TableCellBorder('left')
+                   > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
             TableCell()   <entry>
                  > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
               Paragraph('Cells may also be empty: -->')   table_sideways.rst:76   <paragraph>
@@ -887,11 +1456,31 @@
                         SingleStyledText('-->')
               TableCellBackground()
                    x (0,0,0,2,8) table body cell background on even row
+              TableCellBorder('top')
+                   > (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+              TableCellBorder('right')
+                   x (0,0,0,2,8) table body right border
+                   x (0,0,0,2,4) table right border
+                   > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+              TableCellBorder('bottom')
+                   > (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+              TableCellBorder('left')
+                   > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
             TableCell()   <entry>
                  > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
-              TableCellBackground()
-                   x (0,0,0,2,8) table body cell background on even row
           TableRow()
+              TableCellBackground()
+                   x (0,0,0,2,8) table body cell background on odd row
+              TableCellBorder('top')
+                   > (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+              TableCellBorder('right')
+                   > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+              TableCellBorder('bottom')
+                   > (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+              TableCellBorder('left')
+                   x (0,0,0,2,8) table body left border
+                   x (0,0,0,2,4) table left border
+                   > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
             TableCell()   <entry>
                  > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
               Paragraph('body row 11, column 1')   table_sideways.rst:79   <paragraph>
@@ -903,6 +1492,14 @@
                       SingleStyledText('body row 11, column 1')
               TableCellBackground()
                    x (0,0,0,2,8) table body cell background on odd row
+              TableCellBorder('top')
+                   > (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+              TableCellBorder('right')
+                   > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+              TableCellBorder('bottom')
+                   > (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+              TableCellBorder('left')
+                   > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
             TableCell()   <entry>
                  > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
               Paragraph('column 2')   table_sideways.rst:79   <paragraph>
@@ -913,6 +1510,14 @@
                       SingleStyledText('column 2')
               TableCellBackground()
                    x (0,0,0,2,8) table body cell background on odd row
+              TableCellBorder('top')
+                   > (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+              TableCellBorder('right')
+                   > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+              TableCellBorder('bottom')
+                   > (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+              TableCellBorder('left')
+                   > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
             TableCell()   <entry>
                  > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
               Paragraph('column 3')   table_sideways.rst:79   <paragraph>
@@ -923,6 +1528,16 @@
                       SingleStyledText('column 3')
               TableCellBackground()
                    x (0,0,0,2,8) table body cell background on odd row
+              TableCellBorder('top')
+                   > (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+              TableCellBorder('right')
+                   x (0,0,0,2,8) table body right border
+                   x (0,0,0,2,4) table right border
+                   > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+              TableCellBorder('bottom')
+                   > (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+              TableCellBorder('left')
+                   > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
             TableCell()   <entry>
                  > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
               Paragraph('column 4')   table_sideways.rst:79   <paragraph>
@@ -931,9 +1546,19 @@
                   MixedStyledText('column 4')
                     MixedStyledText('column 4')
                       SingleStyledText('column 4')
-              TableCellBackground()
-                   x (0,0,0,2,8) table body cell background on odd row
           TableRow()
+              TableCellBackground()
+                   x (0,0,0,2,8) table body cell background on even row
+              TableCellBorder('top')
+                   > (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+              TableCellBorder('right')
+                   > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+              TableCellBorder('bottom')
+                   > (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+              TableCellBorder('left')
+                   x (0,0,0,2,8) table body left border
+                   x (0,0,0,2,4) table left border
+                   > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
             TableCell()   <entry>
                  > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
               Paragraph('body row 12')   table_sideways.rst:81   <paragraph>
@@ -945,6 +1570,16 @@
                       SingleStyledText('body row 12')
               TableCellBackground()
                    x (0,0,0,2,8) table body cell background on even row
+              TableCellBorder('top')
+                   > (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+              TableCellBorder('right')
+                   x (0,0,0,2,8) table body right border
+                   x (0,0,0,2,4) table right border
+                   > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+              TableCellBorder('bottom')
+                   > (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+              TableCellBorder('left')
+                   > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
             TableCell()   <entry>
                  > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
               Paragraph('Cells may span columns.')   table_sideways.rst:81   <paragraph>
@@ -953,9 +1588,19 @@
                   MixedStyledText('Cells may span columns.')
                     MixedStyledText('Cells may span columns.')
                       SingleStyledText('Cells may span columns.')
-              TableCellBackground()
-                   x (0,0,0,2,8) table body cell background on even row
           TableRow()
+              TableCellBackground()
+                   x (0,0,0,2,8) table body cell background on odd row
+              TableCellBorder('top')
+                   > (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+              TableCellBorder('right')
+                   > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+              TableCellBorder('bottom')
+                   > (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+              TableCellBorder('left')
+                   x (0,0,0,2,8) table body left border
+                   x (0,0,0,2,4) table left border
+                   > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
             TableCell()   <entry>
                  > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
               Paragraph('body row 13')   table_sideways.rst:83   <paragraph>
@@ -966,7 +1611,14 @@
                     MixedStyledText('body row 13')
                       SingleStyledText('body row 13')
               TableCellBackground()
-                   x (0,0,0,2,8) table body cell background on odd row
+              TableCellBorder('top')
+                   > (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+              TableCellBorder('right')
+                   > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+              TableCellBorder('bottom')
+                   > (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+              TableCellBorder('left')
+                   > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
             TableCell()   <entry>
                  > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
               Paragraph('Cells may span rows.')   table_sideways.rst:83   <paragraph>
@@ -976,6 +1628,16 @@
                     MixedStyledText('Cells may span rows.')
                       SingleStyledText('Cells may span rows.')
               TableCellBackground()
+              TableCellBorder('top')
+                   > (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+              TableCellBorder('right')
+                   x (0,0,0,2,8) table body right border
+                   x (0,0,0,2,4) table right border
+                   > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+              TableCellBorder('bottom')
+                   > (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+              TableCellBorder('left')
+                   > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
             TableCell()   <entry>
                  > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
               List(style='bulleted')   table_sideways.rst:83   <bullet_list>
@@ -1041,8 +1703,19 @@
                         MixedStyledText('body elements.')
                           MixedStyledText('body elements.')
                             SingleStyledText('body elements.')
-              TableCellBackground()
           TableRow()
+              TableCellBackground()
+                   x (0,0,0,2,8) table body cell background on even row
+              TableCellBorder('top')
+                   > (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+              TableCellBorder('right')
+                   > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+              TableCellBorder('bottom')
+                   > (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+              TableCellBorder('left')
+                   x (0,0,0,2,8) table body left border
+                   x (0,0,0,2,4) table left border
+                   > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
             TableCell()   <entry>
                  > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
               Paragraph('body row 14')   table_sideways.rst:85   <paragraph>
@@ -1052,9 +1725,20 @@
                   MixedStyledText('body row 14')
                     MixedStyledText('body row 14')
                       SingleStyledText('body row 14')
-              TableCellBackground()
-                   x (0,0,0,2,8) table body cell background on even row
           TableRow()
+              TableCellBackground()
+                   x (0,0,0,2,8) table body cell background on odd row
+              TableCellBorder('top')
+                   > (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+              TableCellBorder('right')
+                   > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+              TableCellBorder('bottom')
+                   > (0,0,0,2,8) table bottom border [Sphinx] > table top border
+                     (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+              TableCellBorder('left')
+                   x (0,0,0,2,8) table body left border
+                   x (0,0,0,2,4) table left border
+                   > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
             TableCell()   <entry>
                  > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
               Paragraph('body row 15')   table_sideways.rst:87   <paragraph>
@@ -1066,6 +1750,15 @@
                       SingleStyledText('body row 15')
               TableCellBackground()
                    x (0,0,0,2,8) table body cell background on odd row
+              TableCellBorder('top')
+                   > (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+              TableCellBorder('right')
+                   > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+              TableCellBorder('bottom')
+                   > (0,0,0,2,8) table bottom border [Sphinx] > table top border
+                     (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+              TableCellBorder('left')
+                   > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
             TableCell()   <entry>
                  > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
               Paragraph('Cells may also be empty: -->')   table_sideways.rst:87   <paragraph>
@@ -1079,7 +1772,29 @@
                         SingleStyledText('-->')
               TableCellBackground()
                    x (0,0,0,2,8) table body cell background on odd row
+              TableCellBorder('top')
+                   > (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+              TableCellBorder('right')
+                   x (0,0,0,2,8) table body right border
+                   x (0,0,0,2,4) table right border
+                   > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+              TableCellBorder('bottom')
+                   > (0,0,0,2,8) table bottom border [Sphinx] > table top border
+                     (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+              TableCellBorder('left')
+                   > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
             TableCell()   <entry>
                  > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
-              TableCellBackground()
-                   x (0,0,0,2,8) table body cell background on odd row
+---------------------------------- page 7 ----------------------------------
+#### FlowablesContainer('background')
+  StaticGroupedFlowables()
+#### FootnoteContainer('footnotes')
+  StaticGroupedFlowables()
+#### DownExpandingContainer('floats')
+  StaticGroupedFlowables()
+#### ChainedContainer('column1')
+  (continued) StaticGroupedFlowables()
+    (continued) DocumentTree()   table_sideways.rst   <document>
+      (continued) Section(id='second-section')   table_sideways.rst:46   <section>
+           > (0,0,0,1,4) content chapter [Sphinx] > chapter
+             (0,0,0,1,2) chapter [table_sideways.rts] > DEFAULT

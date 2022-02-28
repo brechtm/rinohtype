@@ -1,4 +1,7 @@
 
+First Section
+=============
+
 Paragraph preceding the first sideways table.
 
 
@@ -39,12 +42,13 @@ table.
    =====  =====
 
 
+Second Section
+==============
 
 Paragraph preceding the third sideways table which spans two pages.
 
-
 .. table:: Sideways table spanning two pages
-   :class: sideways
+   :class: sideways-break
 
    +------------------------+------------+----------+----------+
    | Header row, column 1   | Header 2   | Header 3 | Header 4 |

@@ -544,7 +544,7 @@ class GroupedFlowables(Flowable):
                 container.advance2(item_spacing, ignore_overflow=True)
         except LastFlowableException as exc:
             descender = exc.last_descender
-            if first_top_to_baseline is not None:  # if something was rendered
+            if container.top_level_container.cursor:  # if something was rendered
                 super().mark_page_nonempty(container)
         except KeepWithNextException:
             raise EndOfContainer(saved_state)

@@ -21,6 +21,26 @@
             MixedStyledText('Empty Section')
               MixedStyledText('Empty Section')
                 SingleStyledText('Empty Section')
+---------------------------------- page 2 ----------------------------------
+#### FlowablesContainer('background')
+  StaticGroupedFlowables()
+#### FootnoteContainer('footnotes')
+  StaticGroupedFlowables()
+#### DownExpandingContainer('floats')
+  StaticGroupedFlowables()
+#### ChainedContainer('column1')
+  (continued) StaticGroupedFlowables()
+    (continued) DocumentTree()   empty_section.rst   <document>
+---------------------------------- page 3 ----------------------------------
+#### FlowablesContainer('background')
+  StaticGroupedFlowables()
+#### FootnoteContainer('footnotes')
+  StaticGroupedFlowables()
+#### DownExpandingContainer('floats')
+  StaticGroupedFlowables()
+#### ChainedContainer('column1')
+  (continued) StaticGroupedFlowables()
+    (continued) DocumentTree()   empty_section.rst   <document>
       Section(id='section-with-content')   empty_section.rst:6   <section>
            > (0,0,0,1,4) content chapter [Sphinx] > chapter
              (0,0,0,1,2) chapter [Sphinx] > DEFAULT
