@@ -5,6 +5,7 @@
 # Use of this source code is subject to the terms of the GNU Affero General
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
+from fractions import Fraction
 from io import SEEK_CUR
 from pathlib import Path
 from struct import Struct, unpack, calcsize
@@ -84,8 +85,8 @@ class JPEGReader(XObjectImage):
             dpi = x_density, y_density
         elif unit == DPCM:
             dpi = 2.54 * x_density, 2.54 * y_density
-        else:  # unit is None
-            dpi = None
+        else:  # unit is None; return aspect ratio
+            dpi = x_density / y_density
         return dpi
 
     def _get_metadata(self):
@@ -177,8 +178,8 @@ class JPEGReader(XObjectImage):
             except KeyError:
                 warn('The EXIF table in "{}" is missing color space information'
                      .format(self.filename))
-        density = (ifd_0th.get(EXIF_X_RESOLUTION, 72),
-                   ifd_0th.get(EXIF_Y_RESOLUTION, 72),
+        density = (float(ifd_0th.get(EXIF_X_RESOLUTION, 72)),
+                   float(ifd_0th.get(EXIF_Y_RESOLUTION, 72)),
                    EXIF_UNITS[ifd_0th.get(EXIF_RESOLUTION_UNIT, 2)])
         self._file.seek(resume_position)
         return density, color_space
@@ -187,6 +188,12 @@ class JPEGReader(XObjectImage):
         read_ushort = create_reader('H', endian=endian)
         tag_format = create_reader(self.EXIF_TAG_FORMAT,
                                    lambda tuple: tuple, endian)
+
+        def rational(numerator, denominator):
+            try:
+                return Fraction(numerator, denominator)
+            except ZeroDivisionError:
+                return None
 
         def get_value(type, count, value_or_offset):
             value_format = EXIF_TAG_TYPE[type]
@@ -212,11 +219,11 @@ class JPEGReader(XObjectImage):
                 value = raw_value[0].decode('ISO-8859-1')
             elif type in (5, 10):
                 try:
-                    numerator, denomenator = raw_value
-                    value = numerator / denomenator
+                    numerator, denominator = raw_value
+                    value = rational(numerator, denominator)
                 except ValueError:
                     pairs = zip(*(iter(raw_value), ) * 2)
-                    value = tuple(num / denom for num, denom in pairs)
+                    value = tuple(rational(num, denom) for num, denom in pairs)
             elif type == 7:
                 value = raw_value
             return value
@@ -279,7 +286,8 @@ EXIF_TAG_TYPE = {1: 'B',
                  7: 's',
                  9: 'i',
                  10: 'ii'}
-EXIF_UNITS = {2: DPI,
+EXIF_UNITS = {1: None,
+              2: DPI,
               3: DPCM}
 EXIF_COLOR_SPACES = {1: SRGB,
                      0xFFFF: UNCALIBRATED}

@@ -44,6 +44,7 @@ Changed:
 
 Fixed:
 
+* Unhandled exception on loading some JPEG images (issue #319)
 * Page breaks for sections following an empty section were not respected.
 * Compatibility with Sphinx 4.4 on Python <3.10 (``AttributeError:
   'DynamicRinohDistribution' object has no attribute '_normalized_name'``)
@@ -54,7 +55,7 @@ Fixed:
   extension and dropped)
 * Compatibility with Sphinx 4.3 (crash on rendering object descriptions)
 * Regression in handling of unsupported docutils nodes
-* Crash due to floating point rounding error (#302 by Sam Hartman)
+* Crash due to floating point rounding error (PR #302 by Sam Hartman)
 * Setting 'number_format' to *none* caused a crash; now it causes the caption
   label to be omitted.
 * Handle citations and corresponding citation references that are not defined
