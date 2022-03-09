@@ -109,7 +109,8 @@ def find_entry_points(group, name=None):
     """
     yield from ((ep, dist) for dist in ilm.distributions()
                 for ep in dist.entry_points
-                if ep.group == group and (name is None or ep.name == name))
+                if ep.group == group and (name is None
+                                          or ep.name.lower() == name.lower()))
 
 
 # dynamic entry point creation

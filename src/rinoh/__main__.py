@@ -91,8 +91,7 @@ def get_distribution_name(dist):
 
 
 def get_reader_by_name(format_name):
-    for entry_point, _ in find_entry_points('rinoh.frontends',
-                                            format_name.lower()):
+    for entry_point, _ in find_entry_points('rinoh.frontends', format_name):
         return entry_point.name, entry_point.load()
     raise SystemExit("Unknown format '{}'. Run `{} --list-formats` to "
                      "find out which formats are supported."
