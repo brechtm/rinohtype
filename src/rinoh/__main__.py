@@ -275,7 +275,16 @@ def main():
                                                          source=cwd_source)
         template_cls = template_cfg['base'].template
     else:
-        template_cls = DocumentTemplate.from_string(args.template)
+        try:
+            template_cls = DocumentTemplate.from_string(args.template)
+        except ResourceNotFound:
+            raise SystemExit("Could not find the template (configuration file) "
+                             "'{}'. Aborting.\nMake sure the path to your "
+                             "template configuration file is correct, or run "
+                             "`{} --list-stylesheets` to find out which "
+                             "templates are installed.".format(args.template,
+                                                               parser.prog))
+
     configuration = template_cls.Configuration('rinoh command line options',
                                                **template_cfg)
     configuration.variables.update(variables)

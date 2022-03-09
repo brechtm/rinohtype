@@ -44,6 +44,8 @@ Changed:
 
 Fixed:
 
+* rinoh crashes with an unhandled exception when the template is not found
+  (issue #291)
 * ``rinoh --format`` option is broken (issue #284)
 * Unhandled exception on loading some JPEG images (issue #319)
 * Page breaks for sections following an empty section were not respected.
