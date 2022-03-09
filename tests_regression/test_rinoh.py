@@ -31,14 +31,19 @@ def test_list_formats(script_runner):
     assert 'reStructuredText' in ret.stdout
 
 
+def test_format(script_runner):
+    do_test_rinoh(script_runner, 'minimal', RINOH_PATH, 'format',
+                  ['--format', 'restructuredTEXT'])
+
+
 def collect_tests():
     for rst_path in sorted(RINOH_PATH.glob('*.rst')):
         yield rst_path.stem
 
 
-def do_test_rinoh(script_runner, test_name, cwd, output_prefix):
+def do_test_rinoh(script_runner, test_name, cwd, output_prefix, extra_args=[]):
     rst_path = RINOH_PATH / Path(test_name + '.rst')
-    args = ['--install-resources']
+    args = ['--install-resources'] + extra_args
     templconf_path = rst_path.with_suffix('.rtt')
     if templconf_path.exists():
         args += ['--template', str(templconf_path.relative_to(cwd))]
