@@ -250,7 +250,7 @@ jobs:
         brew install mupdf-tools imagemagick graphviz
     - name: Set up scoop (Windows)
       if: startsWith(runner.os, 'Windows')
-      uses: MinoruSekine/setup-scoop@v1
+      uses: brechtm/setup-scoop@v2
     - name: Install tools required by the regression tests (Windows)
       if: startsWith(runner.os, 'Windows')
       run: |
