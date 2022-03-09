@@ -105,10 +105,12 @@ def get_reader_by_extension(file_extension):
             print('Using the {} frontend [{}]'
                   .format(entry_point.name, get_distribution_name(dist)))
             return entry_point.name, reader_cls
-    raise SystemExit("Cannot determine input format from extension '{}'. "
-                     "Specify the format using the `--format` option. Run "
-                     "`{} --list-formats` to find out which formats are "
-                     "supported.".format(file_extension, parser.prog))
+    print("Cannot determine input format from extension '{}'; assuming "
+          "reStructuredText. You can specify the format using the `--format` "
+          "option. Run `{} --list-formats` to find out which formats are "
+          "supported.".format(file_extension, parser.prog))
+    (entry_point, _), = find_entry_points('rinoh.frontends', 'reStructuredText')
+    return entry_point.name, entry_point.load()
 
 
 def installed_typefaces():

@@ -44,6 +44,7 @@ Changed:
 
 Fixed:
 
+* ``rinoh --format`` option is broken (issue #284)
 * Unhandled exception on loading some JPEG images (issue #319)
 * Page breaks for sections following an empty section were not respected.
 * Compatibility with Sphinx 4.4 on Python <3.10 (``AttributeError:
