@@ -44,6 +44,8 @@ Changed:
 
 Fixed:
 
+* ContainerOverflow when rendering (some) labeled flowables near the bottom of
+  the page (issue #315)
 * rinoh crashes with an unhandled exception when the template is not found
   (issue #291)
 * ``rinoh --format`` option is broken (issue #284)

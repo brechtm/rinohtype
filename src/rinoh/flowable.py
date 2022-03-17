@@ -782,7 +782,7 @@ class LabeledFlowable(Flowable):
             container.advance(content_height)
             descender = content_descender
         else:
-            container.advance(label_height)
+            container.advance(label_height - offset_content)
             descender = label_descender
         return left + width, label_baseline, descender
 
