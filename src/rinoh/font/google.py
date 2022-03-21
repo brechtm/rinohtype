@@ -106,7 +106,7 @@ def download_file(name, url):
                         break
                     f.write(buffer)
     except HTTPError as e:
-        if e.code == 404:
+        if e.code in (404, 403):
             return None     # not found
         raise
     return download_path
