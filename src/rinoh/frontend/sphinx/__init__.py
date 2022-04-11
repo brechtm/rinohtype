@@ -58,17 +58,22 @@ class RinohTreePreprocessor(GenericNodeVisitor):
 
     def default_visit(self, node):
         try:
-            if 'refid' in node:
+            attrs = node.attributes
+        except AttributeError:  # Text node
+            return
+        try:
+            if 'refid' in attrs:
                 node['refid'] = fully_qualified_id(self.current_docname,
                                                    node['refid'])
-            elif 'refuri' in node and node.get('internal', False):
+            elif 'refuri' in attrs and attrs.get('internal', False):
                 node['refid'] = node.attributes.pop('refuri')
             ids, module_ids = [], []
-            for id in node['ids']:
+            for id in attrs['ids']:
                 if id.startswith('module-'):
                     module_ids.append(id)
                 else:
-                    ids.append(fully_qualified_id(self.current_docname, id))
+                    docname = node.get('docname', self.current_docname)
+                    ids.append(fully_qualified_id(docname, id))
             node['ids'] = ids + module_ids
         except (TypeError, KeyError):
             pass

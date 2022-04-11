@@ -1,3 +1,4 @@
+=========
 Citations
 =========
 
@@ -8,3 +9,9 @@ Citations
 
    chapter1
    bibliography
+
+
+Another Bibliography
+====================
+
+.. [CITE3] Citation in the index document

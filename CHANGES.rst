@@ -44,6 +44,7 @@ Changed:
 
 Fixed:
 
+* Fix cross-referencing of citations defined in the master Sphinx document
 * ContainerOverflow when rendering (some) labeled flowables near the bottom of
   the page (issue #315)
 * rinoh crashes with an unhandled exception when the template is not found
