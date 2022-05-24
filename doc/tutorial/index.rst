@@ -1,3 +1,5 @@
+.. _tutorial:
+
 Tutorial
 ========
 
@@ -17,4 +19,4 @@ and introduces you to a concept, tool or process in rinohtype.
     install
     content
     customisation
-    custom-template
+    configuring-stylesheet

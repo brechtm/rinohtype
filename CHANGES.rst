@@ -84,6 +84,11 @@ Fixed:
   and importlib_metadata 3.6)
 * Handle deprecation of distutils in Python 3.10 (use the packaging package)
 
+Documentation:
+
+* Started a new Tutorial section.
+* Rewrote the first four paragraphs of the home page, to say: what rinohtype
+  is, what it does, what problem it solves and whose needs it meets.
 
 Release 0.5.3 (2021-06-16)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~

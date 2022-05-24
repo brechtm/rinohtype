@@ -45,9 +45,8 @@ use::
 ``template = article`` refers to rinohtype's built-in ``article`` template (a
 template is defined in Python).
 
- ``stylesheet = allaboutme.rts`` tells
-rinohtype to use a particular stylesheet, which we need to create now as our
-final step::
+``stylesheet = allaboutme.rts`` tells rinohtype to use a particular
+stylesheet, which we need to create now as our final step::
 
     [STYLESHEET]
     name=My custom style sheet
@@ -60,10 +59,10 @@ final step::
     font_color=#0f0
 
 Here we told rinohtype to inherit from the built-in ``sphinx``
-stylesheet, and apply colors to *emphasis* and *strong* elements.
+stylesheet, and apply RGB colours to *emphasis* and *strong* elements.
 
-Rebuild the PDF to check that your changes have taken effect. You should
-notice that the new PDF is more compact than the previous version, with fewer
-blank pages. This is because we're now using rinohtype's ``article`` template,
-rather than the default ``book`` - ``book`` is more suited to much longer
-material, laid out as a traditional book.
+Rebuild the PDF to check that your changes have taken effect. As well as the
+new colours, you should see that the new PDF is more compact than the previous
+version, with fewer blank pages. This is because we're now using rinohtype's
+``article`` template, rather than the default ``book`` - ``book`` is more
+suited to much longer material, laid out as a traditional book.
