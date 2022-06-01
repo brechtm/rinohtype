@@ -96,7 +96,7 @@ rinoh-typeface-texgyrepagella = "^0.1.1"
 Sphinx = { version = ">=2.2.1", optional = true }
 
 [tool.poetry.dev-dependencies]
-doc8 = "^0.11.1"
+doc8 = "^0.11.2"
 nox = ">=2022.1.7"
 nox-poetry = "^0.9.0"
 poetry-core = "^1.0.8"
