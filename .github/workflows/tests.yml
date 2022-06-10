@@ -184,7 +184,6 @@ jobs:
     env:
       NOXENV: ${{ matrix.noxenv }}
       WITH_COVERAGE: ${{ matrix.cov }}
-      MUPDF_VERSION: 1.18.0
     steps:
     - uses: actions/checkout@v2
     - name: Install Python ${{ env.current_python }}
@@ -237,7 +236,7 @@ jobs:
       uses: actions/cache@v2
       with:
         path: ${{ steps.cache-dirs-windows.outputs.dir }}
-        key: ${{ runner.os }}-scoop-mupdf${{ env.MUPDF_VERSION}}
+        key: ${{ runner.os }}-scoop
 
     - name: Install tools required by the regression tests (Linux)
       if: startsWith(runner.os, 'Linux')
@@ -254,7 +253,7 @@ jobs:
       if: startsWith(runner.os, 'Windows')
       run: |
         scoop bucket add extras
-        scoop install mupdf@${{ env.MUPDF_VERSION }}
+        scoop install mupdf
         scoop install imagemagick
         echo "$env:MAGICK_HOME" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
         echo "MAGICK_HOME=$env:MAGICK_HOME" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
