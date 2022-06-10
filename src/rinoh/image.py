@@ -291,12 +291,17 @@ class ImageBase(Flowable):
                                             scale_width * dpi_scale_x,
                                             scale_height * dpi_scale_y,
                                             self.rotate)
-        ignore_overflow = (self.scale == Scale.FIT) or container.page._empty
+        if container.page._empty:
+            self.warn(f"Image {self.filename} does not fit within the page "
+                      f"margins", container)
+            ignore_overflow = True
+        else:
+            ignore_overflow = self.scale == Scale.FIT
         try:
             container.advance(h, ignore_overflow)
         except ContainerOverflow:
             raise EndOfContainer(state)
-        return w, h, 0
+        return w, h, 0, container.page._empty
 
 
 class InlineImageArgs(ImageArgsBase):

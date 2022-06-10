@@ -854,7 +854,7 @@ class ParagraphBase(Flowable, Label):
             if text_align == TextAlign.RIGHT:
                 container.left -= float(container.width - max_line_width)
 
-        return max_line_width, first_line.advance, descender
+        return max_line_width, first_line.advance, descender, False
 
 
 class StaticParagraph(ParagraphBase):

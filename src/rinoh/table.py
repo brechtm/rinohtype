@@ -180,7 +180,7 @@ class Table(Flowable):
                 if min(next_row_index, rows_left) >= split_minimum_rows:
                     state.body_row_index = next_row_index
                 raise EndOfContainer(state)
-        return sum(state.column_widths), 0, 0
+        return sum(state.column_widths), 0, 0, False
 
     def _size_columns(self, container):
         """Calculate the table's column sizes constrained by:
@@ -299,7 +299,7 @@ class Table(Flowable):
         def cell_content_width(cell):
             buffer = VirtualContainer(container, width=max_cell_width,
                                       never_placed=True)
-            width, _, _ = cell.flow(buffer, None)
+            width, _, _, _ = cell.flow(buffer, None)
             return float(width)
 
         widths = [width if width else 0 for width in fixed]

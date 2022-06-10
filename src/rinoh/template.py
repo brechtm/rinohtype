@@ -295,7 +295,7 @@ class NewChapterBodyPage(BodyPage):
         descender = None
         for flowable in self.get_config_value('chapter_title_flowables',
                                               self.document):
-            _, _, descender = flowable.flow(self.chapter_title, descender)
+            _, _, descender, _ = flowable.flow(self.chapter_title, descender)
 
 
 class SidewaysBodyPage(BodyPageBase):

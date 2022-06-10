@@ -27,7 +27,7 @@ from .dimension import Dimension, PT, DimensionBase
 from .draw import ShapeStyle, Rectangle, Line, LineStyle, Stroke
 from .layout import (InlineDownExpandingContainer, VirtualContainer,
                      MaybeContainer, ContainerOverflow, EndOfContainer,
-                     PageBreakException, ReflowRequired)
+                     PageBreakException, ReflowRequired, DownExpandingContainer)
 from .strings import UserStrings
 from .style import Styled, Style
 from .text import StyledText
@@ -236,7 +236,7 @@ class Flowable(Styled):
                                                         left=margin_left,
                                                         right=right)
         initial_before = state.initial
-        state, width, inner_top_to_baseline, descender = \
+        state, width, inner_top_to_baseline, descender, tall = \
             self.flow_inner(margin_container, last_descender, state=state,
                             space_below=space_below + self_space_below,
                             **kwargs)
@@ -258,7 +258,7 @@ class Flowable(Styled):
 
         container.advance2(self_space_below, ignore_overflow=True)
         container.document.progress(self, container)
-        return margin_left + width + margin_right, top_to_baseline, descender
+        return margin_left + width + margin_right, top_to_baseline, descender, tall
 
     def flow_inner(self, container, last_descender, state=None, space_below=0,
                    **kwargs):
@@ -287,16 +287,17 @@ class Flowable(Styled):
         last_descender = None if border_top else last_descender
         if draw_top:
             if not container.advance2(border_top + padding_top):
-                return state, 0, 0, last_descender
+                return state, 0, 0, last_descender, False
         pad_cntnr = InlineDownExpandingContainer('PADDING', container,
                                                  left=left, right=right)
         try:
-            content_width, first_line_ascender, descender = \
+            content_width, first_line_ascender, descender, tall = \
                 self.render(pad_cntnr, last_descender, state=state,
                             space_below=total_space_below, **kwargs)
             state = None
             assert container.advance2(padding_border_bottom)
         except EndOfContainer as eoc:
+            tall = False
             state = eoc.flowable_state
             first_line_ascender = 0
             descender = last_descender
@@ -316,7 +317,7 @@ class Flowable(Styled):
                               top=draw_top, bottom=state is None)
         top_to_baseline = border_top + padding_top + first_line_ascender
         descender = None if border_bottom else descender
-        return state, bordered_width, top_to_baseline, descender
+        return state, bordered_width, top_to_baseline, descender, tall
 
     def render_frame(self, container, width, height, top=True, bottom=True):
         width, height = float(width), - float(height)
@@ -348,7 +349,7 @@ class Flowable(Styled):
         if bottom:
             render_border((0, height), (width, height), border_bottom, 0, 1)
 
-    def render(self, container, descender, state, space_below=0, **kwargs):
+    def render(self, container, descender, state, space_below=0, tall=False, **kwargs):
         """Renders the flowable's content to `container`, with the flowable's
         top edge lining up with the container's cursor. `descender` is the
         descender height of the preceding line or `None`."""
@@ -374,7 +375,7 @@ class DummyFlowable(Flowable):
                     hide=False)[attribute]
 
     def flow(self, container, last_descender, state=None, **kwargs):
-        return 0, 0, last_descender
+        return 0, 0, last_descender, False
 
 
 class AnchorFlowable(DummyFlowable):
@@ -529,6 +530,7 @@ class GroupedFlowables(Flowable):
         empty_page = container.page._empty
         initial_state = copy(state)
         saved_state = copy(state)
+        any_tall = False
         try:
             while True:
                 width, top_to_baseline, descender = \
@@ -554,10 +556,10 @@ class GroupedFlowables(Flowable):
             state.prepend(exc.flowable_state)
             exc.flowable_state = state
             raise exc
-        return max_flowable_width, first_top_to_baseline or 0, descender
+        return max_flowable_width, first_top_to_baseline or 0, descender, False
 
     def _flow_with_next(self, state, container, descender, space_below=0,
-                        **kwargs):
+                        allow_overflow=False, **kwargs):
         try:
             flowable, flowable_state = state.next_flowable()
             while flowable.is_hidden(container):
@@ -567,8 +569,8 @@ class GroupedFlowables(Flowable):
         except StopIteration:
             raise LastFlowableException(descender)
         flowable.parent = self
-        with MaybeContainer(container) as maybe_container:
-            max_flowable_width, top_to_baseline, descender = \
+        with MaybeContainer(container, max_height=float('+inf') if allow_overflow else None) as maybe_container:
+            max_flowable_width, top_to_baseline, descender, tall = \
                 flowable.flow(maybe_container, descender, state=flowable_state,
                               space_below=space_below if state.at_end else 0,
                               **kwargs)
@@ -581,6 +583,7 @@ class GroupedFlowables(Flowable):
                 width, _, descender = self._flow_with_next(state, container,
                                                            descender,
                                                            space_below=space_below,
+                                                           allow_overflow=tall,
                                                            **kwargs)
             except EndOfContainer as eoc:
                 if eoc.flowable_state.initial:
@@ -701,7 +704,7 @@ class LabeledFlowable(Flowable):
         label_min_width = self.get_style('label_min_width', container)
         label_max_width = self.get_style('label_max_width', container)
         virtual_container = VirtualContainer(container)
-        label_width, _, _ = self.label.flow(virtual_container, 0)
+        label_width, _, _, _ = self.label.flow(virtual_container, 0)
         spillover = (label_width > label_max_width.to_points(container.width)
                      if label_max_width else True)
         return max(label_width, label_min_width), spillover
@@ -711,7 +714,7 @@ class LabeledFlowable(Flowable):
         return LabeledFlowableState(self, initial_content_state)
 
     def render(self, container, last_descender, state, label_column_width=None,
-               space_below=0, **kwargs):
+               space_below=0, tall=False, **kwargs):
         def style(name):
             return self.get_style(name, container)
 
@@ -731,7 +734,7 @@ class LabeledFlowable(Flowable):
         elif free_label_width > label_width:
             if style('wrap_label'):
                 vcontainer = VirtualContainer(container, width=label_max_width)
-                wrapped_width, _, _ = self.label.flow(vcontainer, 0)
+                wrapped_width, _, _, _ = self.label.flow(vcontainer, 0)
                 if wrapped_width < label_max_width:
                     label_width = wrapped_width
                 else:
@@ -784,7 +787,7 @@ class LabeledFlowable(Flowable):
         else:
             container.advance(label_height - offset_content)
             descender = label_descender
-        return left + width, label_baseline, descender
+        return left + width, label_baseline, descender, False
 
     def _flow_label(self, container, last_descender, max_width, y_offset,
                     space_below):
@@ -792,7 +795,7 @@ class LabeledFlowable(Flowable):
             InlineDownExpandingContainer('LABEL', container, width=max_width,
                                          advance_parent=False)
         label_container.advance(y_offset)
-        _, _, label_descender = \
+        _, _, label_descender, _ = \
             self.label.flow(label_container, last_descender, None, space_below)
         return label_container.height, label_descender
 
@@ -801,7 +804,7 @@ class LabeledFlowable(Flowable):
         content_container = \
             InlineDownExpandingContainer('CONTENT', container, left=left,
                                          advance_parent=False)
-        width, _, content_descender \
+        width, _, content_descender, _ \
             = self.flowable.flow(content_container, last_descender,
                                  state=state.content_flowable_state,
                                  space_below=space_below)
@@ -812,7 +815,7 @@ def find_baseline(flowable, container, last_descender, state=None, **kwargs):
     virtual_container = VirtualContainer(container)
     inline_ctnr = InlineDownExpandingContainer('DUMMY', virtual_container,
                                                advance_parent=False)
-    _, baseline, _ = flowable.flow(inline_ctnr, last_descender,
+    _, baseline, _, _ = flowable.flow(inline_ctnr, last_descender,
                                    state=state, first_line_only=True)
     return baseline
 
@@ -881,13 +884,13 @@ class Float(Flowable):
                 document.add_sideways_float(self)
                 state = CompletedFlowableState()
                 self.page_break(container, state)
-                return 0, 0, last_descender
+                return 0, 0, last_descender, False
         elif (float == FloatLocation.HERE and id not in document.floats):
             super().flow(container.float_space, None)
             document.floats.add(id)
             if not container.page.check_overflow():
                 raise ReflowRequired
-            return 0, 0, last_descender
+            return 0, 0, last_descender, False
         return super().flow(container, last_descender, state=state, **kwargs)
 
 
@@ -897,7 +900,7 @@ class PageBreak(Flowable):
         super().__init__(style=style)
 
     def render(self, container, last_descender, state=None, **kwargs):
-        return 0, 0, last_descender
+        return 0, 0, last_descender, False
 
 
 from .paragraph import Paragraph

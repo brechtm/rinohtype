@@ -441,10 +441,11 @@ class InlineDownExpandingContainer(ConditionalDownExpandingContainerBase):
     """
 
     def __init__(self, name, parent, left=None, width=None, right=None,
-                 advance_parent=True, place=True):
+                 max_height=None, advance_parent=True, place=True):
         super().__init__(name, None, parent, left=left, top=parent.cursor,
                          width=width, right=right,
-                         max_height=parent.remaining_height, place=place)
+                         max_height=max_height or parent.remaining_height,
+                         place=place)
         if advance_parent:
             parent._cursor.addends.append(self._cursor)
 
@@ -490,14 +491,15 @@ class UpDownExpandingContainer(_FlowablesContainer, ExpandingContainerBase):
 
 
 class _MaybeContainer(InlineDownExpandingContainer):
-    def __init__(self, parent, left=None, width=None, right=None):
+    def __init__(self, parent, left=None, width=None, right=None, max_height=None):
         super().__init__('MAYBE', parent, left=left, width=width, right=right,
-                         place=False)
+                         max_height=max_height, place=False)
 
 
 class MaybeContainer(ContextManager):
-    def __init__(self, parent, left=None, width=None, right=None):
-        self._container = _MaybeContainer(parent, left, width, right)
+    def __init__(self, parent, left=None, width=None, right=None, max_height=None):
+        self._container = _MaybeContainer(parent, left, width, right,
+                                          max_height=max_height)
 
     def __enter__(self):
         return self._container
@@ -581,7 +583,7 @@ class FootnoteContainer(UpExpandingContainer):
             footnote_id = footnote.get_id(self.document)
             if footnote_id not in (self._placed_footnotes
                                    | self.document.placed_footnotes):
-                _, _, descender = footnote.flow(maybe_container,
+                _, _, descender, _ = footnote.flow(maybe_container,
                                                 self._descenders[-1],
                                                 footnote=True)
                 self._descenders.append(descender)

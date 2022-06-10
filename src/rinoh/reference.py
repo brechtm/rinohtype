@@ -235,7 +235,7 @@ class Note(LabeledFlowable):
              **kwargs):
         location = self.get_style('location', container)
         if not footnote and location == NoteLocation.FOOTER:
-            return 0, 0, last_descender
+            return 0, 0, last_descender, False
         return super().flow(container, last_descender, state, **kwargs)
 
 
