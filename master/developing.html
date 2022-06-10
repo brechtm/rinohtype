@@ -199,13 +199,22 @@
 <p>This project makes use of <a class="reference external" href="https://nox.thea.codes">Nox</a> to manage running tests and other tasks. The
 tests can be divided into three categories: checks, unit tests and regression
 (integration) tests. <code class="docutils literal notranslate"><span class="pre">noxfile.py</span></code> defines “sessions” that configure these
-tasks. Each of these are described in the next section. The unit and regression
-tests make use of <a class="reference external" href="https://www.pytest.org">pytest</a>.</p>
+tasks. These are described in the next section. The unit and regression tests
+make use of <a class="reference external" href="https://www.pytest.org">pytest</a>.</p>
 <p>The repository includes a <a class="reference external" href="https://python-poetry.org/">Poetry</a> <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> file to help you set up a
 virtual environment with Nox and other development dependencies. From the
 repository checkout root directory execute:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">poetry</span> <span class="n">install</span>
 </pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Poetry version</p>
+<p>You might encounter issues with Poetry if you are not using the same version
+(especially older versions) as the one used to create the <code class="docutils literal notranslate"><span class="pre">poetry.lock</span></code>
+file. The poetry version recorded near the top of
+<code class="docutils literal notranslate"><span class="pre">.github/workflows/tests.yml</span></code> will be your best bet for avoiding issues,
+but newer versions should work as well.</p>
 </div>
 <p>Poetry will create a virtual environment in <em>.venv</em>, which you can activate
 like this (on Linux/macOS):</p>
@@ -220,6 +229,13 @@ through Poetry:</p>
 <p>Starting <code class="docutils literal notranslate"><span class="pre">nox</span></code> without any arguments will run the <em>check</em>, <em>check_docs</em>,
 <em>unit</em> and <em>regression</em> sessions. Refer to the next section for an overview of
 all sessions.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Running the tests on Windows</p>
+<p>Some tests rely on symlinked files checked into the repository. Git on
+Windows requires some <a class="reference external" href="https://stackoverflow.com/a/59761201/438249">additional configuration</a> to be able to support
+these.</p>
+</div>
 <div class="section" id="nox-sessions">
 <h2>Nox Sessions<a class="headerlink" href="#nox-sessions" title="Permalink to this headline">¶</a></h2>
 <p>The following sessions execute unit tests and regression tests:</p>
@@ -265,7 +281,7 @@ formats.</p>
 can only be run on macOS.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">wininst</span></code> (not maintained, broken?)</dt><dd><p>Build a stand-alone rinohtype installer for the Windows platform with the
-help of <a class="reference external" href="https://pynsist.readthedocs.io/en/latest/">pynsist</a>. This task also can be run on other platforms than
+help of <a class="reference external" href="https://pynsist.readthedocs.io/en/latest/">pynsist</a>. This task also can be run on platforms other than
 Windows.</p>
 </dd>
 </dl>
