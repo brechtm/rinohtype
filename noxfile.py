@@ -19,7 +19,7 @@ nox.options.sessions = ['check', 'check_docs',
 
 
 PYTHONS = ['3.7', '3.8', '3.9', '3.10', '3.11']
-PYTHONS += ['pypy3'] if os.getenv('CI') else ['pypy3.8']
+PYTHONS += ['pypy3'] if os.getenv('CI') else ['pypy3.9']
 
 DEPENDENCIES = ['pytest', 'pytest-xdist', 'pytest-cov', 'coverage', 'Sphinx']
 if os.getenv('GITHUB_SHA'):
