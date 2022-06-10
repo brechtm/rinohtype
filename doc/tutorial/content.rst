@@ -47,12 +47,6 @@ entire contents of the file with the following (edit the text to your taste)::
         An ``admonition`` is a generic kind of note, amongst several other
         kinds that Sphinx has to offer.
 
-    ..  toctree::
-        :hidden:
-
-        plans
-        skills
-
 
 Add a new file, ``plans.rst``, containing::
 
@@ -101,11 +95,10 @@ Add a new file, ``plans.rst``, containing::
 
     And perhaps you have some that will come later on.
 
-    Include an image. If you want a suitable image file, use `Dürer's
-    rhinoceros from Wikipedia
-    <https://en.wikipedia.org/wiki/Dürer's_Rhinoceros#/media/File:The_Rhinocero
-    s_(N GA_1964.8.697)_enhanced.png>`_. Rename it to ``rhino.png`` and place
-    it in the root of your Sphinx project.
+Include an image. If you want a suitable image file, use `Dürer's rhinoceros from Wikipedia
+<https://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/The_Rhinoceros_%28NGA_1964.8.697%29_enhan
+ced.png/973px-The_Rhinoceros_%28NGA_1964.8.697%29_enhanced.png>`_. Rename it to ``rhino.png`` and
+place it in the root of your Sphinx project. In ``plans.rst``, add::
 
     ..  figure:: /rhino.png
         :figclass: wider
