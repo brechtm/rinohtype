@@ -4,7 +4,7 @@
     :hidden:
 
     intro
-    manual/index
+    tutorial/index
     install
     quickstart
     basicstyling
