@@ -11,6 +11,7 @@ import logging
 from pathlib import Path
 
 import pytest
+import sphinx
 
 from sphinx.application import Sphinx
 from sphinx.errors import SphinxError
@@ -71,10 +72,16 @@ def get_template_configuration(tmp_path, template='book',
     return app.builder.template_configuration(template, LOGGER)
 
 
+def template_cfg_is_empty(template_cfg):
+    return set(template_cfg.keys()) == (set(('language', ))
+                                        if sphinx.version_info >= (5, 0, 1)
+                                        else set())
+
+
 def test_sphinx_config_default(tmp_path):
     template_cfg = get_template_configuration(tmp_path)
     assert template_cfg.template == Book
-    assert not template_cfg.keys()
+    assert template_cfg_is_empty(template_cfg)
     assert get_contents_page_size(template_cfg) == A4
 
 
@@ -118,7 +125,7 @@ def test_sphinx_config_template_from_instance(tmp_path):
 
 def test_sphinx_config_template_from_entrypoint(tmp_path):
     template_cfg = get_template_configuration(tmp_path, template='article')
-    assert not template_cfg.keys()
+    assert template_cfg_is_empty(template_cfg)
     assert template_cfg.template == Article
     assert (template_cfg.get_attribute_value('stylesheet').name
             == 'Sphinx (article)')
@@ -130,7 +137,7 @@ def test_sphinx_config_template_from_filename(tmp_path):
         print('[TEMPLATE_CONFIGURATION]', file=template_cfg)
         print('template = article', file=template_cfg)
     template_cfg = get_template_configuration(tmp_path, template_cfg_path)
-    assert not template_cfg.keys()
+    assert template_cfg_is_empty(template_cfg)
     assert template_cfg.template == Article
     assert (template_cfg.get_attribute_value('stylesheet').name
             == 'Sphinx (article)')
