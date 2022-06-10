@@ -84,7 +84,7 @@ Fixed:
   and importlib_metadata 3.6)
 * Handle deprecation of distutils in Python 3.10 (use the packaging package)
 
-Documentation:
+Documentation (Daniele Procida):
 
 * Started a new Tutorial section.
 * Rewrote the first four paragraphs of the home page, to say: what rinohtype

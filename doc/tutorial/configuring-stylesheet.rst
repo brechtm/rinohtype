@@ -7,7 +7,7 @@ To recap what we've built so far:
 * a PDF version of the output, using rinohtype's Sphinx builder, alongside
   Sphinx's built-in HTML rendering
 * a local template configuration file, ``my-article.rtt``, that is invoked in
-  ``conf.py``, and tells rinotype to:
+  ``conf.py``, and tells rinohtype to:
 
   * use the built-in ``article`` template
   * apply a stylesheet, ``allaboutme.rts``, that extends the built-in
@@ -24,7 +24,7 @@ In the :ref:`Sphinx style sheet` you'll find::
     [chapter]
     page_break=RIGHT
 
-Just as``emphasis`` and ``strong`` are examples of *elements* that it can
+Just as ``emphasis`` and ``strong`` are examples of *elements* that it can
 target, so is a ``chapter``. This style rule ensures that each ``chapter``
 starts on a right-hand page.
 

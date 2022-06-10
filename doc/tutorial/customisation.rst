@@ -5,8 +5,12 @@ HTML
 ----
 
 The next step is to manage *how* Sphinx builds the project. It's useful to use
-an HTML theme whose output corresponds better to PDF rendering, so switch to
-Furo; in ``conf.py``, edit the ``html_theme`` setting, to::
+an HTML theme whose output corresponds better to PDF rendering, so we'll use the popular
+`Furo <https://pradyunsg.me/furo/>`_ theme. Install Furo in your virtual environment::
+
+    pip install furo
+
+then in ``conf.py``, edit the ``html_theme`` setting, to::
 
     html_theme = 'furo'
 
@@ -16,9 +20,9 @@ Rebuild the HTML to see the effect.
 PDF
 ---
 
-The PDF customisation is a little more complex. We need to do three things.
+Customisation of PDF output is a little more complex. We need to do three things.
 
-First, apply some rinoh configuration in ``conf.py``::
+First, apply some rinoh configuration in ``conf.py``, with :confval:`rinoh_documents`::
 
     rinoh_documents = [
         {
