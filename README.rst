@@ -37,7 +37,8 @@ following things can help move rinohtype forward:
 
 * development of professional-looking stylesheets and document templates
 * volunteering to be a maintainer: fix issues that pop up when new versions of
-  dependencies are released (Python, Sphinx, ...)
+  dependencies are released (Python, Sphinx, ...), or handling
+  platform-specific regressions (development is mainly on macOS).
 * help with maintaining and improving the documentation
 * development of new features, e.g. widow/orphan handling, Knuth-Plass line
   breaking, mathematics typesetting, performance improvements, ...
@@ -62,17 +63,19 @@ overview of the main features:
 
 * a powerful page layout system supporting columns, running headers/footers,
   floatable elements and footnotes
-* support for figures and (large) tables
+* support for figures and (large) tables, optionally rendered sideways
 * automatic generation of table of contents and index
 * automatic numbering and cross-referencing of section headings, figures and
   tables
 * configure one of the included document templates or create your own
-* an intuitive style sheet system inspired by CSS
+* an intuitive style sheet system inspired by CSS allowing changing almost
+  every aspect of how document elements are rendered
 * modular design allowing for multiple frontends (such as reStructuredText,
   Markdown, DocBook, ...)
 * handles OpenType, TrueType and Type1 fonts with support for advanced
   typographic features such as kerning, ligatures, small capitals and old style
   figures
+* built-in support for the 1000+ libre licensed fonts on `Google Fonts`_
 * embeds PDF, PNG and JPEG images, preserving transparency and color profiles
 * easy to install and deploy; pure-Python with few dependencies
 * built on Unicode; ready for non-latin languages
@@ -87,6 +90,7 @@ on hold. Please `contact me`_ if you are interested in testing it.
 
 .. _documentation: http://www.mos6581.org/rinohtype/master/
 .. _create a ticket: https://github.com/brechtm/rinohtype/issues/new/choose
+.. _Google Fonts: https://fonts.google.com
 .. _reStructuredText: http://docutils.sourceforge.net/rst.html
 .. _Sphinx: http://sphinx-doc.org
 .. _rinohtype manual: http://www.mos6581.org/rinohtype/master/manual.pdf
@@ -120,6 +124,12 @@ Getting Started
 Installation is trivial::
 
     pip install rinohtype
+
+
+If you want to have access to bug fixes and features that are not available in
+a release, you can install the current development version::
+
+    pip install https://github.com/brechtm/rinohtype/archive/refs/heads/master.zip
 
 
 reStructuredText Renderer

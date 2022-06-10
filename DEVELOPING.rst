@@ -4,14 +4,24 @@ Developing
 This project makes use of Nox_ to manage running tests and other tasks. The
 tests can be divided into three categories: checks, unit tests and regression
 (integration) tests. ``noxfile.py`` defines "sessions" that configure these
-tasks. Each of these are described in the next section. The unit and regression
-tests make use of pytest_.
+tasks. These are described in the next section. The unit and regression tests
+make use of pytest_.
 
 The repository includes a Poetry_ ``pyproject.toml`` file to help you set up a
 virtual environment with Nox and other development dependencies. From the
 repository checkout root directory execute::
 
     poetry install
+
+
+.. note:: Poetry version
+
+   You might encounter issues with Poetry if you are not using the same version
+   (especially older versions) as the one used to create the ``poetry.lock``
+   file. The poetry version recorded near the top of
+   ``.github/workflows/tests.yml`` will be your best bet for avoiding issues,
+   but newer versions should work as well.
+
 
 Poetry will create a virtual environment in *.venv*, which you can activate
 like this (on Linux/macOS)::
@@ -27,10 +37,17 @@ Starting ``nox`` without any arguments will run the *check*, *check_docs*,
 *unit* and *regression* sessions. Refer to the next section for an overview of
 all sessions.
 
+.. note:: Running the tests on Windows
+
+   Some tests rely on symlinked files checked into the repository. Git on
+   Windows requires some `additional configuration`_ to be able to support
+   these.
+
+
 .. _Nox: https://nox.thea.codes
 .. _pytest: https://www.pytest.org
 .. _Poetry: https://python-poetry.org/
-.. _direnv: https://direnv.net/
+.. _additional configuration: https://stackoverflow.com/a/59761201/438249
 
 
 Nox Sessions
@@ -86,7 +103,7 @@ distributions for Mac and Windows:
 
 ``wininst`` (not maintained, broken?)
     Build a stand-alone rinohtype installer for the Windows platform with the
-    help of pynsist_. This task also can be run on other platforms than
+    help of pynsist_. This task also can be run on platforms other than
     Windows.
 
 Customization settings for doc8_ and pytest_ are stored in ``setup.cfg``.
