@@ -1,0 +1,410 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Tables (rinoh.table) &mdash; rinohtype 0.5.4 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pdflinks.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/versions.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Templates (rinoh.template)" href="template.html" />
+    <link rel="prev" title="Style (rinoh.style)" href="style.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> rinohtype
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.5.4
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+    
+    
+      
+    
+    
+      <p class="caption" role="heading"><span class="caption-text">User Manual [<a class="pdf-link" href="../manual.pdf">PDF</a>]</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basicstyling.html">Basic Document Styling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../elementstyling.html">Element Styling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../templates.html">Document Templates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developing.html">Developing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Release History</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference Guide [<a class="pdf-link" href="../reference.pdf">PDF</a>]</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../rinoh.html">rinoh</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sphinx.html">Sphinx Builder</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../stylesheets.html">Style Sheets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../stdtemplates.html">Standard Document Templates</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="api.html">API Documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="attribute.html">Attribute (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.attribute</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="color.html">Color (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.color</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dimension.html">Dimension (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.dimension</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="document.html">Document (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.document</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="draw.html">Drawing Primitives (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.draw</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flowable.html">Flowable (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.flowable</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="font.html">Fonts and Typefaces (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.font</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="image.html">Images and Figures (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.image</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html">Index (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.index</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="language.html">Language (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.language</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="number.html">Number (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.number</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="paper.html">Paper sizes (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.paper</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="paragraph.html">Paragraph (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.paragraph</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference.html">Cross-References and Fields (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.reference</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="structure.html">Structure (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.structure</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="strings.html">Strings (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.strings</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="style.html">Style (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.style</span></code>)</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Tables (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.table</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="template.html">Templates (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.template</span></code>)</a></li>
+</ul>
+</li>
+</ul>
+
+    
+
+    <p class="caption">
+        <span class="caption-text">Indices and tables</span>
+    </p>
+    <a href="../genindex.html">Index</a>
+    <a href="../py-modindex.html">Module Index</a>
+  
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">rinohtype</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="api.html">API Documentation</a> &raquo;</li>
+        
+      <li>Tables (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.table</span></code>)</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            
+              <a href="https://github.com/brechtm/rinohtype/blob/master/doc/api/table.rst" class="fa fa-github"> Edit on GitHub</a>
+            
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-rinoh.table">
+<span id="tables-rinoh-table"></span><span id="table"></span><h1>Tables (<a class="reference internal" href="#module-rinoh.table" title="rinoh.table"><code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.table</span></code></a>)<a class="headerlink" href="#module-rinoh.table" title="Permalink to this heading">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="rinoh.table.Table">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rinoh.table.</span></span><span class="sig-name descname"><span class="pre">Table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">body</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">head</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">align</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column_widths</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">style</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.table.Table" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py attribute">
+<dt class="sig sig-object py" id="rinoh.table.Table.style_class">
+<span class="sig-name descname"><span class="pre">style_class</span></span><a class="headerlink" href="#rinoh.table.Table.style_class" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="../style/rinoh.table.TableStyle.html#rinoh.table.TableStyle" title="rinoh.table.TableStyle"><code class="xref py py-class docutils literal notranslate"><span class="pre">TableStyle</span></code></a></p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rinoh.table.Table.prepare">
+<span class="sig-name descname"><span class="pre">prepare</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">flowable_target</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.table.Table.prepare" title="Permalink to this definition">¶</a></dt>
+<dd><p>Determine number labels and register references with the document</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rinoh.table.Table.render">
+<span class="sig-name descname"><span class="pre">render</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">container</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">last_descender</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">state</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">space_below</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.table.Table.render" title="Permalink to this definition">¶</a></dt>
+<dd><p>Renders the flowable’s content to <cite>container</cite>, with the flowable’s
+top edge lining up with the container’s cursor. <cite>descender</cite> is the
+descender height of the preceding line or <cite>None</cite>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="rinoh.table.TableWithCaption">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rinoh.table.</span></span><span class="sig-name descname"><span class="pre">TableWithCaption</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">flowables</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">align</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">style</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.table.TableWithCaption" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py attribute">
+<dt class="sig sig-object py" id="rinoh.table.TableWithCaption.style_class">
+<span class="sig-name descname"><span class="pre">style_class</span></span><a class="headerlink" href="#rinoh.table.TableWithCaption.style_class" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">TableWithCaptionStyle</span></code></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="rinoh.table.TableSection">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rinoh.table.</span></span><span class="sig-name descname"><span class="pre">TableSection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rows</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">style</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.table.TableSection" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="rinoh.table.TableSection.prepare">
+<span class="sig-name descname"><span class="pre">prepare</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">flowable_target</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.table.TableSection.prepare" title="Permalink to this definition">¶</a></dt>
+<dd><p>Determine number labels and register references with the document</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="rinoh.table.TableHead">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rinoh.table.</span></span><span class="sig-name descname"><span class="pre">TableHead</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rows</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">style</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.table.TableHead" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="rinoh.table.TableBody">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rinoh.table.</span></span><span class="sig-name descname"><span class="pre">TableBody</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rows</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">style</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.table.TableBody" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="rinoh.table.TableRow">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rinoh.table.</span></span><span class="sig-name descname"><span class="pre">TableRow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cells</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">style</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.table.TableRow" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="rinoh.table.TableRow.prepare">
+<span class="sig-name descname"><span class="pre">prepare</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">flowable_target</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.table.TableRow.prepare" title="Permalink to this definition">¶</a></dt>
+<dd><p>Determine number labels and register references with the document</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rinoh.table.TableRow.get_rowspanned_columns">
+<span class="sig-name descname"><span class="pre">get_rowspanned_columns</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.table.TableRow.get_rowspanned_columns" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a dictionary mapping column indices to the number of columns
+spanned.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="rinoh.table.TableCell">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rinoh.table.</span></span><span class="sig-name descname"><span class="pre">TableCell</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">flowables</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rowspan</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colspan</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">style</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.table.TableCell" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py attribute">
+<dt class="sig sig-object py" id="rinoh.table.TableCell.style_class">
+<span class="sig-name descname"><span class="pre">style_class</span></span><a class="headerlink" href="#rinoh.table.TableCell.style_class" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="../style/rinoh.table.TableCellStyle.html#rinoh.table.TableCellStyle" title="rinoh.table.TableCellStyle"><code class="xref py py-class docutils literal notranslate"><span class="pre">TableCellStyle</span></code></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="rinoh.table.TableCellBorder">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rinoh.table.</span></span><span class="sig-name descname"><span class="pre">TableCellBorder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rendered_cell</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cell_height</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">position</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">style</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.table.TableCellBorder" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py attribute">
+<dt class="sig sig-object py" id="rinoh.table.TableCellBorder.style_class">
+<span class="sig-name descname"><span class="pre">style_class</span></span><a class="headerlink" href="#rinoh.table.TableCellBorder.style_class" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="../style/rinoh.table.TableCellBorderStyle.html#rinoh.table.TableCellBorderStyle" title="rinoh.table.TableCellBorderStyle"><code class="xref py py-class docutils literal notranslate"><span class="pre">TableCellBorderStyle</span></code></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="rinoh.table.TableCellBackground">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rinoh.table.</span></span><span class="sig-name descname"><span class="pre">TableCellBackground</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bottom_left</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">style</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.table.TableCellBackground" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py attribute">
+<dt class="sig sig-object py" id="rinoh.table.TableCellBackground.style_class">
+<span class="sig-name descname"><span class="pre">style_class</span></span><a class="headerlink" href="#rinoh.table.TableCellBackground.style_class" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="../style/rinoh.table.TableCellBackgroundStyle.html#rinoh.table.TableCellBackgroundStyle" title="rinoh.table.TableCellBackgroundStyle"><code class="xref py py-class docutils literal notranslate"><span class="pre">TableCellBackgroundStyle</span></code></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="rinoh.table.VerticalAlign">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rinoh.table.</span></span><span class="sig-name descname"><span class="pre">VerticalAlign</span></span><a class="headerlink" href="#rinoh.table.VerticalAlign" title="Permalink to this definition">¶</a></dt>
+<dd><p>Accepts: <code class="docutils literal notranslate"><span class="pre">top</span></code>, <code class="docutils literal notranslate"><span class="pre">middle</span></code>, <code class="docutils literal notranslate"><span class="pre">bottom</span></code></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="rinoh.table.ListOfTables">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rinoh.table.</span></span><span class="sig-name descname"><span class="pre">ListOfTables</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">local</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">style</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.table.ListOfTables" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="rinoh.table.ListOfTablesSection">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rinoh.table.</span></span><span class="sig-name descname"><span class="pre">ListOfTablesSection</span></span><a class="headerlink" href="#rinoh.table.ListOfTablesSection" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py attribute">
+<dt class="sig sig-object py" id="rinoh.table.ListOfTablesSection.list_class">
+<span class="sig-name descname"><span class="pre">list_class</span></span><a class="headerlink" href="#rinoh.table.ListOfTablesSection.list_class" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#rinoh.table.ListOfTables" title="rinoh.table.ListOfTables"><code class="xref py py-class docutils literal notranslate"><span class="pre">ListOfTables</span></code></a></p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="template.html" class="btn btn-neutral float-right" title="Templates (rinoh.template)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="style.html" class="btn btn-neutral float-left" title="Style (rinoh.style)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2022, Brecht Machiels and contributors.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"> Versions</span>
+      v: v0.5.4
+      <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      <dl id="docs-versions">
+      </dl>
+    </div>
+  </div>
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

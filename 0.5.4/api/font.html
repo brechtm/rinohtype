@@ -1,0 +1,439 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Fonts and Typefaces (rinoh.font) &mdash; rinohtype 0.5.4 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pdflinks.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/versions.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Images and Figures (rinoh.image)" href="image.html" />
+    <link rel="prev" title="Flowable (rinoh.flowable)" href="flowable.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> rinohtype
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.5.4
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+    
+    
+      
+    
+    
+      <p class="caption" role="heading"><span class="caption-text">User Manual [<a class="pdf-link" href="../manual.pdf">PDF</a>]</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basicstyling.html">Basic Document Styling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../elementstyling.html">Element Styling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../templates.html">Document Templates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developing.html">Developing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Release History</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference Guide [<a class="pdf-link" href="../reference.pdf">PDF</a>]</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../rinoh.html">rinoh</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sphinx.html">Sphinx Builder</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../stylesheets.html">Style Sheets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../stdtemplates.html">Standard Document Templates</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="api.html">API Documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="attribute.html">Attribute (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.attribute</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="color.html">Color (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.color</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dimension.html">Dimension (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.dimension</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="document.html">Document (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.document</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="draw.html">Drawing Primitives (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.draw</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flowable.html">Flowable (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.flowable</span></code>)</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Fonts and Typefaces (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.font</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="image.html">Images and Figures (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.image</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html">Index (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.index</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="language.html">Language (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.language</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="number.html">Number (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.number</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="paper.html">Paper sizes (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.paper</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="paragraph.html">Paragraph (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.paragraph</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference.html">Cross-References and Fields (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.reference</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="structure.html">Structure (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.structure</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="strings.html">Strings (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.strings</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="style.html">Style (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.style</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="table.html">Tables (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.table</span></code>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="template.html">Templates (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.template</span></code>)</a></li>
+</ul>
+</li>
+</ul>
+
+    
+
+    <p class="caption">
+        <span class="caption-text">Indices and tables</span>
+    </p>
+    <a href="../genindex.html">Index</a>
+    <a href="../py-modindex.html">Module Index</a>
+  
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">rinohtype</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="api.html">API Documentation</a> &raquo;</li>
+        
+      <li>Fonts and Typefaces (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.font</span></code>)</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            
+              <a href="https://github.com/brechtm/rinohtype/blob/master/doc/api/font.rst" class="fa fa-github"> Edit on GitHub</a>
+            
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-rinoh.font">
+<span id="fonts-and-typefaces-rinoh-font"></span><span id="font"></span><h1>Fonts and Typefaces (<a class="reference internal" href="#module-rinoh.font" title="rinoh.font"><code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.font</span></code></a>)<a class="headerlink" href="#module-rinoh.font" title="Permalink to this heading">¶</a></h1>
+<p>Classes for fonts and typefaces.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="rinoh.font.Font">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rinoh.font.</span></span><span class="sig-name descname"><span class="pre">Font</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">slant</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.font.Font" title="Permalink to this definition">¶</a></dt>
+<dd><p>A collection of glyphs in a particular style</p>
+<p>This is a base class for classes that parse different font formats. See
+<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.font.type1</span></code> and <code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.font.opentype</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – filename of the font file to load</p></li>
+<li><p><strong>weight</strong> (<a class="reference internal" href="#rinoh.font.style.FontWeight" title="rinoh.font.style.FontWeight"><em>FontWeight</em></a>) – weight of the font</p></li>
+<li><p><strong>slant</strong> (<a class="reference internal" href="#rinoh.font.style.FontSlant" title="rinoh.font.style.FontSlant"><em>FontSlant</em></a>) – slant of the font</p></li>
+<li><p><strong>width</strong> (<a class="reference internal" href="#rinoh.font.style.FontWidth" title="rinoh.font.style.FontWidth"><em>FontWidth</em></a>) – width of the font</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rinoh.font.Font.encoding">
+<span class="sig-name descname"><span class="pre">encoding</span></span><a class="headerlink" href="#rinoh.font.Font.encoding" title="Permalink to this definition">¶</a></dt>
+<dd><p>If no encoding is set for the <a class="reference internal" href="#rinoh.font.Font" title="rinoh.font.Font"><code class="xref py py-class docutils literal notranslate"><span class="pre">Font</span></code></a>, glyphs are addressed by
+glyph ID (and thus support more than 256 glyphs).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rinoh.font.Font.get_glyph_metrics">
+<span class="sig-name descname"><span class="pre">get_glyph_metrics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">char</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">variant</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.font.Font.get_glyph_metrics" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the glyph metrics for a particular character</p>
+<p>If the glyph of requested font variant is not present in the font, the
+<cite>normal</cite> variant is returned instead. If that is not present either, an
+exception is raised.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>char</strong> (<em>str of length 1</em>) – the character for which to find the glyph</p></li>
+<li><p><strong>variant</strong> (<a class="reference internal" href="#rinoh.font.style.FontVariant" title="rinoh.font.style.FontVariant"><em>FontVariant</em></a>) – the variant of the glyph to return</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>GlyphMetrics</em> – the requested glyph metrics</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>MissingGlyphException</strong> – when the requested glyph is not present in
+    the font</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rinoh.font.Font.get_ligature">
+<span class="sig-name descname"><span class="pre">get_ligature</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">glyph</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">successor_glyph</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.font.Font.get_ligature" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the ligature to replace the given glyphs</p>
+<p>If no ligature is defined in the font for the given glyphs, return
+<code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>glyph</strong> (<em>GlyphMetrics</em>) – the first of the glyphs to combine</p></li>
+<li><p><strong>successor_glyph</strong> (<em>GlyphMetrics</em>) – the second of the glyphs to combine</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>GlyphMetrics or None</em> – the ligature to replace the given glyphs</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rinoh.font.Font.get_kerning">
+<span class="sig-name descname"><span class="pre">get_kerning</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.font.Font.get_kerning" title="Permalink to this definition">¶</a></dt>
+<dd><p>Look up the kerning for two glyphs</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>a</strong> (<em>GlyphMetrics</em>) – the first of the glyphs</p></li>
+<li><p><strong>b</strong> (<em>GlyphMetrics</em>) – the second of the glyphs</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>float</em> – the kerning value in font units</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="rinoh.font.Typeface">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rinoh.font.</span></span><span class="sig-name descname"><span class="pre">Typeface</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">fonts</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.font.Typeface" title="Permalink to this definition">¶</a></dt>
+<dd><p>A set of fonts that share common design features</p>
+<p>The fonts collected in a typeface differ in weight, width and/or slant.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>*fonts</strong> (<a class="reference internal" href="#rinoh.font.Font" title="rinoh.font.Font"><code class="xref py py-class docutils literal notranslate"><span class="pre">Font</span></code></a>) – the fonts that make up this typeface</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="rinoh.font.Typeface.fonts">
+<span class="sig-name descname"><span class="pre">fonts</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.font.Typeface.fonts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generator yielding all fonts of this typeface</p>
+<dl class="field-list simple">
+<dt class="field-odd">Yields</dt>
+<dd class="field-odd"><p><em>Font</em> – the next font in this typeface</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rinoh.font.Typeface.get_font">
+<span class="sig-name descname"><span class="pre">get_font</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">400</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">slant</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'upright'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.font.Typeface.get_font" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the font matching or closest to the given style</p>
+<p>If a font with the given weight, slant and width is available, return
+it. Otherwise, return the font that is closest in style.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>weight</strong> (<a class="reference internal" href="#rinoh.font.style.FontWeight" title="rinoh.font.style.FontWeight"><em>FontWeight</em></a>) – weight of the font</p></li>
+<li><p><strong>slant</strong> (<a class="reference internal" href="#rinoh.font.style.FontSlant" title="rinoh.font.style.FontSlant"><em>FontSlant</em></a>) – slant of the font</p></li>
+<li><p><strong>width</strong> (<a class="reference internal" href="#rinoh.font.style.FontWidth" title="rinoh.font.style.FontWidth"><em>FontWidth</em></a>) – width of the font</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>Font</em> – the requested font</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-rinoh.font.style"></span><dl class="py class">
+<dt class="sig sig-object py" id="rinoh.font.style.FontWeight">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rinoh.font.style.</span></span><span class="sig-name descname"><span class="pre">FontWeight</span></span><a class="headerlink" href="#rinoh.font.style.FontWeight" title="Permalink to this definition">¶</a></dt>
+<dd><p>Accepts: <code class="docutils literal notranslate"><span class="pre">hairline</span></code>, <code class="docutils literal notranslate"><span class="pre">thin</span></code>, <code class="docutils literal notranslate"><span class="pre">ultra-light</span></code>, <code class="docutils literal notranslate"><span class="pre">extra-light</span></code>, <code class="docutils literal notranslate"><span class="pre">light</span></code>, <code class="docutils literal notranslate"><span class="pre">regular</span></code>, <code class="docutils literal notranslate"><span class="pre">normal</span></code>, <code class="docutils literal notranslate"><span class="pre">book</span></code>, <code class="docutils literal notranslate"><span class="pre">roman</span></code>, <code class="docutils literal notranslate"><span class="pre">medium</span></code>, <code class="docutils literal notranslate"><span class="pre">semi-bold</span></code>, <code class="docutils literal notranslate"><span class="pre">demi-bold</span></code>, <code class="docutils literal notranslate"><span class="pre">bold</span></code>, <code class="docutils literal notranslate"><span class="pre">extra-bold</span></code>, <code class="docutils literal notranslate"><span class="pre">ultra-bold</span></code>, <code class="docutils literal notranslate"><span class="pre">black</span></code>, <code class="docutils literal notranslate"><span class="pre">heavy</span></code>, <code class="docutils literal notranslate"><span class="pre">extra-black</span></code>, <code class="docutils literal notranslate"><span class="pre">ultra-black</span></code></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="rinoh.font.style.FontSlant">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rinoh.font.style.</span></span><span class="sig-name descname"><span class="pre">FontSlant</span></span><a class="headerlink" href="#rinoh.font.style.FontSlant" title="Permalink to this definition">¶</a></dt>
+<dd><p>Accepts: <code class="docutils literal notranslate"><span class="pre">upright</span></code>, <code class="docutils literal notranslate"><span class="pre">oblique</span></code>, <code class="docutils literal notranslate"><span class="pre">italic</span></code></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="rinoh.font.style.FontWidth">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rinoh.font.style.</span></span><span class="sig-name descname"><span class="pre">FontWidth</span></span><a class="headerlink" href="#rinoh.font.style.FontWidth" title="Permalink to this definition">¶</a></dt>
+<dd><p>Accepts: <code class="docutils literal notranslate"><span class="pre">ultra-condensed</span></code>, <code class="docutils literal notranslate"><span class="pre">extra-condensed</span></code>, <code class="docutils literal notranslate"><span class="pre">condensed</span></code>, <code class="docutils literal notranslate"><span class="pre">semi-condensed</span></code>, <code class="docutils literal notranslate"><span class="pre">normal</span></code>, <code class="docutils literal notranslate"><span class="pre">medium</span></code>, <code class="docutils literal notranslate"><span class="pre">semi-expanded</span></code>, <code class="docutils literal notranslate"><span class="pre">expanded</span></code>, <code class="docutils literal notranslate"><span class="pre">extra-expanded</span></code>, <code class="docutils literal notranslate"><span class="pre">ultra-expanded</span></code></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="rinoh.font.style.FontVariant">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rinoh.font.style.</span></span><span class="sig-name descname"><span class="pre">FontVariant</span></span><a class="headerlink" href="#rinoh.font.style.FontVariant" title="Permalink to this definition">¶</a></dt>
+<dd><p>Accepts: <code class="docutils literal notranslate"><span class="pre">normal</span></code>, <code class="docutils literal notranslate"><span class="pre">small</span> <span class="pre">capital</span></code>, <code class="docutils literal notranslate"><span class="pre">oldstyle</span> <span class="pre">figures</span></code></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="rinoh.font.style.TextPosition">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rinoh.font.style.</span></span><span class="sig-name descname"><span class="pre">TextPosition</span></span><a class="headerlink" href="#rinoh.font.style.TextPosition" title="Permalink to this definition">¶</a></dt>
+<dd><p>Accepts: <code class="docutils literal notranslate"><span class="pre">normal</span></code>, <code class="docutils literal notranslate"><span class="pre">superscript</span></code>, <code class="docutils literal notranslate"><span class="pre">subscript</span></code></p>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="image.html" class="btn btn-neutral float-right" title="Images and Figures (rinoh.image)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="flowable.html" class="btn btn-neutral float-left" title="Flowable (rinoh.flowable)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2022, Brecht Machiels and contributors.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"> Versions</span>
+      v: v0.5.4
+      <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      <dl id="docs-versions">
+      </dl>
+    </div>
+  </div>
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
