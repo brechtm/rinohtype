@@ -35,6 +35,7 @@
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
         <script src="_static/versions.js"></script>
     
@@ -192,7 +193,7 @@
            <div itemprop="articleBody">
             
   <div class="section" id="sphinx-builder">
-<span id="id1"></span><h1>Sphinx Builder<a class="headerlink" href="#sphinx-builder" title="Permalink to this headline">¶</a></h1>
+<span id="id1"></span><h1>Sphinx Builder<a class="headerlink" href="#sphinx-builder" title="Permalink to this heading">¶</a></h1>
 <p><code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.frontend.sphinx</span></code> is a Sphinx extension module. It provides a Sphinx
 builder with the name <em>rinoh</em>. The builder recognizes the following <code class="docutils literal notranslate"><span class="pre">conf.py</span></code>
 options. Of these, only <a class="reference internal" href="#confval-rinoh_documents"><code class="xref std std-confval docutils literal notranslate"><span class="pre">rinoh_documents</span></code></a> (or
@@ -281,7 +282,7 @@ string form with <a class="reference external" href="https://www.sphinx-doc.org/
 </dd></dl>
 
 <div class="section" id="legacy-configuration-variables">
-<h2>Legacy Configuration Variables<a class="headerlink" href="#legacy-configuration-variables" title="Permalink to this headline">¶</a></h2>
+<h2>Legacy Configuration Variables<a class="headerlink" href="#legacy-configuration-variables" title="Permalink to this heading">¶</a></h2>
 <p>The configuration variables below are no longer supported. Instead, their
 functionality can now be configured per document in <a class="reference internal" href="#confval-rinoh_documents"><code class="xref std std-confval docutils literal notranslate"><span class="pre">rinoh_documents</span></code></a>.</p>
 <dl class="std confval">
@@ -298,10 +299,10 @@ document template can be specified in <a class="reference internal" href="#confv
 obvious which style sheet will be used when the template configuration also
 specifies a style sheet. Please specify the style sheet to use in your
 <a class="reference internal" href="basicstyling.html#configure-templates"><span class="std std-ref">template configuration file</span></a>:</p>
-<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[TEMPLATE_CONFIGURATION]</span>
-<span class="na">name</span> <span class="o">=</span> <span class="s">My Book</span>
-<span class="na">template</span> <span class="o">=</span> <span class="s">book</span>
-<span class="na">stylesheet</span> <span class="o">=</span> <span class="s">my_stylesheet.rts</span>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[TEMPLATE_CONFIGURATION]</span><span class="w"></span>
+<span class="na">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">My Book</span><span class="w"></span>
+<span class="na">template</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">book</span><span class="w"></span>
+<span class="na">stylesheet</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">my_stylesheet.rts</span><span class="w"></span>
 </pre></div>
 </div>
 </dd></dl>
@@ -313,12 +314,12 @@ specifies a style sheet. Please specify the style sheet to use in your
 obvious which paper size was being used when the template configuration
 (<a class="reference internal" href="#confval-rinoh_template"><code class="xref std std-confval docutils literal notranslate"><span class="pre">rinoh_template</span></code></a>) also specified a paper size. Please specify
 the paper_size to use in your <a class="reference internal" href="basicstyling.html#configure-templates"><span class="std std-ref">template configuration file</span></a>:</p>
-<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[TEMPLATE_CONFIGURATION]</span>
-<span class="na">name</span> <span class="o">=</span> <span class="s">My Book</span>
-<span class="na">template</span> <span class="o">=</span> <span class="s">book</span>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[TEMPLATE_CONFIGURATION]</span><span class="w"></span>
+<span class="na">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">My Book</span><span class="w"></span>
+<span class="na">template</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">book</span><span class="w"></span>
 
-<span class="k">[VARIABLES]</span>
-<span class="na">paper_size</span> <span class="o">=</span> <span class="s">A5</span>
+<span class="k">[VARIABLES]</span><span class="w"></span>
+<span class="na">paper_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">A5</span><span class="w"></span>
 </pre></div>
 </div>
 </dd></dl>

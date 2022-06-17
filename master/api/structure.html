@@ -35,6 +35,7 @@
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/versions.js"></script>
     
@@ -219,9 +220,9 @@
            <div itemprop="articleBody">
             
   <span class="target" id="module-rinoh.structure"></span><div class="section" id="structure-rinoh-structure">
-<span id="structure"></span><h1>Structure (<a class="reference internal" href="#module-rinoh.structure" title="rinoh.structure"><code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.structure</span></code></a>)<a class="headerlink" href="#structure-rinoh-structure" title="Permalink to this headline">¶</a></h1>
+<span id="structure"></span><h1>Structure (<a class="reference internal" href="#module-rinoh.structure" title="rinoh.structure"><code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.structure</span></code></a>)<a class="headerlink" href="#structure-rinoh-structure" title="Permalink to this heading">¶</a></h1>
 <div class="section" id="sections">
-<h2>Sections<a class="headerlink" href="#sections" title="Permalink to this headline">¶</a></h2>
+<h2>Sections<a class="headerlink" href="#sections" title="Permalink to this heading">¶</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="rinoh.structure.Section">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rinoh.structure.</span></span><span class="sig-name descname"><span class="pre">Section</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">flowables</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">align</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">style</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.structure.Section" title="Permalink to this definition">¶</a></dt>
@@ -242,7 +243,7 @@ numbered.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="rinoh.structure.Heading.style_class">
 <span class="sig-name descname"><span class="pre">style_class</span></span><a class="headerlink" href="#rinoh.structure.Heading.style_class" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <a class="reference internal" href="../style/rinoh.structure.HeadingStyle.html#rinoh.structure.HeadingStyle" title="rinoh.structure.HeadingStyle"><code class="xref py py-class docutils literal notranslate"><span class="pre">rinoh.structure.HeadingStyle</span></code></a></p>
+<dd><p>alias of <a class="reference internal" href="../style/rinoh.structure.HeadingStyle.html#rinoh.structure.HeadingStyle" title="rinoh.structure.HeadingStyle"><code class="xref py py-class docutils literal notranslate"><span class="pre">HeadingStyle</span></code></a></p>
 </dd></dl>
 
 <dl class="py method">
@@ -327,14 +328,14 @@ by the <cite>space_below</cite> style attribute.</p>
 
 </div>
 <div class="section" id="lists">
-<h2>Lists<a class="headerlink" href="#lists" title="Permalink to this headline">¶</a></h2>
+<h2>Lists<a class="headerlink" href="#lists" title="Permalink to this heading">¶</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="rinoh.structure.List">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rinoh.structure.</span></span><span class="sig-name descname"><span class="pre">List</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">list_items</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_index</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">style</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.structure.List" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="py attribute">
 <dt class="sig sig-object py" id="rinoh.structure.List.style_class">
 <span class="sig-name descname"><span class="pre">style_class</span></span><a class="headerlink" href="#rinoh.structure.List.style_class" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <a class="reference internal" href="../style/rinoh.structure.ListStyle.html#rinoh.structure.ListStyle" title="rinoh.structure.ListStyle"><code class="xref py py-class docutils literal notranslate"><span class="pre">rinoh.structure.ListStyle</span></code></a></p>
+<dd><p>alias of <a class="reference internal" href="../style/rinoh.structure.ListStyle.html#rinoh.structure.ListStyle" title="rinoh.structure.ListStyle"><code class="xref py py-class docutils literal notranslate"><span class="pre">ListStyle</span></code></a></p>
 </dd></dl>
 
 </dd></dl>
@@ -346,7 +347,7 @@ by the <cite>space_below</cite> style attribute.</p>
 
 </div>
 <div class="section" id="table-of-contents">
-<h2>Table of Contents<a class="headerlink" href="#table-of-contents" title="Permalink to this headline">¶</a></h2>
+<h2>Table of Contents<a class="headerlink" href="#table-of-contents" title="Permalink to this heading">¶</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="rinoh.structure.TableOfContentsSection">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rinoh.structure.</span></span><span class="sig-name descname"><span class="pre">TableOfContentsSection</span></span><a class="headerlink" href="#rinoh.structure.TableOfContentsSection" title="Permalink to this definition">¶</a></dt>
@@ -358,7 +359,7 @@ by the <cite>space_below</cite> style attribute.</p>
 <dd><dl class="py attribute">
 <dt class="sig sig-object py" id="rinoh.structure.TableOfContents.style_class">
 <span class="sig-name descname"><span class="pre">style_class</span></span><a class="headerlink" href="#rinoh.structure.TableOfContents.style_class" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <a class="reference internal" href="../style/rinoh.structure.TableOfContentsStyle.html#rinoh.structure.TableOfContentsStyle" title="rinoh.structure.TableOfContentsStyle"><code class="xref py py-class docutils literal notranslate"><span class="pre">rinoh.structure.TableOfContentsStyle</span></code></a></p>
+<dd><p>alias of <a class="reference internal" href="../style/rinoh.structure.TableOfContentsStyle.html#rinoh.structure.TableOfContentsStyle" title="rinoh.structure.TableOfContentsStyle"><code class="xref py py-class docutils literal notranslate"><span class="pre">TableOfContentsStyle</span></code></a></p>
 </dd></dl>
 
 <dl class="py method">
@@ -375,21 +376,21 @@ by the <cite>space_below</cite> style attribute.</p>
 <dd><dl class="py attribute">
 <dt class="sig sig-object py" id="rinoh.structure.TableOfContentsEntry.style_class">
 <span class="sig-name descname"><span class="pre">style_class</span></span><a class="headerlink" href="#rinoh.structure.TableOfContentsEntry.style_class" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <a class="reference internal" href="../style/rinoh.structure.TableOfContentsEntryStyle.html#rinoh.structure.TableOfContentsEntryStyle" title="rinoh.structure.TableOfContentsEntryStyle"><code class="xref py py-class docutils literal notranslate"><span class="pre">rinoh.structure.TableOfContentsEntryStyle</span></code></a></p>
+<dd><p>alias of <a class="reference internal" href="../style/rinoh.structure.TableOfContentsEntryStyle.html#rinoh.structure.TableOfContentsEntryStyle" title="rinoh.structure.TableOfContentsEntryStyle"><code class="xref py py-class docutils literal notranslate"><span class="pre">TableOfContentsEntryStyle</span></code></a></p>
 </dd></dl>
 
 </dd></dl>
 
 </div>
 <div class="section" id="adminitions">
-<h2>Adminitions<a class="headerlink" href="#adminitions" title="Permalink to this headline">¶</a></h2>
+<h2>Adminitions<a class="headerlink" href="#adminitions" title="Permalink to this heading">¶</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="rinoh.structure.Admonition">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rinoh.structure.</span></span><span class="sig-name descname"><span class="pre">Admonition</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">flowables</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">style</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.structure.Admonition" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="py attribute">
 <dt class="sig sig-object py" id="rinoh.structure.Admonition.style_class">
 <span class="sig-name descname"><span class="pre">style_class</span></span><a class="headerlink" href="#rinoh.structure.Admonition.style_class" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <a class="reference internal" href="../style/rinoh.structure.AdmonitionStyle.html#rinoh.structure.AdmonitionStyle" title="rinoh.structure.AdmonitionStyle"><code class="xref py py-class docutils literal notranslate"><span class="pre">rinoh.structure.AdmonitionStyle</span></code></a></p>
+<dd><p>alias of <a class="reference internal" href="../style/rinoh.structure.AdmonitionStyle.html#rinoh.structure.AdmonitionStyle" title="rinoh.structure.AdmonitionStyle"><code class="xref py py-class docutils literal notranslate"><span class="pre">AdmonitionStyle</span></code></a></p>
 </dd></dl>
 
 <dl class="py method">
@@ -518,14 +519,14 @@ by the <cite>space_below</cite> style attribute.</p>
 
 </div>
 <div class="section" id="horizontal-rule">
-<h2>Horizontal Rule<a class="headerlink" href="#horizontal-rule" title="Permalink to this headline">¶</a></h2>
+<h2>Horizontal Rule<a class="headerlink" href="#horizontal-rule" title="Permalink to this heading">¶</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="rinoh.structure.HorizontalRule">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rinoh.structure.</span></span><span class="sig-name descname"><span class="pre">HorizontalRule</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">align</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">style</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.structure.HorizontalRule" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="py attribute">
 <dt class="sig sig-object py" id="rinoh.structure.HorizontalRule.style_class">
 <span class="sig-name descname"><span class="pre">style_class</span></span><a class="headerlink" href="#rinoh.structure.HorizontalRule.style_class" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <a class="reference internal" href="../style/rinoh.structure.HorizontalRuleStyle.html#rinoh.structure.HorizontalRuleStyle" title="rinoh.structure.HorizontalRuleStyle"><code class="xref py py-class docutils literal notranslate"><span class="pre">rinoh.structure.HorizontalRuleStyle</span></code></a></p>
+<dd><p>alias of <a class="reference internal" href="../style/rinoh.structure.HorizontalRuleStyle.html#rinoh.structure.HorizontalRuleStyle" title="rinoh.structure.HorizontalRuleStyle"><code class="xref py py-class docutils literal notranslate"><span class="pre">HorizontalRuleStyle</span></code></a></p>
 </dd></dl>
 
 <dl class="py method">

@@ -35,6 +35,7 @@
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
         <script src="_static/versions.js"></script>
     
@@ -193,14 +194,14 @@
            <div itemprop="articleBody">
             
   <div class="section" id="document-templates">
-<span id="templates"></span><h1>Document Templates<a class="headerlink" href="#document-templates" title="Permalink to this headline">¶</a></h1>
+<span id="templates"></span><h1>Document Templates<a class="headerlink" href="#document-templates" title="Permalink to this heading">¶</a></h1>
 <p>When it is not possible to achieve a particular document style using one of the
 existing templates and a custom template configuration, you can create a new
 template. A new template is programmed in Python and therefor it is required
 that you are familiar with Python, or at least with general object-oriented
 programming.</p>
 <div class="section" id="subclassing-a-template">
-<h2>Subclassing a Template<a class="headerlink" href="#subclassing-a-template" title="Permalink to this headline">¶</a></h2>
+<h2>Subclassing a Template<a class="headerlink" href="#subclassing-a-template" title="Permalink to this heading">¶</a></h2>
 <p>If you need to customize a template beyond what is possible by configuration,
 you can subclass a template class and override document part and page templates
 with custom templates. The following example subclasses <a class="reference internal" href="article.html#rinoh.templates.article.Article" title="rinoh.templates.article.Article"><code class="xref py py-class docutils literal notranslate"><span class="pre">Article</span></code></a>.</p>
@@ -236,7 +237,7 @@ with custom templates. The following example subclasses <a class="reference inte
 the title page template with a custom one.</p>
 </div>
 <div class="section" id="creating-a-custom-template">
-<span id="custom-template"></span><h2>Creating a Custom Template<a class="headerlink" href="#creating-a-custom-template" title="Permalink to this headline">¶</a></h2>
+<span id="custom-template"></span><h2>Creating a Custom Template<a class="headerlink" href="#creating-a-custom-template" title="Permalink to this heading">¶</a></h2>
 <p>A new template can be created from scratch by subclassing
 <a class="reference internal" href="api/template.html#rinoh.template.DocumentTemplate" title="rinoh.template.DocumentTemplate"><code class="xref py py-class docutils literal notranslate"><span class="pre">DocumentTemplate</span></code></a>, defining all document parts, their templates and
 page templates.</p>

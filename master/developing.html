@@ -35,6 +35,7 @@
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
         <script src="_static/versions.js"></script>
     
@@ -195,7 +196,7 @@
            <div itemprop="articleBody">
             
   <div class="section" id="developing">
-<span id="id1"></span><h1>Developing<a class="headerlink" href="#developing" title="Permalink to this headline">¶</a></h1>
+<span id="id1"></span><h1>Developing<a class="headerlink" href="#developing" title="Permalink to this heading">¶</a></h1>
 <p>This project makes use of <a class="reference external" href="https://nox.thea.codes">Nox</a> to manage running tests and other tasks. The
 tests can be divided into three categories: checks, unit tests and regression
 (integration) tests. <code class="docutils literal notranslate"><span class="pre">noxfile.py</span></code> defines “sessions” that configure these
@@ -237,7 +238,7 @@ Windows requires some <a class="reference external" href="https://stackoverflow.
 these.</p>
 </div>
 <div class="section" id="nox-sessions">
-<h2>Nox Sessions<a class="headerlink" href="#nox-sessions" title="Permalink to this headline">¶</a></h2>
+<h2>Nox Sessions<a class="headerlink" href="#nox-sessions" title="Permalink to this heading">¶</a></h2>
 <p>The following sessions execute unit tests and regression tests:</p>
 <dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">unit</span></code></dt><dd><p>Runs the unit tests.</p>
@@ -288,7 +289,7 @@ Windows.</p>
 <p>Customization settings for <a class="reference external" href="https://github.com/PyCQA/doc8">doc8</a> and <a class="reference external" href="https://www.pytest.org">pytest</a> are stored in <code class="docutils literal notranslate"><span class="pre">setup.cfg</span></code>.</p>
 </div>
 <div class="section" id="testing-against-multiple-python-interpreter-versions">
-<h2>Testing against multiple Python interpreter versions<a class="headerlink" href="#testing-against-multiple-python-interpreter-versions" title="Permalink to this headline">¶</a></h2>
+<h2>Testing against multiple Python interpreter versions<a class="headerlink" href="#testing-against-multiple-python-interpreter-versions" title="Permalink to this heading">¶</a></h2>
 <p>Nox facilitates running tests on multiple Python interpreter versions. You can
 combine the <code class="docutils literal notranslate"><span class="pre">unit</span></code> and <code class="docutils literal notranslate"><span class="pre">regression</span></code> sessions with a Python <a class="reference external" href="https://nox.thea.codes/en/stable/tutorial.html#testing-against-different-and-multiple-pythons">version
 number</a> to execute it on a specific Python interpreter version. For example,
@@ -316,7 +317,7 @@ closely track the latest releases). The <code class="docutils literal notranslat
 these for you (skipping any that are already installed).</p>
 </div>
 <div class="section" id="continuous-integration">
-<h2>Continuous integration<a class="headerlink" href="#continuous-integration" title="Permalink to this headline">¶</a></h2>
+<h2>Continuous integration<a class="headerlink" href="#continuous-integration" title="Permalink to this heading">¶</a></h2>
 <p><a class="reference external" href="https://github.com/brechtm/rinohtype/actions">GitHub Actions</a> automatically executes the Nox sessions when new commits
 are pushed to the repository. The Nox sessions are run on Linux, macOS and
 Windows, and run the tests against an array of Python, docutils and Sphinx
@@ -324,7 +325,7 @@ versions to make sure that we don’t break any corner cases. See
 <code class="docutils literal notranslate"><span class="pre">.github/workflows</span></code> for details.</p>
 </div>
 <div class="section" id="making-a-release">
-<h2>Making a release<a class="headerlink" href="#making-a-release" title="Permalink to this headline">¶</a></h2>
+<h2>Making a release<a class="headerlink" href="#making-a-release" title="Permalink to this heading">¶</a></h2>
 <p>This is a list of steps to follow when making a new release of rinohtype.
 Publishing the new release to <a class="reference external" href="https://pypi.org/">PyPI</a> and uploading the documentation to GitHub
 Pages is handled by the GitHub Actions workflow.</p>

@@ -35,6 +35,7 @@
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/versions.js"></script>
     
@@ -219,7 +220,7 @@
            <div itemprop="articleBody">
             
   <span class="target" id="module-rinoh.flowable"></span><div class="section" id="flowable-rinoh-flowable">
-<span id="flowables"></span><h1>Flowable (<a class="reference internal" href="#module-rinoh.flowable" title="rinoh.flowable"><code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.flowable</span></code></a>)<a class="headerlink" href="#flowable-rinoh-flowable" title="Permalink to this headline">¶</a></h1>
+<span id="flowables"></span><h1>Flowable (<a class="reference internal" href="#module-rinoh.flowable" title="rinoh.flowable"><code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.flowable</span></code></a>)<a class="headerlink" href="#flowable-rinoh-flowable" title="Permalink to this heading">¶</a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="rinoh.flowable.Flowable">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rinoh.flowable.</span></span><span class="sig-name descname"><span class="pre">Flowable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">align</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">style</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.flowable.Flowable" title="Permalink to this definition">¶</a></dt>
@@ -245,7 +246,7 @@ process, so rendering can later be resumed at those points, if needed.</p>
 </dd></dl>
 
 <div class="section" id="no-output-flowables">
-<h2>No-Output Flowables<a class="headerlink" href="#no-output-flowables" title="Permalink to this headline">¶</a></h2>
+<h2>No-Output Flowables<a class="headerlink" href="#no-output-flowables" title="Permalink to this heading">¶</a></h2>
 <p>These flowables do not directly place anything on the page. All except
 <a class="reference internal" href="#rinoh.flowable.DummyFlowable" title="rinoh.flowable.DummyFlowable"><code class="xref py py-class docutils literal notranslate"><span class="pre">DummyFlowable</span></code></a> do have side-effects however. Some of these side-effects
 affect the rendering of the document in an indirect way.</p>
@@ -289,7 +290,7 @@ flowables during the rendering stage.</p>
 
 </div>
 <div class="section" id="labeled-flowables">
-<h2>Labeled Flowables<a class="headerlink" href="#labeled-flowables" title="Permalink to this headline">¶</a></h2>
+<h2>Labeled Flowables<a class="headerlink" href="#labeled-flowables" title="Permalink to this heading">¶</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="rinoh.flowable.LabeledFlowable">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rinoh.flowable.</span></span><span class="sig-name descname"><span class="pre">LabeledFlowable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">label</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flowable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">style</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.flowable.LabeledFlowable" title="Permalink to this definition">¶</a></dt>
@@ -308,7 +309,7 @@ the label.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="rinoh.flowable.LabeledFlowable.style_class">
 <span class="sig-name descname"><span class="pre">style_class</span></span><a class="headerlink" href="#rinoh.flowable.LabeledFlowable.style_class" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <a class="reference internal" href="../style/rinoh.flowable.LabeledFlowableStyle.html#rinoh.flowable.LabeledFlowableStyle" title="rinoh.flowable.LabeledFlowableStyle"><code class="xref py py-class docutils literal notranslate"><span class="pre">rinoh.flowable.LabeledFlowableStyle</span></code></a></p>
+<dd><p>alias of <a class="reference internal" href="../style/rinoh.flowable.LabeledFlowableStyle.html#rinoh.flowable.LabeledFlowableStyle" title="rinoh.flowable.LabeledFlowableStyle"><code class="xref py py-class docutils literal notranslate"><span class="pre">LabeledFlowableStyle</span></code></a></p>
 </dd></dl>
 
 <dl class="py method">
@@ -334,7 +335,7 @@ descender height of the preceding line or <cite>None</cite>.</p>
 
 </div>
 <div class="section" id="grouping-flowables">
-<h2>Grouping Flowables<a class="headerlink" href="#grouping-flowables" title="Permalink to this headline">¶</a></h2>
+<h2>Grouping Flowables<a class="headerlink" href="#grouping-flowables" title="Permalink to this heading">¶</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="rinoh.flowable.GroupedFlowables">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rinoh.flowable.</span></span><span class="sig-name descname"><span class="pre">GroupedFlowables</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">align</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">style</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.flowable.GroupedFlowables" title="Permalink to this definition">¶</a></dt>
@@ -345,7 +346,7 @@ seperated from the flowable that follows it.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="rinoh.flowable.GroupedFlowables.style_class">
 <span class="sig-name descname"><span class="pre">style_class</span></span><a class="headerlink" href="#rinoh.flowable.GroupedFlowables.style_class" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <a class="reference internal" href="../style/rinoh.flowable.GroupedFlowablesStyle.html#rinoh.flowable.GroupedFlowablesStyle" title="rinoh.flowable.GroupedFlowablesStyle"><code class="xref py py-class docutils literal notranslate"><span class="pre">rinoh.flowable.GroupedFlowablesStyle</span></code></a></p>
+<dd><p>alias of <a class="reference internal" href="../style/rinoh.flowable.GroupedFlowablesStyle.html#rinoh.flowable.GroupedFlowablesStyle" title="rinoh.flowable.GroupedFlowablesStyle"><code class="xref py py-class docutils literal notranslate"><span class="pre">GroupedFlowablesStyle</span></code></a></p>
 </dd></dl>
 
 <dl class="py method">
@@ -414,7 +415,7 @@ descender height of the preceding line or <cite>None</cite>.</p>
 
 </div>
 <div class="section" id="floating-flowables">
-<h2>Floating Flowables<a class="headerlink" href="#floating-flowables" title="Permalink to this headline">¶</a></h2>
+<h2>Floating Flowables<a class="headerlink" href="#floating-flowables" title="Permalink to this heading">¶</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="rinoh.flowable.Float">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rinoh.flowable.</span></span><span class="sig-name descname"><span class="pre">Float</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">align</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">style</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.flowable.Float" title="Permalink to this definition">¶</a></dt>
@@ -428,7 +429,7 @@ a page, instead of in between paragraphs.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="rinoh.flowable.Float.style_class">
 <span class="sig-name descname"><span class="pre">style_class</span></span><a class="headerlink" href="#rinoh.flowable.Float.style_class" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <a class="reference internal" href="../style/rinoh.flowable.FloatStyle.html#rinoh.flowable.FloatStyle" title="rinoh.flowable.FloatStyle"><code class="xref py py-class docutils literal notranslate"><span class="pre">rinoh.flowable.FloatStyle</span></code></a></p>
+<dd><p>alias of <a class="reference internal" href="../style/rinoh.flowable.FloatStyle.html#rinoh.flowable.FloatStyle" title="rinoh.flowable.FloatStyle"><code class="xref py py-class docutils literal notranslate"><span class="pre">FloatStyle</span></code></a></p>
 </dd></dl>
 
 <dl class="py method">
@@ -446,7 +447,7 @@ by the <cite>space_below</cite> style attribute.</p>
 
 </div>
 <div class="section" id="styling-properties">
-<h2>Styling Properties<a class="headerlink" href="#styling-properties" title="Permalink to this headline">¶</a></h2>
+<h2>Styling Properties<a class="headerlink" href="#styling-properties" title="Permalink to this heading">¶</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="rinoh.flowable.HorizontalAlignment">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rinoh.flowable.</span></span><span class="sig-name descname"><span class="pre">HorizontalAlignment</span></span><a class="headerlink" href="#rinoh.flowable.HorizontalAlignment" title="Permalink to this definition">¶</a></dt>

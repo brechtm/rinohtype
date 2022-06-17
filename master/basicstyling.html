@@ -35,6 +35,7 @@
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
         <script src="_static/versions.js"></script>
     
@@ -201,77 +202,77 @@
            <div itemprop="articleBody">
             
   <div class="section" id="basic-document-styling">
-<span id="basic-styling"></span><h1>Basic Document Styling<a class="headerlink" href="#basic-document-styling" title="Permalink to this headline">¶</a></h1>
+<span id="basic-styling"></span><h1>Basic Document Styling<a class="headerlink" href="#basic-document-styling" title="Permalink to this heading">¶</a></h1>
 <p>rinohtype allows for fine-grained control over the style of its output. Most
 aspects of a document’s style can be controlled by style sheet files and
 template configuration files which are being introduced in this chapter. These
 files are plain text files that are easy to create, read and modify.</p>
 <div class="section" id="style-sheets">
-<span id="basics-stylesheets"></span><h2>Style Sheets<a class="headerlink" href="#style-sheets" title="Permalink to this headline">¶</a></h2>
+<span id="basics-stylesheets"></span><h2>Style Sheets<a class="headerlink" href="#style-sheets" title="Permalink to this heading">¶</a></h2>
 <p>A style sheet defines the look of each element in a document. For each type of
 document element, the style sheet assign values to the style properties
 available for that element. Style sheets are stored in plain text files using
 the Windows INI<a class="footnote-reference brackets" href="#ini" id="id1">1</a> format with the <code class="docutils literal notranslate"><span class="pre">.rts</span></code> extension. Below is an
 excerpt from the <a class="reference internal" href="sphinx_stylesheet.html"><span class="doc">Sphinx style sheet</span></a> included with rinohtype.</p>
-<div class="highlight-ini notranslate" id="base-style-sheet"><div class="highlight"><pre><span></span><span class="k">[STYLESHEET]</span>
-<span class="na">name</span><span class="o">=</span><span class="s">Sphinx</span>
-<span class="na">description</span><span class="o">=</span><span class="s">Mostly a copy of the LaTeX style included with Sphinx</span>
-<span class="na">pygments_style</span><span class="o">=</span><span class="s">friendly</span>
+<div class="highlight-ini notranslate" id="base-style-sheet"><div class="highlight"><pre><span></span><span class="k">[STYLESHEET]</span><span class="w"></span>
+<span class="na">name</span><span class="o">=</span><span class="s">Sphinx</span><span class="w"></span>
+<span class="na">description</span><span class="o">=</span><span class="s">Mostly a copy of the LaTeX style included with Sphinx</span><span class="w"></span>
+<span class="na">pygments_style</span><span class="o">=</span><span class="s">friendly</span><span class="w"></span>
 
-<span class="k">[VARIABLES]</span>
-<span class="na">mono_typeface</span><span class="o">=</span><span class="s">TeX Gyre Cursor</span>
-<span class="na">serif_typeface</span><span class="o">=</span><span class="s">TeX Gyre Pagella</span>
-<span class="na">sans_typeface</span><span class="o">=</span><span class="s">Tex Gyre Heros</span>
-<span class="na">fallback_typeface</span><span class="o">=</span><span class="s">DejaVu Serif</span>
-<span class="na">thin_black_stroke</span><span class="o">=</span><span class="s">0.5pt,#000</span>
-<span class="na">blue</span><span class="o">=</span><span class="s">#20435c</span>
+<span class="k">[VARIABLES]</span><span class="w"></span>
+<span class="na">mono_typeface</span><span class="o">=</span><span class="s">TeX Gyre Cursor</span><span class="w"></span>
+<span class="na">serif_typeface</span><span class="o">=</span><span class="s">TeX Gyre Pagella</span><span class="w"></span>
+<span class="na">sans_typeface</span><span class="o">=</span><span class="s">Tex Gyre Heros</span><span class="w"></span>
+<span class="na">fallback_typeface</span><span class="o">=</span><span class="s">DejaVu Serif</span><span class="w"></span>
+<span class="na">thin_black_stroke</span><span class="o">=</span><span class="s">0.5pt,#000</span><span class="w"></span>
+<span class="na">blue</span><span class="o">=</span><span class="s">#20435c</span><span class="w"></span>
 
-<span class="k">[default:Paragraph]</span>
-<span class="na">typeface</span><span class="o">=</span><span class="s">$(serif_typeface)</span>
-<span class="na">font_weight</span><span class="o">=</span><span class="s">REGULAR</span>
-<span class="na">font_size</span><span class="o">=</span><span class="s">10pt</span>
-<span class="na">line_spacing</span><span class="o">=</span><span class="s">fixed(12pt, leading(0))</span>
-<span class="na">indent_first</span><span class="o">=</span><span class="s">0</span>
-<span class="na">space_above</span><span class="o">=</span><span class="s">0</span>
-<span class="na">space_below</span><span class="o">=</span><span class="s">0</span>
-<span class="na">text_align</span><span class="o">=</span><span class="s">JUSTIFY</span>
-<span class="na">kerning</span><span class="o">=</span><span class="s">True</span>
-<span class="na">ligatures</span><span class="o">=</span><span class="s">True</span>
-<span class="na">hyphen_lang</span><span class="o">=</span><span class="s">en_US</span>
-<span class="na">hyphen_chars</span><span class="o">=</span><span class="s">4</span>
+<span class="k">[default:Paragraph]</span><span class="w"></span>
+<span class="na">typeface</span><span class="o">=</span><span class="s">$(serif_typeface)</span><span class="w"></span>
+<span class="na">font_weight</span><span class="o">=</span><span class="s">REGULAR</span><span class="w"></span>
+<span class="na">font_size</span><span class="o">=</span><span class="s">10pt</span><span class="w"></span>
+<span class="na">line_spacing</span><span class="o">=</span><span class="s">fixed(12pt, leading(0))</span><span class="w"></span>
+<span class="na">indent_first</span><span class="o">=</span><span class="s">0</span><span class="w"></span>
+<span class="na">space_above</span><span class="o">=</span><span class="s">0</span><span class="w"></span>
+<span class="na">space_below</span><span class="o">=</span><span class="s">0</span><span class="w"></span>
+<span class="na">text_align</span><span class="o">=</span><span class="s">JUSTIFY</span><span class="w"></span>
+<span class="na">kerning</span><span class="o">=</span><span class="s">True</span><span class="w"></span>
+<span class="na">ligatures</span><span class="o">=</span><span class="s">True</span><span class="w"></span>
+<span class="na">hyphen_lang</span><span class="o">=</span><span class="s">en_US</span><span class="w"></span>
+<span class="na">hyphen_chars</span><span class="o">=</span><span class="s">4</span><span class="w"></span>
 
-<span class="k">[fallback]</span>
-<span class="na">typeface</span><span class="o">=</span><span class="s">$(fallback_typeface)</span>
+<span class="k">[fallback]</span><span class="w"></span>
+<span class="na">typeface</span><span class="o">=</span><span class="s">$(fallback_typeface)</span><span class="w"></span>
 
-<span class="k">[body]</span>
-<span class="na">base</span><span class="o">=</span><span class="s">default</span>
-<span class="na">space_above</span><span class="o">=</span><span class="s">5pt</span>
-<span class="na">space_below</span><span class="o">=</span><span class="s">0</span>
-<span class="na">text_align</span><span class="o">=</span><span class="s">justify</span>
+<span class="k">[body]</span><span class="w"></span>
+<span class="na">base</span><span class="o">=</span><span class="s">default</span><span class="w"></span>
+<span class="na">space_above</span><span class="o">=</span><span class="s">5pt</span><span class="w"></span>
+<span class="na">space_below</span><span class="o">=</span><span class="s">0</span><span class="w"></span>
+<span class="na">text_align</span><span class="o">=</span><span class="s">justify</span><span class="w"></span>
 
-<span class="k">[emphasis]</span>
-<span class="na">font_slant</span><span class="o">=</span><span class="s">italic</span>
+<span class="k">[emphasis]</span><span class="w"></span>
+<span class="na">font_slant</span><span class="o">=</span><span class="s">italic</span><span class="w"></span>
 
-<span class="k">[strong]</span>
-<span class="na">font_weight</span><span class="o">=</span><span class="s">BOLD</span>
+<span class="k">[strong]</span><span class="w"></span>
+<span class="na">font_weight</span><span class="o">=</span><span class="s">BOLD</span><span class="w"></span>
 
-<span class="k">[literal emphasis]</span>
-<span class="na">base</span><span class="o">=</span><span class="s">emphasis</span>
-<span class="na">typeface</span><span class="o">=</span><span class="s">$(mono_typeface)</span>
-<span class="na">hyphenate</span><span class="o">=</span><span class="s">False</span>
-<span class="na">ligatures</span><span class="o">=</span><span class="s">False</span>
+<span class="k">[literal emphasis]</span><span class="w"></span>
+<span class="na">base</span><span class="o">=</span><span class="s">emphasis</span><span class="w"></span>
+<span class="na">typeface</span><span class="o">=</span><span class="s">$(mono_typeface)</span><span class="w"></span>
+<span class="na">hyphenate</span><span class="o">=</span><span class="s">False</span><span class="w"></span>
+<span class="na">ligatures</span><span class="o">=</span><span class="s">False</span><span class="w"></span>
 
-<span class="k">[literal strong]</span>
-<span class="na">base</span><span class="o">=</span><span class="s">strong</span>
-<span class="na">typeface</span><span class="o">=</span><span class="s">$(mono_typeface)</span>
-<span class="na">hyphenate</span><span class="o">=</span><span class="s">False</span>
-<span class="na">ligatures</span><span class="o">=</span><span class="s">False</span>
+<span class="k">[literal strong]</span><span class="w"></span>
+<span class="na">base</span><span class="o">=</span><span class="s">strong</span><span class="w"></span>
+<span class="na">typeface</span><span class="o">=</span><span class="s">$(mono_typeface)</span><span class="w"></span>
+<span class="na">hyphenate</span><span class="o">=</span><span class="s">False</span><span class="w"></span>
+<span class="na">ligatures</span><span class="o">=</span><span class="s">False</span><span class="w"></span>
 
-<span class="k">[inline math]</span>
-<span class="na">base</span><span class="o">=</span><span class="s">monospaced</span>
+<span class="k">[inline math]</span><span class="w"></span>
+<span class="na">base</span><span class="o">=</span><span class="s">monospaced</span><span class="w"></span>
 
-<span class="k">[quote]</span>
-<span class="na">font_slant</span><span class="o">=</span><span class="s">italic</span>
+<span class="k">[quote]</span><span class="w"></span>
+<span class="na">font_slant</span><span class="o">=</span><span class="s">italic</span><span class="w"></span>
 </pre></div>
 </div>
 <p>Except for <code class="docutils literal notranslate"><span class="pre">[STYLESHEET]</span></code> and <code class="docutils literal notranslate"><span class="pre">[VARIABLES]</span></code>, each configuration section
@@ -289,24 +290,24 @@ your needs.</p>
 and how to create a new, independent style sheet. For more in-depth information
 on style sheets, please refer to <a class="reference internal" href="elementstyling.html#styling"><span class="std std-ref">Element Styling</span></a>.</p>
 <div class="section" id="extending-an-existing-style-sheet">
-<h3>Extending an Existing Style Sheet<a class="headerlink" href="#extending-an-existing-style-sheet" title="Permalink to this headline">¶</a></h3>
+<h3>Extending an Existing Style Sheet<a class="headerlink" href="#extending-an-existing-style-sheet" title="Permalink to this heading">¶</a></h3>
 <p>Starting from an existing style sheet, it is easy to make small changes to the
 style of individual document elements. The following style sheet file is based
 on the Sphinx stylesheet included with rinohtype.</p>
-<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[STYLESHEET]</span>
-<span class="na">name</span><span class="o">=</span><span class="s">My Style Sheet</span>
-<span class="na">description</span><span class="o">=</span><span class="s">Small tweaks made to the Sphinx style sheet</span>
-<span class="na">base</span><span class="o">=</span><span class="s">sphinx</span>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[STYLESHEET]</span><span class="w"></span>
+<span class="na">name</span><span class="o">=</span><span class="s">My Style Sheet</span><span class="w"></span>
+<span class="na">description</span><span class="o">=</span><span class="s">Small tweaks made to the Sphinx style sheet</span><span class="w"></span>
+<span class="na">base</span><span class="o">=</span><span class="s">sphinx</span><span class="w"></span>
 
-<span class="k">[VARIABLES]</span>
-<span class="na">mono_typeface</span><span class="o">=</span><span class="s">Courier</span>
+<span class="k">[VARIABLES]</span><span class="w"></span>
+<span class="na">mono_typeface</span><span class="o">=</span><span class="s">Courier</span><span class="w"></span>
 
-<span class="k">[emphasis]</span>
-<span class="na">font_color</span><span class="o">=</span><span class="s">#00a</span>
+<span class="k">[emphasis]</span><span class="w"></span>
+<span class="na">font_color</span><span class="o">=</span><span class="s">#00a</span><span class="w"></span>
 
-<span class="k">[strong]</span>
-<span class="na">base</span><span class="o">=</span><span class="s">DEFAULT_STYLE</span>
-<span class="na">font_color</span><span class="o">=</span><span class="s">#a00</span>
+<span class="k">[strong]</span><span class="w"></span>
+<span class="na">base</span><span class="o">=</span><span class="s">DEFAULT_STYLE</span><span class="w"></span>
+<span class="na">font_color</span><span class="o">=</span><span class="s">#a00</span><span class="w"></span>
 </pre></div>
 </div>
 <p>By default, styles defined in a style sheet <em>extend</em> the corresponding style
@@ -327,7 +328,7 @@ font is desired. Redefining the variable in the derived style sheet affects
 all of these style definitions.</p>
 </div>
 <div class="section" id="starting-from-scratch">
-<h3>Starting from Scratch<a class="headerlink" href="#starting-from-scratch" title="Permalink to this headline">¶</a></h3>
+<h3>Starting from Scratch<a class="headerlink" href="#starting-from-scratch" title="Permalink to this heading">¶</a></h3>
 <p>If you don’t specify a base style sheet in the <code class="docutils literal notranslate"><span class="pre">[STYLESHEET]</span></code> section, you
 create an independent style sheet. You should do this if you want to create
 a document style that is not based on an existing style sheet. If the style
@@ -344,48 +345,48 @@ sheet from scratch.</p>
 </div>
 </div>
 <div class="section" id="document-templates">
-<span id="basics-templates"></span><h2>Document Templates<a class="headerlink" href="#document-templates" title="Permalink to this headline">¶</a></h2>
+<span id="basics-templates"></span><h2>Document Templates<a class="headerlink" href="#document-templates" title="Permalink to this heading">¶</a></h2>
 <p>As with style sheets, you can choose to make use of a template provided by
 rinohtype and optionally customize it or you can create a custom template from
 scratch. This section discusses how you can configure an existing template. See
 <a class="reference internal" href="templates.html#templates"><span class="std std-ref">Document Templates</span></a> on how to create a custom template.</p>
 <div class="section" id="configuring-a-template">
-<span id="configure-templates"></span><h3>Configuring a Template<a class="headerlink" href="#configuring-a-template" title="Permalink to this headline">¶</a></h3>
+<span id="configure-templates"></span><h3>Configuring a Template<a class="headerlink" href="#configuring-a-template" title="Permalink to this heading">¶</a></h3>
 <p>rinohtype provides a number of <a class="reference internal" href="stdtemplates.html#standard-templates"><span class="std std-ref">Standard Document Templates</span></a>. These can be
 customized by means of a template configuration file; a plain text file in the
 INI<a class="footnote-reference brackets" href="#ini" id="id3">1</a> format with the <code class="docutils literal notranslate"><span class="pre">.rtt</span></code> extension. Here is an example
 configuration for the article template:</p>
-<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[TEMPLATE_CONFIGURATION]</span>
-<span class="na">name</span> <span class="o">=</span> <span class="s">my article configuration</span>
-<span class="na">template</span> <span class="o">=</span> <span class="s">article</span>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[TEMPLATE_CONFIGURATION]</span><span class="w"></span>
+<span class="na">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">my article configuration</span><span class="w"></span>
+<span class="na">template</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">article</span><span class="w"></span>
 
-<span class="na">parts</span> <span class="o">=</span>
-    <span class="na">title</span>
-    <span class="c1">;front_matter</span>
-    <span class="na">contents</span>
-<span class="na">stylesheet</span> <span class="o">=</span> <span class="s">sphinx_base14</span>
-<span class="na">language</span> <span class="o">=</span> <span class="s">fr</span>
-<span class="na">abstract_location</span> <span class="o">=</span> <span class="s">title</span>
+<span class="na">parts</span><span class="w"> </span><span class="o">=</span><span class="w"></span>
+<span class="w">    </span><span class="na">title</span><span class="w"></span>
+<span class="w">    </span><span class="c1">;front_matter</span><span class="w"></span>
+<span class="w">    </span><span class="na">contents</span><span class="w"></span>
+<span class="na">stylesheet</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">sphinx_base14</span><span class="w"></span>
+<span class="na">language</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">fr</span><span class="w"></span>
+<span class="na">abstract_location</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">title</span><span class="w"></span>
 
-<span class="k">[SectionTitles]</span>
-<span class="na">contents</span> <span class="o">=</span> <span class="s">&#39;Contents&#39;</span>
+<span class="k">[SectionTitles]</span><span class="w"></span>
+<span class="na">contents</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#39;Contents&#39;</span><span class="w"></span>
 
-<span class="k">[AdmonitionTitles]</span>
-<span class="na">caution</span> <span class="o">=</span> <span class="s">&#39;Careful!&#39;</span>
-<span class="na">warning</span> <span class="o">=</span> <span class="s">&#39;Please be warned&#39;</span>
+<span class="k">[AdmonitionTitles]</span><span class="w"></span>
+<span class="na">caution</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#39;Careful!&#39;</span><span class="w"></span>
+<span class="na">warning</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#39;Please be warned&#39;</span><span class="w"></span>
 
-<span class="k">[VARIABLES]</span>
-<span class="na">paper_size</span> <span class="o">=</span> <span class="s">A5</span>
+<span class="k">[VARIABLES]</span><span class="w"></span>
+<span class="na">paper_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">A5</span><span class="w"></span>
 
-<span class="k">[title]</span>
-<span class="na">page_number_format</span> <span class="o">=</span> <span class="s">lowercase roman</span>
-<span class="na">end_at_page</span> <span class="o">=</span> <span class="s">left</span>
+<span class="k">[title]</span><span class="w"></span>
+<span class="na">page_number_format</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">lowercase roman</span><span class="w"></span>
+<span class="na">end_at_page</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">left</span><span class="w"></span>
 
-<span class="k">[contents]</span>
-<span class="na">page_number_format</span> <span class="o">=</span> <span class="s">number</span>
+<span class="k">[contents]</span><span class="w"></span>
+<span class="na">page_number_format</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">number</span><span class="w"></span>
 
-<span class="k">[title_page]</span>
-<span class="na">top_margin</span> <span class="o">=</span> <span class="s">2cm</span>
+<span class="k">[title_page]</span><span class="w"></span>
+<span class="na">top_margin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">2cm</span><span class="w"></span>
 </pre></div>
 </div>
 <p>The <code class="docutils literal notranslate"><span class="pre">TEMPLATE_CONFIGURATION</span></code> sections collects global template options. Set
@@ -445,7 +446,7 @@ general page template defined in the configuration.</p>
 configurable. Refer to <a class="reference internal" href="stdtemplates.html#standard-templates"><span class="std std-ref">Standard Document Templates</span></a> for details.</p>
 </div>
 <div class="section" id="using-a-template-configuration-file">
-<h3>Using a Template Configuration File<a class="headerlink" href="#using-a-template-configuration-file" title="Permalink to this headline">¶</a></h3>
+<h3>Using a Template Configuration File<a class="headerlink" href="#using-a-template-configuration-file" title="Permalink to this heading">¶</a></h3>
 <p>A template configuration file can be specified when rendering using the
 command-line <strong class="program">rinoh</strong> tool by passing it to the
 <a class="reference internal" href="rinoh.html#cmdoption-rinoh-t"><code class="xref std std-option docutils literal notranslate"><span class="pre">--template</span></code></a> command-line option. When using the
