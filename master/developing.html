@@ -347,8 +347,9 @@ Pages is handled by the GitHub Actions workflow.</p>
 <li><p>Set the release date.</p>
 <ul class="simple">
 <li><p>set <code class="docutils literal notranslate"><span class="pre">__release_date__</span></code> in <em>src/rinoh/__init__.py</em> (<code class="docutils literal notranslate"><span class="pre">YYYY-MM-DD</span></code>)</p></li>
-<li><p>add release date to this release’s section (see other sections for
-examples)</p></li>
+<li><p>add release date to this release’s section in the CHANGELOG (see other
+sections for examples)</p></li>
+<li><p>commit these changes as <em>Release x.y.z</em></p></li>
 </ul>
 </li>
 <li><p>Create a git tag: <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">tag</span> <span class="pre">v$(poetry</span> <span class="pre">version</span> <span class="pre">--short)</span></code></p></li>
@@ -368,11 +369,12 @@ changelog. Use previous releases as a template.</p>
 <li><p>Copy the release notes from the change log</p></li>
 </ul>
 </li>
-<li><p>Bump version number and reset the release date to “upcoming”.</p>
+<li><p>Bump version number and reset the release date to “in development”.</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">poetry</span> <span class="pre">version</span> <span class="pre">patch</span>&#160; <span class="pre">#</span> <span class="pre">or</span> <span class="pre">'minor'</span></code></p></li>
 <li><p>add new section at the top of the changelog</p></li>
-<li><p>set <code class="docutils literal notranslate"><span class="pre">__release_date__</span></code> in <em>src/rinoh/__init__.py</em> to <code class="docutils literal notranslate"><span class="pre">'upcoming'</span></code></p></li>
+<li><p>set <code class="docutils literal notranslate"><span class="pre">__release_date__</span></code> in <em>src/rinoh/__init__.py</em> to
+<code class="docutils literal notranslate"><span class="pre">'in</span> <span class="pre">development'</span></code></p></li>
 </ul>
 </li>
 </ol>
