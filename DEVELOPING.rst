@@ -144,7 +144,7 @@ The file ``.python-version`` in the root of the repository specifies which
 Python versions pyenv should make available whenever we are inside the
 repository checkout directory. The file lists specific the versions of CPython
 rinohtype aims to support plus recent PyPy3 versions (ideally, we should
-closely track the latest releases). The ``pyenv_install.py`` script can install
+closely track the latest releases). The ``pyenv_setup.py`` script can install
 these for you (skipping any that are already installed).
 
 .. _version number: https://nox.thea.codes/en/stable/tutorial.html#testing-against-different-and-multiple-pythons

@@ -21,4 +21,5 @@ for version in versions:
     echo_and_run('pyenv', 'install', '--skip-existing', version)
 
 print("Now you can set up the development virtualenv:")
+print(f'  poetry env use {versions[0]}')
 print('  poetry install')
