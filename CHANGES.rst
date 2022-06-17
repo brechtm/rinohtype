@@ -4,6 +4,11 @@ Release History
 Release 0.5.4 (in development)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+A `discussion board`_ has been set up where you can connect with other rinohtype
+users and the developers!
+
+.. _discussion board: https://github.com/brechtm/rinohtype/discussions
+
 New Features:
 
 * Support for sideways figures and tables; these are placed on a separate page,

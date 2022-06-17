@@ -9,6 +9,10 @@ rinohtype
    :target: https://pypi.python.org/pypi/rinohtype
    :alt: Python version
 
+.. image:: https://img.shields.io/github/discussions/brechtm/rinohtype
+   :target: https://github.com/brechtm/rinohtype/discussions
+   :alt: Discussions
+
 .. image:: https://badges.gitter.im/brechtm/rinohtype.svg
    :target: https://gitter.im/brechtm/rinohtype
    :alt: Gitter chat
@@ -46,9 +50,9 @@ following things can help move rinohtype forward:
   features
 
 So if you are interested in helping with any of these items, please don't
-hesitate to get in touch via brecht@opqode.com, `GitHub issues`_ or Gitter_!
+hesitate to get in touch via Discussions_, Gitter_ or brecht@opqode.com!
 
-.. _GitHub issues: https://github.com/brechtm/rinohtype/issues
+.. _Discussions: https://github.com/brechtm/rinohtype/discussions
 .. _Gitter: https://gitter.im/brechtm/rinohtype
 
 
