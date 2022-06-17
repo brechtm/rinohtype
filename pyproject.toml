@@ -107,10 +107,10 @@ pytest-cov = "^3.0.0"
 pytest-xdist = "^2.4.0"
 restview = "^3.0.0"
 Sphinx = "^5.0.2"
-sphinx-rtd-theme = "^0.5.1"
 sphinxcontrib-autoprogram = "^0.1.7"
 pytest-github-actions-annotate-failures = { version = "^0.1.5", optional = true }
 pytest-pycharm = "^0.7.0"
+furo = "^2022.6.4"
 
 [build-system]
 requires = ["poetry-core>=1.0.8"]

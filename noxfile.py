@@ -51,7 +51,7 @@ def check_docs(session):
 
 @nox_poetry.session()
 def build_docs(session):
-    _install(session, dependencies=['sphinx', 'sphinx_rtd_theme',
+    _install(session, dependencies=['sphinx', 'furo',
                                     'sphinxcontrib-autoprogram'])
     session.chdir('doc')
     session.run('python', 'build.py', *session.posargs)
@@ -101,9 +101,8 @@ def _install(session, docutils=None, sphinx=None, dist='wheel',
     if sphinx:
         session.run("pip", "install", f"sphinx=={sphinx}")
         major, _ = sphinx.split('.', maxsplit=1)
-        if int(major) < 4:
-            # https://github.com/sphinx-doc/sphinx/issues/10291
-            session.run("pip", "install", f"jinja2<3.1")
+        if int(major) < 4:  # https://github.com/sphinx-doc/sphinx/issues/10291
+            session.run("pip", "install", "jinja2<3.1")
 
 
 def _unit(session, docutils=None, sphinx=None, dist='wheel',
