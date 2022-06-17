@@ -1,1 +1,9 @@
 blank_issues_enabled: false
+contact_links:
+  - name: Questions and discussions about rinohtype
+    url: https://github.com/brechtm/rinohtype/discussions
+    about: A discussion board for the rinohtype community
+  - name: Commercial enquiries
+    url: mailto:brecht@opqode.com
+    about: For questions relating to obtaining a commercial license or
+           rinohtype-related contract work
