@@ -100,6 +100,10 @@ def _install(session, docutils=None, sphinx=None, dist='wheel',
         session.run("pip", "install", f"docutils=={docutils}")
     if sphinx:
         session.run("pip", "install", f"sphinx=={sphinx}")
+        major, _ = sphinx.split('.', maxsplit=1)
+        if int(major) < 4:
+            # https://github.com/sphinx-doc/sphinx/issues/10291
+            session.run("pip", "install", f"jinja2<3.1")
 
 
 def _unit(session, docutils=None, sphinx=None, dist='wheel',
