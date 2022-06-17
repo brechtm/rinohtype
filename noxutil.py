@@ -6,7 +6,7 @@ from typing import Optional
 from urllib.request import urlopen, Request
 
 from poetry.core.factory import Factory
-from poetry.core.semver import parse_single_constraint as parse_version
+from poetry.core.semver.helpers import parse_single_constraint
 
 
 VERSION_PARTS = ('major', 'minor', 'patch')
@@ -54,4 +54,5 @@ def all_versions(dependency):
     response = urlopen(request)
     json_string = response.read().decode('utf8')
     json_data = json.loads(json_string)
-    yield from (parse_version(version) for version in json_data['releases'])
+    yield from (parse_single_constraint(version)
+                for version in json_data['releases'])
