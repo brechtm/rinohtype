@@ -8,10 +8,13 @@
 
 import argparse
 import os
+import sys
 import webbrowser
 
 from collections import OrderedDict
+from contextlib import suppress
 from pathlib import Path
+from platform import platform
 
 from rinoh import __version__, __release_date__
 
@@ -80,6 +83,9 @@ parser.add_argument('--list-options', metavar='FRONTEND', type=str,
 parser.add_argument('--version', action='version',
                     version='%(prog)s {} ({})'.format(__version__,
                                                       __release_date__))
+parser.add_argument('--versions', action='store_true',
+                    help='list versions of rinohtype and related software (for '
+                         'inclusion in bug reports)')
 parser.add_argument('--docs', action='store_true',
                     help='open the online documentation in the default '
                          'browser')
@@ -156,6 +162,14 @@ def main():
     global parser
     args = parser.parse_args()
     do_exit = False
+    if args.versions:
+        print(f'rinohtype {__version__} ({__release_date__})')
+        with suppress(ImportError):
+            import sphinx
+            print(f'Sphinx {sphinx.__version__}')
+        print(f'Python {sys.version}')
+        print(platform())
+        return
     if args.docs:
         webbrowser.open(DOCS_URL)
         return

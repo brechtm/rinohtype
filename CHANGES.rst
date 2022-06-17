@@ -36,6 +36,7 @@ New Features:
   prepended to (e.g. *note title paragraph*).
 * Support interlaced PNG images (#274). Note that this can slow down rendering
   significantly for many/large interlaced images.
+* rinoh now accepts the ``--versions`` argument, useful for bug reports
 
 Changed:
 
