@@ -17,6 +17,8 @@ Language (:mod:`rinoh.language`)
 
 The following languages are supported:
 
+.. autodata:: CS
+
 .. autodata:: EN
 
 .. autodata:: FR
