@@ -189,8 +189,9 @@ Pages is handled by the GitHub Actions workflow.
 6. Set the release date.
 
    * set ``__release_date__`` in *src/rinoh/__init__.py* (``YYYY-MM-DD``)
-   * add release date to this release's section (see other sections for
-     examples)
+   * add release date to this release's section in the CHANGELOG (see other
+     sections for examples)
+   * commit these changes as *Release x.y.z*
 
 7. Create a git tag: ``git tag v$(poetry version --short)``
 
@@ -210,11 +211,12 @@ Pages is handled by the GitHub Actions workflow.
 
     * Copy the release notes from the change log
 
-11. Bump version number and reset the release date to "upcoming".
+11. Bump version number and reset the release date to "in development".
 
     * ``poetry version patch  # or 'minor'``
     * add new section at the top of the changelog
-    * set ``__release_date__`` in *src/rinoh/__init__.py* to ``'upcoming'``
+    * set ``__release_date__`` in *src/rinoh/__init__.py* to
+      ``'in development'``
 
 
 .. _PyPI: https://pypi.org/

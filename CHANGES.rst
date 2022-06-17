@@ -1,11 +1,11 @@
 Release History
 ---------------
 
-Release 0.5.4 (in development)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Release 0.5.4 (2022-06-17)
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-A `discussion board`_ has been set up where you can connect with other rinohtype
-users and the developers!
+A `discussion board`_ has been set up where you can connect with other
+rinohtype users and the developers!
 
 .. _discussion board: https://github.com/brechtm/rinohtype/discussions
 
@@ -89,6 +89,9 @@ Fixed:
 * Handle deprecation of importlib SelectableGroups dict interface (Python 3.10
   and importlib_metadata 3.6)
 * Handle deprecation of distutils in Python 3.10 (use the packaging package)
+
+Part of the work included in this release was kindly sponsored by `Lekis
+<https://www.lekis.cz/>`_ and `Railnova <https://www.railnova.eu/>`_.
 
 
 Release 0.5.3 (2021-06-16)

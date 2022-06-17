@@ -110,7 +110,7 @@ end-of-life_ status. For parsing reStructuredText and CommonMark documents,
 rinohtype depends on docutils_ and recommonmark_ respectively. pip_ takes care
 of installing these requirements when you install rinohtype.
 
-Syntax highlighting of code blocks is eneabled if Pygments_ is installed, which
+Syntax highlighting of code blocks is enabled if Pygments_ is installed, which
 will be installed automatically with Sphinx_. If you want to include images
 other than PDF, PNG or JPEG, you also need to install Pillow_.
 

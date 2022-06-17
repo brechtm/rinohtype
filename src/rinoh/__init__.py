@@ -35,7 +35,7 @@ DATA_PATH = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'data')
 
 
 __version__ = importlib_metadata.version('rinohtype')
-__release_date__ = 'in development'
+__release_date__ = '2022-06-17'
 
 
 from . import resource
