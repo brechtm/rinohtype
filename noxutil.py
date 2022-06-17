@@ -6,7 +6,10 @@ from typing import Optional
 from urllib.request import urlopen, Request
 
 from poetry.core.factory import Factory
-from poetry.core.semver.helpers import parse_single_constraint
+try:
+    from poetry.core.semver.helpers import parse_single_constraint
+except ModuleNotFoundError:
+    from poetry.core.semver import parse_single_constraint
 
 
 VERSION_PARTS = ('major', 'minor', 'patch')
