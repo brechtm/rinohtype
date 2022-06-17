@@ -6,14 +6,28 @@
 rinohtype: The Python Document Processor
 ========================================
 
+rinohtype is a Python library, including a Sphinx builder, for creating
+typeset PDFs from a structured document source. Its focus is on complex
+documents such as technical manuals, but it can be used to create any kind of
+document.
+
+It processes reStructuredText and Markdown source and builds its output using
+Python-based templates and CSS-inspired stylesheets. Through its granular API
+and programmatic approach to document structures it makes possible a
+repeatable, consistent document generation workflow.
+
+rinohtype addresses a need for accessible and extensible methods of PDF
+creation, that include sophisticated control of styling and presentation for
+complex materials, alongside well-established workflows for HTML.
+
+rinohtype is especially useful for maintainers of information in rST and
+Markdown who want to provide PDF verions of their content.
+
+------
+
 .. todolist::
 
 Release v\ |version|. (:ref:`Release History <changelog>`)
-
-rinohtype is a Python library that transforms a structured document into a
-professionally typeset PDF guided by a document template and style sheet. It
-can be used to create any kind of document, but its focus is on complex
-documents such as technical manuals.
 
 Included with rinohtype is the :program:`rinoh` command line tool that renders
 reStructuredText and Markdown (CommonMark) documents. There is also a
