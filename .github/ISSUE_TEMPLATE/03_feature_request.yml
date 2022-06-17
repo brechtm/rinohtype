@@ -1,0 +1,27 @@
+name: "Feature request"
+description: "You would like to see a new feature added to rinohtype"
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: >
+        Note that this project is being maintained by a single person, so the rate of
+        development is slow and bug fixes are prioritized over feature additions. Please
+        consider contributing to the project any way you can. See the [call for
+        contributions](https://github.com/brechtm/rinohtype#call-for-contributions) for
+        more information:
+  - type: checkboxes
+    attributes:
+      label: Is there an existing issue for this?
+      description: Before you request a new feature, first search the issues to check
+                   whether a similar feature request has already been created. If so,
+                   please add your thoughts as a comment to the existing issue.
+      options:
+      - label: I have searched the existing issues
+        required: true
+  - type: textarea
+    id: request
+    attributes:
+      label: Your suggestion
+    validations:
+      required: true
