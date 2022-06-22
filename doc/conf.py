@@ -23,6 +23,9 @@ except ModuleNotFoundError:
 
 from subprocess import run, PIPE, DEVNULL
 
+from furo import _compute_navigation_tree
+
+
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
@@ -230,6 +233,12 @@ def add_pdf_links(toc, path):
     return toc
 
 
+def rinohtype_navigation_tree(toctree, path):
+    fake_context = dict(toctree=toctree)
+    nav_tree = _compute_navigation_tree(fake_context)
+    return add_pdf_links(nav_tree, path)
+
+
 html_css_files = ['pdflinks.css']
 html_js_files = ['versions.js']
 
@@ -240,7 +249,7 @@ html_context = {
     'github_user': 'brechtm',
     'github_repo': 'rinohtype',
     'github_version': 'master/doc/',
-    'add_pdf_links': add_pdf_links,
+    'rinohtype_navigation_tree': rinohtype_navigation_tree,
 }
 
 # -- Options for LaTeX output ---------------------------------------------
