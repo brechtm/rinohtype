@@ -12,6 +12,9 @@ Changed:
 
 Fixed:
 
+* Some fonts on Google Fonts have the 'otf' extension (instead of 'ttf'); also
+  collect these.
+
 
 Release 0.5.4 (2022-06-17)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
