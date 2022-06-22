@@ -245,11 +245,13 @@ html_js_files = ['versions.js']
 html_context = {
     'VERSIONS': True,
     'current_version': git_version.strip(),
-    'display_github': True,
-    'github_user': 'brechtm',
-    'github_repo': 'rinohtype',
-    'github_version': 'master/doc/',
     'rinohtype_navigation_tree': rinohtype_navigation_tree,
+}
+
+html_theme_options = {
+    'source_repository': 'https://github.com/brechtm/rinohtype/',
+    'source_branch': 'master',
+    'source_directory': 'doc/',
 }
 
 # -- Options for LaTeX output ---------------------------------------------
