@@ -239,11 +239,17 @@ def rinohtype_navigation_tree(toctree, path):
     return add_pdf_links(nav_tree, path)
 
 
-html_css_files = ['pdflinks.css']
+html_css_files = [
+    'pdflinks.css',
+    'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/fontawesome.min.css',
+    'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/solid.min.css',
+    'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/brands.min.css',
+]
 html_js_files = ['versions.js']
 
 html_context = {
     'VERSIONS': True,
+    # 'READTHEDOCS': True,
     'current_version': git_version.strip(),
     'rinohtype_navigation_tree': rinohtype_navigation_tree,
 }

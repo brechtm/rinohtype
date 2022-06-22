@@ -1,8 +1,8 @@
 {% if VERSIONS %}
 {# Add rst-badge after rst-versions for small badge style. #}
-  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <div id="furo-readthedocs-versions" class="rst-versions" data-toggle="rst-versions" role="note" aria-label="{{ _('Versions') }}" tabindex="0">
     <span class="rst-current-version" data-toggle="rst-current-version">
-      <span class="fa fa-book"> Versions</span>
+      <span class="fa fa-book"></span><span> Versions</span>
       v: {{ current_version }}
       <span class="fa fa-caret-down"></span>
     </span>
