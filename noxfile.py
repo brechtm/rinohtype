@@ -51,7 +51,7 @@ def check_docs(session):
 
 @nox_poetry.session()
 def build_docs(session):
-    _install(session, dependencies=['sphinx', 'sphinx_rtd_theme',
+    _install(session, dependencies=['sphinx', 'sphinx-immaterial',
                                     'sphinxcontrib-autoprogram'])
     session.chdir('doc')
     session.run('python', 'build.py', *session.posargs)
