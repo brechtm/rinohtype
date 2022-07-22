@@ -390,6 +390,10 @@ class Admonition(StaticGroupedFlowables):
         self.custom_title = title
         self.admonition_type = type
 
+    @property
+    def custom_title_text(self):
+        return self.custom_title.to_string(None) if self.custom_title else None
+
     def title(self, document):
         return (self.custom_title
                 or document.get_string(AdmonitionTitles, self.admonition_type))
