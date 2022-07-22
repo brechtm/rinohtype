@@ -130,29 +130,77 @@ intersphinx_mapping = {'python': ('https://docs.python.org/3', None),
 # a list of builtin themes.
 html_theme = 'sphinx_immaterial'
 
+html_css_files = ['tweaks.css']
+
+# monkey-patch Sphinx-immaterial so that it can handle the only directive
+# https://github.com/jbms/sphinx-immaterial/issues/132#issuecomment-1186491799
+import sphinx_immaterial
+import sphinx.addnodes
+import docutils.nodes
+
+def visit_only(self, node: sphinx.addnodes.only):
+    raise docutils.nodes.SkipChildren
+
+sphinx_immaterial.nav_adapt._TocVisitor.visit_only = visit_only
+
+
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
 # documentation.
-#html_theme_options = {}
+html_theme_options = {
+    'features': [
+        'navigation.expand',
+        'navigation.sections',
+        'navigation.instant',
+    ],
+    'repo_url': 'https://github.com/brechtm/rinohtype',
+    'repo_name': 'rinohtype',
+    'repo_type': 'github',
+    'edit_uri': 'edit/master/doc',
+    'palette': [
+        {
+            'media': '(prefers-color-scheme: light)',
+            'scheme': 'default',
+            'primary': 'red',
+            'accent': 'light-blue',
+            'toggle': {
+                'icon': 'material/lightbulb-outline',
+                'name': 'Switch to dark mode',
+            },
+        },
+        {
+            'media': '(prefers-color-scheme: dark)',
+            'scheme': 'slate',
+            'primary': 'red',
+            'accent': 'orange',
+            'toggle': {
+                'icon': 'material/lightbulb',
+                'name': 'Switch to light mode',
+            },
+        },
+    ],
+    'toc_title_is_page_title': True,
+    'version_dropdown': True,
+}
 
 # Add any paths that contain custom themes here, relative to this directory.
 #html_theme_path = []
 
 # The name for this set of Sphinx documents.  If None, it defaults to
 # "<project> v<release> documentation".
-#html_title = None
+html_title = project
 
 # A shorter title for the navigation bar.  Default is the same as html_title.
 #html_short_title = None
 
 # The name of an image file (relative to this directory) to place at the top
 # of the sidebar.
-#html_logo = None
+html_logo = '_static/logo_white.svg'
 
 # The name of an image file (within the static path) to use as favicon of the
 # docs.  This file should be a Windows icon file (.ico) being 16x16 or 32x32
 # pixels large.
-#html_favicon = None
+html_favicon = '_static/rinohtype_logo_abbrev.svg'
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
@@ -209,40 +257,25 @@ html_static_path = ['_static']
 htmlhelp_basename = 'rinohtype'
 
 
-def git(*args):
-    proc = run(['git', *args], stdout=PIPE, stderr=DEVNULL, encoding='utf-8')
-    return proc.stdout
+PDF_LINK = ' [<a class="pdf-link" href="{relpath}{name}.pdf">PDF</a>]'
 
 
-git_version = (git('describe', '--tags', '--exact-match')
-               or git('symbolic-ref', '--short', 'HEAD')
-               or git('describe', '--all'))
-
-TOC_CAPTION = '<span class="caption-text">{}</span>'
-NEW_CAPTION = TOC_CAPTION.format('{} [<a class="pdf-link" href="{}">PDF</a>]')
+_orig_get_global_toc = sphinx_immaterial.nav_adapt._get_global_toc
 
 
-def add_pdf_links(toc, path):
-    for caption, target in [('User Manual', 'manual'),
-                            ('Reference Guide', 'reference')]:
-        pdf_path = f'{path}{target}.pdf'
-        toc = toc.replace(TOC_CAPTION.format(caption),
-                          NEW_CAPTION.format(caption, pdf_path))
+def _get_global_toc(app: sphinx.application.Sphinx, pagename: str, collapse: bool):
+    toc = _orig_get_global_toc(app, pagename, collapse)
+    relpath = '../' * pagename.count('/')
+    for entry in toc:
+        if 'User Manual' in entry.title:
+            entry.title += PDF_LINK.format(relpath=relpath, name='manual')
+        if 'Reference Guide' in entry.title:
+            entry.title += PDF_LINK.format(relpath=relpath, name='reference')
     return toc
 
 
-html_css_files = ['pdflinks.css']
-html_js_files = ['versions.js']
+sphinx_immaterial.nav_adapt._get_global_toc = _get_global_toc
 
-html_context = {
-    'VERSIONS': True,
-    'current_version': git_version.strip(),
-    'display_github': True,
-    'github_user': 'brechtm',
-    'github_repo': 'rinohtype',
-    'github_version': 'master/doc/',
-    'add_pdf_links': add_pdf_links,
-}
 
 # -- Options for LaTeX output ---------------------------------------------
 
