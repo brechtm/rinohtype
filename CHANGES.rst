@@ -7,8 +7,12 @@ Release 0.5.5 (in development)
 New Features:
 
 * Admonitions now have a 'custom_title_text' property that can be used to
-  style generic admonitions. For example, for ``.. admonition:: Fun Fact``:
-      e.g. ``[fun fact admonition : Admonition(custom_title_text='Fun Fact')]``
+  style generic admonitions. For example, for ``.. admonition:: Fun Fact``::
+
+      [fun fact admonition : Admonition(custom_title_text='Fun Fact')]
+      base = admonition
+      border_top = none
+      border_bottom = none
 
 Changed:
 
