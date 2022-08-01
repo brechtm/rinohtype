@@ -109,7 +109,7 @@ restview = "^3.0.0"
 Sphinx = "^5.0.2"
 sphinx-rtd-theme = "^0.5.1"
 sphinxcontrib-autoprogram = "^0.1.7"
-pytest-github-actions-annotate-failures = { version = "^0.1.5", optional = true }
+pytest-github-actions-annotate-failures = { version = "^0.1.7", optional = true }
 pytest-pycharm = "^0.7.0"
 
 [build-system]
