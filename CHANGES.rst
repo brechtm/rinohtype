@@ -6,6 +6,8 @@ Release 0.5.5 (in development)
 
 New Features:
 
+* Enumerated list item labels now also respect the *number_separator* style
+  property, enabling hierarchical list item labels.
 * Admonitions now have a 'custom_title_text' property that can be used to
   style generic admonitions. For example, for ``.. admonition:: Fun Fact``::
 

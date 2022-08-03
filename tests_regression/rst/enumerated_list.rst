@@ -40,3 +40,29 @@ And the same with alternative styling:
 9. nine
 10. ten
 11. eleven
+
+
+.. raw:: pdf
+
+   PageBreak
+
+
+Hierarchical list item numbers:
+
+.. class:: hierarchical
+
+1. item
+
+   1. sub-item
+
+      1. sub-sub-item
+
+2. item
+
+   1. sub-item
+
+      1. sub-sub-item
+
+   2. sub-item
+
+      1. sub-sub-item

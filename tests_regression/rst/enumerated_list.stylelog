@@ -1,351 +1,528 @@
 ---------------------------------- page 1 ----------------------------------
+#### FlowablesContainer('background')
+  StaticGroupedFlowables()
 #### FootnoteContainer('footnotes')
   StaticGroupedFlowables()
 #### DownExpandingContainer('floats')
   StaticGroupedFlowables()
 #### ChainedContainer('column1')
   StaticGroupedFlowables()
-    DocumentTree()
-      List(style='enumerated')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/enumerated_list.rst:2 <enumerated_list>
-           > (0,0,1,0,2) enumerated list
-        ListItem()   None:None <list_item>
+    DocumentTree()   enumerated_list.rst   <document>
+      List(style='enumerated')   enumerated_list.rst:2   <enumerated_list>
+           > (0,0,1,0,2) enumerated list [Sphinx] > DEFAULT
+        ListItem()   <list_item>
              x (0,0,1,0,4) enumerated list item
-             > fallback to default style
           ListItemLabel('1.')
-               > (0,0,1,0,6) enumerated list item label
-                 (0,0,0,0,2) list item label
+               > (0,0,1,0,6) enumerated list item label [Sphinx] > list item label
+                 (0,0,0,0,2) list item label [Sphinx] > default
               MixedStyledText('1.')
                 SingleStyledText('1')
                 SingleStyledText('.')
           StaticGroupedFlowables()
-               > (0,0,0,0,3) list item body
-            Paragraph('Arabic numerals')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/enumerated_list.rst:2 <paragraph>
-                 > (0,0,0,0,5) list item paragraph
-                   (0,0,0,0,2) body
-              MixedStyledText('Arabic numerals')
-                SingleStyledText('Arabic numerals')
-            List(style='enumerated')   None:None <enumerated_list>
-                 > (0,0,1,0,5) nested enumerated list
-                   (0,0,1,0,2) enumerated list
-              ListItem()   None:None <list_item>
+               > (0,0,0,0,3) list item body [Sphinx] > DEFAULT
+            Paragraph('Arabic numerals')   enumerated_list.rst:2   <paragraph>
+                 > (0,0,0,0,5) list item paragraph [Sphinx] > default
+                   (0,0,0,0,2) body [Sphinx] > default
+                MixedStyledText('Arabic numerals')
+                  MixedStyledText('Arabic numerals')
+                    SingleStyledText('Arabic numerals')
+            List(style='enumerated')   <enumerated_list>
+                 > (0,0,1,0,5) nested enumerated list [Sphinx] > enumerated list
+                   (0,0,1,0,2) enumerated list [Sphinx] > DEFAULT
+              ListItem()   <list_item>
                    x (0,0,1,0,4) enumerated list item
-                   > fallback to default style
                 ListItemLabel('1.')
-                     > (0,0,1,0,6) enumerated list item label
-                       (0,0,0,0,2) list item label
+                     > (0,0,1,0,6) enumerated list item label [Sphinx] > list item label
+                       (0,0,0,0,2) list item label [Sphinx] > default
                     MixedStyledText('1.')
                       SingleStyledText('1')
                       SingleStyledText('.')
                 StaticGroupedFlowables()
-                     > (0,0,0,0,3) list item body
-                  Paragraph('lower alpha)')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/enumerated_list.rst:4 <paragraph>
-                       > (0,0,0,0,5) list item paragraph
-                         (0,0,0,0,2) body
-                    MixedStyledText('lower alpha)')
-                      SingleStyledText('lower alpha)')
-                  List(style='enumerated')   None:None <enumerated_list>
-                       > (0,0,1,0,5) nested enumerated list
-                         (0,0,1,0,2) enumerated list
-                    ListItem()   None:None <list_item>
+                     > (0,0,0,0,3) list item body [Sphinx] > DEFAULT
+                  Paragraph('lower alpha)')   enumerated_list.rst:4   <paragraph>
+                       > (0,0,0,0,5) list item paragraph [Sphinx] > default
+                         (0,0,0,0,2) body [Sphinx] > default
+                      MixedStyledText('lower alpha)')
+                        MixedStyledText('lower alpha)')
+                          SingleStyledText('lower alpha)')
+                  List(style='enumerated')   <enumerated_list>
+                       > (0,0,1,0,5) nested enumerated list [Sphinx] > enumerated list
+                         (0,0,1,0,2) enumerated list [Sphinx] > DEFAULT
+                    ListItem()   <list_item>
                          x (0,0,1,0,4) enumerated list item
-                         > fallback to default style
                       ListItemLabel('1.')
-                           > (0,0,1,0,6) enumerated list item label
-                             (0,0,0,0,2) list item label
+                           > (0,0,1,0,6) enumerated list item label [Sphinx] > list item label
+                             (0,0,0,0,2) list item label [Sphinx] > default
                           MixedStyledText('1.')
                             SingleStyledText('1')
                             SingleStyledText('.')
                       StaticGroupedFlowables()
-                           > (0,0,0,0,3) list item body
-                        Paragraph('(lower roman)')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/enumerated_list.rst:6 <paragraph>
-                             > (0,0,0,0,5) list item paragraph
-                               (0,0,0,0,2) body
-                          MixedStyledText('(lower roman)')
-                            SingleStyledText('(lower roman)')
-                        List(style='enumerated')   None:None <enumerated_list>
-                             > (0,0,1,0,5) nested enumerated list
-                               (0,0,1,0,2) enumerated list
-                          ListItem()   None:None <list_item>
+                           > (0,0,0,0,3) list item body [Sphinx] > DEFAULT
+                        Paragraph('(lower roman)')   enumerated_list.rst:6   <paragraph>
+                             > (0,0,0,0,5) list item paragraph [Sphinx] > default
+                               (0,0,0,0,2) body [Sphinx] > default
+                            MixedStyledText('(lower roman)')
+                              MixedStyledText('(lower roman)')
+                                SingleStyledText('(lower roman)')
+                        List(style='enumerated')   <enumerated_list>
+                             > (0,0,1,0,5) nested enumerated list [Sphinx] > enumerated list
+                               (0,0,1,0,2) enumerated list [Sphinx] > DEFAULT
+                          ListItem()   <list_item>
                                x (0,0,1,0,4) enumerated list item
-                               > fallback to default style
                             ListItemLabel('1.')
-                                 > (0,0,1,0,6) enumerated list item label
-                                   (0,0,0,0,2) list item label
+                                 > (0,0,1,0,6) enumerated list item label [Sphinx] > list item label
+                                   (0,0,0,0,2) list item label [Sphinx] > default
                                 MixedStyledText('1.')
                                   SingleStyledText('1')
                                   SingleStyledText('.')
                             StaticGroupedFlowables()
-                                 > (0,0,0,0,3) list item body
-                              Paragraph('upper alpha')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/enumerated_list.rst:8 <paragraph>
-                                   > (0,0,0,0,5) list item paragraph
-                                     (0,0,0,0,2) body
-                                MixedStyledText('upper alpha')
-                                  SingleStyledText('upper alpha')
-                              List(style='enumerated')   None:None <enumerated_list>
-                                   > (0,0,1,0,5) nested enumerated list
-                                     (0,0,1,0,2) enumerated list
-                                ListItem()   None:None <list_item>
+                                 > (0,0,0,0,3) list item body [Sphinx] > DEFAULT
+                              Paragraph('upper alpha')   enumerated_list.rst:8   <paragraph>
+                                   > (0,0,0,0,5) list item paragraph [Sphinx] > default
+                                     (0,0,0,0,2) body [Sphinx] > default
+                                  MixedStyledText('upper alpha')
+                                    MixedStyledText('upper alpha')
+                                      SingleStyledText('upper alpha')
+                              List(style='enumerated')   <enumerated_list>
+                                   > (0,0,1,0,5) nested enumerated list [Sphinx] > enumerated list
+                                     (0,0,1,0,2) enumerated list [Sphinx] > DEFAULT
+                                ListItem()   <list_item>
                                      x (0,0,1,0,4) enumerated list item
-                                     > fallback to default style
                                   ListItemLabel('1.')
-                                       > (0,0,1,0,6) enumerated list item label
-                                         (0,0,0,0,2) list item label
+                                       > (0,0,1,0,6) enumerated list item label [Sphinx] > list item label
+                                         (0,0,0,0,2) list item label [Sphinx] > default
                                       MixedStyledText('1.')
                                         SingleStyledText('1')
                                         SingleStyledText('.')
                                   StaticGroupedFlowables()
-                                       > (0,0,0,0,3) list item body
-                                    Paragraph('upper roman)')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/enumerated_list.rst:10 <paragraph>
-                                         > (0,0,0,0,5) list item paragraph
-                                           (0,0,0,0,2) body
-                                      MixedStyledText('upper roman)')
-                                        SingleStyledText('upper roman)')
-        ListItem()   None:None <list_item>
+                                       > (0,0,0,0,3) list item body [Sphinx] > DEFAULT
+                                    Paragraph('upper roman)')   enumerated_list.rst:10   <paragraph>
+                                         > (0,0,0,0,5) list item paragraph [Sphinx] > default
+                                           (0,0,0,0,2) body [Sphinx] > default
+                                        MixedStyledText('upper roman)')
+                                          MixedStyledText('upper roman)')
+                                            SingleStyledText('upper roman)')
+        ListItem()   <list_item>
              x (0,0,1,0,4) enumerated list item
-             > fallback to default style
           ListItemLabel('2.')
-               > (0,0,1,0,6) enumerated list item label
-                 (0,0,0,0,2) list item label
+               > (0,0,1,0,6) enumerated list item label [Sphinx] > list item label
+                 (0,0,0,0,2) list item label [Sphinx] > default
               MixedStyledText('2.')
                 SingleStyledText('2')
                 SingleStyledText('.')
           StaticGroupedFlowables()
-               > (0,0,0,0,3) list item body
-            Paragraph('Lists that don't start at 1:')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/enumerated_list.rst:12 <paragraph>
-                 > (0,0,0,0,5) list item paragraph
-                   (0,0,0,0,2) body
-              MixedStyledText('Lists that don't start at 1:')
-                SingleStyledText('Lists that don't start at 1:')
-            List(style='enumerated')   None:None <enumerated_list>
-                 > (0,0,1,0,5) nested enumerated list
-                   (0,0,1,0,2) enumerated list
-              ListItem()   None:None <list_item>
+               > (0,0,0,0,3) list item body [Sphinx] > DEFAULT
+            Paragraph('Lists that don't start at 1:')   enumerated_list.rst:12   <paragraph>
+                 > (0,0,0,0,5) list item paragraph [Sphinx] > default
+                   (0,0,0,0,2) body [Sphinx] > default
+                MixedStyledText('Lists that don't start at 1:')
+                  MixedStyledText('Lists that don't start at 1:')
+                    SingleStyledText('Lists that don't start at 1:')
+            List(style='enumerated')   <enumerated_list>
+                 > (0,0,1,0,5) nested enumerated list [Sphinx] > enumerated list
+                   (0,0,1,0,2) enumerated list [Sphinx] > DEFAULT
+              ListItem()   <list_item>
                    x (0,0,1,0,4) enumerated list item
-                   > fallback to default style
                 ListItemLabel('3.')
-                     > (0,0,1,0,6) enumerated list item label
-                       (0,0,0,0,2) list item label
+                     > (0,0,1,0,6) enumerated list item label [Sphinx] > list item label
+                       (0,0,0,0,2) list item label [Sphinx] > default
                     MixedStyledText('3.')
                       SingleStyledText('3')
                       SingleStyledText('.')
                 StaticGroupedFlowables()
-                     > (0,0,0,0,3) list item body
-                  Paragraph('Three')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/enumerated_list.rst:14 <paragraph>
-                       > (0,0,0,0,5) list item paragraph
-                         (0,0,0,0,2) body
-                    MixedStyledText('Three')
-                      SingleStyledText('Three')
-              ListItem()   None:None <list_item>
+                     > (0,0,0,0,3) list item body [Sphinx] > DEFAULT
+                  Paragraph('Three')   enumerated_list.rst:14   <paragraph>
+                       > (0,0,0,0,5) list item paragraph [Sphinx] > default
+                         (0,0,0,0,2) body [Sphinx] > default
+                      MixedStyledText('Three')
+                        MixedStyledText('Three')
+                          SingleStyledText('Three')
+              ListItem()   <list_item>
                    x (0,0,1,0,4) enumerated list item
-                   > fallback to default style
                 ListItemLabel('4.')
-                     > (0,0,1,0,6) enumerated list item label
-                       (0,0,0,0,2) list item label
+                     > (0,0,1,0,6) enumerated list item label [Sphinx] > list item label
+                       (0,0,0,0,2) list item label [Sphinx] > default
                     MixedStyledText('4.')
                       SingleStyledText('4')
                       SingleStyledText('.')
                 StaticGroupedFlowables()
-                     > (0,0,0,0,3) list item body
-                  Paragraph('Four')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/enumerated_list.rst:16 <paragraph>
-                       > (0,0,0,0,5) list item paragraph
-                         (0,0,0,0,2) body
-                    MixedStyledText('Four')
-                      SingleStyledText('Four')
-            List(style='enumerated')   None:None <enumerated_list>
-                 > (0,0,1,0,5) nested enumerated list
-                   (0,0,1,0,2) enumerated list
-              ListItem()   None:None <list_item>
+                     > (0,0,0,0,3) list item body [Sphinx] > DEFAULT
+                  Paragraph('Four')   enumerated_list.rst:16   <paragraph>
+                       > (0,0,0,0,5) list item paragraph [Sphinx] > default
+                         (0,0,0,0,2) body [Sphinx] > default
+                      MixedStyledText('Four')
+                        MixedStyledText('Four')
+                          SingleStyledText('Four')
+            List(style='enumerated')   <enumerated_list>
+                 > (0,0,1,0,5) nested enumerated list [Sphinx] > enumerated list
+                   (0,0,1,0,2) enumerated list [Sphinx] > DEFAULT
+              ListItem()   <list_item>
                    x (0,0,1,0,4) enumerated list item
-                   > fallback to default style
                 ListItemLabel('3.')
-                     > (0,0,1,0,6) enumerated list item label
-                       (0,0,0,0,2) list item label
+                     > (0,0,1,0,6) enumerated list item label [Sphinx] > list item label
+                       (0,0,0,0,2) list item label [Sphinx] > default
                     MixedStyledText('3.')
                       SingleStyledText('3')
                       SingleStyledText('.')
                 StaticGroupedFlowables()
-                     > (0,0,0,0,3) list item body
-                  Paragraph('C')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/enumerated_list.rst:18 <paragraph>
-                       > (0,0,0,0,5) list item paragraph
-                         (0,0,0,0,2) body
-                    MixedStyledText('C')
-                      SingleStyledText('C')
-              ListItem()   None:None <list_item>
+                     > (0,0,0,0,3) list item body [Sphinx] > DEFAULT
+                  Paragraph('C')   enumerated_list.rst:18   <paragraph>
+                       > (0,0,0,0,5) list item paragraph [Sphinx] > default
+                         (0,0,0,0,2) body [Sphinx] > default
+                      MixedStyledText('C')
+                        MixedStyledText('C')
+                          SingleStyledText('C')
+              ListItem()   <list_item>
                    x (0,0,1,0,4) enumerated list item
-                   > fallback to default style
                 ListItemLabel('4.')
-                     > (0,0,1,0,6) enumerated list item label
-                       (0,0,0,0,2) list item label
+                     > (0,0,1,0,6) enumerated list item label [Sphinx] > list item label
+                       (0,0,0,0,2) list item label [Sphinx] > default
                     MixedStyledText('4.')
                       SingleStyledText('4')
                       SingleStyledText('.')
                 StaticGroupedFlowables()
-                     > (0,0,0,0,3) list item body
-                  Paragraph('D')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/enumerated_list.rst:20 <paragraph>
-                       > (0,0,0,0,5) list item paragraph
-                         (0,0,0,0,2) body
-                    MixedStyledText('D')
-                      SingleStyledText('D')
-            List(style='enumerated')   None:None <enumerated_list>
-                 > (0,0,1,0,5) nested enumerated list
-                   (0,0,1,0,2) enumerated list
-              ListItem()   None:None <list_item>
+                     > (0,0,0,0,3) list item body [Sphinx] > DEFAULT
+                  Paragraph('D')   enumerated_list.rst:20   <paragraph>
+                       > (0,0,0,0,5) list item paragraph [Sphinx] > default
+                         (0,0,0,0,2) body [Sphinx] > default
+                      MixedStyledText('D')
+                        MixedStyledText('D')
+                          SingleStyledText('D')
+            List(style='enumerated')   <enumerated_list>
+                 > (0,0,1,0,5) nested enumerated list [Sphinx] > enumerated list
+                   (0,0,1,0,2) enumerated list [Sphinx] > DEFAULT
+              ListItem()   <list_item>
                    x (0,0,1,0,4) enumerated list item
-                   > fallback to default style
                 ListItemLabel('3.')
-                     > (0,0,1,0,6) enumerated list item label
-                       (0,0,0,0,2) list item label
+                     > (0,0,1,0,6) enumerated list item label [Sphinx] > list item label
+                       (0,0,0,0,2) list item label [Sphinx] > default
                     MixedStyledText('3.')
                       SingleStyledText('3')
                       SingleStyledText('.')
                 StaticGroupedFlowables()
-                     > (0,0,0,0,3) list item body
-                  Paragraph('iii')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/enumerated_list.rst:22 <paragraph>
-                       > (0,0,0,0,5) list item paragraph
-                         (0,0,0,0,2) body
-                    MixedStyledText('iii')
-                      SingleStyledText('iii')
-              ListItem()   None:None <list_item>
+                     > (0,0,0,0,3) list item body [Sphinx] > DEFAULT
+                  Paragraph('iii')   enumerated_list.rst:22   <paragraph>
+                       > (0,0,0,0,5) list item paragraph [Sphinx] > default
+                         (0,0,0,0,2) body [Sphinx] > default
+                      MixedStyledText('iii')
+                        MixedStyledText('iii')
+                          SingleStyledText('iii')
+              ListItem()   <list_item>
                    x (0,0,1,0,4) enumerated list item
-                   > fallback to default style
                 ListItemLabel('4.')
-                     > (0,0,1,0,6) enumerated list item label
-                       (0,0,0,0,2) list item label
+                     > (0,0,1,0,6) enumerated list item label [Sphinx] > list item label
+                       (0,0,0,0,2) list item label [Sphinx] > default
                     MixedStyledText('4.')
                       SingleStyledText('4')
                       SingleStyledText('.')
                 StaticGroupedFlowables()
-                     > (0,0,0,0,3) list item body
-                  Paragraph('iv')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/enumerated_list.rst:24 <paragraph>
-                       > (0,0,0,0,5) list item paragraph
-                         (0,0,0,0,2) body
-                    MixedStyledText('iv')
-                      SingleStyledText('iv')
-        ListItem()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/enumerated_list.rst:None <list_item>
+                     > (0,0,0,0,3) list item body [Sphinx] > DEFAULT
+                  Paragraph('iv')   enumerated_list.rst:24   <paragraph>
+                       > (0,0,0,0,5) list item paragraph [Sphinx] > default
+                         (0,0,0,0,2) body [Sphinx] > default
+                      MixedStyledText('iv')
+                        MixedStyledText('iv')
+                          SingleStyledText('iv')
+        ListItem()   enumerated_list.rst   <list_item>
              x (0,0,1,0,4) enumerated list item
-             > fallback to default style
           ListItemLabel('3.')
-               > (0,0,1,0,6) enumerated list item label
-                 (0,0,0,0,2) list item label
+               > (0,0,1,0,6) enumerated list item label [Sphinx] > list item label
+                 (0,0,0,0,2) list item label [Sphinx] > default
               MixedStyledText('3.')
                 SingleStyledText('3')
                 SingleStyledText('.')
           StaticGroupedFlowables()
-               > (0,0,0,0,3) list item body
-            Paragraph('List items may also be auto-enum...')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/enumerated_list.rst:26 <paragraph>
-                 > (0,0,0,0,5) list item paragraph
-                   (0,0,0,0,2) body
-              MixedStyledText('List items may also be auto-enum...')
-                SingleStyledText('List items may also be auto-enum...')
-      Paragraph('A list with numbers going into t...')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/enumerated_list.rst:29 <paragraph>
-           > (0,0,0,0,2) body
-        MixedStyledText('A list with numbers going into t...')
-          SingleStyledText('A list with numbers going into t...')
-      List(style='enumerated')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/enumerated_list.rst:31 <enumerated_list>
-           > (0,0,1,0,2) enumerated list
-        ListItem()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/enumerated_list.rst:None <list_item>
+               > (0,0,0,0,3) list item body [Sphinx] > DEFAULT
+            Paragraph('List items may also be auto-enum...')   enumerated_list.rst:26   <paragraph>
+                 > (0,0,0,0,5) list item paragraph [Sphinx] > default
+                   (0,0,0,0,2) body [Sphinx] > default
+                MixedStyledText('List items may also be auto-enum...')
+                  MixedStyledText('List items may also be auto-enum...')
+                    SingleStyledText('List items may also be auto-enum...')
+      Paragraph('A list with numbers going into t...')   enumerated_list.rst:29   <paragraph>
+           > (0,0,0,0,2) body [Sphinx] > default
+          MixedStyledText('A list with numbers going into t...')
+            MixedStyledText('A list with numbers going into t...')
+              SingleStyledText('A list with numbers going into t...')
+      List(style='enumerated')   enumerated_list.rst:31   <enumerated_list>
+           > (0,0,1,0,2) enumerated list [Sphinx] > DEFAULT
+        ListItem()   enumerated_list.rst   <list_item>
              x (0,0,1,0,4) enumerated list item
-             > fallback to default style
           ListItemLabel('9.')
-               > (0,0,1,0,6) enumerated list item label
-                 (0,0,0,0,2) list item label
+               > (0,0,1,0,6) enumerated list item label [Sphinx] > list item label
+                 (0,0,0,0,2) list item label [Sphinx] > default
               MixedStyledText('9.')
                 SingleStyledText('9')
                 SingleStyledText('.')
           StaticGroupedFlowables()
-               > (0,0,0,0,3) list item body
-            Paragraph('nine')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/enumerated_list.rst:31 <paragraph>
-                 > (0,0,0,0,5) list item paragraph
-                   (0,0,0,0,2) body
-              MixedStyledText('nine')
-                SingleStyledText('nine')
-        ListItem()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/enumerated_list.rst:None <list_item>
+               > (0,0,0,0,3) list item body [Sphinx] > DEFAULT
+            Paragraph('nine')   enumerated_list.rst:31   <paragraph>
+                 > (0,0,0,0,5) list item paragraph [Sphinx] > default
+                   (0,0,0,0,2) body [Sphinx] > default
+                MixedStyledText('nine')
+                  MixedStyledText('nine')
+                    SingleStyledText('nine')
+        ListItem()   enumerated_list.rst   <list_item>
              x (0,0,1,0,4) enumerated list item
-             > fallback to default style
           ListItemLabel('10.')
-               > (0,0,1,0,6) enumerated list item label
-                 (0,0,0,0,2) list item label
+               > (0,0,1,0,6) enumerated list item label [Sphinx] > list item label
+                 (0,0,0,0,2) list item label [Sphinx] > default
               MixedStyledText('10.')
                 SingleStyledText('10')
                 SingleStyledText('.')
           StaticGroupedFlowables()
-               > (0,0,0,0,3) list item body
-            Paragraph('ten')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/enumerated_list.rst:32 <paragraph>
-                 > (0,0,0,0,5) list item paragraph
-                   (0,0,0,0,2) body
-              MixedStyledText('ten')
-                SingleStyledText('ten')
-        ListItem()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/enumerated_list.rst:None <list_item>
+               > (0,0,0,0,3) list item body [Sphinx] > DEFAULT
+            Paragraph('ten')   enumerated_list.rst:32   <paragraph>
+                 > (0,0,0,0,5) list item paragraph [Sphinx] > default
+                   (0,0,0,0,2) body [Sphinx] > default
+                MixedStyledText('ten')
+                  MixedStyledText('ten')
+                    SingleStyledText('ten')
+        ListItem()   enumerated_list.rst   <list_item>
              x (0,0,1,0,4) enumerated list item
-             > fallback to default style
           ListItemLabel('11.')
-               > (0,0,1,0,6) enumerated list item label
-                 (0,0,0,0,2) list item label
+               > (0,0,1,0,6) enumerated list item label [Sphinx] > list item label
+                 (0,0,0,0,2) list item label [Sphinx] > default
               MixedStyledText('11.')
                 SingleStyledText('11')
                 SingleStyledText('.')
           StaticGroupedFlowables()
-               > (0,0,0,0,3) list item body
-            Paragraph('eleven')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/enumerated_list.rst:33 <paragraph>
-                 > (0,0,0,0,5) list item paragraph
-                   (0,0,0,0,2) body
-              MixedStyledText('eleven')
-                SingleStyledText('eleven')
-      Paragraph('And the same with alternative st...')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/enumerated_list.rst:36 <paragraph>
-           > (0,0,0,0,2) body
-        MixedStyledText('And the same with alternative st...')
-          SingleStyledText('And the same with alternative st...')
-      List(style='enumerated')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/enumerated_list.rst:40 <enumerated_list>
-           > (0,0,1,1,2) alt enumerated list
-             (0,0,1,0,2) enumerated list
-        ListItem()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/enumerated_list.rst:None <list_item>
-             > (0,0,1,1,4) alt enumerated list item
+               > (0,0,0,0,3) list item body [Sphinx] > DEFAULT
+            Paragraph('eleven')   enumerated_list.rst:33   <paragraph>
+                 > (0,0,0,0,5) list item paragraph [Sphinx] > default
+                   (0,0,0,0,2) body [Sphinx] > default
+                MixedStyledText('eleven')
+                  MixedStyledText('eleven')
+                    SingleStyledText('eleven')
+      Paragraph('And the same with alternative st...')   enumerated_list.rst:36   <paragraph>
+           > (0,0,0,0,2) body [Sphinx] > default
+          MixedStyledText('And the same with alternative st...')
+            MixedStyledText('And the same with alternative st...')
+              SingleStyledText('And the same with alternative st...')
+      List(style='enumerated')   enumerated_list.rst:40   <enumerated_list>
+           > (0,0,1,1,2) alt enumerated list [enumerated_list.rts] > enumerated list
+             (0,0,1,0,2) enumerated list [Sphinx] > DEFAULT
+        ListItem()   enumerated_list.rst   <list_item>
+             > (0,0,1,1,4) alt enumerated list item [enumerated_list.rts] > DEFAULT
              x (0,0,1,0,4) enumerated list item
           ListItemLabel('9.')
-               > (0,0,1,1,6) alt enumerated list item label
-                 (0,0,1,0,6) enumerated list item label
-                 (0,0,0,0,2) list item label
+               > (0,0,1,1,6) alt enumerated list item label [enumerated_list.rts] > enumerated list item label
+                 (0,0,1,0,6) enumerated list item label [Sphinx] > list item label
+                 (0,0,0,0,2) list item label [Sphinx] > default
               MixedStyledText('9.')
                 SingleStyledText('9')
                 SingleStyledText('.')
           StaticGroupedFlowables()
-               > (0,0,0,0,3) list item body
-            Paragraph('nine')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/enumerated_list.rst:40 <paragraph>
-                 > (0,0,0,0,5) list item paragraph
-                   (0,0,0,0,2) body
-              MixedStyledText('nine')
-                SingleStyledText('nine')
-        ListItem()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/enumerated_list.rst:None <list_item>
-             > (0,0,1,1,4) alt enumerated list item
+               > (0,0,0,0,3) list item body [Sphinx] > DEFAULT
+            Paragraph('nine')   enumerated_list.rst:40   <paragraph>
+                 > (0,0,0,0,5) list item paragraph [Sphinx] > default
+                   (0,0,0,0,2) body [Sphinx] > default
+                MixedStyledText('nine')
+                  MixedStyledText('nine')
+                    SingleStyledText('nine')
+        ListItem()   enumerated_list.rst   <list_item>
+             > (0,0,1,1,4) alt enumerated list item [enumerated_list.rts] > DEFAULT
              x (0,0,1,0,4) enumerated list item
           ListItemLabel('10.')
-               > (0,0,1,1,6) alt enumerated list item label
-                 (0,0,1,0,6) enumerated list item label
-                 (0,0,0,0,2) list item label
+               > (0,0,1,1,6) alt enumerated list item label [enumerated_list.rts] > enumerated list item label
+                 (0,0,1,0,6) enumerated list item label [Sphinx] > list item label
+                 (0,0,0,0,2) list item label [Sphinx] > default
               MixedStyledText('10.')
                 SingleStyledText('10')
                 SingleStyledText('.')
           StaticGroupedFlowables()
-               > (0,0,0,0,3) list item body
-            Paragraph('ten')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/enumerated_list.rst:41 <paragraph>
-                 > (0,0,0,0,5) list item paragraph
-                   (0,0,0,0,2) body
-              MixedStyledText('ten')
-                SingleStyledText('ten')
-        ListItem()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/enumerated_list.rst:None <list_item>
-             > (0,0,1,1,4) alt enumerated list item
+               > (0,0,0,0,3) list item body [Sphinx] > DEFAULT
+            Paragraph('ten')   enumerated_list.rst:41   <paragraph>
+                 > (0,0,0,0,5) list item paragraph [Sphinx] > default
+                   (0,0,0,0,2) body [Sphinx] > default
+                MixedStyledText('ten')
+                  MixedStyledText('ten')
+                    SingleStyledText('ten')
+        ListItem()   enumerated_list.rst   <list_item>
+             > (0,0,1,1,4) alt enumerated list item [enumerated_list.rts] > DEFAULT
              x (0,0,1,0,4) enumerated list item
           ListItemLabel('11.')
-               > (0,0,1,1,6) alt enumerated list item label
-                 (0,0,1,0,6) enumerated list item label
-                 (0,0,0,0,2) list item label
+               > (0,0,1,1,6) alt enumerated list item label [enumerated_list.rts] > enumerated list item label
+                 (0,0,1,0,6) enumerated list item label [Sphinx] > list item label
+                 (0,0,0,0,2) list item label [Sphinx] > default
               MixedStyledText('11.')
                 SingleStyledText('11')
                 SingleStyledText('.')
           StaticGroupedFlowables()
-               > (0,0,0,0,3) list item body
-            Paragraph('eleven')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/enumerated_list.rst:42 <paragraph>
-                 > (0,0,0,0,5) list item paragraph
-                   (0,0,0,0,2) body
-              MixedStyledText('eleven')
-                SingleStyledText('eleven')
+               > (0,0,0,0,3) list item body [Sphinx] > DEFAULT
+            Paragraph('eleven')   enumerated_list.rst:42   <paragraph>
+                 > (0,0,0,0,5) list item paragraph [Sphinx] > default
+                   (0,0,0,0,2) body [Sphinx] > default
+                MixedStyledText('eleven')
+                  MixedStyledText('eleven')
+                    SingleStyledText('eleven')
+---------------------------------- page 2 ----------------------------------
+#### FlowablesContainer('background')
+  StaticGroupedFlowables()
+#### FootnoteContainer('footnotes')
+  StaticGroupedFlowables()
+#### DownExpandingContainer('floats')
+  StaticGroupedFlowables()
+#### ChainedContainer('column1')
+  (continued) StaticGroupedFlowables()
+    (continued) DocumentTree()   enumerated_list.rst   <document>
+      PageBreak(style=FlowableStyle)   enumerated_list.rst:45   <raw>
+      Paragraph('Hierarchical list item numbers:')   enumerated_list.rst:50   <paragraph>
+           > (0,0,0,0,2) body [Sphinx] > default
+          MixedStyledText('Hierarchical list item numbers:')
+            MixedStyledText('Hierarchical list item numbers:')
+              SingleStyledText('Hierarchical list item numbers:')
+      List(style='enumerated')   enumerated_list.rst:54   <enumerated_list>
+           > (0,0,1,1,2) hierarchical enumerated list [enumerated_list.rts] > enumerated list
+             (0,0,1,0,2) enumerated list [Sphinx] > DEFAULT
+        ListItem()   <list_item>
+             x (0,0,1,0,4) enumerated list item
+          ListItemLabel('1.')
+               > (0,0,1,1,6) hierarchical enumerated list item label [enumerated_list.rts] > enumerated list item label
+                 (0,0,1,0,6) enumerated list item label [Sphinx] > list item label
+                 (0,0,0,0,2) list item label [Sphinx] > default
+              MixedStyledText('1.')
+                SingleStyledText('1')
+                SingleStyledText('.')
+          StaticGroupedFlowables()
+               > (0,0,0,0,3) list item body [Sphinx] > DEFAULT
+            Paragraph('item')   enumerated_list.rst:54   <paragraph>
+                 > (0,0,0,0,5) list item paragraph [Sphinx] > default
+                   (0,0,0,0,2) body [Sphinx] > default
+                MixedStyledText('item')
+                  MixedStyledText('item')
+                    SingleStyledText('item')
+            List(style='enumerated')   <enumerated_list>
+                 > (0,0,1,0,5) nested enumerated list [Sphinx] > enumerated list
+                   (0,0,1,0,2) enumerated list [Sphinx] > DEFAULT
+              ListItem()   <list_item>
+                   x (0,0,1,0,4) enumerated list item
+                ListItemLabel('1.1.')
+                     > (0,0,1,1,6) hierarchical enumerated list item label [enumerated_list.rts] > enumerated list item label
+                       (0,0,1,0,6) enumerated list item label [Sphinx] > list item label
+                       (0,0,0,0,2) list item label [Sphinx] > default
+                    MixedStyledText('1.1.')
+                      SingleStyledText('1.1')
+                      SingleStyledText('.')
+                StaticGroupedFlowables()
+                     > (0,0,0,0,3) list item body [Sphinx] > DEFAULT
+                  Paragraph('sub-item')   enumerated_list.rst:56   <paragraph>
+                       > (0,0,0,0,5) list item paragraph [Sphinx] > default
+                         (0,0,0,0,2) body [Sphinx] > default
+                      MixedStyledText('sub-item')
+                        MixedStyledText('sub-item')
+                          SingleStyledText('sub-item')
+                  List(style='enumerated')   <enumerated_list>
+                       > (0,0,1,0,5) nested enumerated list [Sphinx] > enumerated list
+                         (0,0,1,0,2) enumerated list [Sphinx] > DEFAULT
+                    ListItem()   <list_item>
+                         x (0,0,1,0,4) enumerated list item
+                      ListItemLabel('1.1.1.')
+                           > (0,0,1,1,6) hierarchical enumerated list item label [enumerated_list.rts] > enumerated list item label
+                             (0,0,1,0,6) enumerated list item label [Sphinx] > list item label
+                             (0,0,0,0,2) list item label [Sphinx] > default
+                          MixedStyledText('1.1.1.')
+                            SingleStyledText('1.1.1')
+                            SingleStyledText('.')
+                      StaticGroupedFlowables()
+                           > (0,0,0,0,3) list item body [Sphinx] > DEFAULT
+                        Paragraph('sub-sub-item')   enumerated_list.rst:58   <paragraph>
+                             > (0,0,0,0,5) list item paragraph [Sphinx] > default
+                               (0,0,0,0,2) body [Sphinx] > default
+                            MixedStyledText('sub-sub-item')
+                              MixedStyledText('sub-sub-item')
+                                SingleStyledText('sub-sub-item')
+        ListItem()   <list_item>
+             x (0,0,1,0,4) enumerated list item
+          ListItemLabel('2.')
+               > (0,0,1,1,6) hierarchical enumerated list item label [enumerated_list.rts] > enumerated list item label
+                 (0,0,1,0,6) enumerated list item label [Sphinx] > list item label
+                 (0,0,0,0,2) list item label [Sphinx] > default
+              MixedStyledText('2.')
+                SingleStyledText('2')
+                SingleStyledText('.')
+          StaticGroupedFlowables()
+               > (0,0,0,0,3) list item body [Sphinx] > DEFAULT
+            Paragraph('item')   enumerated_list.rst:60   <paragraph>
+                 > (0,0,0,0,5) list item paragraph [Sphinx] > default
+                   (0,0,0,0,2) body [Sphinx] > default
+                MixedStyledText('item')
+                  MixedStyledText('item')
+                    SingleStyledText('item')
+            List(style='enumerated')   <enumerated_list>
+                 > (0,0,1,0,5) nested enumerated list [Sphinx] > enumerated list
+                   (0,0,1,0,2) enumerated list [Sphinx] > DEFAULT
+              ListItem()   <list_item>
+                   x (0,0,1,0,4) enumerated list item
+                ListItemLabel('2.1.')
+                     > (0,0,1,1,6) hierarchical enumerated list item label [enumerated_list.rts] > enumerated list item label
+                       (0,0,1,0,6) enumerated list item label [Sphinx] > list item label
+                       (0,0,0,0,2) list item label [Sphinx] > default
+                    MixedStyledText('2.1.')
+                      SingleStyledText('2.1')
+                      SingleStyledText('.')
+                StaticGroupedFlowables()
+                     > (0,0,0,0,3) list item body [Sphinx] > DEFAULT
+                  Paragraph('sub-item')   enumerated_list.rst:62   <paragraph>
+                       > (0,0,0,0,5) list item paragraph [Sphinx] > default
+                         (0,0,0,0,2) body [Sphinx] > default
+                      MixedStyledText('sub-item')
+                        MixedStyledText('sub-item')
+                          SingleStyledText('sub-item')
+                  List(style='enumerated')   <enumerated_list>
+                       > (0,0,1,0,5) nested enumerated list [Sphinx] > enumerated list
+                         (0,0,1,0,2) enumerated list [Sphinx] > DEFAULT
+                    ListItem()   <list_item>
+                         x (0,0,1,0,4) enumerated list item
+                      ListItemLabel('2.1.1.')
+                           > (0,0,1,1,6) hierarchical enumerated list item label [enumerated_list.rts] > enumerated list item label
+                             (0,0,1,0,6) enumerated list item label [Sphinx] > list item label
+                             (0,0,0,0,2) list item label [Sphinx] > default
+                          MixedStyledText('2.1.1.')
+                            SingleStyledText('2.1.1')
+                            SingleStyledText('.')
+                      StaticGroupedFlowables()
+                           > (0,0,0,0,3) list item body [Sphinx] > DEFAULT
+                        Paragraph('sub-sub-item')   enumerated_list.rst:64   <paragraph>
+                             > (0,0,0,0,5) list item paragraph [Sphinx] > default
+                               (0,0,0,0,2) body [Sphinx] > default
+                            MixedStyledText('sub-sub-item')
+                              MixedStyledText('sub-sub-item')
+                                SingleStyledText('sub-sub-item')
+              ListItem()   <list_item>
+                   x (0,0,1,0,4) enumerated list item
+                ListItemLabel('2.2.')
+                     > (0,0,1,1,6) hierarchical enumerated list item label [enumerated_list.rts] > enumerated list item label
+                       (0,0,1,0,6) enumerated list item label [Sphinx] > list item label
+                       (0,0,0,0,2) list item label [Sphinx] > default
+                    MixedStyledText('2.2.')
+                      SingleStyledText('2.2')
+                      SingleStyledText('.')
+                StaticGroupedFlowables()
+                     > (0,0,0,0,3) list item body [Sphinx] > DEFAULT
+                  Paragraph('sub-item')   enumerated_list.rst:66   <paragraph>
+                       > (0,0,0,0,5) list item paragraph [Sphinx] > default
+                         (0,0,0,0,2) body [Sphinx] > default
+                      MixedStyledText('sub-item')
+                        MixedStyledText('sub-item')
+                          SingleStyledText('sub-item')
+                  List(style='enumerated')   <enumerated_list>
+                       > (0,0,1,0,5) nested enumerated list [Sphinx] > enumerated list
+                         (0,0,1,0,2) enumerated list [Sphinx] > DEFAULT
+                    ListItem()   <list_item>
+                         x (0,0,1,0,4) enumerated list item
+                      ListItemLabel('2.2.1.')
+                           > (0,0,1,1,6) hierarchical enumerated list item label [enumerated_list.rts] > enumerated list item label
+                             (0,0,1,0,6) enumerated list item label [Sphinx] > list item label
+                             (0,0,0,0,2) list item label [Sphinx] > default
+                          MixedStyledText('2.2.1.')
+                            SingleStyledText('2.2.1')
+                            SingleStyledText('.')
+                      StaticGroupedFlowables()
+                           > (0,0,0,0,3) list item body [Sphinx] > DEFAULT
+                        Paragraph('sub-sub-item')   enumerated_list.rst:68   <paragraph>
+                             > (0,0,0,0,5) list item paragraph [Sphinx] > default
+                               (0,0,0,0,2) body [Sphinx] > default
+                            MixedStyledText('sub-sub-item')
+                              MixedStyledText('sub-sub-item')
+                                SingleStyledText('sub-sub-item')

@@ -14,3 +14,11 @@ label_max_width = None
 [alt enumerated list item label : 'alt enumerated list item' / ListItemLabel]
 base = enumerated list item label
 text_align = LEFT
+
+
+[hierarchical enumerated list : List('enumerated', has_class='hierarchical')]
+base = enumerated list
+
+[hierarchical enumerated list item label : 'hierarchical enumerated list' / ... / ListItem / ListItemLabel]
+base = enumerated list item label
+number_separator = '.'

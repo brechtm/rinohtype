@@ -161,22 +161,40 @@ class ListItem(LabeledFlowable):
 
 
 class ListItemLabelStyle(ParagraphStyle, LabelStyle):
-    pass
+    number_separator = OverrideDefault(None)
 
 
 class ListItemLabel(ParagraphBase, Label):
     style_class = ListItemLabelStyle
 
     def text(self, container):
+        label = self._label(container)
+        return MixedStyledText(self.format_label(label, container), parent=self)
+
+    def _label(self, container):
         list_item = self.parent
         list = list_item.parent
         if list.get_style('ordered', container):
-            index = list.index(list_item, container)
             number_format = list.get_style('number_format', container)
+            separator = self.get_style('number_separator', container)
+            index = list.index(list_item, container)
             label = format_number(index, number_format)
+            if separator is not None:
+                parent_list_item = None
+                parent = list.parent
+                while parent:
+                    if isinstance(parent, ListItem):
+                        parent_list_item = parent
+                        break
+                    parent = parent.parent
+                if parent_list_item:
+                    parent_label = parent_list_item.label._label(container)
+                    separator_string = separator.to_string(container)
+                    label = parent_label + separator_string + label
         else:
             label = list.get_style('bullet', container)
-        return MixedStyledText(self.format_label(label, container), parent=self)
+        return label
+
 
 
 class DefinitionList(GroupedLabeledFlowables, StaticGroupedFlowables):
