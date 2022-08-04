@@ -1,0 +1,9 @@
+[STYLESHEET]
+base = sphinx_base14
+
+[fun fact admonition : Admonition(custom_title_text='Fun Fact')]
+base = admonition
+padding_left = 4pt
+border_left = 2pt,#000
+border_top = none
+border_bottom = none

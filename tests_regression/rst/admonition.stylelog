@@ -1,4 +1,6 @@
 ---------------------------------- page 1 ----------------------------------
+#### FlowablesContainer('background')
+  StaticGroupedFlowables()
 #### FootnoteContainer('footnotes')
   StaticGroupedFlowables()
 #### DownExpandingContainer('floats')
@@ -9,17 +11,19 @@
       Admonition()   admonition.rst   <hint>
            > (0,0,0,1,2) hint admonition [Sphinx] > builtin admonition
              (0,0,0,0,2) admonition [Sphinx] > DEFAULT
-        Paragraph('Hint It's bigger than a bread bo...')
-             > (0,0,0,0,2) body [Sphinx] > default
-            MixedStyledText('Hint It's bigger than a bread bo...')
-              MixedStyledText('Hint It's bigger than a bread bo...')
+        AdmonitionTitleParagraph('HintIt's bigger than a bread box...')   admonition.rst:1   <paragraph>
+             x (1,0,0,1,4) hint admonition title paragraph
+             x (1,0,0,0,4) admonition title paragraph
+             > (0,0,0,0,1) body [Sphinx] > default
+            MixedStyledText('HintIt's bigger than a bread box...')
+              MixedStyledText('HintIt's bigger than a bread box...')
                 MixedStyledText('Hint', style='inline title')
                      x (0,0,1,1,3) hint admonition inline title
                      > (0,0,1,0,3) admonition inline title [Sphinx] > admonition title
                   SingleStyledText('Hint')
-                SingleStyledText(' ')
                 MixedStyledText('It's bigger than a bread box.')
-                  SingleStyledText('It's bigger than a bread box.')
+                  MixedStyledText('It's bigger than a bread box.')
+                    SingleStyledText('It's bigger than a bread box.')
       Admonition()   <important>
            > (0,0,0,1,2) important admonition [Sphinx] > builtin admonition
              (0,0,0,0,2) admonition [Sphinx] > DEFAULT
@@ -99,3 +103,18 @@
                   MixedStyledText('Back up your data.')
                     MixedStyledText('Back up your data.')
                       SingleStyledText('Back up your data.')
+      Admonition()   admonition.rst   <admonition>
+           > (0,0,0,1,2) fun fact admonition [admonition.rts] > admonition
+             (0,0,0,0,2) admonition [Sphinx] > DEFAULT
+        Paragraph('Fun Fact', style='title')
+             > (0,0,1,0,4) admonition title [Sphinx] > body
+               (0,0,1,0,2) title [Sphinx] > default
+               (0,0,0,0,2) body [Sphinx] > default
+            MixedStyledText('Fun Fact')
+              MixedStyledText('Fun Fact')   admonition.rst:9   <title>
+                SingleStyledText('Fun Fact')
+        Paragraph('Bees go bzzz!')   admonition.rst:11   <paragraph>
+             > (0,0,0,0,2) body [Sphinx] > default
+            MixedStyledText('Bees go bzzz!')
+              MixedStyledText('Bees go bzzz!')
+                SingleStyledText('Bees go bzzz!')

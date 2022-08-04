@@ -5,3 +5,7 @@
    - Clean up your room.
    - Call your mother.
    - Back up your data.
+
+.. admonition:: Fun Fact
+
+   Bees go bzzz!
