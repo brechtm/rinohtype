@@ -643,8 +643,8 @@ optional = false
 python-versions = "*"
 
 [[package]]
-name = "sphinx"
-version = "5.1.1"
+name = "Sphinx"
+version = "5.2.0.dev20220804"
 description = "Python documentation generator"
 category = "main"
 optional = false
@@ -673,6 +673,10 @@ sphinxcontrib-serializinghtml = ">=1.1.5"
 docs = ["sphinxcontrib-websupport"]
 lint = ["flake8 (>=3.5.0)", "flake8-comprehensions", "flake8-bugbear", "isort", "mypy (>=0.971)", "sphinx-lint", "docutils-stubs", "types-typed-ast", "types-requests"]
 test = ["pytest (>=4.6)", "html5lib", "cython", "typed-ast"]
+
+[package.source]
+type = "url"
+url = "https://github.com/brechtm/sphinx/archive/refs/heads/toctree-index.zip"
 
 [[package]]
 name = "sphinx-immaterial"
@@ -867,7 +871,7 @@ testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytest-
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7.0"
-content-hash = "d32c927ee76349a0dc54bdda6ce4e2c5ae5263ce1f038c647e7a5d647a2dec09"
+content-hash = "ab559082fe50a1ba167df9f4106128349bad0be312143c9e710f4770bc9989cc"
 
 [metadata.files]
 alabaster = [
@@ -1198,10 +1202,7 @@ snowballstemmer = [
     {file = "snowballstemmer-2.2.0-py2.py3-none-any.whl", hash = "sha256:c8e1716e83cc398ae16824e5572ae04e0d9fc2c6b985fb0f900f5f0c96ecba1a"},
     {file = "snowballstemmer-2.2.0.tar.gz", hash = "sha256:09b16deb8547d3412ad7b590689584cd0fe25ec8db3be37788be3810cbf19cb1"},
 ]
-sphinx = [
-    {file = "Sphinx-5.1.1-py3-none-any.whl", hash = "sha256:309a8da80cb6da9f4713438e5b55861877d5d7976b69d87e336733637ea12693"},
-    {file = "Sphinx-5.1.1.tar.gz", hash = "sha256:ba3224a4e206e1fbdecf98a4fae4992ef9b24b85ebf7b584bb340156eaf08d89"},
-]
+Sphinx = []
 sphinx-immaterial = [
     {file = "sphinx_immaterial-0.8.1-py3-none-any.whl", hash = "sha256:02363a69814c7e52a4a62cc67f4f276dd9da086c377ba0db08d2292a84089f27"},
     {file = "sphinx_immaterial-0.8.1.tar.gz", hash = "sha256:16cddd6429db2425f4a2f40f68a9b2836bc4ce110a7b466c337d7d657a888148"},

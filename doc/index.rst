@@ -63,3 +63,12 @@ rinohtype, so don't hesitate to `contact me`_.
 .. include:: manual.rst
 
 .. include:: reference.rst
+
+.. only:: html
+
+   .. toctree::
+      :caption: Indices
+      :hidden:
+
+      genindex
+      modindex
