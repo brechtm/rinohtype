@@ -43,7 +43,8 @@ def check(session):
 
 @nox_poetry.session()
 def check_docs(session):
-    _install(session, dependencies=['doc8', 'sphinxcontrib-autoprogram'])
+    _install(session, dependencies=['doc8', 'sphinx-immaterial',
+                                    'sphinxcontrib-autoprogram'])
     session.run('doc8', 'README.rst', 'CHANGES.rst', 'CONTRIBUTING.rst',
                 'DEVELOPING.rst', 'doc')
     session.run('python', 'doc/build.py', 'doctest')
