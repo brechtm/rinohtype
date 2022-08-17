@@ -181,6 +181,7 @@ html_theme_options = {
     ],
     'toc_title_is_page_title': True,
     'version_dropdown': True,
+    'version_json': '../im_versions.json',
 }
 
 # Add any paths that contain custom themes here, relative to this directory.

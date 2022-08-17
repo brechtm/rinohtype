@@ -4,8 +4,12 @@
     margin-bottom: -5px;
 }
 
-.md-header__topic:first-child {
+.md-header__topic:first-child .md-ellipsis {
     display: none;
+}
+
+.md-version {
+    margin-left: -5.2rem;
 }
 
 .md-header__button.md-logo {

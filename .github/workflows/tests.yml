@@ -107,9 +107,14 @@ jobs:
                             reverse=True)
           target_dir = Path('gh-pages')
           target_dir.mkdir(parents=True)
-          target_file = target_dir / 'versions.json'
-          with target_file.open('w') as f:
+          legacy_target_file = target_dir / 'versions.json'
+          with legacy_target_file.open('w') as f:
               json.dump(versions, f)
+          im_versions = [dict(version=version, title=version, aliases=[])
+                         for version in versions]
+          immaterial_target_file = target_dir / 'im_versions.json'
+          with immaterial_target_file.open('w') as f:
+              json.dump(im_versions, f)
 
     - name: Publish versions JSON to GitHub pages
       uses: peaceiris/actions-gh-pages@v3
