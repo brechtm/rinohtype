@@ -1,232 +1,1086 @@
 
 
-<!DOCTYPE html>
-<html class="writer-html5" lang="en" >
-<head>
-  <meta charset="utf-8" />
-  
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  
-  <title>API Documentation &mdash; rinohtype 0.5.5 documentation</title>
-  
-
-  
-  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/pdflinks.css" type="text/css" />
-
-  
-  
-
-  
-  
-
-  
-
-  
-  <!--[if lt IE 9]>
-    <script src="../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
     
-      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/underscore.js"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script src="../_static/doctools.js"></script>
-        <script src="../_static/versions.js"></script>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      <link rel="icon" href="../_static/rinohtype_logo_abbrev.svg">
     
-    <script type="text/javascript" src="../_static/js/theme.js"></script>
+    
+      
+        <title>API Documentation - rinohtype</title>
+      
+    
+    
+      <link rel="stylesheet" href="../_static/stylesheets/main.a280224b.min.css">
+      
+        
+        <link rel="stylesheet" href="../_static/stylesheets/palette.92c9fe4a.min.css">
+        
+      
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+        <link rel="stylesheet" type="text/css" href="../_static/tweaks.css" />
+    <script>__md_scope=new URL("..",location),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
 
     
-    <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Attribute (rinoh.attribute)" href="attribute.html" />
-    <link rel="prev" title="Book" href="../book.html" /> 
-</head>
-
-<body class="wy-body-for-nav">
-
-   
-  <div class="wy-grid-for-nav">
     
-    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-      <div class="wy-side-scroll">
-        <div class="wy-side-nav-search" >
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="red" data-md-color-accent="light-blue">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <div data-md-component="outdated" hidden>
+        <aside class="md-banner md-banner--warning">
           
+        </aside>
+      </div>
+    
+    
+      
 
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../index.html" title="rinohtype" class="md-header__button md-logo" aria-label="rinohtype" data-md-component="logo">
+      <img src="../_static/logo_white.svg" alt="logo">
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            rinohtype
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              API Documentation
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      <form class="md-header__option" data-md-component="palette">
+        
           
-            <a href="../index.html" class="icon icon-home"> rinohtype
           
-
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="red" data-md-color-accent="light-blue"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
           
-          </a>
-
+            <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 1 7 7c0 2.38-1.19 4.47-3 5.74V17a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-2.26C6.19 13.47 5 11.38 5 9a7 7 0 0 1 7-7M9 21v-1h6v1a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1m3-17a5 5 0 0 0-5 5c0 2.05 1.23 3.81 3 4.58V16h4v-2.42c1.77-.77 3-2.53 3-4.58a5 5 0 0 0-5-5Z"/></svg>
+            </label>
+          
+        
+          
+          
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="red" data-md-color-accent="orange"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
+          
+            <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 0-7 7c0 2.38 1.19 4.47 3 5.74V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 0 0-7-7M9 21a1 1 0 0 0 1 1h4a1 1 0 0 0 1-1v-1H9v1Z"/></svg>
+            </label>
+          
+        
+      </form>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/brechtm/rinohtype" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    rinohtype
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
           
             
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../index.html" title="rinohtype" class="md-nav__button md-logo" aria-label="rinohtype" data-md-component="logo">
+      <img src="../_static/logo_white.svg" alt="logo">
+    </a>
+    rinohtype
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/brechtm/rinohtype" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    rinohtype
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_1" data-md-state="indeterminate" type="checkbox" id="__nav_1" checked>
+      
+      
+      
+        <label class="md-nav__link" for="__nav_1">
+          <span class="md-ellipsis">User Manual</span> [<a class="pdf-link" href="../manual.pdf">PDF</a>]
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="User Manual" data-md-level="1">
+        <label class="md-nav__title" for="__nav_1">
+          <span class="md-nav__icon md-icon"></span>
+          <span class="md-ellipsis">User Manual</span> [<a class="pdf-link" href="../manual.pdf">PDF</a>]
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
             
-              <div class="version">
-                0.5.5
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../intro.html" class="md-nav__link">
+        <span class="md-ellipsis">Introduction</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../install.html" class="md-nav__link">
+        <span class="md-ellipsis">Installation</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../quickstart.html" class="md-nav__link">
+        <span class="md-ellipsis">Quickstart</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../basicstyling.html" class="md-nav__link">
+        <span class="md-ellipsis">Basic Document Styling</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../elementstyling.html" class="md-nav__link">
+        <span class="md-ellipsis">Element Styling</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../templates.html" class="md-nav__link">
+        <span class="md-ellipsis">Document Templates</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../faq.html" class="md-nav__link">
+        <span class="md-ellipsis">Frequently Asked Questions</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contributing.html" class="md-nav__link">
+        <span class="md-ellipsis">Contributing</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../developing.html" class="md-nav__link">
+        <span class="md-ellipsis">Developing</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../changelog.html" class="md-nav__link">
+        <span class="md-ellipsis">Release History</span>
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" checked>
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2">
+          <span class="md-ellipsis">Reference Guide</span> [<a class="pdf-link" href="../reference.pdf">PDF</a>]
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Reference Guide" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          <span class="md-ellipsis">Reference Guide</span> [<a class="pdf-link" href="../reference.pdf">PDF</a>]
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../rinoh.html" class="md-nav__link">
+        <span class="md-ellipsis">rinoh</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sphinx.html" class="md-nav__link">
+        <span class="md-ellipsis">Sphinx Builder</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../stylesheets.html" class="md-nav__link">
+        <span class="md-ellipsis">Style Sheets</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../stdtemplates.html" class="md-nav__link">
+        <span class="md-ellipsis">Standard Document Templates</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+    
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__current-nested md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2_5" type="checkbox" id="__nav_2_5" checked>
+      
+      
+      
+        
+        <div class="md-nav__link md-nav__link--index md-nav__link--active">
+          <a href="#"><span class="md-ellipsis">API Documentation</span></a>
+          
+            <label for="__nav_2_5">
+              <span class="md-nav__icon md-icon"></span>
+            </label>
+          
+        </div>
+      
+      <nav class="md-nav" aria-label="API Documentation" data-md-level="2">
+        <label class="md-nav__title" for="__nav_2_5">
+          <span class="md-nav__icon md-icon"></span>
+          <span class="md-ellipsis">API Documentation</span>
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="attribute.html" class="md-nav__link">
+        <span class="md-ellipsis">Attribute <wbr>(rinoh.<wbr>attribute)</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="color.html" class="md-nav__link">
+        <span class="md-ellipsis">Color <wbr>(rinoh.<wbr>color)</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="dimension.html" class="md-nav__link">
+        <span class="md-ellipsis">Dimension <wbr>(rinoh.<wbr>dimension)</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="document.html" class="md-nav__link">
+        <span class="md-ellipsis">Document <wbr>(rinoh.<wbr>document)</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="draw.html" class="md-nav__link">
+        <span class="md-ellipsis">Drawing Primitives <wbr>(rinoh.<wbr>draw)</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="flowable.html" class="md-nav__link">
+        <span class="md-ellipsis">Flowable <wbr>(rinoh.<wbr>flowable)</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="font.html" class="md-nav__link">
+        <span class="md-ellipsis">Fonts and Typefaces <wbr>(rinoh.<wbr>font)</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="image.html" class="md-nav__link">
+        <span class="md-ellipsis">Images and Figures <wbr>(rinoh.<wbr>image)</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="index.html" class="md-nav__link">
+        <span class="md-ellipsis">Index <wbr>(rinoh.<wbr>index)</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="language.html" class="md-nav__link">
+        <span class="md-ellipsis">Language <wbr>(rinoh.<wbr>language)</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="number.html" class="md-nav__link">
+        <span class="md-ellipsis">Number <wbr>(rinoh.<wbr>number)</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="paper.html" class="md-nav__link">
+        <span class="md-ellipsis">Paper sizes <wbr>(rinoh.<wbr>paper)</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="paragraph.html" class="md-nav__link">
+        <span class="md-ellipsis">Paragraph <wbr>(rinoh.<wbr>paragraph)</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="reference.html" class="md-nav__link">
+        <span class="md-ellipsis">Cross-<wbr>References and Fields <wbr>(rinoh.<wbr>reference)</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="structure.html" class="md-nav__link">
+        <span class="md-ellipsis">Structure <wbr>(rinoh.<wbr>structure)</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="strings.html" class="md-nav__link">
+        <span class="md-ellipsis">Strings <wbr>(rinoh.<wbr>strings)</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="style.html" class="md-nav__link">
+        <span class="md-ellipsis">Style <wbr>(rinoh.<wbr>style)</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="table.html" class="md-nav__link">
+        <span class="md-ellipsis">Tables <wbr>(rinoh.<wbr>table)</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="template.html" class="md-nav__link">
+        <span class="md-ellipsis">Templates <wbr>(rinoh.<wbr>template)</span>
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+  
+      
+    <li class="md-nav__item md-nav__item--active md-nav__current-toc">
+      
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          <span class="md-ellipsis">API Documentation</span>
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="#" class="md-nav__link md-nav__link--active">
+        <span class="md-ellipsis">API Documentation</span>
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="attribute.html" class="md-nav__link">
+    <span class="md-ellipsis">Attribute <wbr>(rinoh.<wbr>attribute)</span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="color.html" class="md-nav__link">
+    <span class="md-ellipsis">Color <wbr>(rinoh.<wbr>color)</span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="dimension.html" class="md-nav__link">
+    <span class="md-ellipsis">Dimension <wbr>(rinoh.<wbr>dimension)</span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="document.html" class="md-nav__link">
+    <span class="md-ellipsis">Document <wbr>(rinoh.<wbr>document)</span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="draw.html" class="md-nav__link">
+    <span class="md-ellipsis">Drawing Primitives <wbr>(rinoh.<wbr>draw)</span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="flowable.html" class="md-nav__link">
+    <span class="md-ellipsis">Flowable <wbr>(rinoh.<wbr>flowable)</span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="font.html" class="md-nav__link">
+    <span class="md-ellipsis">Fonts and Typefaces <wbr>(rinoh.<wbr>font)</span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="image.html" class="md-nav__link">
+    <span class="md-ellipsis">Images and Figures <wbr>(rinoh.<wbr>image)</span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="index.html" class="md-nav__link">
+    <span class="md-ellipsis">Index <wbr>(rinoh.<wbr>index)</span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="language.html" class="md-nav__link">
+    <span class="md-ellipsis">Language <wbr>(rinoh.<wbr>language)</span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="number.html" class="md-nav__link">
+    <span class="md-ellipsis">Number <wbr>(rinoh.<wbr>number)</span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="paper.html" class="md-nav__link">
+    <span class="md-ellipsis">Paper sizes <wbr>(rinoh.<wbr>paper)</span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="paragraph.html" class="md-nav__link">
+    <span class="md-ellipsis">Paragraph <wbr>(rinoh.<wbr>paragraph)</span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="reference.html" class="md-nav__link">
+    <span class="md-ellipsis">Cross-<wbr>References and Fields <wbr>(rinoh.<wbr>reference)</span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="structure.html" class="md-nav__link">
+    <span class="md-ellipsis">Structure <wbr>(rinoh.<wbr>structure)</span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="strings.html" class="md-nav__link">
+    <span class="md-ellipsis">Strings <wbr>(rinoh.<wbr>strings)</span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="style.html" class="md-nav__link">
+    <span class="md-ellipsis">Style <wbr>(rinoh.<wbr>style)</span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="table.html" class="md-nav__link">
+    <span class="md-ellipsis">Tables <wbr>(rinoh.<wbr>table)</span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="template.html" class="md-nav__link">
+    <span class="md-ellipsis">Templates <wbr>(rinoh.<wbr>template)</span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary">
+  
+  
+  
+</nav>
+                  </div>
+                </div>
               </div>
             
           
-
-          
-<div role="search">
-  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
-    <input type="hidden" name="check_keywords" value="yes" />
-    <input type="hidden" name="area" value="default" />
-  </form>
-</div>
-
-          
-        </div>
-
-        
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-    
-    
-      
-    
-    
-      <p class="caption" role="heading"><span class="caption-text">User Manual [<a class="pdf-link" href="../manual.pdf">PDF</a>]</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../intro.html">Introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../install.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quickstart</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../basicstyling.html">Basic Document Styling</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../elementstyling.html">Element Styling</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../templates.html">Document Templates</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../faq.html">Frequently Asked Questions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../contributing.html">Contributing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../developing.html">Developing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Release History</a></li>
-</ul>
-<p class="caption" role="heading"><span class="caption-text">Reference Guide [<a class="pdf-link" href="../reference.pdf">PDF</a>]</span></p>
-<ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../rinoh.html">rinoh</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../sphinx.html">Sphinx Builder</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../stylesheets.html">Style Sheets</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../stdtemplates.html">Standard Document Templates</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">API Documentation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="attribute.html">Attribute (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.attribute</span></code>)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="color.html">Color (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.color</span></code>)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dimension.html">Dimension (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.dimension</span></code>)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="document.html">Document (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.document</span></code>)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="draw.html">Drawing Primitives (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.draw</span></code>)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="flowable.html">Flowable (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.flowable</span></code>)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="font.html">Fonts and Typefaces (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.font</span></code>)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="image.html">Images and Figures (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.image</span></code>)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="index.html">Index (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.index</span></code>)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="language.html">Language (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.language</span></code>)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="number.html">Number (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.number</span></code>)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="paper.html">Paper sizes (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.paper</span></code>)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="paragraph.html">Paragraph (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.paragraph</span></code>)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="reference.html">Cross-References and Fields (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.reference</span></code>)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="structure.html">Structure (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.structure</span></code>)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="strings.html">Strings (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.strings</span></code>)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="style.html">Style (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.style</span></code>)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="table.html">Tables (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.table</span></code>)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="template.html">Templates (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.template</span></code>)</a></li>
-</ul>
-</li>
-</ul>
-
-    
-
-    <p class="caption">
-        <span class="caption-text">Indices and tables</span>
-    </p>
-    <a href="../genindex.html">Index</a>
-    <a href="../py-modindex.html">Module Index</a>
-  
-        </div>
-        
-      </div>
-    </nav>
-
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../index.html">rinohtype</a>
-        
-      </nav>
-
-
-      <div class="wy-nav-content">
-        
-        <div class="rst-content">
-        
-          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset" role="main">
+                
+  <a href="https://github.com/brechtm/rinohtype/edit/master/doc/api/api.rst" title="Edit this page" class="md-content__button md-icon">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25Z"/></svg>
+  </a>
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
-  <ul class="wy-breadcrumbs">
-    
-      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
-        
-      <li>API Documentation</li>
-    
-    
-      <li class="wy-breadcrumbs-aside">
-        
-          
-            
-              <a href="https://github.com/brechtm/rinohtype/blob/master/doc/api/api.rst" class="fa fa-github"> Edit on GitHub</a>
-            
-          
-        
-      </li>
-    
-  </ul>
-
-  
-  <hr/>
-</div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-           <div itemprop="articleBody">
-            
-  <div class="section" id="api-documentation">
-<h1>API Documentation<a class="headerlink" href="#api-documentation" title="Permalink to this heading">¶</a></h1>
+  <h1 id="api-documentation">API Documentation<a class="headerlink" href="#api-documentation" title="Permalink to this heading">¶</a></h1>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>The API documentation is still incomplete.</p>
 </div>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="attribute.html">Attribute (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.attribute</span></code>)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="color.html">Color (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.color</span></code>)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="dimension.html">Dimension (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.dimension</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="attribute.html">Attribute (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.attribute</span></code>)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="attribute.html#rinoh.attribute.AcceptNoneAttributeType">rinoh.attribute.AcceptNoneAttributeType</a></li>
+<li class="toctree-l2"><a class="reference internal" href="attribute.html#rinoh.attribute.OptionSet">rinoh.attribute.OptionSet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="attribute.html#rinoh.attribute.Attribute">rinoh.attribute.Attribute</a></li>
+<li class="toctree-l2"><a class="reference internal" href="attribute.html#rinoh.attribute.OverrideDefault">rinoh.attribute.OverrideDefault</a></li>
+<li class="toctree-l2"><a class="reference internal" href="attribute.html#rinoh.attribute.AttributesDictionary">rinoh.attribute.AttributesDictionary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="attribute.html#rinoh.attribute.RuleSet">rinoh.attribute.RuleSet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="attribute.html#rinoh.attribute.RuleSetFile">rinoh.attribute.RuleSetFile</a></li>
+<li class="toctree-l2"><a class="reference internal" href="attribute.html#rinoh.attribute.Bool">rinoh.attribute.Bool</a></li>
+<li class="toctree-l2"><a class="reference internal" href="attribute.html#rinoh.attribute.Integer">rinoh.attribute.Integer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="attribute.html#rinoh.attribute.ParseError">rinoh.attribute.ParseError</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="color.html">Color (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.color</span></code>)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="color.html#rinoh.color.Color">rinoh.color.Color</a></li>
+<li class="toctree-l2"><a class="reference internal" href="color.html#rinoh.color.HexColor">rinoh.color.HexColor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="color.html#rinoh.color.Gray">rinoh.color.Gray</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="dimension.html">Dimension (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.dimension</span></code>)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="dimension.html#rinoh.dimension.Dimension">rinoh.dimension.Dimension</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dimension.html#rinoh.dimension.PT">rinoh.dimension.PT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dimension.html#rinoh.dimension.PICA">rinoh.dimension.PICA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dimension.html#rinoh.dimension.INCH">rinoh.dimension.INCH</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dimension.html#rinoh.dimension.MM">rinoh.dimension.MM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dimension.html#rinoh.dimension.CM">rinoh.dimension.CM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dimension.html#rinoh.dimension.PERCENT">rinoh.dimension.PERCENT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dimension.html#rinoh.dimension.QUARTERS">rinoh.dimension.QUARTERS</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="document.html">Document (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.document</span></code>)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="document.html#rinoh.document.DocumentTree">rinoh.document.DocumentTree</a></li>
+<li class="toctree-l2"><a class="reference internal" href="document.html#rinoh.document.Document">rinoh.document.Document</a></li>
 <li class="toctree-l2"><a class="reference internal" href="document.html#pages">Pages</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="draw.html">Drawing Primitives (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.draw</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="draw.html">Drawing Primitives (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.draw</span></code>)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="draw.html#rinoh.draw.Stroke">rinoh.draw.Stroke</a></li>
+<li class="toctree-l2"><a class="reference internal" href="draw.html#rinoh.draw.Line">rinoh.draw.Line</a></li>
+<li class="toctree-l2"><a class="reference internal" href="draw.html#rinoh.draw.Shape">rinoh.draw.Shape</a></li>
+<li class="toctree-l2"><a class="reference internal" href="draw.html#rinoh.draw.Polygon">rinoh.draw.Polygon</a></li>
+<li class="toctree-l2"><a class="reference internal" href="draw.html#rinoh.draw.Rectangle">rinoh.draw.Rectangle</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="flowable.html">Flowable (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.flowable</span></code>)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="flowable.html#rinoh.flowable.Flowable">rinoh.flowable.Flowable</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flowable.html#rinoh.flowable.FlowableState">rinoh.flowable.FlowableState</a></li>
 <li class="toctree-l2"><a class="reference internal" href="flowable.html#no-output-flowables">No-Output Flowables</a></li>
 <li class="toctree-l2"><a class="reference internal" href="flowable.html#labeled-flowables">Labeled Flowables</a></li>
 <li class="toctree-l2"><a class="reference internal" href="flowable.html#grouping-flowables">Grouping Flowables</a></li>
@@ -234,13 +1088,79 @@
 <li class="toctree-l2"><a class="reference internal" href="flowable.html#styling-properties">Styling Properties</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="font.html">Fonts and Typefaces (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.font</span></code>)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="image.html">Images and Figures (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.image</span></code>)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="index.html">Index (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.index</span></code>)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="language.html">Language (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.language</span></code>)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="number.html">Number (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.number</span></code>)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="paper.html">Paper sizes (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.paper</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="font.html">Fonts and Typefaces (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.font</span></code>)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="font.html#rinoh.font.Font">rinoh.font.Font</a></li>
+<li class="toctree-l2"><a class="reference internal" href="font.html#rinoh.font.Typeface">rinoh.font.Typeface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="font.html#rinoh.font.style.FontWeight">rinoh.font.style.FontWeight</a></li>
+<li class="toctree-l2"><a class="reference internal" href="font.html#rinoh.font.style.FontSlant">rinoh.font.style.FontSlant</a></li>
+<li class="toctree-l2"><a class="reference internal" href="font.html#rinoh.font.style.FontWidth">rinoh.font.style.FontWidth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="font.html#rinoh.font.style.FontVariant">rinoh.font.style.FontVariant</a></li>
+<li class="toctree-l2"><a class="reference internal" href="font.html#rinoh.font.style.TextPosition">rinoh.font.style.TextPosition</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="image.html">Images and Figures (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.image</span></code>)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="image.html#rinoh.image.Image">rinoh.image.Image</a></li>
+<li class="toctree-l2"><a class="reference internal" href="image.html#rinoh.image.InlineImage">rinoh.image.InlineImage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="image.html#rinoh.image.BackgroundImage">rinoh.image.BackgroundImage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="image.html#rinoh.image.ImageArgs">rinoh.image.ImageArgs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="image.html#rinoh.image.Scale">rinoh.image.Scale</a></li>
+<li class="toctree-l2"><a class="reference internal" href="image.html#rinoh.image.Caption">rinoh.image.Caption</a></li>
+<li class="toctree-l2"><a class="reference internal" href="image.html#rinoh.image.Figure">rinoh.image.Figure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="image.html#rinoh.image.ListOfFiguresSection">rinoh.image.ListOfFiguresSection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="image.html#rinoh.image.ListOfFigures">rinoh.image.ListOfFigures</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="index.html">Index (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.index</span></code>)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="index.html#rinoh.index.IndexSection">rinoh.index.IndexSection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#rinoh.index.Index">rinoh.index.Index</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#rinoh.index.IndexLabel">rinoh.index.IndexLabel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#rinoh.index.IndexTerm">rinoh.index.IndexTerm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#rinoh.index.InlineIndexTarget">rinoh.index.InlineIndexTarget</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#rinoh.index.IndexTarget">rinoh.index.IndexTarget</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="language.html">Language (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.language</span></code>)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="language.html#rinoh.language.Language">rinoh.language.Language</a></li>
+<li class="toctree-l2"><a class="reference internal" href="language.html#rinoh.language.CS">rinoh.language.CS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="language.html#rinoh.language.EN">rinoh.language.EN</a></li>
+<li class="toctree-l2"><a class="reference internal" href="language.html#rinoh.language.FR">rinoh.language.FR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="language.html#rinoh.language.IT">rinoh.language.IT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="language.html#rinoh.language.NL">rinoh.language.NL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="language.html#rinoh.language.PL">rinoh.language.PL</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="number.html">Number (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.number</span></code>)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="number.html#rinoh.number.NumberFormat">rinoh.number.NumberFormat</a></li>
+<li class="toctree-l2"><a class="reference internal" href="number.html#rinoh.number.Label">rinoh.number.Label</a></li>
+<li class="toctree-l2"><a class="reference internal" href="number.html#rinoh.number.LabelStyle">rinoh.number.LabelStyle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="number.html#rinoh.number.NumberStyle">rinoh.number.NumberStyle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="number.html#rinoh.number.format_number">rinoh.number.format_number</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="paper.html">Paper sizes (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.paper</span></code>)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="paper.html#rinoh.paper.Paper">rinoh.paper.Paper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="paper.html#rinoh.paper.A0">rinoh.paper.A0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="paper.html#rinoh.paper.A1">rinoh.paper.A1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="paper.html#rinoh.paper.A2">rinoh.paper.A2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="paper.html#rinoh.paper.A3">rinoh.paper.A3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="paper.html#rinoh.paper.A4">rinoh.paper.A4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="paper.html#rinoh.paper.A5">rinoh.paper.A5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="paper.html#rinoh.paper.A6">rinoh.paper.A6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="paper.html#rinoh.paper.A7">rinoh.paper.A7</a></li>
+<li class="toctree-l2"><a class="reference internal" href="paper.html#rinoh.paper.A8">rinoh.paper.A8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="paper.html#rinoh.paper.A9">rinoh.paper.A9</a></li>
+<li class="toctree-l2"><a class="reference internal" href="paper.html#rinoh.paper.A10">rinoh.paper.A10</a></li>
+<li class="toctree-l2"><a class="reference internal" href="paper.html#rinoh.paper.LETTER">rinoh.paper.LETTER</a></li>
+<li class="toctree-l2"><a class="reference internal" href="paper.html#rinoh.paper.LEGAL">rinoh.paper.LEGAL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="paper.html#rinoh.paper.JUNIOR_LEGAL">rinoh.paper.JUNIOR_LEGAL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="paper.html#rinoh.paper.LEDGER">rinoh.paper.LEDGER</a></li>
+<li class="toctree-l2"><a class="reference internal" href="paper.html#rinoh.paper.TABLOID">rinoh.paper.TABLOID</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="paragraph.html">Paragraph (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.paragraph</span></code>)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="paragraph.html#rinoh.paragraph.ParagraphBase">rinoh.paragraph.ParagraphBase</a></li>
+<li class="toctree-l2"><a class="reference internal" href="paragraph.html#rinoh.paragraph.Paragraph">rinoh.paragraph.Paragraph</a></li>
+<li class="toctree-l2"><a class="reference internal" href="paragraph.html#rinoh.paragraph.ParagraphState">rinoh.paragraph.ParagraphState</a></li>
 <li class="toctree-l2"><a class="reference internal" href="paragraph.html#styled-text-rinoh-text">Styled Text (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.text</span></code>)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="paragraph.html#inline-elements-rinoh-inline">Inline Elements (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.inline</span></code>)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="paragraph.html#styling-properties">Styling Properties</a></li>
@@ -248,7 +1168,19 @@
 <li class="toctree-l2"><a class="reference internal" href="paragraph.html#miscellaneous-internals">Miscellaneous Internals</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="reference.html">Cross-References and Fields (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.reference</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reference.html">Cross-References and Fields (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.reference</span></code>)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="reference.html#rinoh.reference.Reference">rinoh.reference.Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference.html#rinoh.reference.ReferenceField">rinoh.reference.ReferenceField</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference.html#rinoh.reference.ReferenceText">rinoh.reference.ReferenceText</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference.html#rinoh.reference.ReferenceType">rinoh.reference.ReferenceType</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference.html#rinoh.reference.ReferencingParagraph">rinoh.reference.ReferencingParagraph</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference.html#rinoh.reference.Note">rinoh.reference.Note</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference.html#rinoh.reference.NoteMarkerBase">rinoh.reference.NoteMarkerBase</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference.html#rinoh.reference.NoteMarkerByID">rinoh.reference.NoteMarkerByID</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference.html#rinoh.reference.NoteMarkerWithNote">rinoh.reference.NoteMarkerWithNote</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference.html#rinoh.reference.Field">rinoh.reference.Field</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="structure.html">Structure (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.structure</span></code>)</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="structure.html#sections">Sections</a></li>
 <li class="toctree-l2"><a class="reference internal" href="structure.html#lists">Lists</a></li>
@@ -257,12 +1189,35 @@
 <li class="toctree-l2"><a class="reference internal" href="structure.html#horizontal-rule">Horizontal Rule</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="strings.html">Strings (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.strings</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="strings.html">Strings (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.strings</span></code>)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="strings.html#rinoh.strings.String">rinoh.strings.String</a></li>
+<li class="toctree-l2"><a class="reference internal" href="strings.html#rinoh.strings.StringCollection">rinoh.strings.StringCollection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="strings.html#rinoh.strings.UserStrings">rinoh.strings.UserStrings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="strings.html#rinoh.strings.Strings">rinoh.strings.Strings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="strings.html#rinoh.strings.StringField">rinoh.strings.StringField</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="style.html">Style (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.style</span></code>)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="style.html#rinoh.style.Styled">rinoh.style.Styled</a></li>
+<li class="toctree-l2"><a class="reference internal" href="style.html#rinoh.style.Style">rinoh.style.Style</a></li>
 <li class="toctree-l2"><a class="reference internal" href="style.html#style-sheet">Style Sheet</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="table.html">Tables (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.table</span></code>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="table.html">Tables (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.table</span></code>)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="table.html#rinoh.table.Table">rinoh.table.Table</a></li>
+<li class="toctree-l2"><a class="reference internal" href="table.html#rinoh.table.TableWithCaption">rinoh.table.TableWithCaption</a></li>
+<li class="toctree-l2"><a class="reference internal" href="table.html#rinoh.table.TableSection">rinoh.table.TableSection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="table.html#rinoh.table.TableHead">rinoh.table.TableHead</a></li>
+<li class="toctree-l2"><a class="reference internal" href="table.html#rinoh.table.TableBody">rinoh.table.TableBody</a></li>
+<li class="toctree-l2"><a class="reference internal" href="table.html#rinoh.table.TableRow">rinoh.table.TableRow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="table.html#rinoh.table.TableCell">rinoh.table.TableCell</a></li>
+<li class="toctree-l2"><a class="reference internal" href="table.html#rinoh.table.TableCellBorder">rinoh.table.TableCellBorder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="table.html#rinoh.table.TableCellBackground">rinoh.table.TableCellBackground</a></li>
+<li class="toctree-l2"><a class="reference internal" href="table.html#rinoh.table.VerticalAlign">rinoh.table.VerticalAlign</a></li>
+<li class="toctree-l2"><a class="reference internal" href="table.html#rinoh.table.ListOfTables">rinoh.table.ListOfTables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="table.html#rinoh.table.ListOfTablesSection">rinoh.table.ListOfTablesSection</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="template.html">Templates (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.template</span></code>)</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="template.html#documents">Documents</a></li>
 <li class="toctree-l2"><a class="reference internal" href="template.html#document-parts">Document Parts</a></li>
@@ -271,67 +1226,86 @@
 </li>
 </ul>
 </div>
-</div>
 
 
-           </div>
-           
+
+              
+            </article>
           </div>
-          <footer>
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="attribute.html" class="btn btn-neutral float-right" title="Attribute (rinoh.attribute)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-        <a href="../book.html" class="btn btn-neutral float-left" title="Book" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-    </div>
-
-  <hr/>
-
-  <div role="contentinfo">
-    <p>
-        &#169; Copyright 2022, Brecht Machiels and contributors.
-
-    </p>
-  </div>
-    
-    
-    
-    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    
-    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
-
-</footer>
         </div>
-      </div>
-
-    </section>
-
-  </div>
+        
+      </main>
+      
+        <footer class="md-footer">
   
-
-  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
-    <span class="rst-current-version" data-toggle="rst-current-version">
-      <span class="fa fa-book"> Versions</span>
-      v: master
-      <span class="fa fa-caret-down"></span>
-    </span>
-    <div class="rst-other-versions">
-      <dl id="docs-versions">
-      </dl>
-    </div>
-  </div>
-
-
-  <script type="text/javascript">
-      jQuery(function () {
-          SphinxRtdTheme.Navigation.enable(true);
-      });
-  </script>
-
+    <nav class="md-footer__inner md-grid" aria-label="Footer">
+      
+        
+        <a href="../book.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: Book" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              Book
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="attribute.html" class="md-footer__link md-footer__link--next" aria-label="Next: Attribute (rinoh.attribute)" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              Attribute (rinoh.attribute)
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
   
   
+  
+  <div class="md-footer-meta md-typeset">
     
-   
-
-</body>
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-footer-copyright__highlight">
+        &#169; Copyright 2022, Brecht Machiels and contributors.
+        
+    </div>
+  
+    Created using
+    <a href="https://www.sphinx-doc.org/" target="_blank" rel="noopener">Sphinx</a>
+    5.1.1.
+     and
+    <a href="https://github.com/jbms/sphinx-immaterial/" target="_blank" rel="noopener">Sphinx-Immaterial</a>
+  
+</div>
+      
+    </div>
+    
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.expand", "navigation.sections", "navigation.instant"], "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "version": {"provider": "mike", "staticVersions": null, "versionPath": "../im_versions.json"}}</script>
+    
+    
+      <script src="../_static/javascripts/bundle.dc1bded0.min.js"></script>
+    
+  </body>
 </html>
