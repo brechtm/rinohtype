@@ -132,18 +132,6 @@ html_theme = 'sphinx_immaterial'
 
 html_css_files = ['tweaks.css']
 
-# monkey-patch Sphinx-immaterial so that it can handle the only directive
-# https://github.com/jbms/sphinx-immaterial/issues/132#issuecomment-1186491799
-import sphinx_immaterial
-import sphinx.addnodes
-import docutils.nodes
-
-def visit_only(self, node: sphinx.addnodes.only):
-    raise docutils.nodes.SkipChildren
-
-sphinx_immaterial.nav_adapt._TocVisitor.visit_only = visit_only
-
-
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
 # documentation.
@@ -257,6 +245,10 @@ html_static_path = ['_static']
 # Output file base name for HTML help builder.
 htmlhelp_basename = 'rinohtype'
 
+
+# monkey-patch sphinx_immaterial to link to manual/reference PDS from nav panel
+import sphinx
+import sphinx_immaterial
 
 PDF_LINK = ' [<a class="pdf-link" href="{relpath}{name}.pdf">PDF</a>]'
 
