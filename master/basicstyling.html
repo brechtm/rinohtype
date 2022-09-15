@@ -915,18 +915,18 @@ scratch. This section discusses how you can configure an existing template. See
 <p>rinohtype provides a number of <a class="reference internal" href="stdtemplates.html#standard-templates"><span class="std std-ref">Standard Document Templates</span></a>. These can be
 customized by means of a template configuration file; a plain text file in the
 INI<a class="footnote-reference brackets" href="#ini" id="id3">1</a> format with the <code class="docutils literal notranslate"><span class="pre">.rtt</span></code> extension. Here is an example
-configuration for the article template:</p>
+configuration for the Book template:</p>
 <div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><code><span class="k">[TEMPLATE_CONFIGURATION]</span><span class="w"></span>
-<span class="na">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">my article configuration</span><span class="w"></span>
-<span class="na">template</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">article</span><span class="w"></span>
+<span class="na">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">my book configuration</span><span class="w"></span>
+<span class="na">template</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">book</span><span class="w"></span>
 
 <span class="na">parts</span><span class="w"> </span><span class="o">=</span><span class="w"></span>
 <span class="w">    </span><span class="na">title</span><span class="w"></span>
 <span class="w">    </span><span class="c1">;front_matter</span><span class="w"></span>
 <span class="w">    </span><span class="na">contents</span><span class="w"></span>
+<span class="w">    </span><span class="c1">;back_matter</span><span class="w"></span>
 <span class="na">stylesheet</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">sphinx_base14</span><span class="w"></span>
 <span class="na">language</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">fr</span><span class="w"></span>
-<span class="na">abstract_location</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">title</span><span class="w"></span>
 
 <span class="k">[SectionTitles]</span><span class="w"></span>
 <span class="na">contents</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#39;Contents&#39;</span><span class="w"></span>
@@ -938,7 +938,7 @@ configuration for the article template:</p>
 <span class="k">[VARIABLES]</span><span class="w"></span>
 <span class="na">paper_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">A5</span><span class="w"></span>
 
-<span class="k">[title]</span><span class="w"></span>
+<span class="k">[front_matter]</span><span class="w"></span>
 <span class="na">page_number_format</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">lowercase roman</span><span class="w"></span>
 <span class="na">end_at_page</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">left</span><span class="w"></span>
 
@@ -953,31 +953,30 @@ configuration for the article template:</p>
 <em>name</em> to provide a short label for your template configuration. <em>template</em>
 identifies the <a class="reference internal" href="stdtemplates.html#standard-templates"><span class="std std-ref">document template</span></a> to configure.</p>
 <p>All document templates consist of a number of document parts. The
-<a class="reference internal" href="article.html#rinoh.templates.article.Article" title="rinoh.templates.article.Article (Python class) — The stylesheet to use for styling document elements (inherited from DocumentTemplate)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Article</span></code></a> template defines three parts: <code class="xref py py-attr docutils literal notranslate"><span class="pre">title</span></code>,
-<code class="xref py py-attr docutils literal notranslate"><span class="pre">front_matter</span></code> and <a class="reference internal" href="article.html#rinoh.templates.article.Article.contents" title="rinoh.templates.article.Article.contents (Python attribute) — base: None"><code class="xref py py-attr docutils literal notranslate"><span class="pre">contents</span></code></a>. The order of
-these parts can be changed (although that makes little sense for the article
-template), and individual parts can optionally be hidden by setting the
-<a class="reference internal" href="api/template.html#rinoh.template.DocumentTemplate.parts" title="rinoh.template.DocumentTemplate.parts (Python attribute) — The parts making up this document"><code class="xref py py-attr docutils literal notranslate"><span class="pre">parts</span></code></a> configuration option. The configuration above
-hides the front matter part (commented out using a semicolon), for example.</p>
+<a class="reference internal" href="article.html#rinoh.templates.article.Article" title="rinoh.templates.article.Article (Python class) — The stylesheet to use for styling document elements (inherited from DocumentTemplate)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Article</span></code></a> template defines only a single part
+(<a class="reference internal" href="article.html#rinoh.templates.article.Article.contents" title="rinoh.templates.article.Article.contents (Python attribute) — base: None"><code class="xref py py-attr docutils literal notranslate"><span class="pre">contents</span></code></a>) where the <a class="reference internal" href="book.html#rinoh.templates.book.Book" title="rinoh.templates.book.Book (Python class) — The stylesheet to use for styling document elements (inherited from DocumentTemplate)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Book</span></code></a> template defines four. The
+order of the parts can be changed, and individual parts can optionally be hidden
+by overriding the <a class="reference internal" href="api/template.html#rinoh.template.DocumentTemplate.parts" title="rinoh.template.DocumentTemplate.parts (Python attribute) — The parts making up this document"><code class="xref py py-attr docutils literal notranslate"><span class="pre">parts</span></code></a> configuration option. The
+configuration above hides the front and back matter parts (commented out using a
+semicolon), for example. Note that empty document parts will not be included in
+the document. For example, when there are no index entries and the index is thus
+empty, the back matter part is omitted.</p>
 <p>The template configuration also specifies which style sheet is used for styling
-document elements. The <code class="xref py py-class docutils literal notranslate"><span class="pre">DocumentTemplate.stylesheet</span></code> option takes the
+document elements. The <a class="reference internal" href="api/template.html#rinoh.template.DocumentTemplate.stylesheet" title="rinoh.template.DocumentTemplate.stylesheet (Python attribute) — The stylesheet to use for styling document elements"><code class="xref py py-attr docutils literal notranslate"><span class="pre">stylesheet</span></code></a> option takes the
 name of an installed style sheet (see <a class="reference internal" href="rinoh.html#cmdoption-rinoh-list-stylesheets"><code class="xref std std-option docutils literal notranslate"><span class="pre">rinoh</span> <span class="pre">--list-stylesheets</span></code></a>) or
 the filename of a stylesheet file (<code class="docutils literal notranslate"><span class="pre">.rts</span></code>).</p>
-<p>The <code class="xref py py-class docutils literal notranslate"><span class="pre">language</span></code> option sets the default language for
-the document. It determines which language is used for standard document
+<p>The <a class="reference internal" href="api/template.html#rinoh.template.DocumentTemplate.language" title="rinoh.template.DocumentTemplate.language (Python attribute) — The main language of the document"><code class="xref py py-attr docutils literal notranslate"><span class="pre">language</span></code></a> option sets the default language for
+the document, which determines which language is used for standard document
 strings such as section and admonition titles.</p>
-<p>The <a class="reference internal" href="article.html#rinoh.templates.article.Article" title="rinoh.templates.article.Article (Python class) — The stylesheet to use for styling document elements (inherited from DocumentTemplate)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Article</span></code></a> template defines two custom template options. The
-<code class="xref py py-class docutils literal notranslate"><span class="pre">abstract_location</span></code> option determines where the (optional)
-article abstract is placed, on the title page or in the front matter part.
-<code class="xref py py-class docutils literal notranslate"><span class="pre">table_of_contents</span></code> allows hiding the table of contents
-section. Empty document parts will not be included in the document. When the
-table of contents section is suppressed and there is no abstract in the input
-document or <code class="xref py py-class docutils literal notranslate"><span class="pre">abstract_location</span></code> is set to title, the front
-matter document part will not appear in the PDF.</p>
+<p>The <a class="reference internal" href="article.html#rinoh.templates.article.Article" title="rinoh.templates.article.Article (Python class) — The stylesheet to use for styling document elements (inherited from DocumentTemplate)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Article</span></code></a> template defines an additional template option,
+<a class="reference internal" href="article.html#rinoh.templates.article.Article.abstract_location" title="rinoh.templates.article.Article.abstract_location (Python attribute) — Where to place the abstract"><code class="xref py py-attr docutils literal notranslate"><span class="pre">abstract_location</span></code></a> which determines where the (optional)
+article abstract is placed; in the title box or as part of the body text. This
+distinction is only visible when using multiple columns for the page contents
+(see <a class="reference internal" href="api/template.html#rinoh.template.BodyPageTemplateBase.columns" title="rinoh.template.BodyPageTemplateBase.columns (Python attribute) — The number of columns for the body text"><code class="xref py py-attr docutils literal notranslate"><span class="pre">columns</span></code></a>).</p>
 <p>The standard document strings configured by the
-<code class="xref py py-class docutils literal notranslate"><span class="pre">language</span></code> option described above can be overridden
-by user-defined strings in the <code class="xref py py-class docutils literal notranslate"><span class="pre">SectionTitles</span></code> and
-<code class="xref py py-class docutils literal notranslate"><span class="pre">AdmonitionTitles</span></code> sections of the configuration file. For example, the
+<a class="reference internal" href="api/template.html#rinoh.template.DocumentTemplate.language" title="rinoh.template.DocumentTemplate.language (Python attribute) — The main language of the document"><code class="xref py py-attr docutils literal notranslate"><span class="pre">language</span></code></a> option described above can be overridden
+by user-defined strings in the <a class="reference internal" href="api/structure.html#rinoh.structure.SectionTitles" title="rinoh.structure.SectionTitles (Python class) — Collection of localized titles for common sections"><code class="xref py py-class docutils literal notranslate"><span class="pre">SectionTitles</span></code></a> and
+<a class="reference internal" href="api/structure.html#rinoh.structure.AdmonitionTitles" title="rinoh.structure.AdmonitionTitles (Python class) — Collection of localized titles for common admonitions"><code class="xref py py-class docutils literal notranslate"><span class="pre">AdmonitionTitles</span></code></a> sections of the configuration file. For example, the
 default title for the table of contents section (<em>Table of Contents</em>) is
 replaced with <em>Contents</em>. The configuration also sets custom titles for the
 caution and warning admonitions.</p>
@@ -985,12 +984,14 @@ caution and warning admonitions.</p>
 followed by document part and page template sections. Similar to style sheets,
 the variables can be referenced in the template configuration sections. Here,
 the <code class="docutils literal notranslate"><span class="pre">paper_size</span></code> variable is set, which is being referenced by by all page
-templates in <code class="xref py py-class docutils literal notranslate"><span class="pre">Article</span></code> (although indirectly through the
-<code class="xref py py-class docutils literal notranslate"><span class="pre">page</span></code> base page template).</p>
-<p>For document part templates, <code class="xref py py-class docutils literal notranslate"><span class="pre">page_number_format</span></code>
-determines how page numbers are formatted. When a document part uses the same
-page number format as the preceding part, the numbering is continued.</p>
-<p>The <code class="xref py py-class docutils literal notranslate"><span class="pre">DocumentPartTemplate.end_at_page</span></code> option controls at which page
+templates in <a class="reference internal" href="article.html#rinoh.templates.article.Article" title="rinoh.templates.article.Article (Python class) — The stylesheet to use for styling document elements (inherited from DocumentTemplate)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Article</span></code></a> indirectly through the <a class="reference internal" href="article.html#rinoh.templates.article.Article.page" title="rinoh.templates.article.Article.page (Python attribute) — base: None"><code class="xref py py-attr docutils literal notranslate"><span class="pre">page</span></code></a>
+base page template.</p>
+<p>For document part templates, <a class="reference internal" href="api/template.html#rinoh.template.DocumentPartTemplate.page_number_format" title="rinoh.template.DocumentPartTemplate.page_number_format (Python attribute) — The format for page numbers in this document part."><code class="xref py py-attr docutils literal notranslate"><span class="pre">page_number_format</span></code></a>
+determines how page numbers are formatted. To prevent restarting the page
+numbering for a document part, set this to <code class="docutils literal notranslate"><span class="pre">continue</span></code> to use the same page
+numbering format at the preceding document part and continue with the next
+number.</p>
+<p>The <a class="reference internal" href="api/template.html#rinoh.template.DocumentPartTemplate.end_at_page" title="rinoh.template.DocumentPartTemplate.end_at_page (Python attribute) — The type of page to end this document part on"><code class="xref py py-attr docutils literal notranslate"><span class="pre">DocumentPartTemplate.end_at_page</span></code></a> option controls at which page
 the document part ends. This is set to <code class="docutils literal notranslate"><span class="pre">left</span></code> for the title part in the
 example configuration to make the contents part start on a right page.</p>
 <p>Each document part finds page templates by name. They will first look for
@@ -1002,14 +1003,14 @@ templates have been defined by the template (such as the book template), the
 configuration will need to override these, as they will have priority over the
 general page template defined in the configuration.</p>
 <p>The example configuration only adjusts the top margin for the
-<code class="xref py py-class docutils literal notranslate"><span class="pre">TitlePageTemplate</span></code>, but many more aspects of the page templates are
+<a class="reference internal" href="api/template.html#rinoh.template.TitlePageTemplate" title="rinoh.template.TitlePageTemplate (Python class) — Extra text to include on the title page below the title"><code class="xref py py-class docutils literal notranslate"><span class="pre">TitlePageTemplate</span></code></a>, but many more aspects of the page templates are
 configurable. Refer to <a class="reference internal" href="stdtemplates.html#standard-templates"><span class="std std-ref">Standard Document Templates</span></a> for details.</p>
 <h3 id="using-a-template-configuration-file">Using a Template Configuration File<a class="headerlink" href="#using-a-template-configuration-file" title="Permalink to this heading">¶</a></h3>
 <p>A template configuration file can be specified when rendering using the
 command-line <strong class="program">rinoh</strong> tool by passing it to the
 <a class="reference internal" href="rinoh.html#cmdoption-rinoh-t"><code class="xref std std-option docutils literal notranslate"><span class="pre">--template</span></code></a> command-line option. When using the
-<a class="reference internal" href="sphinx.html#sphinx-builder"><span class="std std-ref">Sphinx Builder</span></a>, you can set the <a class="reference internal" href="sphinx.html#confval-rinoh_template" title="rinoh_template (Sphinx builder configuration value) — This configuration variable is no longer supported since the document template can be specified in rinoh_documents entries."><code class="xref std std-confval docutils literal notranslate"><span class="pre">rinoh_template</span></code></a> option in
-<code class="docutils literal notranslate"><span class="pre">conf.py</span></code>.</p>
+<a class="reference internal" href="sphinx.html#sphinx-builder"><span class="std std-ref">Sphinx Builder</span></a>, you can specify the template in the
+<a class="reference internal" href="sphinx.html#confval-rinoh_documents" title="rinoh_documents (Sphinx builder configuration value) — Determines which PDF documents to build. Its format is a list of dictionaries, one for each document to be generated. The supported keys for these dictionaries are listed below. Two of them are required:"><code class="xref std std-confval docutils literal notranslate"><span class="pre">rinoh_documents</span></code></a> option in <code class="docutils literal notranslate"><span class="pre">conf.py</span></code>.</p>
 <p>To render a document using this template configuration programatically, load
 the template file using <code class="xref py py-class docutils literal notranslate"><span class="pre">TemplateConfigurationFile</span></code>:</p>
 <div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">sys</span>
@@ -1025,19 +1026,19 @@ the template file using <code class="xref py py-class docutils literal notransla
 
 <span class="c1"># load the article template configuration file</span>
 <span class="n">script_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
-<span class="n">config</span> <span class="o">=</span> <span class="n">TemplateConfigurationFile</span><span class="p">(</span><span class="n">script_path</span> <span class="o">/</span> <span class="s1">&#39;my_article.rtt&#39;</span><span class="p">)</span>
+<span class="n">config</span> <span class="o">=</span> <span class="n">TemplateConfigurationFile</span><span class="p">(</span><span class="n">script_path</span> <span class="o">/</span> <span class="s1">&#39;my_book.rtt&#39;</span><span class="p">)</span>
 
 <span class="c1"># render the document to &#39;my_document.pdf&#39;</span>
 <span class="n">document</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">document</span><span class="p">(</span><span class="n">document_tree</span><span class="p">)</span>
 <span class="n">document</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="s1">&#39;my_document&#39;</span><span class="p">)</span>
 </code></pre></div>
 </div>
-<p>The <code class="xref py py-meth docutils literal notranslate"><span class="pre">TemplateConfigurationFile.document()</span></code> method creates a document
+<p>The <a class="reference internal" href="api/template.html#rinoh.template.TemplateConfiguration.document" title="rinoh.template.TemplateConfiguration.document (Python method) — Create a DocumentTemplate object based on the given document tree and this template configuration"><code class="xref py py-meth docutils literal notranslate"><span class="pre">TemplateConfiguration.document()</span></code></a> method creates a document
 instance with the template configuration applied. So if you want to render your
 document using a different template configuration, it suffices to load the new
 configuration file.</p>
-<p>Refer to the <a class="reference internal" href="article.html#rinoh.templates.article.Article" title="rinoh.templates.article.Article (Python class) — The stylesheet to use for styling document elements (inherited from DocumentTemplate)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Article</span></code></a> documentation to discover all of the options
-accepted by it and the document part and page templates.</p>
+<p>Refer to the <a class="reference internal" href="stdtemplates.html#standard-templates"><span class="std std-ref">Standard Document Templates</span></a> to discover all of the options accepted
+by the templates and the document part and page templates.</p>
 <dl class="footnote brackets">
 <dt class="label" id="ini"><span class="brackets">1</span><span class="fn-backref">(<a href="#id1">1</a>,<a href="#id3">2</a>)</span></dt>
 <dd><p>see <em>Supported INI File Structure</em> in <a class="reference external" href="https://docs.python.org/3/library/configparser.html#module-configparser" title="(in Python v3.10)"><code class="docutils literal notranslate"><span class="pre">configparser</span></code></a></p>
@@ -1104,7 +1105,7 @@ accepted by it and the document part and page templates.</p>
   
     Created using
     <a href="https://www.sphinx-doc.org/" target="_blank" rel="noopener">Sphinx</a>
-    5.2.0+/e9e3f47.
+    5.2.0+/5de15f0.
      and
     <a href="https://github.com/jbms/sphinx-immaterial/" target="_blank" rel="noopener">Sphinx-Immaterial</a>
   

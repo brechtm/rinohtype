@@ -709,43 +709,34 @@ with custom templates. The following example subclasses <a class="reference inte
     <span class="o">...</span>
 
 
-<span class="k">class</span> <span class="nc">MyTitlePageTemplate</span><span class="p">(</span><span class="n">BodyPageTemplate</span><span class="p">):</span>
-    <span class="o">...</span>
-
-
 <span class="k">class</span> <span class="nc">MyArticle</span><span class="p">(</span><span class="n">Article</span><span class="p">):</span>
-    <span class="n">parts</span> <span class="o">=</span> <span class="n">OverrideDefault</span><span class="p">([</span><span class="s1">&#39;title&#39;</span><span class="p">,</span> <span class="s1">&#39;contents&#39;</span><span class="p">,</span> <span class="s1">&#39;bibliography&#39;</span><span class="p">])</span>
+    <span class="n">parts</span> <span class="o">=</span> <span class="n">OverrideDefault</span><span class="p">([</span><span class="s1">&#39;contents&#39;</span><span class="p">,</span> <span class="s1">&#39;bibliography&#39;</span><span class="p">])</span>
 
     <span class="c1"># default document part templates</span>
     <span class="n">bibliography</span> <span class="o">=</span> <span class="n">BibliographyPartTemplate</span><span class="p">()</span>
 
     <span class="c1"># default page templates</span>
-    <span class="n">title_page</span> <span class="o">=</span> <span class="n">MyTitlePageTemplate</span><span class="p">(</span><span class="n">base</span><span class="o">=</span><span class="s1">&#39;page&#39;</span><span class="p">)</span>
     <span class="n">bibliography_page</span> <span class="o">=</span> <span class="n">BodyPageTemplate</span><span class="p">(</span><span class="n">base</span><span class="o">=</span><span class="s1">&#39;page&#39;</span><span class="p">)</span>
 </code></pre></div>
 </div>
 <p><code class="xref py py-class docutils literal notranslate"><span class="pre">MyArticle</span></code> extends the <a class="reference internal" href="article.html#rinoh.templates.article.Article" title="rinoh.templates.article.Article (Python class) — The stylesheet to use for styling document elements (inherited from DocumentTemplate)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Article</span></code></a> template, adding the extra
 <code class="xref py py-attr docutils literal notranslate"><span class="pre">bibliography</span></code> document part, along with the page template
 <code class="xref py py-attr docutils literal notranslate"><span class="pre">bibliography_page</span></code>. The new document part is included in
-<a class="reference internal" href="api/template.html#rinoh.template.DocumentTemplate.parts" title="rinoh.template.DocumentTemplate.parts (Python attribute) — The parts making up this document"><code class="xref py py-attr docutils literal notranslate"><span class="pre">parts</span></code></a>, while also leaving out
-<code class="xref py py-attr docutils literal notranslate"><span class="pre">front_matter</span></code> by default. Finally, the template also replaces
-the title page template with a custom one.</p>
+<a class="reference internal" href="api/template.html#rinoh.template.DocumentTemplate.parts" title="rinoh.template.DocumentTemplate.parts (Python attribute) — The parts making up this document"><code class="xref py py-attr docutils literal notranslate"><span class="pre">parts</span></code></a>.</p>
 <h2 id="creating-a-custom-template"><span id="custom-template"></span>Creating a Custom Template<a class="headerlink" href="#creating-a-custom-template" title="Permalink to this heading">¶</a></h2>
 <p>A new template can be created from scratch by subclassing
 <a class="reference internal" href="api/template.html#rinoh.template.DocumentTemplate" title="rinoh.template.DocumentTemplate (Python class) — Template for documents"><code class="xref py py-class docutils literal notranslate"><span class="pre">DocumentTemplate</span></code></a>, defining all document parts, their templates and
 page templates.</p>
 <p>The <a class="reference internal" href="article.html#rinoh.templates.article.Article" title="rinoh.templates.article.Article (Python class) — The stylesheet to use for styling document elements (inherited from DocumentTemplate)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Article</span></code></a> and <a class="reference internal" href="book.html#rinoh.templates.book.Book" title="rinoh.templates.book.Book (Python class) — The stylesheet to use for styling document elements (inherited from DocumentTemplate)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Book</span></code></a> templates are examples of templates
 that inherit directly from <a class="reference internal" href="api/template.html#rinoh.template.DocumentTemplate" title="rinoh.template.DocumentTemplate (Python class) — Template for documents"><code class="xref py py-class docutils literal notranslate"><span class="pre">DocumentTemplate</span></code></a>. We will briefly discuss
-the article template. The <a class="reference internal" href="article.html#rinoh.templates.article.Article" title="rinoh.templates.article.Article (Python class) — The stylesheet to use for styling document elements (inherited from DocumentTemplate)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Article</span></code></a> template overrides the default
-style sheet and defines the two custom template attributes discussed in
-<a class="reference internal" href="basicstyling.html#configure-templates"><span class="std std-ref">Configuring a Template</span></a>. The document parts <code class="xref py py-attr docutils literal notranslate"><span class="pre">title</span></code>,
-<code class="xref py py-attr docutils literal notranslate"><span class="pre">front_matter</span></code> and <a class="reference internal" href="article.html#rinoh.templates.article.Article.contents" title="rinoh.templates.article.Article.contents (Python attribute) — base: None"><code class="xref py py-attr docutils literal notranslate"><span class="pre">contents</span></code></a> are listed the in
-<a class="reference internal" href="article.html#rinoh.templates.article.Article.parts" title="rinoh.templates.article.Article.parts (Python attribute) — The parts making up this document (inherited from DocumentTemplate)"><code class="xref py py-attr docutils literal notranslate"><span class="pre">parts</span></code></a> attribute and part templates for each are provided
-along with page templates:</p>
+the article template, the simpler of the two. The <a class="reference internal" href="article.html#rinoh.templates.article.Article" title="rinoh.templates.article.Article (Python class) — The stylesheet to use for styling document elements (inherited from DocumentTemplate)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Article</span></code></a> template
+overrides the default style sheet and lists a single document
+part named <a class="reference internal" href="article.html#rinoh.templates.article.Article.contents" title="rinoh.templates.article.Article.contents (Python attribute) — base: None"><code class="xref py py-attr docutils literal notranslate"><span class="pre">contents</span></code></a> in the <a class="reference internal" href="article.html#rinoh.templates.article.Article.parts" title="rinoh.templates.article.Article.parts (Python attribute) — The parts making up this document (inherited from DocumentTemplate)"><code class="xref py py-attr docutils literal notranslate"><span class="pre">parts</span></code></a> attribute
+and provided a template for it are provided along with page templates:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Article</span><span class="p">(</span><span class="n">DocumentTemplate</span><span class="p">):</span>
     <span class="n">stylesheet</span> <span class="o">=</span> <span class="n">OverrideDefault</span><span class="p">(</span><span class="n">sphinx_article</span><span class="p">)</span>
-    <span class="n">table_of_contents</span> <span class="o">=</span> <span class="n">Attribute</span><span class="p">(</span><span class="n">Bool</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span>
-                                  <span class="s1">&#39;Show or hide the table of contents&#39;</span><span class="p">)</span>
+    <span class="n">abstract_location</span> <span class="o">=</span> <span class="n">Option</span><span class="p">(</span><span class="n">AbstractLocation</span><span class="p">,</span> <span class="s1">&#39;title&#39;</span><span class="p">,</span>
+                               <span class="s1">&#39;Where to place the abstract&#39;</span><span class="p">)</span>
 
     <span class="n">parts</span> <span class="o">=</span> <span class="n">OverrideDefault</span><span class="p">([</span><span class="s1">&#39;contents&#39;</span><span class="p">])</span>
 
@@ -762,9 +753,6 @@ along with page templates:</p>
     <span class="n">contents_page</span> <span class="o">=</span> <span class="n">ArticleBodyPageTemplate</span><span class="p">(</span><span class="n">base</span><span class="o">=</span><span class="s1">&#39;page&#39;</span><span class="p">)</span>
 </code></pre></div>
 </div>
-<p>The custom <code class="xref py py-class docutils literal notranslate"><span class="pre">ArticleFrontMatter</span></code> template reads the values for the
-two custom template attributes defined in <a class="reference internal" href="article.html#rinoh.templates.article.Article" title="rinoh.templates.article.Article (Python class) — The stylesheet to use for styling document elements (inherited from DocumentTemplate)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Article</span></code></a> to determine which
-flowables are included in the front matter:</p>
 <p>Have a look at the <a class="reference internal" href="src/book.html"><span class="doc">Book template source code</span></a> for an example of a slightly more complex
 template that defines separate templates for left and right pages.</p>
 
@@ -828,7 +816,7 @@ template that defines separate templates for left and right pages.</p>
   
     Created using
     <a href="https://www.sphinx-doc.org/" target="_blank" rel="noopener">Sphinx</a>
-    5.2.0+/e9e3f47.
+    5.2.0+/5de15f0.
      and
     <a href="https://github.com/jbms/sphinx-immaterial/" target="_blank" rel="noopener">Sphinx-Immaterial</a>
   

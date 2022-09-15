@@ -131,9 +131,9 @@ Configuring a Template
 rinohtype provides a number of :ref:`standard_templates`. These can be
 customized by means of a template configuration file; a plain text file in the
 INI\ [#ini]_ format with the ``.rtt`` extension. Here is an example
-configuration for the article template:
+configuration for the Book template:
 
-.. literalinclude:: /my_article.rtt
+.. literalinclude:: /my_book.rtt
     :language: ini
 
 The ``TEMPLATE_CONFIGURATION`` sections collects global template options. Set
@@ -141,35 +141,34 @@ The ``TEMPLATE_CONFIGURATION`` sections collects global template options. Set
 identifies the :ref:`document template <standard_templates>` to configure.
 
 All document templates consist of a number of document parts. The
-:class:`.Article` template defines three parts: :attr:`~.Article.title`,
-:attr:`~.Article.front_matter` and :attr:`~.Article.contents`. The order of
-these parts can be changed (although that makes little sense for the article
-template), and individual parts can optionally be hidden by setting the
-:attr:`~.DocumentTemplate.parts` configuration option. The configuration above
-hides the front matter part (commented out using a semicolon), for example.
+:class:`.Article` template defines only a single part
+(:attr:`~.Article.contents`) where the :class:`.Book` template defines four. The
+order of the parts can be changed, and individual parts can optionally be hidden
+by overriding the :attr:`~.DocumentTemplate.parts` configuration option. The
+configuration above hides the front and back matter parts (commented out using a
+semicolon), for example. Note that empty document parts will not be included in
+the document. For example, when there are no index entries and the index is thus
+empty, the back matter part is omitted.
 
 The template configuration also specifies which style sheet is used for styling
-document elements. The :class:`.DocumentTemplate.stylesheet` option takes the
+document elements. The :attr:`~.DocumentTemplate.stylesheet` option takes the
 name of an installed style sheet (see :option:`rinoh --list-stylesheets`) or
 the filename of a stylesheet file (``.rts``).
 
-The :class:`~.DocumentTemplate.language` option sets the default language for
-the document. It determines which language is used for standard document
+The :attr:`~.DocumentTemplate.language` option sets the default language for
+the document, which determines which language is used for standard document
 strings such as section and admonition titles.
 
-The :class:`.Article` template defines two custom template options. The
-:class:`~.Article.abstract_location` option determines where the (optional)
-article abstract is placed, on the title page or in the front matter part.
-:class:`~.Article.table_of_contents` allows hiding the table of contents
-section. Empty document parts will not be included in the document. When the
-table of contents section is suppressed and there is no abstract in the input
-document or :class:`~.Article.abstract_location` is set to title, the front
-matter document part will not appear in the PDF.
+The :class:`.Article` template defines an additional template option,
+:attr:`~.Article.abstract_location` which determines where the (optional)
+article abstract is placed; in the title box or as part of the body text. This
+distinction is only visible when using multiple columns for the page contents
+(see :attr:`~.BodyPageTemplateBase.columns`).
 
 The standard document strings configured by the
-:class:`~.DocumentTemplate.language` option described above can be overridden
-by user-defined strings in the :class:`SectionTitles` and
-:class:`AdmonitionTitles` sections of the configuration file. For example, the
+:attr:`~.DocumentTemplate.language` option described above can be overridden
+by user-defined strings in the :class:`~.SectionTitles` and
+:class:`~.AdmonitionTitles` sections of the configuration file. For example, the
 default title for the table of contents section (*Table of Contents*) is
 replaced with *Contents*. The configuration also sets custom titles for the
 caution and warning admonitions.
@@ -178,14 +177,16 @@ The others sections in the configuration file are the ``VARIABLES`` section,
 followed by document part and page template sections. Similar to style sheets,
 the variables can be referenced in the template configuration sections. Here,
 the ``paper_size`` variable is set, which is being referenced by by all page
-templates in :class:`Article` (although indirectly through the
-:class:`~.Article.page` base page template).
+templates in :class:`~.Article` indirectly through the :attr:`~.Article.page`
+base page template.
 
-For document part templates, :class:`~.DocumentPartTemplate.page_number_format`
-determines how page numbers are formatted. When a document part uses the same
-page number format as the preceding part, the numbering is continued.
+For document part templates, :attr:`~.DocumentPartTemplate.page_number_format`
+determines how page numbers are formatted. To prevent restarting the page
+numbering for a document part, set this to ``continue`` to use the same page
+numbering format at the preceding document part and continue with the next
+number.
 
-The :class:`.DocumentPartTemplate.end_at_page` option controls at which page
+The :attr:`.DocumentPartTemplate.end_at_page` option controls at which page
 the document part ends. This is set to ``left`` for the title part in the
 example configuration to make the contents part start on a right page.
 
@@ -199,7 +200,7 @@ configuration will need to override these, as they will have priority over the
 general page template defined in the configuration.
 
 The example configuration only adjusts the top margin for the
-:class:`TitlePageTemplate`, but many more aspects of the page templates are
+:class:`.TitlePageTemplate`, but many more aspects of the page templates are
 configurable. Refer to :ref:`standard_templates` for details.
 
 .. todo:: base for part template?
@@ -211,8 +212,8 @@ Using a Template Configuration File
 A template configuration file can be specified when rendering using the
 command-line :program:`rinoh` tool by passing it to the
 :option:`--template <rinoh --template>` command-line option. When using the
-:ref:`Sphinx_builder`, you can set the :confval:`rinoh_template` option in
-``conf.py``.
+:ref:`Sphinx_builder`, you can specify the template in the
+:confval:`rinoh_documents` option in ``conf.py``.
 
 To render a document using this template configuration programatically, load
 the template file using :class:`.TemplateConfigurationFile`:
@@ -234,7 +235,7 @@ the template file using :class:`.TemplateConfigurationFile`:
 
     # load the article template configuration file
     script_path = Path(sys.path[0]).resolve()
-    config = TemplateConfigurationFile(script_path / 'my_article.rtt')
+    config = TemplateConfigurationFile(script_path / 'my_book.rtt')
 
     # render the document to 'my_document.pdf'
     document = config.document(document_tree)
@@ -246,13 +247,13 @@ the template file using :class:`.TemplateConfigurationFile`:
     ...
     Writing output: my_document.pdf
 
-The :meth:`.TemplateConfigurationFile.document` method creates a document
+The :meth:`.TemplateConfiguration.document` method creates a document
 instance with the template configuration applied. So if you want to render your
 document using a different template configuration, it suffices to load the new
 configuration file.
 
-Refer to the :class:`.Article` documentation to discover all of the options
-accepted by it and the document part and page templates.
+Refer to the :ref:`standard_templates` to discover all of the options accepted
+by the templates and the document part and page templates.
 
 
 .. footnotes

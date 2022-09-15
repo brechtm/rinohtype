@@ -887,11 +887,22 @@
 
 
   <h1 id="release-history"><span id="changelog"></span>Release History<a class="headerlink" href="#release-history" title="Permalink to this heading">¶</a></h1>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>rinohtype uses <a class="reference external" href="https://semver.org/">Semantic Versioning</a> for its releases. In summary,
+this means that each release gets a version number MAJOR.MINOR.PATCH. The
+MAJOR version number is increased when backwards-incompatible API changes
+are made. However, until we exit beta and reach version 1.0.0, anything may
+change at any time.</p>
+<p>With this in mind, to ease upgrading from a previous version, I try to
+explicitly list backward-incompatible changes in the <em>Changed</em> section for
+each release. Be sure to check these when upgrading.</p>
+</div>
 <h2 id="release-0-5-5-in-development">Release 0.5.5 (in development)<a class="headerlink" href="#release-0-5-5-in-development" title="Permalink to this heading">¶</a></h2>
 <p>New Features:</p>
 <ul>
 <li><p>Enumerated list item labels now also respect the <em>number_separator</em> style
-property, enabling hierarchical list item labels.</p></li>
+property, enabling hierarchical list item labels (discussion #350).</p></li>
 <li><p>Admonitions now have a ‘custom_title_text’ property that can be used to
 style generic admonitions. For example, this style definition applies to
 <code class="docutils literal notranslate"><span class="pre">..</span> <span class="pre">admonition::</span> <span class="pre">Fun</span> <span class="pre">Fact</span></code>:</p>
@@ -909,6 +920,15 @@ style generic admonitions. For example, this style definition applies to
 parts have been removed and their contents are moved to the first content
 page. This makes the Article template more useful, since it was too similar
 to the Book template before.</p></li>
+<li><p>Template options whose prupose can also be fulfilled by setting the <em>hide</em>
+style property to <code class="docutils literal notranslate"><span class="pre">true</span></code> have been removed. The corresponding style
+definitions are:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">TitlePageTemplate.show_date</span></code>: <em>title page date</em></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TitlePageTemplate.show_author</span></code>: <em>title page author</em></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Article.table_of_contents</span></code>: <em>table of contents section</em></p></li>
+</ul>
+</li>
 </ul>
 <p>Fixed:</p>
 <ul class="simple">
@@ -1517,7 +1537,7 @@ rinohtype variable is not set</p></li>
   
     Created using
     <a href="https://www.sphinx-doc.org/" target="_blank" rel="noopener">Sphinx</a>
-    5.2.0+/e9e3f47.
+    5.2.0+/5de15f0.
      and
     <a href="https://github.com/jbms/sphinx-immaterial/" target="_blank" rel="noopener">Sphinx-Immaterial</a>
   
