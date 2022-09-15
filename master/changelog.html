@@ -893,7 +893,8 @@
 <li><p>Enumerated list item labels now also respect the <em>number_separator</em> style
 property, enabling hierarchical list item labels.</p></li>
 <li><p>Admonitions now have a ‘custom_title_text’ property that can be used to
-style generic admonitions. For example, for <code class="docutils literal notranslate"><span class="pre">..</span> <span class="pre">admonition::</span> <span class="pre">Fun</span> <span class="pre">Fact</span></code>:</p>
+style generic admonitions. For example, this style definition applies to
+<code class="docutils literal notranslate"><span class="pre">..</span> <span class="pre">admonition::</span> <span class="pre">Fun</span> <span class="pre">Fact</span></code>:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><code><span class="p">[</span><span class="n">fun</span> <span class="n">fact</span> <span class="n">admonition</span> <span class="p">:</span> <span class="n">Admonition</span><span class="p">(</span><span class="n">custom_title_text</span><span class="o">=</span><span class="s1">&#39;Fun Fact&#39;</span><span class="p">)]</span>
 <span class="n">base</span> <span class="o">=</span> <span class="n">admonition</span>
 <span class="n">border_top</span> <span class="o">=</span> <span class="n">none</span>
@@ -903,6 +904,12 @@ style generic admonitions. For example, for <code class="docutils literal notran
 </li>
 </ul>
 <p>Changed:</p>
+<ul class="simple">
+<li><p>The Article template has been overhoaled. The title page and front matter
+parts have been removed and their contents are moved to the first content
+page. This makes the Article template more useful, since it was too similar
+to the Book template before.</p></li>
+</ul>
 <p>Fixed:</p>
 <ul class="simple">
 <li><p>Some fonts on Google Fonts have the ‘otf’ extension (instead of ‘ttf’); also
@@ -1510,7 +1517,7 @@ rinohtype variable is not set</p></li>
   
     Created using
     <a href="https://www.sphinx-doc.org/" target="_blank" rel="noopener">Sphinx</a>
-    5.2.0+/fa69083.
+    5.2.0+/8271b55.
      and
     <a href="https://github.com/jbms/sphinx-immaterial/" target="_blank" rel="noopener">Sphinx-Immaterial</a>
   
