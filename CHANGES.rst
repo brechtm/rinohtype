@@ -23,6 +23,13 @@ Changed:
   parts have been removed and their contents are moved to the first content
   page. This makes the Article template more useful, since it was too similar
   to the Book template before.
+* Template options whose prupose can also be fulfilled by setting the *hide*
+  style property to ``true`` have been removed. The corresponding style
+  definitions are:
+
+  - ``TitlePageTemplate.show_date``: *title page date*
+  - ``TitlePageTemplate.show_author``: *title page author*
+  - ``Article.table_of_contents``: *table of contents section*
 
 Fixed:
 

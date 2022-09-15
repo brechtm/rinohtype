@@ -494,6 +494,7 @@ text_align=right
 space_above=6pt
 
 [title page author]
+hide=true
 typeface=$(sans_typeface)
 font_weight=bold
 font_size=17pt
@@ -501,6 +502,7 @@ text_align=right
 space_above=110pt
 
 [title page date]
+hide=true
 typeface=$(serif_typeface)
 font_size=12pt
 text_align=right

@@ -6,9 +6,8 @@
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
 from contextlib import suppress
-from functools import partial
 
-from ..attribute import Attribute, Bool, OverrideDefault, Var
+from ..attribute import OverrideDefault, Var
 from ..dimension import CM, PT, Dimension
 from ..layout import DownExpandingContainer, CONTENT
 from ..paragraph import Paragraph
@@ -72,8 +71,6 @@ class ArticleBodyPage(BodyPage):
 
 class Article(DocumentTemplate):
     stylesheet = OverrideDefault(sphinx_article)
-    table_of_contents = Attribute(Bool, True,
-                                  'Show or hide the table of contents')
 
     parts = OverrideDefault(['contents'])
 

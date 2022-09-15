@@ -38,8 +38,6 @@ end_at_page=any
 
 [title_page]
 top_margin = 8cm
-show_date = false
-show_author = false
 
 [front_matter_right_page]
 left_margin = 4cm

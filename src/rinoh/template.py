@@ -305,8 +305,6 @@ class SidewaysBodyPage(BodyPageBase):
 
 
 class TitlePageTemplate(PageTemplateBase):
-    show_date = Option(Bool, True, "Show or hide the document's date")
-    show_author = Option(Bool, True, "Show or hide the document's author")
     extra = Option(StyledText, None, 'Extra text to include on the title '
                                      'page below the title')
 
@@ -337,18 +335,17 @@ class TitlePage(PageBase):
         if 'subtitle' in metadata:
             self.title << Paragraph(get_metadata('subtitle'),
                                     style='title page subtitle')
-        if 'author' in metadata and get_option('show_author'):
+        if 'author' in metadata:
             self.title << Paragraph(get_metadata('author'),
                                     style='title page author')
         with suppress(KeyError):
             self.title << metadata['abstract']
-        if get_option('show_date'):
-            date = metadata['date']
-            try:
-                self.title << Paragraph(date.strftime('%B %d, %Y'),
-                                        style='title page date')
-            except AttributeError:
-                self.title << Paragraph(date, style='title page date')
+        date = metadata['date']
+        try:
+            self.title << Paragraph(date.strftime('%B %d, %Y'),
+                                    style='title page date')
+        except AttributeError:
+            self.title << Paragraph(date, style='title page date')
         extra = get_option('extra')
         if extra:
             self.title << Paragraph(extra, style='title page extra')
@@ -738,7 +735,6 @@ class PartsList(AttributeType, list):
     @classmethod
     def doc_format(cls):
         return 'a space-separated list of document part template names'
-
 
 
 class DocumentTemplate(Document, AttributesDictionary, Resource,
