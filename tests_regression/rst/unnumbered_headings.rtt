@@ -4,6 +4,8 @@ template = article
 
 stylesheet = unnumbered_headings.rts
 
+abstract_location = body
+
 [VARIABLES]
 paper_size = A5
 

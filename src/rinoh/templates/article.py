@@ -7,7 +7,7 @@
 
 from contextlib import suppress
 
-from ..attribute import OverrideDefault, Var
+from ..attribute import OverrideDefault, Var, OptionSet
 from ..dimension import CM, PT, Dimension
 from ..layout import DownExpandingContainer, CONTENT
 from ..paragraph import Paragraph
@@ -18,15 +18,17 @@ from ..template import (DocumentTemplate, BodyPageTemplateBase,
 from ..text import StyledText
 
 
-__all__ = ['Article']
+__all__ = ['Article', 'AbstractLocation']
 
 
 class ArticleContentsPartTemplate(ContentsPartTemplate):
     toc_section = TableOfContentsSection()
 
     def _flowables(self, document):
-        if document.get_option('table_of_contents'):
-            yield self.toc_section
+        if document.get_option('abstract_location') == 'body':
+            with suppress(KeyError):
+                yield document.metadata['abstract']
+        yield self.toc_section
         yield from super()._flowables(document)
 
 
@@ -60,8 +62,9 @@ class ArticleBodyPage(BodyPage):
             self.title << p('subtitle', 'title page subtitle')
         if 'author' in metadata:
             self.title << p('author', 'title page author')
-        with suppress(KeyError):
-            self.title << metadata['abstract']
+        if self.document.get_option('abstract_location') == 'title':
+            with suppress(KeyError):
+                self.title << metadata['abstract']
 
         header = try_copy(self.get_option('title_page_header_text'))
         footer = try_copy(self.get_option('title_page_footer_text'))
@@ -69,8 +72,16 @@ class ArticleBodyPage(BodyPage):
                 self.title.bottom + self.get_option('title_spacing'))
 
 
+class AbstractLocation(OptionSet):
+    """Where to place the article's abstract"""
+
+    values = 'title', 'body'
+
+
 class Article(DocumentTemplate):
     stylesheet = OverrideDefault(sphinx_article)
+    abstract_location = Option(AbstractLocation, 'title',
+                               'Where to place the abstract')
 
     parts = OverrideDefault(['contents'])
 

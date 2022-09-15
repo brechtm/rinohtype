@@ -4,6 +4,9 @@ base = sphinx_article_base14
 [heading level 1]
 number_format = none
 
+[abstract paragraph]
+before = 'Abstract \N{EM DASH} ' (emphasis)
+
 [table of contents]
 depth=1
 

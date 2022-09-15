@@ -25,6 +25,46 @@
             SingleStyledText('Arthur A. Author')
 #### ChainedContainer('column1')
   StaticGroupedFlowables()
+    StaticGroupedFlowables(style='abstract')
+         x (0,0,1,0,1) abstract
+      Paragraph('Abstract — Lorem ipsum dolor sit...')   unnumbered_headings.rst:11   <paragraph>
+           > (0,0,1,0,3) abstract paragraph [unnumbered_headings.rts] > DEFAULT
+             (0,0,0,0,2) body [Sphinx] > default
+          SingleStyledText('Abstract — ', style='emphasis')
+               > (0,0,1,0,1) emphasis [Sphinx] > DEFAULT
+          MixedStyledText('Lorem ipsum dolor sit amet, cons...')
+            MixedStyledText('Lorem ipsum dolor sit amet, cons...')
+              SingleStyledText('Lorem ipsum dolor sit amet, cons...')
+          SingleStyledText('Abstract — ', style='emphasis')
+               > (0,0,1,0,1) emphasis [Sphinx] > DEFAULT
+          MixedStyledText('Lorem ipsum dolor sit amet, cons...')
+            MixedStyledText('Lorem ipsum dolor sit amet, cons...')
+              SingleStyledText('Lorem ipsum dolor sit amet, cons...')
+          SingleStyledText('Abstract — ', style='emphasis')
+               > (0,0,1,0,1) emphasis [Sphinx] > DEFAULT
+          MixedStyledText('Lorem ipsum dolor sit amet, cons...')
+            MixedStyledText('Lorem ipsum dolor sit amet, cons...')
+              SingleStyledText('Lorem ipsum dolor sit amet, cons...')
+          SingleStyledText('Abstract — ', style='emphasis')
+               > (0,0,1,0,1) emphasis [Sphinx] > DEFAULT
+          MixedStyledText('Lorem ipsum dolor sit amet, cons...')
+            MixedStyledText('Lorem ipsum dolor sit amet, cons...')
+              SingleStyledText('Lorem ipsum dolor sit amet, cons...')
+          SingleStyledText('Abstract — ', style='emphasis')
+               > (0,0,1,0,1) emphasis [Sphinx] > DEFAULT
+          MixedStyledText('Lorem ipsum dolor sit amet, cons...')
+            MixedStyledText('Lorem ipsum dolor sit amet, cons...')
+              SingleStyledText('Lorem ipsum dolor sit amet, cons...')
+          SingleStyledText('Abstract — ', style='emphasis')
+               > (0,0,1,0,1) emphasis [Sphinx] > DEFAULT
+          MixedStyledText('Lorem ipsum dolor sit amet, cons...')
+            MixedStyledText('Lorem ipsum dolor sit amet, cons...')
+              SingleStyledText('Lorem ipsum dolor sit amet, cons...')
+          SingleStyledText('Abstract — ', style='emphasis')
+               > (0,0,1,0,1) emphasis [Sphinx] > DEFAULT
+          MixedStyledText('Lorem ipsum dolor sit amet, cons...')
+            MixedStyledText('Lorem ipsum dolor sit amet, cons...')
+              SingleStyledText('Lorem ipsum dolor sit amet, cons...')
     TableOfContentsSection(style='table of contents')
          > (0,0,1,0,1) table of contents section [Sphinx] > DEFAULT
            (0,0,0,1,1) chapter [Sphinx (article)] > DEFAULT
@@ -70,16 +110,16 @@
                  > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
               SingleStyledText('2')
     DocumentTree(id='document-title')   unnumbered_headings.rst   <document>
-      Section(id='section-1')   unnumbered_headings.rst:14   <section>
+      Section(id='section-1')   unnumbered_headings.rst:18   <section>
            > (0,0,0,1,4) content chapter [Sphinx] > chapter
              (0,0,0,1,2) chapter [Sphinx (article)] > DEFAULT
-        Heading('Section 1')   unnumbered_headings.rst:14   <title>
+        Heading('Section 1')   unnumbered_headings.rst:18   <title>
              > (0,0,0,1,2) heading level 1 [unnumbered_headings.rts] > DEFAULT
                (0,0,0,0,2) other heading levels [Sphinx] > heading level 5
             MixedStyledText('Section 1')
               MixedStyledText('Section 1')
                 SingleStyledText('Section 1')
-        Paragraph('Alice was beginning to get very ...')   unnumbered_headings.rst:16   <paragraph>
+        Paragraph('Alice was beginning to get very ...')   unnumbered_headings.rst:20   <paragraph>
              > (0,0,0,0,2) body [Sphinx] > default
             MixedStyledText('Alice was beginning to get very ...')
               MixedStyledText('Alice was beginning to get very ...')
@@ -105,14 +145,14 @@
             MixedStyledText('Alice was beginning to get very ...')
               MixedStyledText('Alice was beginning to get very ...')
                 SingleStyledText('Alice was beginning to get very ...')
-        Section(id='subsection-a')   unnumbered_headings.rst:22   <section>
-          Heading('Subsection A')   unnumbered_headings.rst:22   <title>
+        Section(id='subsection-a')   unnumbered_headings.rst:26   <section>
+          Heading('Subsection A')   unnumbered_headings.rst:26   <title>
                > (0,0,0,1,2) heading level 2 [Sphinx] > heading level 1
                  (0,0,0,0,2) other heading levels [Sphinx] > heading level 5
               MixedStyledText('Subsection A')
                 MixedStyledText('Subsection A')
                   SingleStyledText('Subsection A')
-          Paragraph('So she was considering in her ow...')   unnumbered_headings.rst:24   <paragraph>
+          Paragraph('So she was considering in her ow...')   unnumbered_headings.rst:28   <paragraph>
                > (0,0,0,0,2) body [Sphinx] > default
               MixedStyledText('So she was considering in her ow...')
                 MixedStyledText('So she was considering in her ow...')
@@ -132,20 +172,32 @@
               MixedStyledText('So she was considering in her ow...')
                 MixedStyledText('So she was considering in her ow...')
                   SingleStyledText('So she was considering in her ow...')
+#### ChainedContainer('column2')
+  (continued) StaticGroupedFlowables()
+    (continued) DocumentTree(id='document-title')   unnumbered_headings.rst   <document>
+      (continued) Section(id='section-1')   unnumbered_headings.rst:18   <section>
+           > (0,0,0,1,4) content chapter [Sphinx] > chapter
+             (0,0,0,1,2) chapter [Sphinx (article)] > DEFAULT
+        (continued) Section(id='subsection-a')   unnumbered_headings.rst:26   <section>
+          (continued) Paragraph('So she was considering in her ow...')   unnumbered_headings.rst:28   <paragraph>
+               > (0,0,0,0,2) body [Sphinx] > default
               MixedStyledText('So she was considering in her ow...')
                 MixedStyledText('So she was considering in her ow...')
                   SingleStyledText('So she was considering in her ow...')
               MixedStyledText('So she was considering in her ow...')
                 MixedStyledText('So she was considering in her ow...')
                   SingleStyledText('So she was considering in her ow...')
-          Section(id='subsubsection-a')   unnumbered_headings.rst:30   <section>
-            Heading('Subsubsection a')   unnumbered_headings.rst:30   <title>
+              MixedStyledText('So she was considering in her ow...')
+                MixedStyledText('So she was considering in her ow...')
+                  SingleStyledText('So she was considering in her ow...')
+          Section(id='subsubsection-a')   unnumbered_headings.rst:34   <section>
+            Heading('Subsubsection a')   unnumbered_headings.rst:34   <title>
                  > (0,0,0,1,2) heading level 3 [Sphinx] > heading level 2
                    (0,0,0,0,2) other heading levels [Sphinx] > heading level 5
                 MixedStyledText('Subsubsection a')
                   MixedStyledText('Subsubsection a')
                     SingleStyledText('Subsubsection a')
-            Paragraph('There was nothing very remarkabl...')   unnumbered_headings.rst:32   <paragraph>
+            Paragraph('There was nothing very remarkabl...')   unnumbered_headings.rst:36   <paragraph>
                  > (0,0,0,0,2) body [Sphinx] > default
                 MixedStyledText('There was nothing very remarkabl...')
                   MixedStyledText('There was nothing very remarkabl...')
@@ -153,19 +205,6 @@
                 MixedStyledText('There was nothing very remarkabl...')
                   MixedStyledText('There was nothing very remarkabl...')
                     SingleStyledText('There was nothing very remarkabl...')
-                MixedStyledText('There was nothing very remarkabl...')
-                  MixedStyledText('There was nothing very remarkabl...')
-                    SingleStyledText('There was nothing very remarkabl...')
-#### ChainedContainer('column2')
-  (continued) StaticGroupedFlowables()
-    (continued) DocumentTree(id='document-title')   unnumbered_headings.rst   <document>
-      (continued) Section(id='section-1')   unnumbered_headings.rst:14   <section>
-           > (0,0,0,1,4) content chapter [Sphinx] > chapter
-             (0,0,0,1,2) chapter [Sphinx (article)] > DEFAULT
-        (continued) Section(id='subsection-a')   unnumbered_headings.rst:22   <section>
-          (continued) Section(id='subsubsection-a')   unnumbered_headings.rst:30   <section>
-            (continued) Paragraph('There was nothing very remarkabl...')   unnumbered_headings.rst:32   <paragraph>
-                 > (0,0,0,0,2) body [Sphinx] > default
                 MixedStyledText('There was nothing very remarkabl...')
                   MixedStyledText('There was nothing very remarkabl...')
                     SingleStyledText('There was nothing very remarkabl...')
@@ -206,22 +245,22 @@
 #### ChainedContainer('column1')
   (continued) StaticGroupedFlowables()
     (continued) DocumentTree(id='document-title')   unnumbered_headings.rst   <document>
-      (continued) Section(id='section-1')   unnumbered_headings.rst:14   <section>
+      (continued) Section(id='section-1')   unnumbered_headings.rst:18   <section>
            > (0,0,0,1,4) content chapter [Sphinx] > chapter
              (0,0,0,1,2) chapter [Sphinx (article)] > DEFAULT
-        (continued) Section(id='subsection-a')   unnumbered_headings.rst:22   <section>
-          (continued) Section(id='subsubsection-a')   unnumbered_headings.rst:30   <section>
-            PageBreak(style=FlowableStyle)   unnumbered_headings.rst:37   <raw>
-      Section(id='section-2')   unnumbered_headings.rst:43   <section>
+        (continued) Section(id='subsection-a')   unnumbered_headings.rst:26   <section>
+          (continued) Section(id='subsubsection-a')   unnumbered_headings.rst:34   <section>
+            PageBreak(style=FlowableStyle)   unnumbered_headings.rst:41   <raw>
+      Section(id='section-2')   unnumbered_headings.rst:47   <section>
            > (0,0,0,1,4) content chapter [Sphinx] > chapter
              (0,0,0,1,2) chapter [Sphinx (article)] > DEFAULT
-        Heading('Section 2')   unnumbered_headings.rst:43   <title>
+        Heading('Section 2')   unnumbered_headings.rst:47   <title>
              > (0,0,0,1,2) heading level 1 [unnumbered_headings.rts] > DEFAULT
                (0,0,0,0,2) other heading levels [Sphinx] > heading level 5
             MixedStyledText('Section 2')
               MixedStyledText('Section 2')
                 SingleStyledText('Section 2')
-        Paragraph('But when the rabbit actually too...')   unnumbered_headings.rst:45   <paragraph>
+        Paragraph('But when the rabbit actually too...')   unnumbered_headings.rst:49   <paragraph>
              > (0,0,0,0,2) body [Sphinx] > default
             MixedStyledText('But when the rabbit actually too...')
               MixedStyledText('But when the rabbit actually too...')
@@ -256,14 +295,14 @@
             MixedStyledText('But when the rabbit actually too...')
               MixedStyledText('But when the rabbit actually too...')
                 SingleStyledText('But when the rabbit actually too...')
-        Section(id='subsection-b')   unnumbered_headings.rst:53   <section>
-          Heading('Subsection B')   unnumbered_headings.rst:53   <title>
+        Section(id='subsection-b')   unnumbered_headings.rst:57   <section>
+          Heading('Subsection B')   unnumbered_headings.rst:57   <title>
                > (0,0,0,1,2) heading level 2 [Sphinx] > heading level 1
                  (0,0,0,0,2) other heading levels [Sphinx] > heading level 5
               MixedStyledText('Subsection B')
                 MixedStyledText('Subsection B')
                   SingleStyledText('Subsection B')
-          Paragraph('In a moment down went Alice afte...')   unnumbered_headings.rst:55   <paragraph>
+          Paragraph('In a moment down went Alice afte...')   unnumbered_headings.rst:59   <paragraph>
                > (0,0,0,0,2) body [Sphinx] > default
               MixedStyledText('In a moment down went Alice afte...')
                 MixedStyledText('In a moment down went Alice afte...')

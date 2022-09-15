@@ -15,3 +15,7 @@ space_above=0
 font_size=12pt
 text_align=center
 space_above=6pt
+
+[abstract paragraph]
+base=default
+font_weight=bold
