@@ -1,13 +1,26 @@
 Release History
 ---------------
 
+.. note:: rinohtype uses `Semantic Versioning`__ for its releases. In summary,
+    this means that each release gets a version number MAJOR.MINOR.PATCH. The
+    MAJOR version number is increased when backwards-incompatible API changes
+    are made. However, until we exit beta and reach version 1.0.0, anything may
+    change at any time.
+
+    With this in mind, to ease upgrading from a previous version, I try to
+    explicitly list backward-incompatible changes in the *Changed* section for
+    each release. Be sure to check these when upgrading.
+
+    .. __: https://semver.org/
+
+
 Release 0.5.5 (in development)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 New Features:
 
 * Enumerated list item labels now also respect the *number_separator* style
-  property, enabling hierarchical list item labels.
+  property, enabling hierarchical list item labels (discussion #350).
 * Admonitions now have a 'custom_title_text' property that can be used to
   style generic admonitions. For example, this style definition applies to
   ``.. admonition:: Fun Fact``::
