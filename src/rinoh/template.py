@@ -45,9 +45,8 @@ from .util import NamedDescriptor
 
 __all__ = ['BodyPage', 'TitlePage', 'BodyPageTemplate', 'PageNumberFormat',
            'TitlePageTemplate', 'ContentsPartTemplate',
-           'FixedDocumentPartTemplate', 'Option', 'AbstractLocation',
-           'DocumentTemplate', 'TemplateConfiguration',
-           'TemplateConfigurationFile']
+           'FixedDocumentPartTemplate', 'Option', 'DocumentTemplate',
+           'TemplateConfiguration', 'TemplateConfigurationFile']
 
 
 class Option(Attribute):
@@ -56,12 +55,6 @@ class Option(Attribute):
 
 class DefaultOptionException(Exception):
     pass
-
-
-class AbstractLocation(OptionSet):
-    """Where to place the article's abstract"""
-
-    values = 'title', 'front matter'
 
 
 class Template(AttributesDictionary, NamedDescriptor):
@@ -143,7 +136,7 @@ class FlowablesList(AcceptNoneAttributeType):
                 ':class:`.Flowable`\\ s')
 
 
-class BodyPageTemplate(PageTemplateBase):
+class BodyPageTemplateBase(PageTemplateBase):
     header_footer_distance = Option(Dimension, 14*PT, 'Distance of the '
                                     'header and footer to the content area')
     columns = Option(Integer, 1, 'The number of columns for the body text')
@@ -154,6 +147,15 @@ class BodyPageTemplate(PageTemplateBase):
     footer_text = Option(StyledText, Tab() + Field(PAGE_NUMBER)
                          + '/' + Field(NUMBER_OF_PAGES),
                          'The text to place in the page footer')
+
+    def page(self, document_part, page_number, chain):
+        return BodyPage(document_part, self, page_number, chain)
+
+    def sideways_page(self, document_part, page_number, chain):
+        return SidewaysBodyPage(document_part, self, page_number, chain)
+
+
+class BodyPageTemplate(BodyPageTemplateBase):
     chapter_header_text = Option(StyledText, None, 'The text to place in the '
                                  'header on a page that starts a new chapter')
     chapter_footer_text = Option(StyledText, None, 'The text to place in the '
@@ -164,17 +166,11 @@ class BodyPageTemplate(PageTemplateBase):
     chapter_title_height = Option(Dimension, 150*PT, 'The height of the '
                                   'container holding the chapter title')
 
-    def page(self, document_part, page_number, chain):
-        return BodyPage(document_part, self, page_number, chain)
-
     def new_chapter_page(self, document_part, page_number, chain):
         if self.get_option('chapter_title_flowables', document_part.document):
             return NewChapterBodyPage(document_part, self, page_number, chain)
         else:
             return self.page(document_part, page_number, chain)
-
-    def sideways_page(self, document_part, page_number, chain):
-        return SidewaysBodyPage(document_part, self, page_number, chain)
 
 
 class PageBase(Page, Templated):
@@ -344,13 +340,8 @@ class TitlePage(PageBase):
         if 'author' in metadata and get_option('show_author'):
             self.title << Paragraph(get_metadata('author'),
                                     style='title page author')
-        try:
-            abstract_location = self.document.get_option('abstract_location')
-            if ('abstract' in metadata
-                    and abstract_location == AbstractLocation.TITLE):
-                self.title << metadata['abstract']
-        except KeyError:
-            pass
+        with suppress(KeyError):
+            self.title << metadata['abstract']
         if get_option('show_date'):
             date = metadata['date']
             try:

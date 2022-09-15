@@ -1,0 +1,10 @@
+[STYLESHEET]
+name=Sphinx article (PDF Core Fonts)
+base=sphinx_article
+description=The Sphinx article stylesheet, but using the fonts from the PDF core
+    set (yielding smaller PDF files)
+
+[VARIABLES]
+mono_typeface=Courier
+serif_typeface=Times
+sans_typeface=Helvetica

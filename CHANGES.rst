@@ -9,7 +9,8 @@ New Features:
 * Enumerated list item labels now also respect the *number_separator* style
   property, enabling hierarchical list item labels.
 * Admonitions now have a 'custom_title_text' property that can be used to
-  style generic admonitions. For example, for ``.. admonition:: Fun Fact``::
+  style generic admonitions. For example, this style definition applies to
+  ``.. admonition:: Fun Fact``::
 
       [fun fact admonition : Admonition(custom_title_text='Fun Fact')]
       base = admonition
@@ -18,6 +19,10 @@ New Features:
 
 Changed:
 
+* The Article template has been overhauled. The title page and front matter
+  parts have been removed and their contents are moved to the first content
+  page. This makes the Article template more useful, since it was too similar
+  to the Book template before.
 
 Fixed:
 

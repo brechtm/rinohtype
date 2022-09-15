@@ -5,3 +5,13 @@ description=The Sphinx stylesheet adjusted for the article template
 
 [chapter]
 page_break=none
+
+[title page title]
+font_size=20pt
+text_align=center
+space_above=0
+
+[title page author]
+font_size=12pt
+text_align=center
+space_above=6pt

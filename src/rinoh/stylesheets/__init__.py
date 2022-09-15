@@ -32,6 +32,8 @@ sphinx_article = StyleSheetFile(path('sphinx_article.rts'))
 
 sphinx_base14 = StyleSheetFile(path('base14.rts'))
 
+sphinx_article_base14 = StyleSheetFile(path('article_base14.rts'))
+
 
 # generate docstrings for the StyleSheet instances
 

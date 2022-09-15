@@ -71,6 +71,7 @@ book = "rinoh.templates:Book"
 sphinx = "rinoh.stylesheets:sphinx"
 sphinx_article = "rinoh.stylesheets:sphinx_article"
 sphinx_base14 = "rinoh.stylesheets:sphinx_base14"
+sphinx_article_base14 = "rinoh.stylesheets:sphinx_article_base14"
 
 [tool.poetry.plugins."rinoh.typefaces"]
 courier = "rinoh.fonts.adobe14:courier"
