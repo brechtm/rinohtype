@@ -1,0 +1,11 @@
+[TEMPLATE_CONFIGURATION]
+name = unnumbered headings
+template = article
+
+stylesheet = unnumbered_headings.rts
+
+[VARIABLES]
+paper_size = A5
+
+[contents_page]
+columns = 2

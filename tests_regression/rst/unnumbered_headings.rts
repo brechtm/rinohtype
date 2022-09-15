@@ -1,0 +1,21 @@
+[STYLESHEET]
+base = sphinx_article_base14
+
+[heading level 1]
+number_format = none
+
+[table of contents]
+depth=1
+
+[toc level 1]
+space_above=0
+margin_left=-0.4cm
+tab_stops=0.4cm, 100% RIGHT '.  '
+
+;[toc level 2]
+;margin_left=0
+;tab_stops=0.4cm, 100% RIGHT '.  '
+;
+;[toc level 3]
+;margin_left=0
+;tab_stops=0.8cm, 100% RIGHT '.  '
