@@ -62,6 +62,9 @@ Page Templates
 
 The document templates make use of page templates:
 
+.. autoclass:: BodyPageTemplateBase
+    :members:
+
 .. autoclass:: BodyPageTemplate
     :members:
 

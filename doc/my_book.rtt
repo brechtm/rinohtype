@@ -1,14 +1,14 @@
 [TEMPLATE_CONFIGURATION]
-name = my article configuration
-template = article
+name = my book configuration
+template = book
 
 parts =
     title
     ;front_matter
     contents
+    ;back_matter
 stylesheet = sphinx_base14
 language = fr
-abstract_location = title
 
 [SectionTitles]
 contents = 'Contents'
@@ -20,7 +20,7 @@ warning = 'Please be warned'
 [VARIABLES]
 paper_size = A5
 
-[title]
+[front_matter]
 page_number_format = lowercase roman
 end_at_page = left
 
