@@ -953,13 +953,13 @@ configuration for the Book template:</p>
 identifies the <a class="reference internal" href="stdtemplates.html#standard-templates"><span class="std std-ref">document template</span></a> to configure.</p>
 <p>All document templates consist of a number of document parts. The
 <a class="reference internal" href="article.html#rinoh.templates.article.Article" title="rinoh.templates.article.Article (Python class) — The stylesheet to use for styling document elements (inherited from DocumentTemplate)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Article</span></code></a> template defines only a single part
-(<a class="reference internal" href="article.html#rinoh.templates.article.Article.contents" title="rinoh.templates.article.Article.contents (Python attribute) — base: None"><code class="xref py py-attr docutils literal notranslate"><span class="pre">contents</span></code></a>) where the <a class="reference internal" href="book.html#rinoh.templates.book.Book" title="rinoh.templates.book.Book (Python class) — The stylesheet to use for styling document elements (inherited from DocumentTemplate)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Book</span></code></a> template defines four. The
-order of the parts can be changed, and individual parts can optionally be hidden
-by overriding the <a class="reference internal" href="api/template.html#rinoh.template.DocumentTemplate.parts" title="rinoh.template.DocumentTemplate.parts (Python attribute) — The parts making up this document"><code class="xref py py-attr docutils literal notranslate"><span class="pre">parts</span></code></a> configuration option. The
-configuration above hides the front and back matter parts (commented out using a
-semicolon), for example. Note that empty document parts will not be included in
-the document. For example, when there are no index entries and the index is thus
-empty, the back matter part is omitted.</p>
+(<a class="reference internal" href="article.html#rinoh.templates.article.Article.contents" title="rinoh.templates.article.Article.contents (Python attribute) — base: None"><code class="xref py py-attr docutils literal notranslate"><span class="pre">contents</span></code></a>) where the <a class="reference internal" href="book.html#rinoh.templates.book.Book" title="rinoh.templates.book.Book (Python class) — The stylesheet to use for styling document elements (inherited from DocumentTemplate)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Book</span></code></a> template defines four.
+The order of the parts can be changed, and individual parts can optionally be
+hidden by overriding the <a class="reference internal" href="api/template.html#rinoh.template.DocumentTemplate.parts" title="rinoh.template.DocumentTemplate.parts (Python attribute) — The parts making up this document"><code class="xref py py-attr docutils literal notranslate"><span class="pre">parts</span></code></a> configuration option.
+The configuration above hides the front and back matter parts (commented out
+using a semicolon), for example. Note that empty document parts will not be
+included in the document. For example, when there are no index entries and the
+index is thus empty, the back matter part is omitted.</p>
 <p>The template configuration also specifies which style sheet is used for styling
 document elements. The <a class="reference internal" href="api/template.html#rinoh.template.DocumentTemplate.stylesheet" title="rinoh.template.DocumentTemplate.stylesheet (Python attribute) — The stylesheet to use for styling document elements"><code class="xref py py-attr docutils literal notranslate"><span class="pre">stylesheet</span></code></a> option takes the
 name of an installed style sheet (see <a class="reference internal" href="rinoh.html#cmdoption-rinoh-list-stylesheets"><code class="xref std std-option docutils literal notranslate"><span class="pre">rinoh</span> <span class="pre">--list-stylesheets</span></code></a>) or
@@ -973,10 +973,10 @@ article abstract is placed; in the title box or as part of the body text. This
 distinction is only visible when using multiple columns for the page contents
 (see <a class="reference internal" href="api/template.html#rinoh.template.BodyPageTemplateBase.columns" title="rinoh.template.BodyPageTemplateBase.columns (Python attribute) — The number of columns for the body text"><code class="xref py py-attr docutils literal notranslate"><span class="pre">columns</span></code></a>).</p>
 <p>The standard document strings configured by the
-<a class="reference internal" href="api/template.html#rinoh.template.DocumentTemplate.language" title="rinoh.template.DocumentTemplate.language (Python attribute) — The main language of the document"><code class="xref py py-attr docutils literal notranslate"><span class="pre">language</span></code></a> option described above can be overridden
-by user-defined strings in the <a class="reference internal" href="api/structure.html#rinoh.structure.SectionTitles" title="rinoh.structure.SectionTitles (Python class) — Collection of localized titles for common sections"><code class="xref py py-class docutils literal notranslate"><span class="pre">SectionTitles</span></code></a> and
-<a class="reference internal" href="api/structure.html#rinoh.structure.AdmonitionTitles" title="rinoh.structure.AdmonitionTitles (Python class) — Collection of localized titles for common admonitions"><code class="xref py py-class docutils literal notranslate"><span class="pre">AdmonitionTitles</span></code></a> sections of the configuration file. For example, the
-default title for the table of contents section (<em>Table of Contents</em>) is
+<a class="reference internal" href="api/template.html#rinoh.template.DocumentTemplate.language" title="rinoh.template.DocumentTemplate.language (Python attribute) — The main language of the document"><code class="xref py py-attr docutils literal notranslate"><span class="pre">language</span></code></a> option described above can be overridden by
+user-defined strings in the <a class="reference internal" href="api/structure.html#rinoh.structure.SectionTitles" title="rinoh.structure.SectionTitles (Python class) — Collection of localized titles for common sections"><code class="xref py py-class docutils literal notranslate"><span class="pre">SectionTitles</span></code></a> and
+<a class="reference internal" href="api/structure.html#rinoh.structure.AdmonitionTitles" title="rinoh.structure.AdmonitionTitles (Python class) — Collection of localized titles for common admonitions"><code class="xref py py-class docutils literal notranslate"><span class="pre">AdmonitionTitles</span></code></a> sections of the configuration file. For example,
+the default title for the table of contents section (<em>Table of Contents</em>) is
 replaced with <em>Contents</em>. The configuration also sets custom titles for the
 caution and warning admonitions.</p>
 <p>The others sections in the configuration file are the <code class="docutils literal notranslate"><span class="pre">VARIABLES</span></code> section,
