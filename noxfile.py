@@ -52,8 +52,7 @@ def check_docs(session):
 
 @nox_poetry.session()
 def build_docs(session):
-    _install(session, dependencies=['https://github.com/brechtm/sphinx/archive/refs/heads/toctree-index.zip',
-                                    'sphinx-immaterial',
+    _install(session, dependencies=['Sphinx', 'sphinx-immaterial',
                                     'sphinxcontrib-autoprogram'])
     session.chdir('doc')
     session.run('python', 'build.py', *session.posargs)
