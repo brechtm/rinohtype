@@ -1,6 +1,6 @@
 [TEMPLATE_CONFIGURATION]
 name = no_break_after.rst
-template = article
+template = minimal
 
 parts = contents
 stylesheet = no_break_after.rts

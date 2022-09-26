@@ -1,6 +1,6 @@
 [TEMPLATE_CONFIGURATION]
 name=graphviz
-template=article
+template=minimal_sphinx
 stylesheet=stylesheet.rts
 
 parts=contents

@@ -1,71 +1,8 @@
 ---------------------------------- page 1 ----------------------------------
+#### FlowablesContainer('background')
+  StaticGroupedFlowables()
 #### FootnoteContainer('footnotes')
   StaticGroupedFlowables()
-      Note(id='id5', style='footnote')   columns_two.rst:46   <footnote>
-           > (0,0,1,0,2) footnote [Sphinx] > DEFAULT
-        Paragraph('1')
-             > (0,0,1,0,4) footnote label [Sphinx] > footnote paragraph
-               (0,0,0,0,2) body [Sphinx] > default
-            DirectReference('1')
-                 > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
-              SingleStyledText('1')
-        StaticGroupedFlowables()
-          Paragraph('A footnote contains body element...')   columns_two.rst:46   <paragraph>
-               > (0,0,1,0,5) footnote paragraph [Sphinx] > default
-                 (0,0,0,0,2) body [Sphinx] > default
-              MixedStyledText('A footnote contains body element...')
-                MixedStyledText('A footnote contains body element...')
-                  SingleStyledText('A footnote contains body element...')
-      Note(id='id7', style='footnote')   columns_two.rst:52   <footnote>
-           > (0,0,1,0,2) footnote [Sphinx] > DEFAULT
-        Paragraph('2')
-             > (0,0,1,0,4) footnote label [Sphinx] > footnote paragraph
-               (0,0,0,0,2) body [Sphinx] > default
-            DirectReference('2')
-                 > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
-              SingleStyledText('2')
-        StaticGroupedFlowables()
-          Paragraph('This footnote is numbered automa...')   columns_two.rst:52   <paragraph>
-               > (0,0,1,0,5) footnote paragraph [Sphinx] > default
-                 (0,0,0,0,2) body [Sphinx] > default
-              MixedStyledText('This footnote is numbered automa...')
-                MixedStyledText('This footnote is numbered automa...')
-                  SingleStyledText('This footnote is numbered automa...')
-      Note(id='label', style='footnote')   columns_two.rst:49   <footnote>
-           > (0,0,1,0,2) footnote [Sphinx] > DEFAULT
-        Paragraph('3')
-             > (0,0,1,0,4) footnote label [Sphinx] > footnote paragraph
-               (0,0,0,0,2) body [Sphinx] > default
-            DirectReference('3')
-                 > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
-              SingleStyledText('3')
-        StaticGroupedFlowables()
-          Paragraph('Footnotes may be numbered, eithe...')   columns_two.rst:49   <paragraph>
-               > (0,0,1,0,5) footnote paragraph [Sphinx] > default
-                 (0,0,0,0,2) body [Sphinx] > default
-              MixedStyledText('Footnotes may be numbered, eithe...')
-                MixedStyledText('Footnotes may be numbered, eithe...')
-                  SingleStyledText('Footnotes may be numbered, eithe...')
-                  NoteMarkerByID('1', id='id6', style='footnote')   <footnote_reference>
-                       > (0,0,1,0,1) footnote marker [Sphinx] > linked reference
-                         (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
-                    SingleStyledText('1')
-                  SingleStyledText(') or automatically using a "#"-p...')
-      Note(id='id8', style='footnote')   columns_two.rst:55   <footnote>
-           > (0,0,1,0,2) footnote [Sphinx] > DEFAULT
-        Paragraph('4')
-             > (0,0,1,0,4) footnote label [Sphinx] > footnote paragraph
-               (0,0,0,0,2) body [Sphinx] > default
-            DirectReference('4')
-                 > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
-              SingleStyledText('4')
-        StaticGroupedFlowables()
-          Paragraph('Footnotes may also use symbols, ...')   columns_two.rst:55   <paragraph>
-               > (0,0,1,0,5) footnote paragraph [Sphinx] > default
-                 (0,0,0,0,2) body [Sphinx] > default
-              MixedStyledText('Footnotes may also use symbols, ...')
-                MixedStyledText('Footnotes may also use symbols, ...')
-                  SingleStyledText('Footnotes may also use symbols, ...')
 #### DownExpandingContainer('floats')
   StaticGroupedFlowables()
 #### ChainedContainer('column1')
@@ -73,6 +10,359 @@
     DocumentTree()   columns_two.rst   <document>
       Paragraph('Paragraphs contain text and may ...')   columns_two.rst:1   <paragraph>
            > (0,0,0,0,2) body [Sphinx] > default
+          MixedStyledText('Paragraphs contain text and may ...')
+            MixedStyledText('Paragraphs contain text and may ...')
+              SingleStyledText('Paragraphs contain text and may ...')
+          MixedStyledText('Paragraphs contain text and may ...')
+            MixedStyledText('Paragraphs contain text and may ...')
+              SingleStyledText('Paragraphs contain text and may ...')
+              MixedStyledText('emphasis', style='emphasis')   <emphasis>
+                   > (0,0,1,0,1) emphasis [Sphinx] > DEFAULT
+                SingleStyledText('emphasis')
+              SingleStyledText(', ')
+              MixedStyledText('strong emphasis', style='strong')   <strong>
+                   > (0,0,1,0,1) strong [Sphinx] > DEFAULT
+                SingleStyledText('strong emphasis')
+          MixedStyledText('Paragraphs contain text and may ...')
+            MixedStyledText('Paragraphs contain text and may ...')
+              SingleStyledText('Paragraphs contain text and may ...')
+              MixedStyledText('emphasis', style='emphasis')   <emphasis>
+                   > (0,0,1,0,1) emphasis [Sphinx] > DEFAULT
+                SingleStyledText('emphasis')
+              SingleStyledText(', ')
+              MixedStyledText('strong emphasis', style='strong')   <strong>
+                   > (0,0,1,0,1) strong [Sphinx] > DEFAULT
+                SingleStyledText('strong emphasis')
+              SingleStyledText(', ')
+              MixedStyledText('inline literals', style='monospaced')   <literal>
+                   > (0,0,1,0,1) monospaced [Sphinx] > DEFAULT
+                SingleStyledText('inline literals')
+              SingleStyledText(', standalone hyperlinks (')
+          MixedStyledText('Paragraphs contain text and may ...')
+            MixedStyledText('Paragraphs contain text and may ...')
+              SingleStyledText('Paragraphs contain text and may ...')
+              MixedStyledText('emphasis', style='emphasis')   <emphasis>
+                   > (0,0,1,0,1) emphasis [Sphinx] > DEFAULT
+                SingleStyledText('emphasis')
+              SingleStyledText(', ')
+              MixedStyledText('strong emphasis', style='strong')   <strong>
+                   > (0,0,1,0,1) strong [Sphinx] > DEFAULT
+                SingleStyledText('strong emphasis')
+              SingleStyledText(', ')
+              MixedStyledText('inline literals', style='monospaced')   <literal>
+                   > (0,0,1,0,1) monospaced [Sphinx] > DEFAULT
+                SingleStyledText('inline literals')
+              SingleStyledText(', standalone hyperlinks (')
+              MixedStyledText('http://www.python.org', style='external link')   <reference>
+                   > (0,0,1,0,1) external hyperlink [Sphinx] > DEFAULT
+                SingleStyledText('http://www.python.org')
+              SingleStyledText('), external hyperlinks (')
+          MixedStyledText('Paragraphs contain text and may ...')
+            MixedStyledText('Paragraphs contain text and may ...')
+              SingleStyledText('Paragraphs contain text and may ...')
+              MixedStyledText('emphasis', style='emphasis')   <emphasis>
+                   > (0,0,1,0,1) emphasis [Sphinx] > DEFAULT
+                SingleStyledText('emphasis')
+              SingleStyledText(', ')
+              MixedStyledText('strong emphasis', style='strong')   <strong>
+                   > (0,0,1,0,1) strong [Sphinx] > DEFAULT
+                SingleStyledText('strong emphasis')
+              SingleStyledText(', ')
+              MixedStyledText('inline literals', style='monospaced')   <literal>
+                   > (0,0,1,0,1) monospaced [Sphinx] > DEFAULT
+                SingleStyledText('inline literals')
+              SingleStyledText(', standalone hyperlinks (')
+              MixedStyledText('http://www.python.org', style='external link')   <reference>
+                   > (0,0,1,0,1) external hyperlink [Sphinx] > DEFAULT
+                SingleStyledText('http://www.python.org')
+              SingleStyledText('), external hyperlinks (')
+              MixedStyledText('Python', style='external link')   <reference>
+                   > (0,0,1,0,1) external hyperlink [Sphinx] > DEFAULT
+                SingleStyledText('Python')
+              SingleStyledText('), internal cross-references (')
+          MixedStyledText('Paragraphs contain text and may ...')
+            MixedStyledText('Paragraphs contain text and may ...')
+              SingleStyledText('Paragraphs contain text and may ...')
+              MixedStyledText('emphasis', style='emphasis')   <emphasis>
+                   > (0,0,1,0,1) emphasis [Sphinx] > DEFAULT
+                SingleStyledText('emphasis')
+              SingleStyledText(', ')
+              MixedStyledText('strong emphasis', style='strong')   <strong>
+                   > (0,0,1,0,1) strong [Sphinx] > DEFAULT
+                SingleStyledText('strong emphasis')
+              SingleStyledText(', ')
+              MixedStyledText('inline literals', style='monospaced')   <literal>
+                   > (0,0,1,0,1) monospaced [Sphinx] > DEFAULT
+                SingleStyledText('inline literals')
+              SingleStyledText(', standalone hyperlinks (')
+              MixedStyledText('http://www.python.org', style='external link')   <reference>
+                   > (0,0,1,0,1) external hyperlink [Sphinx] > DEFAULT
+                SingleStyledText('http://www.python.org')
+              SingleStyledText('), external hyperlinks (')
+              MixedStyledText('Python', style='external link')   <reference>
+                   > (0,0,1,0,1) external hyperlink [Sphinx] > DEFAULT
+                SingleStyledText('Python')
+              SingleStyledText('), internal cross-references (')
+              Reference('example')   <reference>
+                   > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                MixedStyledText('example')
+                  SingleStyledText('example')
+              SingleStyledText('), external hyperlinks with embe...')
+          MixedStyledText('Paragraphs contain text and may ...')
+            MixedStyledText('Paragraphs contain text and may ...')
+              SingleStyledText('Paragraphs contain text and may ...')
+              MixedStyledText('emphasis', style='emphasis')   <emphasis>
+                   > (0,0,1,0,1) emphasis [Sphinx] > DEFAULT
+                SingleStyledText('emphasis')
+              SingleStyledText(', ')
+              MixedStyledText('strong emphasis', style='strong')   <strong>
+                   > (0,0,1,0,1) strong [Sphinx] > DEFAULT
+                SingleStyledText('strong emphasis')
+              SingleStyledText(', ')
+              MixedStyledText('inline literals', style='monospaced')   <literal>
+                   > (0,0,1,0,1) monospaced [Sphinx] > DEFAULT
+                SingleStyledText('inline literals')
+              SingleStyledText(', standalone hyperlinks (')
+              MixedStyledText('http://www.python.org', style='external link')   <reference>
+                   > (0,0,1,0,1) external hyperlink [Sphinx] > DEFAULT
+                SingleStyledText('http://www.python.org')
+              SingleStyledText('), external hyperlinks (')
+              MixedStyledText('Python', style='external link')   <reference>
+                   > (0,0,1,0,1) external hyperlink [Sphinx] > DEFAULT
+                SingleStyledText('Python')
+              SingleStyledText('), internal cross-references (')
+              Reference('example')   <reference>
+                   > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                MixedStyledText('example')
+                  SingleStyledText('example')
+              SingleStyledText('), external hyperlinks with embe...')
+          MixedStyledText('Paragraphs contain text and may ...')
+            MixedStyledText('Paragraphs contain text and may ...')
+              SingleStyledText('Paragraphs contain text and may ...')
+              MixedStyledText('emphasis', style='emphasis')   <emphasis>
+                   > (0,0,1,0,1) emphasis [Sphinx] > DEFAULT
+                SingleStyledText('emphasis')
+              SingleStyledText(', ')
+              MixedStyledText('strong emphasis', style='strong')   <strong>
+                   > (0,0,1,0,1) strong [Sphinx] > DEFAULT
+                SingleStyledText('strong emphasis')
+              SingleStyledText(', ')
+              MixedStyledText('inline literals', style='monospaced')   <literal>
+                   > (0,0,1,0,1) monospaced [Sphinx] > DEFAULT
+                SingleStyledText('inline literals')
+              SingleStyledText(', standalone hyperlinks (')
+              MixedStyledText('http://www.python.org', style='external link')   <reference>
+                   > (0,0,1,0,1) external hyperlink [Sphinx] > DEFAULT
+                SingleStyledText('http://www.python.org')
+              SingleStyledText('), external hyperlinks (')
+              MixedStyledText('Python', style='external link')   <reference>
+                   > (0,0,1,0,1) external hyperlink [Sphinx] > DEFAULT
+                SingleStyledText('Python')
+              SingleStyledText('), internal cross-references (')
+              Reference('example')   <reference>
+                   > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                MixedStyledText('example')
+                  SingleStyledText('example')
+              SingleStyledText('), external hyperlinks with embe...')
+              MixedStyledText('Python web site', style='external link')   <reference>
+                   > (0,0,1,0,1) external hyperlink [Sphinx] > DEFAULT
+                SingleStyledText('Python web site')
+          MixedStyledText('Paragraphs contain text and may ...')
+            MixedStyledText('Paragraphs contain text and may ...')
+              SingleStyledText('Paragraphs contain text and may ...')
+              MixedStyledText('emphasis', style='emphasis')   <emphasis>
+                   > (0,0,1,0,1) emphasis [Sphinx] > DEFAULT
+                SingleStyledText('emphasis')
+              SingleStyledText(', ')
+              MixedStyledText('strong emphasis', style='strong')   <strong>
+                   > (0,0,1,0,1) strong [Sphinx] > DEFAULT
+                SingleStyledText('strong emphasis')
+              SingleStyledText(', ')
+              MixedStyledText('inline literals', style='monospaced')   <literal>
+                   > (0,0,1,0,1) monospaced [Sphinx] > DEFAULT
+                SingleStyledText('inline literals')
+              SingleStyledText(', standalone hyperlinks (')
+              MixedStyledText('http://www.python.org', style='external link')   <reference>
+                   > (0,0,1,0,1) external hyperlink [Sphinx] > DEFAULT
+                SingleStyledText('http://www.python.org')
+              SingleStyledText('), external hyperlinks (')
+              MixedStyledText('Python', style='external link')   <reference>
+                   > (0,0,1,0,1) external hyperlink [Sphinx] > DEFAULT
+                SingleStyledText('Python')
+              SingleStyledText('), internal cross-references (')
+              Reference('example')   <reference>
+                   > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                MixedStyledText('example')
+                  SingleStyledText('example')
+              SingleStyledText('), external hyperlinks with embe...')
+              MixedStyledText('Python web site', style='external link')   <reference>
+                   > (0,0,1,0,1) external hyperlink [Sphinx] > DEFAULT
+                SingleStyledText('Python web site')
+              SingleStyledText('), footnote references (manually...')
+              NoteMarkerByID('1', id='footnote-reference-1', style='footnote')   <footnote_reference>
+                   > (0,0,1,0,1) footnote marker [Sphinx] > linked reference
+                     (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                SingleStyledText('1')
+              SingleStyledText(', anonymous auto-numbered')
+              NoteMarkerByID('2', id='footnote-reference-2', style='footnote')   <footnote_reference>
+                   > (0,0,1,0,1) footnote marker [Sphinx] > linked reference
+                     (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                SingleStyledText('2')
+              SingleStyledText(', labeled auto-numbered')
+          MixedStyledText('Paragraphs contain text and may ...')
+            MixedStyledText('Paragraphs contain text and may ...')
+              SingleStyledText('Paragraphs contain text and may ...')
+              MixedStyledText('emphasis', style='emphasis')   <emphasis>
+                   > (0,0,1,0,1) emphasis [Sphinx] > DEFAULT
+                SingleStyledText('emphasis')
+              SingleStyledText(', ')
+              MixedStyledText('strong emphasis', style='strong')   <strong>
+                   > (0,0,1,0,1) strong [Sphinx] > DEFAULT
+                SingleStyledText('strong emphasis')
+              SingleStyledText(', ')
+              MixedStyledText('inline literals', style='monospaced')   <literal>
+                   > (0,0,1,0,1) monospaced [Sphinx] > DEFAULT
+                SingleStyledText('inline literals')
+              SingleStyledText(', standalone hyperlinks (')
+              MixedStyledText('http://www.python.org', style='external link')   <reference>
+                   > (0,0,1,0,1) external hyperlink [Sphinx] > DEFAULT
+                SingleStyledText('http://www.python.org')
+              SingleStyledText('), external hyperlinks (')
+              MixedStyledText('Python', style='external link')   <reference>
+                   > (0,0,1,0,1) external hyperlink [Sphinx] > DEFAULT
+                SingleStyledText('Python')
+              SingleStyledText('), internal cross-references (')
+              Reference('example')   <reference>
+                   > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                MixedStyledText('example')
+                  SingleStyledText('example')
+              SingleStyledText('), external hyperlinks with embe...')
+              MixedStyledText('Python web site', style='external link')   <reference>
+                   > (0,0,1,0,1) external hyperlink [Sphinx] > DEFAULT
+                SingleStyledText('Python web site')
+              SingleStyledText('), footnote references (manually...')
+              NoteMarkerByID('1', id='footnote-reference-1', style='footnote')   <footnote_reference>
+                   > (0,0,1,0,1) footnote marker [Sphinx] > linked reference
+                     (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                SingleStyledText('1')
+              SingleStyledText(', anonymous auto-numbered')
+              NoteMarkerByID('2', id='footnote-reference-2', style='footnote')   <footnote_reference>
+                   > (0,0,1,0,1) footnote marker [Sphinx] > linked reference
+                     (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                SingleStyledText('2')
+              SingleStyledText(', labeled auto-numbered')
+              NoteMarkerByID('3', id='footnote-reference-3', style='footnote')   <footnote_reference>
+                   > (0,0,1,0,1) footnote marker [Sphinx] > linked reference
+                     (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                SingleStyledText('3')
+              SingleStyledText(', or symbolic')
+          MixedStyledText('Paragraphs contain text and may ...')
+            MixedStyledText('Paragraphs contain text and may ...')
+              SingleStyledText('Paragraphs contain text and may ...')
+              MixedStyledText('emphasis', style='emphasis')   <emphasis>
+                   > (0,0,1,0,1) emphasis [Sphinx] > DEFAULT
+                SingleStyledText('emphasis')
+              SingleStyledText(', ')
+              MixedStyledText('strong emphasis', style='strong')   <strong>
+                   > (0,0,1,0,1) strong [Sphinx] > DEFAULT
+                SingleStyledText('strong emphasis')
+              SingleStyledText(', ')
+              MixedStyledText('inline literals', style='monospaced')   <literal>
+                   > (0,0,1,0,1) monospaced [Sphinx] > DEFAULT
+                SingleStyledText('inline literals')
+              SingleStyledText(', standalone hyperlinks (')
+              MixedStyledText('http://www.python.org', style='external link')   <reference>
+                   > (0,0,1,0,1) external hyperlink [Sphinx] > DEFAULT
+                SingleStyledText('http://www.python.org')
+              SingleStyledText('), external hyperlinks (')
+              MixedStyledText('Python', style='external link')   <reference>
+                   > (0,0,1,0,1) external hyperlink [Sphinx] > DEFAULT
+                SingleStyledText('Python')
+              SingleStyledText('), internal cross-references (')
+              Reference('example')   <reference>
+                   > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                MixedStyledText('example')
+                  SingleStyledText('example')
+              SingleStyledText('), external hyperlinks with embe...')
+              MixedStyledText('Python web site', style='external link')   <reference>
+                   > (0,0,1,0,1) external hyperlink [Sphinx] > DEFAULT
+                SingleStyledText('Python web site')
+              SingleStyledText('), footnote references (manually...')
+              NoteMarkerByID('1', id='footnote-reference-1', style='footnote')   <footnote_reference>
+                   > (0,0,1,0,1) footnote marker [Sphinx] > linked reference
+                     (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                SingleStyledText('1')
+              SingleStyledText(', anonymous auto-numbered')
+              NoteMarkerByID('2', id='footnote-reference-2', style='footnote')   <footnote_reference>
+                   > (0,0,1,0,1) footnote marker [Sphinx] > linked reference
+                     (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                SingleStyledText('2')
+              SingleStyledText(', labeled auto-numbered')
+              NoteMarkerByID('3', id='footnote-reference-3', style='footnote')   <footnote_reference>
+                   > (0,0,1,0,1) footnote marker [Sphinx] > linked reference
+                     (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                SingleStyledText('3')
+              SingleStyledText(', or symbolic')
+              NoteMarkerByID('4', id='footnote-reference-4', style='footnote')   <footnote_reference>
+                   > (0,0,1,0,1) footnote marker [Sphinx] > linked reference
+                     (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                SingleStyledText('4')
+              SingleStyledText('), and substitution references (')
+          MixedStyledText('Paragraphs contain text and may ...')
+            MixedStyledText('Paragraphs contain text and may ...')
+              SingleStyledText('Paragraphs contain text and may ...')
+              MixedStyledText('emphasis', style='emphasis')   <emphasis>
+                   > (0,0,1,0,1) emphasis [Sphinx] > DEFAULT
+                SingleStyledText('emphasis')
+              SingleStyledText(', ')
+              MixedStyledText('strong emphasis', style='strong')   <strong>
+                   > (0,0,1,0,1) strong [Sphinx] > DEFAULT
+                SingleStyledText('strong emphasis')
+              SingleStyledText(', ')
+              MixedStyledText('inline literals', style='monospaced')   <literal>
+                   > (0,0,1,0,1) monospaced [Sphinx] > DEFAULT
+                SingleStyledText('inline literals')
+              SingleStyledText(', standalone hyperlinks (')
+              MixedStyledText('http://www.python.org', style='external link')   <reference>
+                   > (0,0,1,0,1) external hyperlink [Sphinx] > DEFAULT
+                SingleStyledText('http://www.python.org')
+              SingleStyledText('), external hyperlinks (')
+              MixedStyledText('Python', style='external link')   <reference>
+                   > (0,0,1,0,1) external hyperlink [Sphinx] > DEFAULT
+                SingleStyledText('Python')
+              SingleStyledText('), internal cross-references (')
+              Reference('example')   <reference>
+                   > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                MixedStyledText('example')
+                  SingleStyledText('example')
+              SingleStyledText('), external hyperlinks with embe...')
+              MixedStyledText('Python web site', style='external link')   <reference>
+                   > (0,0,1,0,1) external hyperlink [Sphinx] > DEFAULT
+                SingleStyledText('Python web site')
+              SingleStyledText('), footnote references (manually...')
+              NoteMarkerByID('1', id='footnote-reference-1', style='footnote')   <footnote_reference>
+                   > (0,0,1,0,1) footnote marker [Sphinx] > linked reference
+                     (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                SingleStyledText('1')
+              SingleStyledText(', anonymous auto-numbered')
+              NoteMarkerByID('2', id='footnote-reference-2', style='footnote')   <footnote_reference>
+                   > (0,0,1,0,1) footnote marker [Sphinx] > linked reference
+                     (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                SingleStyledText('2')
+              SingleStyledText(', labeled auto-numbered')
+              NoteMarkerByID('3', id='footnote-reference-3', style='footnote')   <footnote_reference>
+                   > (0,0,1,0,1) footnote marker [Sphinx] > linked reference
+                     (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                SingleStyledText('3')
+              SingleStyledText(', or symbolic')
+              NoteMarkerByID('4', id='footnote-reference-4', style='footnote')   <footnote_reference>
+                   > (0,0,1,0,1) footnote marker [Sphinx] > linked reference
+                     (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                SingleStyledText('4')
+              SingleStyledText('), and substitution references (')
+              InlineImage('../images/biohazard.png')   <image>
+                   x (0,0,0,0,2) inline image
+              SingleStyledText('). Character-level inline markup...')
               InlineImage('../images/biohazard.png')   <image>
                    x (0,0,0,0,2) inline image
           MixedStyledText('Paragraphs contain text and may ...')
@@ -107,22 +397,77 @@
                    > (0,0,1,0,1) external hyperlink [Sphinx] > DEFAULT
                 SingleStyledText('Python web site')
               SingleStyledText('), footnote references (manually...')
-              NoteMarkerByID('1', id='id1', style='footnote')   <footnote_reference>
+              NoteMarkerByID('1', id='footnote-reference-1', style='footnote')   <footnote_reference>
                    > (0,0,1,0,1) footnote marker [Sphinx] > linked reference
                      (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
                 SingleStyledText('1')
               SingleStyledText(', anonymous auto-numbered')
-              NoteMarkerByID('2', id='id2', style='footnote')   <footnote_reference>
+              NoteMarkerByID('2', id='footnote-reference-2', style='footnote')   <footnote_reference>
                    > (0,0,1,0,1) footnote marker [Sphinx] > linked reference
                      (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
                 SingleStyledText('2')
               SingleStyledText(', labeled auto-numbered')
-              NoteMarkerByID('3', id='id3', style='footnote')   <footnote_reference>
+              NoteMarkerByID('3', id='footnote-reference-3', style='footnote')   <footnote_reference>
                    > (0,0,1,0,1) footnote marker [Sphinx] > linked reference
                      (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
                 SingleStyledText('3')
               SingleStyledText(', or symbolic')
-              NoteMarkerByID('4', id='id4', style='footnote')   <footnote_reference>
+              NoteMarkerByID('4', id='footnote-reference-4', style='footnote')   <footnote_reference>
+                   > (0,0,1,0,1) footnote marker [Sphinx] > linked reference
+                     (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                SingleStyledText('4')
+              SingleStyledText('), and substitution references (')
+              InlineImage('../images/biohazard.png')   <image>
+                   x (0,0,0,0,2) inline image
+              SingleStyledText('). Character-level inline markup...')
+          MixedStyledText('Paragraphs contain text and may ...')
+            MixedStyledText('Paragraphs contain text and may ...')
+              SingleStyledText('Paragraphs contain text and may ...')
+              MixedStyledText('emphasis', style='emphasis')   <emphasis>
+                   > (0,0,1,0,1) emphasis [Sphinx] > DEFAULT
+                SingleStyledText('emphasis')
+              SingleStyledText(', ')
+              MixedStyledText('strong emphasis', style='strong')   <strong>
+                   > (0,0,1,0,1) strong [Sphinx] > DEFAULT
+                SingleStyledText('strong emphasis')
+              SingleStyledText(', ')
+              MixedStyledText('inline literals', style='monospaced')   <literal>
+                   > (0,0,1,0,1) monospaced [Sphinx] > DEFAULT
+                SingleStyledText('inline literals')
+              SingleStyledText(', standalone hyperlinks (')
+              MixedStyledText('http://www.python.org', style='external link')   <reference>
+                   > (0,0,1,0,1) external hyperlink [Sphinx] > DEFAULT
+                SingleStyledText('http://www.python.org')
+              SingleStyledText('), external hyperlinks (')
+              MixedStyledText('Python', style='external link')   <reference>
+                   > (0,0,1,0,1) external hyperlink [Sphinx] > DEFAULT
+                SingleStyledText('Python')
+              SingleStyledText('), internal cross-references (')
+              Reference('example')   <reference>
+                   > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                MixedStyledText('example')
+                  SingleStyledText('example')
+              SingleStyledText('), external hyperlinks with embe...')
+              MixedStyledText('Python web site', style='external link')   <reference>
+                   > (0,0,1,0,1) external hyperlink [Sphinx] > DEFAULT
+                SingleStyledText('Python web site')
+              SingleStyledText('), footnote references (manually...')
+              NoteMarkerByID('1', id='footnote-reference-1', style='footnote')   <footnote_reference>
+                   > (0,0,1,0,1) footnote marker [Sphinx] > linked reference
+                     (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                SingleStyledText('1')
+              SingleStyledText(', anonymous auto-numbered')
+              NoteMarkerByID('2', id='footnote-reference-2', style='footnote')   <footnote_reference>
+                   > (0,0,1,0,1) footnote marker [Sphinx] > linked reference
+                     (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                SingleStyledText('2')
+              SingleStyledText(', labeled auto-numbered')
+              NoteMarkerByID('3', id='footnote-reference-3', style='footnote')   <footnote_reference>
+                   > (0,0,1,0,1) footnote marker [Sphinx] > linked reference
+                     (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                SingleStyledText('3')
+              SingleStyledText(', or symbolic')
+              NoteMarkerByID('4', id='footnote-reference-4', style='footnote')   <footnote_reference>
                    > (0,0,1,0,1) footnote marker [Sphinx] > linked reference
                      (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
                 SingleStyledText('4')
@@ -140,11 +485,347 @@
                    > (0,0,1,0,1) emphasis [Sphinx] > DEFAULT
                 SingleStyledText('Text')
               SingleStyledText('.  Problems are indicated by ')
-              SingleStyledText('|problematic|', id='id10', style='error')   <problematic>
+          MixedStyledText('Paragraphs contain text and may ...')
+            MixedStyledText('Paragraphs contain text and may ...')
+              SingleStyledText('Paragraphs contain text and may ...')
+              MixedStyledText('emphasis', style='emphasis')   <emphasis>
+                   > (0,0,1,0,1) emphasis [Sphinx] > DEFAULT
+                SingleStyledText('emphasis')
+              SingleStyledText(', ')
+              MixedStyledText('strong emphasis', style='strong')   <strong>
+                   > (0,0,1,0,1) strong [Sphinx] > DEFAULT
+                SingleStyledText('strong emphasis')
+              SingleStyledText(', ')
+              MixedStyledText('inline literals', style='monospaced')   <literal>
+                   > (0,0,1,0,1) monospaced [Sphinx] > DEFAULT
+                SingleStyledText('inline literals')
+              SingleStyledText(', standalone hyperlinks (')
+              MixedStyledText('http://www.python.org', style='external link')   <reference>
+                   > (0,0,1,0,1) external hyperlink [Sphinx] > DEFAULT
+                SingleStyledText('http://www.python.org')
+              SingleStyledText('), external hyperlinks (')
+              MixedStyledText('Python', style='external link')   <reference>
+                   > (0,0,1,0,1) external hyperlink [Sphinx] > DEFAULT
+                SingleStyledText('Python')
+              SingleStyledText('), internal cross-references (')
+              Reference('example')   <reference>
+                   > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                MixedStyledText('example')
+                  SingleStyledText('example')
+              SingleStyledText('), external hyperlinks with embe...')
+              MixedStyledText('Python web site', style='external link')   <reference>
+                   > (0,0,1,0,1) external hyperlink [Sphinx] > DEFAULT
+                SingleStyledText('Python web site')
+              SingleStyledText('), footnote references (manually...')
+              NoteMarkerByID('1', id='footnote-reference-1', style='footnote')   <footnote_reference>
+                   > (0,0,1,0,1) footnote marker [Sphinx] > linked reference
+                     (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                SingleStyledText('1')
+              SingleStyledText(', anonymous auto-numbered')
+              NoteMarkerByID('2', id='footnote-reference-2', style='footnote')   <footnote_reference>
+                   > (0,0,1,0,1) footnote marker [Sphinx] > linked reference
+                     (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                SingleStyledText('2')
+              SingleStyledText(', labeled auto-numbered')
+              NoteMarkerByID('3', id='footnote-reference-3', style='footnote')   <footnote_reference>
+                   > (0,0,1,0,1) footnote marker [Sphinx] > linked reference
+                     (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                SingleStyledText('3')
+              SingleStyledText(', or symbolic')
+              NoteMarkerByID('4', id='footnote-reference-4', style='footnote')   <footnote_reference>
+                   > (0,0,1,0,1) footnote marker [Sphinx] > linked reference
+                     (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                SingleStyledText('4')
+              SingleStyledText('), and substitution references (')
+              InlineImage('../images/biohazard.png')   <image>
+                   x (0,0,0,0,2) inline image
+              SingleStyledText('). Character-level inline markup...')
+              MixedStyledText('re', style='emphasis')   <emphasis>
+                   > (0,0,1,0,1) emphasis [Sphinx] > DEFAULT
+                SingleStyledText('re')
+              MixedStyledText('Structured', style='monospaced')   <literal>
+                   > (0,0,1,0,1) monospaced [Sphinx] > DEFAULT
+                SingleStyledText('Structured')
+              MixedStyledText('Text', style='emphasis')   <emphasis>
+                   > (0,0,1,0,1) emphasis [Sphinx] > DEFAULT
+                SingleStyledText('Text')
+              SingleStyledText('.  Problems are indicated by ')
+          MixedStyledText('Paragraphs contain text and may ...')
+            MixedStyledText('Paragraphs contain text and may ...')
+              SingleStyledText('Paragraphs contain text and may ...')
+              MixedStyledText('emphasis', style='emphasis')   <emphasis>
+                   > (0,0,1,0,1) emphasis [Sphinx] > DEFAULT
+                SingleStyledText('emphasis')
+              SingleStyledText(', ')
+              MixedStyledText('strong emphasis', style='strong')   <strong>
+                   > (0,0,1,0,1) strong [Sphinx] > DEFAULT
+                SingleStyledText('strong emphasis')
+              SingleStyledText(', ')
+              MixedStyledText('inline literals', style='monospaced')   <literal>
+                   > (0,0,1,0,1) monospaced [Sphinx] > DEFAULT
+                SingleStyledText('inline literals')
+              SingleStyledText(', standalone hyperlinks (')
+              MixedStyledText('http://www.python.org', style='external link')   <reference>
+                   > (0,0,1,0,1) external hyperlink [Sphinx] > DEFAULT
+                SingleStyledText('http://www.python.org')
+              SingleStyledText('), external hyperlinks (')
+              MixedStyledText('Python', style='external link')   <reference>
+                   > (0,0,1,0,1) external hyperlink [Sphinx] > DEFAULT
+                SingleStyledText('Python')
+              SingleStyledText('), internal cross-references (')
+              Reference('example')   <reference>
+                   > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                MixedStyledText('example')
+                  SingleStyledText('example')
+              SingleStyledText('), external hyperlinks with embe...')
+              MixedStyledText('Python web site', style='external link')   <reference>
+                   > (0,0,1,0,1) external hyperlink [Sphinx] > DEFAULT
+                SingleStyledText('Python web site')
+              SingleStyledText('), footnote references (manually...')
+              NoteMarkerByID('1', id='footnote-reference-1', style='footnote')   <footnote_reference>
+                   > (0,0,1,0,1) footnote marker [Sphinx] > linked reference
+                     (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                SingleStyledText('1')
+              SingleStyledText(', anonymous auto-numbered')
+              NoteMarkerByID('2', id='footnote-reference-2', style='footnote')   <footnote_reference>
+                   > (0,0,1,0,1) footnote marker [Sphinx] > linked reference
+                     (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                SingleStyledText('2')
+              SingleStyledText(', labeled auto-numbered')
+              NoteMarkerByID('3', id='footnote-reference-3', style='footnote')   <footnote_reference>
+                   > (0,0,1,0,1) footnote marker [Sphinx] > linked reference
+                     (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                SingleStyledText('3')
+              SingleStyledText(', or symbolic')
+              NoteMarkerByID('4', id='footnote-reference-4', style='footnote')   <footnote_reference>
+                   > (0,0,1,0,1) footnote marker [Sphinx] > linked reference
+                     (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                SingleStyledText('4')
+              SingleStyledText('), and substitution references (')
+              InlineImage('../images/biohazard.png')   <image>
+                   x (0,0,0,0,2) inline image
+              SingleStyledText('). Character-level inline markup...')
+              MixedStyledText('re', style='emphasis')   <emphasis>
+                   > (0,0,1,0,1) emphasis [Sphinx] > DEFAULT
+                SingleStyledText('re')
+              MixedStyledText('Structured', style='monospaced')   <literal>
+                   > (0,0,1,0,1) monospaced [Sphinx] > DEFAULT
+                SingleStyledText('Structured')
+              MixedStyledText('Text', style='emphasis')   <emphasis>
+                   > (0,0,1,0,1) emphasis [Sphinx] > DEFAULT
+                SingleStyledText('Text')
+              SingleStyledText('.  Problems are indicated by ')
+              SingleStyledText('|problematic|', id='problematic-1', style='error')   <problematic>
+                   > (0,0,1,0,1) error [Sphinx] > DEFAULT
+              SingleStyledText(' text (generated by processing e...')
+          MixedStyledText('Paragraphs contain text and may ...')
+            MixedStyledText('Paragraphs contain text and may ...')
+              SingleStyledText('Paragraphs contain text and may ...')
+              MixedStyledText('emphasis', style='emphasis')   <emphasis>
+                   > (0,0,1,0,1) emphasis [Sphinx] > DEFAULT
+                SingleStyledText('emphasis')
+              SingleStyledText(', ')
+              MixedStyledText('strong emphasis', style='strong')   <strong>
+                   > (0,0,1,0,1) strong [Sphinx] > DEFAULT
+                SingleStyledText('strong emphasis')
+              SingleStyledText(', ')
+              MixedStyledText('inline literals', style='monospaced')   <literal>
+                   > (0,0,1,0,1) monospaced [Sphinx] > DEFAULT
+                SingleStyledText('inline literals')
+              SingleStyledText(', standalone hyperlinks (')
+              MixedStyledText('http://www.python.org', style='external link')   <reference>
+                   > (0,0,1,0,1) external hyperlink [Sphinx] > DEFAULT
+                SingleStyledText('http://www.python.org')
+              SingleStyledText('), external hyperlinks (')
+              MixedStyledText('Python', style='external link')   <reference>
+                   > (0,0,1,0,1) external hyperlink [Sphinx] > DEFAULT
+                SingleStyledText('Python')
+              SingleStyledText('), internal cross-references (')
+              Reference('example')   <reference>
+                   > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                MixedStyledText('example')
+                  SingleStyledText('example')
+              SingleStyledText('), external hyperlinks with embe...')
+              MixedStyledText('Python web site', style='external link')   <reference>
+                   > (0,0,1,0,1) external hyperlink [Sphinx] > DEFAULT
+                SingleStyledText('Python web site')
+              SingleStyledText('), footnote references (manually...')
+              NoteMarkerByID('1', id='footnote-reference-1', style='footnote')   <footnote_reference>
+                   > (0,0,1,0,1) footnote marker [Sphinx] > linked reference
+                     (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                SingleStyledText('1')
+              SingleStyledText(', anonymous auto-numbered')
+              NoteMarkerByID('2', id='footnote-reference-2', style='footnote')   <footnote_reference>
+                   > (0,0,1,0,1) footnote marker [Sphinx] > linked reference
+                     (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                SingleStyledText('2')
+              SingleStyledText(', labeled auto-numbered')
+              NoteMarkerByID('3', id='footnote-reference-3', style='footnote')   <footnote_reference>
+                   > (0,0,1,0,1) footnote marker [Sphinx] > linked reference
+                     (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                SingleStyledText('3')
+              SingleStyledText(', or symbolic')
+              NoteMarkerByID('4', id='footnote-reference-4', style='footnote')   <footnote_reference>
+                   > (0,0,1,0,1) footnote marker [Sphinx] > linked reference
+                     (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                SingleStyledText('4')
+              SingleStyledText('), and substitution references (')
+              InlineImage('../images/biohazard.png')   <image>
+                   x (0,0,0,0,2) inline image
+              SingleStyledText('). Character-level inline markup...')
+              MixedStyledText('re', style='emphasis')   <emphasis>
+                   > (0,0,1,0,1) emphasis [Sphinx] > DEFAULT
+                SingleStyledText('re')
+              MixedStyledText('Structured', style='monospaced')   <literal>
+                   > (0,0,1,0,1) monospaced [Sphinx] > DEFAULT
+                SingleStyledText('Structured')
+              MixedStyledText('Text', style='emphasis')   <emphasis>
+                   > (0,0,1,0,1) emphasis [Sphinx] > DEFAULT
+                SingleStyledText('Text')
+              SingleStyledText('.  Problems are indicated by ')
+              SingleStyledText('|problematic|', id='problematic-1', style='error')   <problematic>
+                   > (0,0,1,0,1) error [Sphinx] > DEFAULT
+              SingleStyledText(' text (generated by processing e...')
+          MixedStyledText('Paragraphs contain text and may ...')
+            MixedStyledText('Paragraphs contain text and may ...')
+              SingleStyledText('Paragraphs contain text and may ...')
+              MixedStyledText('emphasis', style='emphasis')   <emphasis>
+                   > (0,0,1,0,1) emphasis [Sphinx] > DEFAULT
+                SingleStyledText('emphasis')
+              SingleStyledText(', ')
+              MixedStyledText('strong emphasis', style='strong')   <strong>
+                   > (0,0,1,0,1) strong [Sphinx] > DEFAULT
+                SingleStyledText('strong emphasis')
+              SingleStyledText(', ')
+              MixedStyledText('inline literals', style='monospaced')   <literal>
+                   > (0,0,1,0,1) monospaced [Sphinx] > DEFAULT
+                SingleStyledText('inline literals')
+              SingleStyledText(', standalone hyperlinks (')
+              MixedStyledText('http://www.python.org', style='external link')   <reference>
+                   > (0,0,1,0,1) external hyperlink [Sphinx] > DEFAULT
+                SingleStyledText('http://www.python.org')
+              SingleStyledText('), external hyperlinks (')
+              MixedStyledText('Python', style='external link')   <reference>
+                   > (0,0,1,0,1) external hyperlink [Sphinx] > DEFAULT
+                SingleStyledText('Python')
+              SingleStyledText('), internal cross-references (')
+              Reference('example')   <reference>
+                   > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                MixedStyledText('example')
+                  SingleStyledText('example')
+              SingleStyledText('), external hyperlinks with embe...')
+              MixedStyledText('Python web site', style='external link')   <reference>
+                   > (0,0,1,0,1) external hyperlink [Sphinx] > DEFAULT
+                SingleStyledText('Python web site')
+              SingleStyledText('), footnote references (manually...')
+              NoteMarkerByID('1', id='footnote-reference-1', style='footnote')   <footnote_reference>
+                   > (0,0,1,0,1) footnote marker [Sphinx] > linked reference
+                     (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                SingleStyledText('1')
+              SingleStyledText(', anonymous auto-numbered')
+              NoteMarkerByID('2', id='footnote-reference-2', style='footnote')   <footnote_reference>
+                   > (0,0,1,0,1) footnote marker [Sphinx] > linked reference
+                     (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                SingleStyledText('2')
+              SingleStyledText(', labeled auto-numbered')
+              NoteMarkerByID('3', id='footnote-reference-3', style='footnote')   <footnote_reference>
+                   > (0,0,1,0,1) footnote marker [Sphinx] > linked reference
+                     (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                SingleStyledText('3')
+              SingleStyledText(', or symbolic')
+              NoteMarkerByID('4', id='footnote-reference-4', style='footnote')   <footnote_reference>
+                   > (0,0,1,0,1) footnote marker [Sphinx] > linked reference
+                     (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                SingleStyledText('4')
+              SingleStyledText('), and substitution references (')
+              InlineImage('../images/biohazard.png')   <image>
+                   x (0,0,0,0,2) inline image
+              SingleStyledText('). Character-level inline markup...')
+              MixedStyledText('re', style='emphasis')   <emphasis>
+                   > (0,0,1,0,1) emphasis [Sphinx] > DEFAULT
+                SingleStyledText('re')
+              MixedStyledText('Structured', style='monospaced')   <literal>
+                   > (0,0,1,0,1) monospaced [Sphinx] > DEFAULT
+                SingleStyledText('Structured')
+              MixedStyledText('Text', style='emphasis')   <emphasis>
+                   > (0,0,1,0,1) emphasis [Sphinx] > DEFAULT
+                SingleStyledText('Text')
+              SingleStyledText('.  Problems are indicated by ')
+              SingleStyledText('|problematic|', id='problematic-1', style='error')   <problematic>
                    > (0,0,1,0,1) error [Sphinx] > DEFAULT
               SingleStyledText(' text (generated by processing e...')
       Paragraph('The default role for interpreted...', id='example')   columns_two.rst:16   <paragraph>
            > (0,0,0,0,2) body [Sphinx] > default
+          MixedStyledText('The default role for interpreted...')
+            MixedStyledText('The default role for interpreted...')
+              SingleStyledText('The default role for interpreted...')
+          MixedStyledText('The default role for interpreted...')
+            MixedStyledText('The default role for interpreted...')
+              SingleStyledText('The default role for interpreted...')
+              MixedStyledText('Title Reference', style='title reference')   <title_reference>
+                   > (0,0,1,0,1) title reference [Sphinx] > DEFAULT
+                SingleStyledText('Title Reference')
+              SingleStyledText('.  Here are some explicit interp...')
+          MixedStyledText('The default role for interpreted...')
+            MixedStyledText('The default role for interpreted...')
+              SingleStyledText('The default role for interpreted...')
+              MixedStyledText('Title Reference', style='title reference')   <title_reference>
+                   > (0,0,1,0,1) title reference [Sphinx] > DEFAULT
+                SingleStyledText('Title Reference')
+              SingleStyledText('.  Here are some explicit interp...')
+          MixedStyledText('The default role for interpreted...')
+            MixedStyledText('The default role for interpreted...')
+              SingleStyledText('The default role for interpreted...')
+              MixedStyledText('Title Reference', style='title reference')   <title_reference>
+                   > (0,0,1,0,1) title reference [Sphinx] > DEFAULT
+                SingleStyledText('Title Reference')
+              SingleStyledText('.  Here are some explicit interp...')
+              MixedStyledText('PEP 287', style='external link')   <reference>
+                   > (0,0,1,0,1) external hyperlink [Sphinx] > DEFAULT
+                SingleStyledText('PEP 287')
+              SingleStyledText('); an RFC reference (')
+          MixedStyledText('The default role for interpreted...')
+            MixedStyledText('The default role for interpreted...')
+              SingleStyledText('The default role for interpreted...')
+              MixedStyledText('Title Reference', style='title reference')   <title_reference>
+                   > (0,0,1,0,1) title reference [Sphinx] > DEFAULT
+                SingleStyledText('Title Reference')
+              SingleStyledText('.  Here are some explicit interp...')
+              MixedStyledText('PEP 287', style='external link')   <reference>
+                   > (0,0,1,0,1) external hyperlink [Sphinx] > DEFAULT
+                SingleStyledText('PEP 287')
+              SingleStyledText('); an RFC reference (')
+              MixedStyledText('RFC 2822', style='external link')   <reference>
+                   > (0,0,1,0,1) external hyperlink [Sphinx] > DEFAULT
+                SingleStyledText('RFC 2822')
+              SingleStyledText('); a ')
+              Subscript('subscript', style=TextStyle)   <subscript>
+                MixedStyledText('subscript')
+                  SingleStyledText('subscript')
+              SingleStyledText('; a ')
+          MixedStyledText('The default role for interpreted...')
+            MixedStyledText('The default role for interpreted...')
+              SingleStyledText('The default role for interpreted...')
+              MixedStyledText('Title Reference', style='title reference')   <title_reference>
+                   > (0,0,1,0,1) title reference [Sphinx] > DEFAULT
+                SingleStyledText('Title Reference')
+              SingleStyledText('.  Here are some explicit interp...')
+              MixedStyledText('PEP 287', style='external link')   <reference>
+                   > (0,0,1,0,1) external hyperlink [Sphinx] > DEFAULT
+                SingleStyledText('PEP 287')
+              SingleStyledText('); an RFC reference (')
+              MixedStyledText('RFC 2822', style='external link')   <reference>
+                   > (0,0,1,0,1) external hyperlink [Sphinx] > DEFAULT
+                SingleStyledText('RFC 2822')
+              SingleStyledText('); a ')
+              Subscript('subscript', style=TextStyle)   <subscript>
+                MixedStyledText('subscript')
+                  SingleStyledText('subscript')
+              SingleStyledText('; a ')
+              Superscript('superscript', style=TextStyle)   <superscript>
+                MixedStyledText('superscript')
+                  SingleStyledText('superscript')
+              SingleStyledText('; and explicit roles for ')
           MixedStyledText('The default role for interpreted...')
             MixedStyledText('The default role for interpreted...')
               SingleStyledText('The default role for interpreted...')
@@ -359,26 +1040,3 @@
                       MixedStyledText('Nested item 3')
                         MixedStyledText('Nested item 3')
                           SingleStyledText('Nested item 3')
-#### UpExpandingContainer('header')
-  StaticGroupedFlowables()
-    Header('​ ​')
-         > (0,0,0,0,2) header [Sphinx] > header_footer
-        MixedStyledText('​ ​')
-          MixedStyledText('​ ​')
-            Field('​')
-              SingleStyledText('​')
-            SingleStyledText(' ')
-            Field('​')
-              SingleStyledText('​')
-#### DownExpandingContainer('footer')
-  StaticGroupedFlowables()
-    Footer('	1/1')
-         > (0,0,0,0,2) footer [Sphinx] > header_footer
-        MixedStyledText('	1/1')
-          MixedStyledText('	1/1')
-            Tab('	')
-            Field('1')
-              SingleStyledText('1')
-            SingleStyledText('/')
-            Field('1')
-              SingleStyledText('1')

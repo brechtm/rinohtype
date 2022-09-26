@@ -19,13 +19,17 @@ from .diffpdf import diff_pdf
 from .pdf_linkchecker import check_pdf_links, diff_outlines
 from .util import in_directory
 
+from rinoh import register_template
+from rinoh.attribute import OverrideDefault, Var
+from rinoh.dimension import CM
 from rinoh.frontend.commonmark import CommonMarkReader
 from rinoh.frontend.rst import ReStructuredTextReader, from_doctree
 from rinoh.frontend.sphinx import nodes    # load Sphinx docutils nodes
-from rinoh.attribute import OverrideDefault, Var
+from rinoh.structure import TableOfContentsSection
 from rinoh.template import (DocumentTemplate, TemplateConfiguration,
                             ContentsPartTemplate, BodyPageTemplate,
-                            TemplateConfigurationFile)
+                            TemplateConfigurationFile, TitlePageTemplate,
+                            TitlePartTemplate, DocumentPartTemplate)
 
 
 __all__ = ['render_doctree', 'render_md_file', 'render_rst_file',
@@ -44,6 +48,34 @@ class MinimalTemplate(DocumentTemplate):
                             header_text=None,
                             footer_text=None)
     contents_page = BodyPageTemplate(base='page')
+
+
+register_template('minimal', MinimalTemplate)
+
+
+class MinimalFrontMatter(DocumentPartTemplate):
+    toc_section = TableOfContentsSection()
+
+    def _flowables(self, document):
+        yield self.toc_section
+
+
+class MinimalSphinxTemplate(DocumentTemplate):
+    stylesheet = OverrideDefault('sphinx_base14')
+    parts = OverrideDefault(['title', 'front_matter', 'contents'])
+
+    title = TitlePartTemplate()
+    front_matter = MinimalFrontMatter(page_number_format='continue')
+    contents = ContentsPartTemplate(page_number_format='continue')
+
+    page = BodyPageTemplate(page_size=Var('paper_size'))
+    title_page = TitlePageTemplate(base='page',
+                                   top_margin=8*CM)
+    front_matter_page = BodyPageTemplate(base='page')
+    contents_page = BodyPageTemplate(base='page')
+
+
+register_template('minimal_sphinx', MinimalSphinxTemplate)
 
 
 def render_md_file(md_path, out_filename, reference_path):

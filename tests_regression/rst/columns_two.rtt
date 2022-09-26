@@ -1,6 +1,6 @@
 [TEMPLATE_CONFIGURATION]
 name=columns
-template=article
+template=minimal
 stylesheet=columns.rts
 
 parts=contents

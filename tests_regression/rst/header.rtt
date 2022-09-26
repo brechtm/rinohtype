@@ -1,6 +1,6 @@
 [TEMPLATE_CONFIGURATION]
 name=header
-template=article
+template=minimal
 stylesheet=header.rts
 
 parts=contents

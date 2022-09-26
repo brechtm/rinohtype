@@ -1,6 +1,6 @@
 [TEMPLATE_CONFIGURATION]
 name=continuepagenumberformat
-template=article
+template=minimal_sphinx
 stylesheet=stylesheet.rts
 
 parts = title front_matter contents
