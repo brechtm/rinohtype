@@ -920,7 +920,7 @@ table, limited to the cells not spanning multiple rows:</p>
 </code></pre></div>
 </div>
 <p>The argument passed as <em>row_index</em> is a slice object that is used for extended
-indexing<a class="footnote-reference brackets" href="#slice" id="id1">1</a>. To make this work, <code class="xref py py-attr docutils literal notranslate"><span class="pre">TableCell.row_index</span></code> is an
+indexing<a class="footnote-reference brackets" href="#slice" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>. To make this work, <code class="xref py py-attr docutils literal notranslate"><span class="pre">TableCell.row_index</span></code> is an
 object with a custom <code class="xref py py-meth docutils literal notranslate"><span class="pre">__eq__()</span></code> that allows comparison to a slice.</p>
 <p>Rinohtype borrows CSS’s concept of <a class="reference external" href="https://en.wikipedia.org/wiki/Cascading_St174yle_Sheets#Specificity">specificity</a> to determine the “winning”
 selector when multiple selectors match a given document element. Each part of
@@ -1261,12 +1261,13 @@ it is defined (within brackets) and the name of its base style (after <code clas
 ...
 </code></pre></div>
 </div>
-<dl class="footnote brackets">
-<dt class="label" id="slice"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
-<dd><p>Indexing a list like this <code class="docutils literal notranslate"><span class="pre">lst[slice(0,</span> <span class="pre">None,</span> <span class="pre">2)]</span></code> is equivalent
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="slice" role="note">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
+<p>Indexing a list like this <code class="docutils literal notranslate"><span class="pre">lst[slice(0,</span> <span class="pre">None,</span> <span class="pre">2)]</span></code> is equivalent
 to <code class="docutils literal notranslate"><span class="pre">lst[0::2]</span></code>.</p>
-</dd>
-</dl>
+</aside>
+</aside>
 
 
 

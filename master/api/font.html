@@ -1656,8 +1656,8 @@
 <p>This is a base class for classes that parse different font formats. See
 <code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.font.type1</span></code> and <code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.font.opentype</span></code>.</p>
 <dl class="field-list simple">
-<dt class="field-odd" id="rinoh.font.Font-parameters">Parameters<a class="headerlink" href="#rinoh.font.Font-parameters" title="Permalink to this headline">¶</a></dt>
-<dd class="field-odd"><dl class="api-field highlight simple">
+<dt class="field-odd" id="rinoh.font.Font-parameters">Parameters<a class="headerlink" href="#rinoh.font.Font-parameters" title="Permalink to this headline">¶</a><span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple api-field highlight">
 <dt id="rinoh.font.Font.__init__.filename"><span class="sig-name descname">filename</span><span class="p"> : </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a></span></span><a class="headerlink" href="#rinoh.font.Font.__init__.filename" title="Permalink to this definition">¶</a></dt><dd><p>filename of the font file to load</p>
 </dd>
 <dt id="rinoh.font.Font.__init__.weight"><span class="sig-name descname">weight</span><span class="p"> : </span><span class="desctype"><span class="desctype"><a class="reference internal" href="#rinoh.font.style.FontWeight" title="rinoh.font.style.FontWeight (Python class) — Accepts: hairline, thin, ultra-light, extra-light, light, regular, normal, book, roman, medium, semi-bold, demi-bold, bold, extra-bold, ultra-bold, black, heavy, extra-black, ultra-black">FontWeight</a></span></span><a class="headerlink" href="#rinoh.font.Font.__init__.weight" title="Permalink to this definition">¶</a></dt><dd><p>weight of the font</p>
@@ -1684,18 +1684,18 @@ glyph ID (and thus support more than 256 glyphs).</p>
 <cite>normal</cite> variant is returned instead. If that is not present either, an
 exception is raised.</p>
 <dl class="field-list simple">
-<dt class="field-odd" id="rinoh.font.Font.get_glyph_metrics-parameters">Parameters<a class="headerlink" href="#rinoh.font.Font.get_glyph_metrics-parameters" title="Permalink to this headline">¶</a></dt>
-<dd class="field-odd"><dl class="api-field highlight simple">
+<dt class="field-odd" id="rinoh.font.Font.get_glyph_metrics-parameters">Parameters<a class="headerlink" href="#rinoh.font.Font.get_glyph_metrics-parameters" title="Permalink to this headline">¶</a><span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple api-field highlight">
 <dt id="rinoh.font.Font.get_glyph_metrics.char"><span class="sig-name descname">char</span><span class="p"> : </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a> of length 1</span></span><a class="headerlink" href="#rinoh.font.Font.get_glyph_metrics.char" title="Permalink to this definition">¶</a></dt><dd><p>the character for which to find the glyph</p>
 </dd>
 <dt id="rinoh.font.Font.get_glyph_metrics.variant"><span class="sig-name descname">variant</span><span class="p"> : </span><span class="desctype"><span class="desctype"><a class="reference internal" href="#rinoh.font.style.FontVariant" title="rinoh.font.style.FontVariant (Python class) — Accepts: normal, small capital, oldstyle figures">FontVariant</a></span></span><a class="headerlink" href="#rinoh.font.Font.get_glyph_metrics.variant" title="Permalink to this definition">¶</a></dt><dd><p>the variant of the glyph to return</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even" id="rinoh.font.Font.get_glyph_metrics-returns">Returns<a class="headerlink" href="#rinoh.font.Font.get_glyph_metrics-returns" title="Permalink to this headline">¶</a></dt>
+<dt class="field-even" id="rinoh.font.Font.get_glyph_metrics-returns">Returns<a class="headerlink" href="#rinoh.font.Font.get_glyph_metrics-returns" title="Permalink to this headline">¶</a><span class="colon">:</span></dt>
 <dd class="field-even"><p><em>GlyphMetrics</em> – the requested glyph metrics</p>
 </dd>
-<dt class="field-odd" id="rinoh.font.Font.get_glyph_metrics-raises">Raises<a class="headerlink" href="#rinoh.font.Font.get_glyph_metrics-raises" title="Permalink to this headline">¶</a></dt>
+<dt class="field-odd" id="rinoh.font.Font.get_glyph_metrics-raises">Raises<a class="headerlink" href="#rinoh.font.Font.get_glyph_metrics-raises" title="Permalink to this headline">¶</a><span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>MissingGlyphException</strong> – when the requested glyph is not present in
     the font</p>
 </dd>
@@ -1709,15 +1709,15 @@ exception is raised.</p>
 <p>If no ligature is defined in the font for the given glyphs, return
 <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
 <dl class="field-list simple">
-<dt class="field-odd" id="rinoh.font.Font.get_ligature-parameters">Parameters<a class="headerlink" href="#rinoh.font.Font.get_ligature-parameters" title="Permalink to this headline">¶</a></dt>
-<dd class="field-odd"><dl class="api-field highlight simple">
+<dt class="field-odd" id="rinoh.font.Font.get_ligature-parameters">Parameters<a class="headerlink" href="#rinoh.font.Font.get_ligature-parameters" title="Permalink to this headline">¶</a><span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple api-field highlight">
 <dt id="rinoh.font.Font.get_ligature.glyph"><span class="sig-name descname">glyph</span><span class="p"> : </span><span class="desctype"><span class="desctype">GlyphMetrics</span></span><a class="headerlink" href="#rinoh.font.Font.get_ligature.glyph" title="Permalink to this definition">¶</a></dt><dd><p>the first of the glyphs to combine</p>
 </dd>
 <dt id="rinoh.font.Font.get_ligature.successor_glyph"><span class="sig-name descname">successor_glyph</span><span class="p"> : </span><span class="desctype"><span class="desctype">GlyphMetrics</span></span><a class="headerlink" href="#rinoh.font.Font.get_ligature.successor_glyph" title="Permalink to this definition">¶</a></dt><dd><p>the second of the glyphs to combine</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even" id="rinoh.font.Font.get_ligature-returns">Returns<a class="headerlink" href="#rinoh.font.Font.get_ligature-returns" title="Permalink to this headline">¶</a></dt>
+<dt class="field-even" id="rinoh.font.Font.get_ligature-returns">Returns<a class="headerlink" href="#rinoh.font.Font.get_ligature-returns" title="Permalink to this headline">¶</a><span class="colon">:</span></dt>
 <dd class="field-even"><p><em>GlyphMetrics or None</em> – the ligature to replace the given glyphs</p>
 </dd>
 </dl>
@@ -1728,15 +1728,15 @@ exception is raised.</p>
 <span class="sig-name descname"><span class="pre">get_kerning</span></span><span class="sig-paren">(</span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#rinoh.font.Font.get_kerning.a" title="rinoh.font.Font.get_kerning.a (Python parameter) — the first of the glyphs"><span class="n"><span class="pre">a</span></span></a></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#rinoh.font.Font.get_kerning.b" title="rinoh.font.Font.get_kerning.b (Python parameter) — the second of the glyphs"><span class="n"><span class="pre">b</span></span></a></em></span><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.font.Font.get_kerning" title="Permalink to this definition">¶</a></dt>
 <dd><p>Look up the kerning for two glyphs</p>
 <dl class="field-list simple">
-<dt class="field-odd" id="rinoh.font.Font.get_kerning-parameters">Parameters<a class="headerlink" href="#rinoh.font.Font.get_kerning-parameters" title="Permalink to this headline">¶</a></dt>
-<dd class="field-odd"><dl class="api-field highlight simple">
+<dt class="field-odd" id="rinoh.font.Font.get_kerning-parameters">Parameters<a class="headerlink" href="#rinoh.font.Font.get_kerning-parameters" title="Permalink to this headline">¶</a><span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple api-field highlight">
 <dt id="rinoh.font.Font.get_kerning.a"><span class="sig-name descname">a</span><span class="p"> : </span><span class="desctype"><span class="desctype">GlyphMetrics</span></span><a class="headerlink" href="#rinoh.font.Font.get_kerning.a" title="Permalink to this definition">¶</a></dt><dd><p>the first of the glyphs</p>
 </dd>
 <dt id="rinoh.font.Font.get_kerning.b"><span class="sig-name descname">b</span><span class="p"> : </span><span class="desctype"><span class="desctype">GlyphMetrics</span></span><a class="headerlink" href="#rinoh.font.Font.get_kerning.b" title="Permalink to this definition">¶</a></dt><dd><p>the second of the glyphs</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even" id="rinoh.font.Font.get_kerning-returns">Returns<a class="headerlink" href="#rinoh.font.Font.get_kerning-returns" title="Permalink to this headline">¶</a></dt>
+<dt class="field-even" id="rinoh.font.Font.get_kerning-returns">Returns<a class="headerlink" href="#rinoh.font.Font.get_kerning-returns" title="Permalink to this headline">¶</a><span class="colon">:</span></dt>
 <dd class="field-even"><p><em>float</em> – the kerning value in font units</p>
 </dd>
 </dl>
@@ -1750,8 +1750,8 @@ exception is raised.</p>
 <dd><p>A set of fonts that share common design features</p>
 <p>The fonts collected in a typeface differ in weight, width and/or slant.</p>
 <dl class="field-list simple">
-<dt class="field-odd" id="rinoh.font.Typeface-parameters">Parameters<a class="headerlink" href="#rinoh.font.Typeface-parameters" title="Permalink to this headline">¶</a></dt>
-<dd class="field-odd"><dl class="api-field highlight simple">
+<dt class="field-odd" id="rinoh.font.Typeface-parameters">Parameters<a class="headerlink" href="#rinoh.font.Typeface-parameters" title="Permalink to this headline">¶</a><span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple api-field highlight">
 <dt><span class="sig-name descname">*fonts</span><span class="p"> : </span><span class="desctype"><a class="reference internal" href="#rinoh.font.Font" title="rinoh.font.Font (Python class) — A collection of glyphs in a particular style"><code class="xref py py-class docutils literal notranslate"><span class="pre">Font</span></code></a></span></dt><dd><p>the fonts that make up this typeface</p>
 </dd>
 </dl>
@@ -1762,7 +1762,7 @@ exception is raised.</p>
 <span class="sig-name descname"><span class="pre">fonts</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.font.Typeface.fonts" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generator yielding all fonts of this typeface</p>
 <dl class="field-list simple">
-<dt class="field-odd" id="rinoh.font.Typeface.fonts-yields">Yields<a class="headerlink" href="#rinoh.font.Typeface.fonts-yields" title="Permalink to this headline">¶</a></dt>
+<dt class="field-odd" id="rinoh.font.Typeface.fonts-yields">Yields<a class="headerlink" href="#rinoh.font.Typeface.fonts-yields" title="Permalink to this headline">¶</a><span class="colon">:</span></dt>
 <dd class="field-odd"><p><em>Font</em> – the next font in this typeface</p>
 </dd>
 </dl>
@@ -1775,8 +1775,8 @@ exception is raised.</p>
 <p>If a font with the given weight, slant and width is available, return
 it. Otherwise, return the font that is closest in style.</p>
 <dl class="field-list simple">
-<dt class="field-odd" id="rinoh.font.Typeface.get_font-parameters">Parameters<a class="headerlink" href="#rinoh.font.Typeface.get_font-parameters" title="Permalink to this headline">¶</a></dt>
-<dd class="field-odd"><dl class="api-field highlight simple">
+<dt class="field-odd" id="rinoh.font.Typeface.get_font-parameters">Parameters<a class="headerlink" href="#rinoh.font.Typeface.get_font-parameters" title="Permalink to this headline">¶</a><span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple api-field highlight">
 <dt id="rinoh.font.Typeface.get_font.weight"><span class="sig-name descname">weight</span><span class="p"> : </span><span class="desctype"><span class="desctype"><a class="reference internal" href="#rinoh.font.style.FontWeight" title="rinoh.font.style.FontWeight (Python class) — Accepts: hairline, thin, ultra-light, extra-light, light, regular, normal, book, roman, medium, semi-bold, demi-bold, bold, extra-bold, ultra-bold, black, heavy, extra-black, ultra-black">FontWeight</a></span></span><a class="headerlink" href="#rinoh.font.Typeface.get_font.weight" title="Permalink to this definition">¶</a></dt><dd><p>weight of the font</p>
 </dd>
 <dt id="rinoh.font.Typeface.get_font.slant"><span class="sig-name descname">slant</span><span class="p"> : </span><span class="desctype"><span class="desctype"><a class="reference internal" href="#rinoh.font.style.FontSlant" title="rinoh.font.style.FontSlant (Python class) — Accepts: upright, oblique, italic">FontSlant</a></span></span><a class="headerlink" href="#rinoh.font.Typeface.get_font.slant" title="Permalink to this definition">¶</a></dt><dd><p>slant of the font</p>
@@ -1785,7 +1785,7 @@ it. Otherwise, return the font that is closest in style.</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even" id="rinoh.font.Typeface.get_font-returns">Returns<a class="headerlink" href="#rinoh.font.Typeface.get_font-returns" title="Permalink to this headline">¶</a></dt>
+<dt class="field-even" id="rinoh.font.Typeface.get_font-returns">Returns<a class="headerlink" href="#rinoh.font.Typeface.get_font-returns" title="Permalink to this headline">¶</a><span class="colon">:</span></dt>
 <dd class="field-even"><p><em>Font</em> – the requested font</p>
 </dd>
 </dl>
