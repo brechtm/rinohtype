@@ -753,7 +753,7 @@ possible, but documentation may be lacking. Please be patient.</p>
 </div>
 <p>The most basic way to use rinohtype in an application is to hook up an included
 frontend, a document template and a style sheet:</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">rinoh.frontend.rst</span> <span class="kn">import</span> <span class="n">ReStructuredTextReader</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">rinoh.frontend.rst</span> <span class="kn">import</span> <span class="n">ReStructuredTextReader</span>
 <span class="kn">from</span> <span class="nn">rinoh.templates</span> <span class="kn">import</span> <span class="n">Article</span>
 
 <span class="c1"># the parser builds a rinohtype document tree</span>
@@ -775,7 +775,7 @@ example above can also be built manually. A <code class="xref py py-class docuti
 list of <code class="xref py py-class docutils literal notranslate"><span class="pre">Flowable</span></code>s, which can have child elements. These children in
 turn can also have children, and so on; together they form a tree.</p>
 <p>Here is an example document tree of a short article:</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">rinoh.document</span> <span class="kn">import</span> <span class="n">DocumentTree</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">rinoh.document</span> <span class="kn">import</span> <span class="n">DocumentTree</span>
 <span class="kn">from</span> <span class="nn">rinoh.styleds</span> <span class="kn">import</span> <span class="o">*</span>
 
 <span class="n">document_tree</span> <span class="o">=</span> <span class="n">DocumentTree</span><span class="p">(</span>
@@ -862,7 +862,7 @@ well suited for short, custom documents however.</p>
   
     Created using
     <a href="https://www.sphinx-doc.org/" target="_blank" rel="noopener">Sphinx</a>
-    5.2.0+/cc77265.
+    5.2.1.
      and
     <a href="https://github.com/jbms/sphinx-immaterial/" target="_blank" rel="noopener">Sphinx-Immaterial</a>
   
@@ -881,6 +881,7 @@ well suited for short, custom documents however.</p>
     
     
       <script src="_static/javascripts/bundle.dc1bded0.min.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
     
   </body>
 </html>
