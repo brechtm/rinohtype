@@ -142,13 +142,13 @@ identifies the :ref:`document template <standard_templates>` to configure.
 
 All document templates consist of a number of document parts. The
 :class:`.Article` template defines only a single part
-(:attr:`~.Article.contents`) where the :class:`.Book` template defines four. The
-order of the parts can be changed, and individual parts can optionally be hidden
-by overriding the :attr:`~.DocumentTemplate.parts` configuration option. The
-configuration above hides the front and back matter parts (commented out using a
-semicolon), for example. Note that empty document parts will not be included in
-the document. For example, when there are no index entries and the index is thus
-empty, the back matter part is omitted.
+(:attr:`~.Article.contents`) where the :class:`.Book` template defines four.
+The order of the parts can be changed, and individual parts can optionally be
+hidden by overriding the :attr:`~.DocumentTemplate.parts` configuration option.
+The configuration above hides the front and back matter parts (commented out
+using a semicolon), for example. Note that empty document parts will not be
+included in the document. For example, when there are no index entries and the
+index is thus empty, the back matter part is omitted.
 
 The template configuration also specifies which style sheet is used for styling
 document elements. The :attr:`~.DocumentTemplate.stylesheet` option takes the
@@ -166,10 +166,10 @@ distinction is only visible when using multiple columns for the page contents
 (see :attr:`~.BodyPageTemplateBase.columns`).
 
 The standard document strings configured by the
-:attr:`~.DocumentTemplate.language` option described above can be overridden
-by user-defined strings in the :class:`~.SectionTitles` and
-:class:`~.AdmonitionTitles` sections of the configuration file. For example, the
-default title for the table of contents section (*Table of Contents*) is
+:attr:`~.DocumentTemplate.language` option described above can be overridden by
+user-defined strings in the :class:`~.SectionTitles` and
+:class:`~.AdmonitionTitles` sections of the configuration file. For example,
+the default title for the table of contents section (*Table of Contents*) is
 replaced with *Contents*. The configuration also sets custom titles for the
 caution and warning admonitions.
 
