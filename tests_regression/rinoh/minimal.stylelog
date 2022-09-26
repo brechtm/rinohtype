@@ -5,12 +5,12 @@
   StaticGroupedFlowables()
 #### DownExpandingContainer('title')
   StaticGroupedFlowables()
-    Paragraph('Title', style='title page title')
+    Paragraph('Minimal styled', style='title page title')
          > (0,0,1,0,2) title page title [Sphinx (article)] > DEFAULT
            (0,0,0,0,2) body [Sphinx] > default
-        MixedStyledText('Title')
-          MixedStyledText('Title')
-            SingleStyledText('Title')
+        MixedStyledText('Minimal styled')
+          MixedStyledText('Minimal styled')
+            SingleStyledText('Minimal styled')
 #### ChainedContainer('column1')
   StaticGroupedFlowables()
     TableOfContentsSection(style='table of contents')
@@ -25,12 +25,16 @@
             SingleStyledText('Table of Contents')
       TableOfContents()   table of contents
            > (0,0,0,0,2) table of contents [Sphinx] > default
-    DocumentTree(id='title')   template_paper_size.rst   <document>
-      Paragraph('This is a paragraph.')   template_paper_size.rst:4   <paragraph>
+    DocumentTree(id='minimal-styled')   minimal.rst   <document>
+      Paragraph('This is an example of a minimall...')   minimal.rst:4   <paragraph>
            > (0,0,0,0,2) body [Sphinx] > default
-          MixedStyledText('This is a paragraph.')
-            MixedStyledText('This is a paragraph.')
-              SingleStyledText('This is a paragraph.')
+          MixedStyledText('This is an example of a minimall...')
+            MixedStyledText('This is an example of a minimall...')
+              SingleStyledText('This is an example of a ')
+              MixedStyledText('minimally', style='emphasis')   <emphasis>
+                   > (0,0,1,0,1) emphasis [Sphinx minimal] > DEFAULT
+                SingleStyledText('minimally')
+              SingleStyledText(' styled document.')
 #### DownExpandingContainer('footer')
   StaticGroupedFlowables()
     Footer('	1/1')

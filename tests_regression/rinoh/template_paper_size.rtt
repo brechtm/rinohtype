@@ -1,6 +1,7 @@
 [TEMPLATE_CONFIGURATION]
 name=My Article
 template=article
+stylesheet=sphinx_article_base14
 
 parts=contents
 

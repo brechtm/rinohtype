@@ -1,5 +1,5 @@
 [STYLESHEET]
-base = sphinx_base14
+base = sphinx_article_base14
 
 
 [VARIABLES]
