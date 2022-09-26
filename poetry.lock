@@ -261,20 +261,20 @@ python-versions = ">=3.7"
 
 [[package]]
 name = "nox"
-version = "2022.1.7"
+version = "2022.8.7"
 description = "Flexible test automation."
 category = "dev"
 optional = false
-python-versions = ">=3.6"
+python-versions = ">=3.7"
 
 [package.dependencies]
-argcomplete = ">=1.9.4,<2.0"
+argcomplete = ">=1.9.4,<3.0"
 colorlog = ">=2.6.1,<7.0.0"
 importlib-metadata = {version = "*", markers = "python_version < \"3.8\""}
 packaging = ">=20.9"
-py = ">=1.4.0,<2.0.0"
+py = ">=1.4,<2.0.0"
 typing-extensions = {version = ">=3.7.4", markers = "python_version < \"3.8\""}
-virtualenv = ">=14.0.0"
+virtualenv = ">=14"
 
 [package.extras]
 tox_to_nox = ["jinja2", "tox"]
@@ -340,7 +340,7 @@ testing = ["pytest", "pytest-benchmark"]
 
 [[package]]
 name = "poetry-core"
-version = "1.1.0b3"
+version = "1.2.0"
 description = "Poetry PEP 517 Build Backend"
 category = "dev"
 optional = false
@@ -676,15 +676,17 @@ test = ["cython", "html5lib", "pytest (>=4.6)", "typed_ast"]
 
 [[package]]
 name = "sphinx-immaterial"
-version = "0.8.1"
+version = "0.9.0"
 description = "Adaptation of mkdocs-material theme for the Sphinx documentation system"
 category = "dev"
 optional = false
 python-versions = ">=3.7"
 
 [package.dependencies]
+appdirs = "*"
 markupsafe = "*"
 pydantic = "*"
+requests = "*"
 sphinx = ">=4.0"
 typing-extensions = "*"
 
@@ -867,7 +869,7 @@ testing = ["func-timeout", "jaraco.itertools", "pytest (>=6)", "pytest-black (>=
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7.0"
-content-hash = "999d221b7affa66d65f46b0aaddeddb89f7e8c6a9fb7419bd8a896fba610d98a"
+content-hash = "fb8f503619877e983144b98feda2d9575f6a99ff8219be819b3f1b14c9c0a3b6"
 
 [metadata.files]
 alabaster = [
@@ -1043,8 +1045,8 @@ markupsafe = [
     {file = "MarkupSafe-2.1.1.tar.gz", hash = "sha256:7f91197cc9e48f989d12e4e6fbc46495c446636dfc81b9ccf50bb0ec74b91d4b"},
 ]
 nox = [
-    {file = "nox-2022.1.7-py3-none-any.whl", hash = "sha256:efee12f02d39405b16d68f60e7a06fe1fc450ae58669d6cdda8c7f48e3bae9e3"},
-    {file = "nox-2022.1.7.tar.gz", hash = "sha256:b375238cebb0b9df2fab74b8d0ce1a50cd80df60ca2e13f38f539454fcd97d7e"},
+    {file = "nox-2022.8.7-py3-none-any.whl", hash = "sha256:96cca88779e08282a699d672258ec01eb7c792d35bbbf538c723172bce23212c"},
+    {file = "nox-2022.8.7.tar.gz", hash = "sha256:1b894940551dc5c389f9271d197ca5d655d40bdc6ccf93ed6880e4042760a34b"},
 ]
 nox-poetry = [
     {file = "nox-poetry-1.0.1.tar.gz", hash = "sha256:8a1b96f2d321e91917f0aa770adb6079f3f3dc8cf01447944977cb78ccafda15"},
@@ -1067,8 +1069,8 @@ pluggy = [
     {file = "pluggy-1.0.0.tar.gz", hash = "sha256:4224373bacce55f955a878bf9cfa763c1e360858e330072059e10bad68531159"},
 ]
 poetry-core = [
-    {file = "poetry-core-1.1.0b3.tar.gz", hash = "sha256:ea257bb0aab15008d1680cc221a46f3457a3b36f3d463736f552497f0b6b9350"},
-    {file = "poetry_core-1.1.0b3-py3-none-any.whl", hash = "sha256:2b65b697e22fc6fc9b60afcadfd4421db796d30d558a003654b5e67e3b262eaa"},
+    {file = "poetry-core-1.2.0.tar.gz", hash = "sha256:ceccec95487e46c63a41761fbac5211b809bca22658e25a049f4c7da96269f71"},
+    {file = "poetry_core-1.2.0-py3-none-any.whl", hash = "sha256:e248d36c1314dd60fbc66390791923ad8b58c629d3e587080b7c1537a1c0d30f"},
 ]
 py = [
     {file = "py-1.11.0-py2.py3-none-any.whl", hash = "sha256:607c53218732647dff4acdfcd50cb62615cedf612e72d1724fb1a0cc6405b378"},
@@ -1203,8 +1205,8 @@ Sphinx = [
     {file = "sphinx-5.2.1-py3-none-any.whl", hash = "sha256:3dcf00fcf82cf91118db9b7177edea4fc01998976f893928d0ab0c58c54be2ca"},
 ]
 sphinx-immaterial = [
-    {file = "sphinx_immaterial-0.8.1-py3-none-any.whl", hash = "sha256:02363a69814c7e52a4a62cc67f4f276dd9da086c377ba0db08d2292a84089f27"},
-    {file = "sphinx_immaterial-0.8.1.tar.gz", hash = "sha256:16cddd6429db2425f4a2f40f68a9b2836bc4ce110a7b466c337d7d657a888148"},
+    {file = "sphinx_immaterial-0.9.0-py3-none-any.whl", hash = "sha256:6d36208cd55ad2bf958c4e4e6f4b12d7fd35a9e1c5a262fcb45d93d41fd6dcbe"},
+    {file = "sphinx_immaterial-0.9.0.tar.gz", hash = "sha256:2f78ca31e4d7d7b4e274768521f53a7f21b46d1bc16bf3294be4fadebd1fe212"},
 ]
 sphinxcontrib-applehelp = [
     {file = "sphinxcontrib-applehelp-1.0.2.tar.gz", hash = "sha256:a072735ec80e7675e3f432fcae8610ecf509c5f1869d17e2eecff44389cdbc58"},
