@@ -676,15 +676,17 @@ test = ["cython", "html5lib", "pytest (>=4.6)", "typed_ast"]
 
 [[package]]
 name = "sphinx-immaterial"
-version = "0.8.1"
+version = "0.9.0"
 description = "Adaptation of mkdocs-material theme for the Sphinx documentation system"
 category = "dev"
 optional = false
 python-versions = ">=3.7"
 
 [package.dependencies]
+appdirs = "*"
 markupsafe = "*"
 pydantic = "*"
+requests = "*"
 sphinx = ">=4.0"
 typing-extensions = "*"
 
@@ -867,7 +869,7 @@ testing = ["func-timeout", "jaraco.itertools", "pytest (>=6)", "pytest-black (>=
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7.0"
-content-hash = "999d221b7affa66d65f46b0aaddeddb89f7e8c6a9fb7419bd8a896fba610d98a"
+content-hash = "fb8f503619877e983144b98feda2d9575f6a99ff8219be819b3f1b14c9c0a3b6"
 
 [metadata.files]
 alabaster = [
@@ -1203,8 +1205,8 @@ Sphinx = [
     {file = "sphinx-5.2.1-py3-none-any.whl", hash = "sha256:3dcf00fcf82cf91118db9b7177edea4fc01998976f893928d0ab0c58c54be2ca"},
 ]
 sphinx-immaterial = [
-    {file = "sphinx_immaterial-0.8.1-py3-none-any.whl", hash = "sha256:02363a69814c7e52a4a62cc67f4f276dd9da086c377ba0db08d2292a84089f27"},
-    {file = "sphinx_immaterial-0.8.1.tar.gz", hash = "sha256:16cddd6429db2425f4a2f40f68a9b2836bc4ce110a7b466c337d7d657a888148"},
+    {file = "sphinx_immaterial-0.9.0-py3-none-any.whl", hash = "sha256:6d36208cd55ad2bf958c4e4e6f4b12d7fd35a9e1c5a262fcb45d93d41fd6dcbe"},
+    {file = "sphinx_immaterial-0.9.0.tar.gz", hash = "sha256:2f78ca31e4d7d7b4e274768521f53a7f21b46d1bc16bf3294be4fadebd1fe212"},
 ]
 sphinxcontrib-applehelp = [
     {file = "sphinxcontrib-applehelp-1.0.2.tar.gz", hash = "sha256:a072735ec80e7675e3f432fcae8610ecf509c5f1869d17e2eecff44389cdbc58"},
