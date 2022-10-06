@@ -1,0 +1,26 @@
+---------------------------------- page 1 ----------------------------------
+#### FlowablesContainer('background')
+  StaticGroupedFlowables()
+#### FootnoteContainer('footnotes')
+  StaticGroupedFlowables()
+#### DownExpandingContainer('floats')
+  StaticGroupedFlowables()
+#### ChainedContainer('column1')
+  StaticGroupedFlowables()
+    DocumentTree()   figure.rst   <document>
+      Figure()   figure.rst   <figure>
+           x (0,0,0,0,2) figure
+        Image('../images/title.png')   <image>
+             x (0,0,0,0,4) figure image
+             x (0,0,0,0,2) image
+        Caption('Figure 1Figure caption')   figure.rst:4   <caption>
+             x (0,0,0,0,4) figure caption
+            SingleStyledText('Figure')
+            SingleStyledText(' ')
+            MixedStyledText('1', style='label')
+              SingleStyledText('')
+              SingleStyledText('1')
+              SingleStyledText('')
+            MixedStyledText('Figure caption')
+              MixedStyledText('Figure caption')
+                SingleStyledText('Figure caption')

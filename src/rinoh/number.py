@@ -10,7 +10,7 @@ from copy import copy
 
 from .attribute import Attribute, OptionSet, Bool, ParseError
 from .style import Style
-from .text import StyledText
+from .text import StyledText, SingleStyledText
 
 
 __all__ = ['NumberFormat', 'Label', 'LabelStyle', 'NumberStyle',
@@ -71,8 +71,9 @@ class Label(object):
         self.custom_label = custom_label
 
     def format_label(self, label, container):
-        prefix = self.get_style('label_prefix', container) or ''
-        suffix = self.get_style('label_suffix', container) or ''
+        empty_string = SingleStyledText('')
+        prefix = self.get_style('label_prefix', container) or empty_string
+        suffix = self.get_style('label_suffix', container) or empty_string
         return copy(prefix) + copy(label) + copy(suffix)
 
 
