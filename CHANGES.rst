@@ -46,6 +46,7 @@ Changed:
 
 Fixed:
 
+* Listing the installed fonts in a PDF: ``rinoh --list-fonts <filename>``
 * Crash on rendering a heading with an index entry annotation (#369)
 * Crash on encountering a fully-spanned table row (#369)
 * Crash on rendering a figure caption with the default style (#368)

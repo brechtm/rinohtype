@@ -19,13 +19,15 @@ from platform import platform
 from rinoh import __version__, __release_date__
 
 from rinoh.attribute import Source
-from rinoh.dimension import PT
+from rinoh.color import BLACK
+from rinoh.dimension import PT, PERCENT
 from rinoh.document import DocumentTree
+from rinoh.draw import Stroke
 from rinoh.flowable import StaticGroupedFlowables, GroupedFlowablesStyle
 from rinoh.font import Typeface, FontSlant, FontWeight, FontWidth
 from rinoh.font.google import installed_google_fonts_typefaces
 from rinoh.paper import Paper, PAPER_BY_NAME
-from rinoh.paragraph import ParagraphStyle, Paragraph
+from rinoh.paragraph import ParagraphStyle, Paragraph, TabStop
 from rinoh.resource import find_entry_points, ResourceNotFound
 from rinoh.style import StyleSheet, StyleSheetFile
 from rinoh.template import DocumentTemplate, TemplateConfigurationFile
@@ -130,18 +132,17 @@ def display_fonts(filename):
     def font_paragraph(typeface, font):
         style = ParagraphStyle(typeface=typeface, font_width=font.width,
                                font_slant=font.slant, font_weight=font.weight)
-        return Paragraph('{} {} {} {}'
-                         .format(typeface.name,
-                                 FontWidth.to_name(font.width).title(),
-                                 font.slant.title(),
-                                 FontWeight.to_name(font.weight).title()),
+        return Paragraph(' '.join((typeface.name,
+                                   FontWidth.to_name(font.width).title(),
+                                   font.slant.title(),
+                                   FontWeight.to_name(font.weight).title())),
                          style=style)
 
     def typeface_section(typeface, distribution):
         group_style = GroupedFlowablesStyle(space_below=10*PT)
         title_style = ParagraphStyle(keep_with_next=True,
-                                     tab_stops='100% RIGHT',
-                                     border_bottom='0.5pt, #000',
+                                     tab_stops=[TabStop(100*PERCENT, 'right')],
+                                     border_bottom=Stroke(0.5*PT, BLACK),
                                      padding_bottom=1*PT,
                                      space_below=2*PT)
         title = Paragraph('{}\t[{}]'.format(typeface.name, distribution),

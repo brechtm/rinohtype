@@ -504,11 +504,6 @@ class Styled(DocumentElement, Configurable, metaclass=StyledMeta):
 
     @cached
     def get_style(self, attribute, container):
-        if isinstance(self.style, Style):    # FIXME: properly handle this
-            try:                             #        handling a PARENT_STYLE
-                return self.style[attribute] #        base (and other cases?)
-            except KeyError:
-                pass
         return self.get_config_value(attribute, container.document)
 
     @property
@@ -693,6 +688,8 @@ class StyleSheet(RuleSet, Resource):
                 '``{}`` extension)'.format(cls.extension))
 
     def _get_value_lookup(self, styled, attribute, document):
+        if isinstance(styled.style, Style) and attribute in styled.style:
+            return styled.style[attribute]
         try:
             for match in document.get_matches(styled):
                 if match.stylesheet:      # style is defined
