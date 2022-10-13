@@ -5,8 +5,8 @@ One
 
 .. _section-a:
 
-Section A
----------
+:index:`Section A`
+------------------
 
 .. _par-a:
 

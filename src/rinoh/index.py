@@ -118,6 +118,9 @@ class InlineIndexTarget(IndexTargetBase, StyledText):
     def to_string(self, flowable_target):
         return ''
 
+    def copy(self, parent=None):
+        return MixedStyledText([])
+
     def spans(self, container):
         self.create_destination(container)
         return iter([])
