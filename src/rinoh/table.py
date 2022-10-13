@@ -455,7 +455,7 @@ class TableRow(Styled, list):
 
     @property
     def maximum_rowspan(self):
-        return max(cell.rowspan for cell in self)
+        return max((cell.rowspan for cell in self), default=1)
 
     def prepare(self, flowable_target):
         for cells in self:

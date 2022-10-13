@@ -739,7 +739,11 @@ class TBody(TableRowGroup):
 
 class Row(DocutilsNode):
     def get_row(self):
-        return rt.TableRow([entry.flowable() for entry in self.entry])
+        try:
+            entries = iter(self.entry)
+        except AttributeError:  # fully-wrapped row
+            entries = []
+        return rt.TableRow([entry.flowable() for entry in entries])
 
 
 class Entry(DocutilsGroupingNode):

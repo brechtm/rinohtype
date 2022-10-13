@@ -46,6 +46,7 @@ Changed:
 
 Fixed:
 
+* Crash on encountering a fully-spanned table row (#369)
 * Crash on rendering a figure caption with the default style (#368)
 * Some fonts on Google Fonts have the 'otf' extension (instead of 'ttf'); also
   collect these.
