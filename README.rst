@@ -28,8 +28,13 @@ rinohtype
 
 rinohtype is a batch-mode document processor. It renders structured documents
 to PDF based on a document template and a style sheet. An important design goal
-of rinohtype is make document layout and style customization user-friendly. See
-the documentation_ to learn how to customize the style of your document.
+of rinohtype is make document layout and style customization user-friendly.
+Have a look at the showcase_ to get an idea of the level of customization that
+is possible. See the documentation_ to learn how to customize the style of your
+document.
+
+.. _showcase: https://www.mos6581.org/rinohtype/master/showcase.html
+.. _documentation: http://www.mos6581.org/rinohtype/master/
 
 
 Call for Contributions
@@ -92,7 +97,6 @@ a look at the `rinohtype manual`_ for an example of the output.
 There is also a commercial DITA_ frontend, but it's development is currently
 on hold. Please `contact me`_ if you are interested in testing it.
 
-.. _documentation: http://www.mos6581.org/rinohtype/master/
 .. _create a ticket: https://github.com/brechtm/rinohtype/issues/new/choose
 .. _Google Fonts: https://fonts.google.com
 .. _reStructuredText: http://docutils.sourceforge.net/rst.html

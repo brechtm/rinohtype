@@ -17,6 +17,11 @@ Release History
 Release 0.5.5 (in development)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+Documentation changes:
+
+* A showcase section was added to the manual to show examples of documents that
+  can be produces by rinohtype.
+
 New Features:
 
 * Enumerated list item labels now also respect the *number_separator* style

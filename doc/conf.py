@@ -14,6 +14,7 @@
 # serve to show the default.
 
 
+import os
 import time
 
 try:
@@ -40,13 +41,14 @@ distribution = importlib_metadata.distribution('rinohtype')
 # ones.
 extensions = [
     'sphinx.ext.autodoc',
+    'sphinx.ext.autosummary',
     'sphinx.ext.coverage',
     'sphinx.ext.doctest',
+    'sphinx.ext.extlinks',
+    'sphinx.ext.githubpages',
     'sphinx.ext.intersphinx',
     'sphinx.ext.napoleon',
     'sphinx.ext.todo',
-    'sphinx.ext.autosummary',
-    'sphinx.ext.githubpages',
     'sphinx_immaterial',
     'sphinxcontrib.autoprogram',
 ]
@@ -123,6 +125,12 @@ autosummary_generate = True
 
 intersphinx_mapping = {'python': ('https://docs.python.org/3', None),
                        'sphinx': ('https://www.sphinx-doc.org/en/master', None)}
+
+GIT_TAG = os.environ.get('GIT_TAG_NAME')
+SHOWCASE_URL = (f'http://www.mos6581.org/rinohtype/{GIT_TAG}/showcase/%s'
+                if GIT_TAG else './showcase/%s')
+
+extlinks = {'showcase': (SHOWCASE_URL, '%s')}
 
 # -- Options for HTML output ----------------------------------------------
 

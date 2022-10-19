@@ -227,7 +227,7 @@ number_format=None
 font_color=#4d4d4d
 
 [external hyperlink]
-base=internal hyperlink
+font_color=#004d4d
 
 [broken hyperlink]
 font_color=#ff0000
@@ -296,6 +296,39 @@ font_slant=italic
 [definition paragraph]
 base=body
 space_above=1pt
+
+[image]
+space_above=10pt
+horizontal_align=CENTER
+
+[figure]
+space_above=10pt
+space_below=12pt
+
+[figure image]
+base=image
+keep_with_next=true
+
+[caption : Caption]
+base=default
+font_size=9pt
+line_spacing=Fixed(10pt)
+indent_first=0pt
+space_above=4pt
+space_below=0pt
+text_align=CENTER
+label_suffix=' '
+
+[figure caption]
+base=caption
+
+[figure legend]
+margin_left=30pt
+
+[figure legend paragraph]
+base=caption
+space_above=5pt
+text_align=LEFT
 
 # (Sphinx) object descriptions
 

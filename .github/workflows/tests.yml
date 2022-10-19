@@ -35,6 +35,8 @@ jobs:
     - uses: actions/checkout@v3
       with:
         submodules: true
+    - name: Get tag
+      uses: olegtarasov/get-tag@v2
     - name: Install Python ${{ env.current_python }}
       uses: actions/setup-python@v4
       with:
@@ -294,7 +296,7 @@ jobs:
       with:
         submodules: true
     - name: Get tag
-      uses: olegtarasov/get-tag@v2.1
+      uses: olegtarasov/get-tag@v2
     - name: Install Python ${{ env.current_python }}
       uses: actions/setup-python@v4
       with:
@@ -305,7 +307,7 @@ jobs:
     - name: Get package version from Poetry
       run: echo "PKG_VERSION=$(poetry version --short)" >> $GITHUB_ENV
     - name: Check whether the tag matches the package version
-      uses: jannekem/run-python-script-action@utilities
+      uses: jannekem/run-python-script-action@v1
       with:
         script: |
           if '${{ env.GIT_TAG_NAME }}' != 'v${{ env.PKG_VERSION }}':

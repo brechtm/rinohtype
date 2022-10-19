@@ -56,8 +56,12 @@ def build_docs(session):
                                     'sphinxcontrib-autoprogram'])
     session.chdir('doc')
     session.run('python', 'build.py', *session.posargs)
-    for pdf in glob.glob("_build/rinoh/*.pdf"):
-        shutil.copy(pdf, "_build/html")
+    # copy 'showcase' directory to the HTML output directory
+    shutil.copytree('showcase', '_build/html/showcase', dirs_exist_ok=True)
+    # copy PDF docs to the HTML output directory
+    for pdf in glob.glob('_build/rinoh/*.pdf'):
+        shutil.copy(pdf, '_build/html')
+
 
 
 @nox_poetry.session(python=PYTHONS)
