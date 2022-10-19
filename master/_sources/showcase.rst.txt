@@ -11,8 +11,8 @@ is achievable by means of custom templates and style sheets.
 Lekis
 -----
 
-:showcase:`Odpisy.pdf` makes use of both a custom template and style sheet. The
-custom template (Python) and configuration (INI file):
+:showcase:`Odpisy.pdf` was styled by means of both a custom template and style
+sheet. The custom template (Python) and configuration (INI file):
 
 - configures Czech as the document's language, which prevents a line break
   after specific words (following Czech typography rules)
@@ -28,7 +28,8 @@ example of such a document.
 
 
 .. magick montage -density 20 "doc/showcase/Odpisy.pdf[0,2,5]" -background grey
-    -tile x1 -border 4 -bordercolor white -geometry +0+0 doc/showcase/Odpisy.png
+    -tile x1 -border 4 -bordercolor white -geometry +0+0
+    doc/showcase/Odpisy.png
 .. figure:: showcase/Odpisy.png
 
    Some pages from :showcase:`Odpisy.pdf`
