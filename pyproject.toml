@@ -100,7 +100,7 @@ Sphinx = { version = ">=2.2.1", optional = true }
 doc8 = "^0.11.1"
 nox = ">=2022.1.7"
 nox-poetry = "^1.0.1"
-poetry-core = "^1.1.0b3"
+poetry-core = "^1.3.2"
 pytest = "^7.1.1"
 pytest-assume = "^2.4.3"
 pytest-console-scripts = "^1.3"
