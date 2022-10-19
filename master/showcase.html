@@ -698,8 +698,8 @@ is achievable by means of custom templates and style sheets.</p>
 <p><a class="reference external" href="./showcase/Odpisy.pdf">Odpisy.pdf</a> makes use of both a custom template and style sheet. The
 custom template (Python) and configuration (INI file):</p>
 <ul class="simple">
-<li><p>configures Czech as the document’s language, which prevents a line break after
-specific words (following Czech typography rules)</p></li>
+<li><p>configures Czech as the document’s language, which prevents a line break
+after specific words (following Czech typography rules)</p></li>
 <li><p>defines custom title (with vector logo) and colophon pages</p></li>
 <li><p>sets a background for content pages, marking the page header</p></li>
 <li><p>defines a custom back page, listing company contact details</p></li>
@@ -718,15 +718,16 @@ Some pages from <a class="reference external" href="./showcase/Odpisy.pdf">Odpis
 </figure>
 <p>A single style sheet is used for both types of documents. It does not specify
 the Sphinx style sheet included with rinohtype as a base stylesheet so as to
-avoid unexpected changes in the document style in case the Sphinx style sheet is
-updated in a future rinohtype release. The style sheet defines:</p>
+avoid unexpected changes in the document style in case the Sphinx style sheet
+is updated in a future rinohtype release. The style sheet defines:</p>
 <ul class="simple">
-<li><p>the <code class="docutils literal notranslate"><span class="pre">[VARIABLES]</span></code> section defines monospaced, serif and sans-serif typefaces
-and a set of key colors that are referenced in style definitions</p></li>
+<li><p>the <code class="docutils literal notranslate"><span class="pre">[VARIABLES]</span></code> section defines monospaced, serif and sans-serif
+typefaces and a set of key colors that are referenced in style definitions</p></li>
 <li><p>custom ‘numbering’ for headings (square glyph) and bullet lists (fast forward
 glyph)</p></li>
 <li><p>a top border for certain headings</p></li>
-<li><p>custom in-line titles (in-line images or specific font glyphs) for admonitions</p></li>
+<li><p>custom in-line titles (in-line images or specific font glyphs) for
+admonitions</p></li>
 <li><p>coloured styling for the <code class="docutils literal notranslate"><span class="pre">menuselection</span></code> role</p></li>
 <li><p>small-capital styling for keyboard shortcuts</p></li>
 </ul>
