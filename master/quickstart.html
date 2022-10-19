@@ -728,7 +728,7 @@ template or style sheet) doesn’t change a lot, this can prevent the need to
 perform a second rendering pass.</p>
 <h2 id="sphinx-builder"><span id="sphinx-quickstart"></span>Sphinx Builder<a class="headerlink" href="#sphinx-builder" title="Permalink to this heading">¶</a></h2>
 <p>If your Sphinx project is already configured for the LaTeX builder, rinohtype
-will happily interpret <a class="reference external" href="https://www.sphinx-doc.org/en/master/usage/configuration.html#confval-latex_documents" title="(in Sphinx v6.0.0)"><code class="docutils literal notranslate"><span class="pre">latex_documents</span></code></a>. Otherwise, you need
+will happily interpret <a class="reference external" href="https://www.sphinx-doc.org/en/master/usage/configuration.html#confval-latex_documents" title="(in Sphinx v6.0.0b3)"><code class="docutils literal notranslate"><span class="pre">latex_documents</span></code></a>. Otherwise, you need
 to set the <a class="reference internal" href="sphinx.html#confval-rinoh_documents" title="rinoh_documents (Sphinx builder configuration value) — Determines which PDF documents to build. Its format is a list of dictionaries, one for each document to be generated. The supported keys for these dictionaries are listed below. Two of them are required:"><code class="xref std std-confval docutils literal notranslate"><span class="pre">rinoh_documents</span></code></a> configuration option:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><code><span class="n">rinoh_documents</span> <span class="o">=</span> <span class="p">[</span><span class="nb">dict</span><span class="p">(</span><span class="n">doc</span><span class="o">=</span><span class="s1">&#39;index&#39;</span><span class="p">,</span>        <span class="c1"># top-level file (index.rst)</span>
                         <span class="n">target</span><span class="o">=</span><span class="s1">&#39;manual&#39;</span><span class="p">)]</span>   <span class="c1"># output file (manual.pdf)</span>
@@ -737,7 +737,7 @@ to set the <a class="reference internal" href="sphinx.html#confval-rinoh_documen
 <p>The dictionary accepts optional keys in addition to the required <em>doc</em> and
 <em>target</em> keys. See <a class="reference internal" href="sphinx.html#sphinx-builder"><span class="std std-ref">Sphinx Builder</span></a> for details.</p>
 <p>When building the documentation, select the <cite>rinoh</cite> builder by passing it to
-the <a class="reference external" href="https://www.sphinx-doc.org/en/master/man/sphinx-build.html#cmdoption-sphinx-build-b" title="(in Sphinx v6.0.0)"><code class="docutils literal notranslate"><span class="pre">sphinx-build</span> <span class="pre">-b</span></code></a> option:</p>
+the <a class="reference external" href="https://www.sphinx-doc.org/en/master/man/sphinx-build.html#cmdoption-sphinx-build-b" title="(in Sphinx v6.0.0b3)"><code class="docutils literal notranslate"><span class="pre">sphinx-build</span> <span class="pre">-b</span></code></a> option:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><code><span class="n">sphinx</span><span class="o">-</span><span class="n">build</span> <span class="o">-</span><span class="n">b</span> <span class="n">rinoh</span> <span class="o">.</span> <span class="n">_build</span><span class="o">/</span><span class="n">rinoh</span>
 </code></pre></div>
 </div>
