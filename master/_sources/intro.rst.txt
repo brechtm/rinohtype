@@ -105,5 +105,3 @@ database or other data sources. When parsing the document tree from a
 structured document format, a templating engine like Jinja2_ can be used.
 
 .. _Jinja2: http://jinja.pocoo.org
-
-.. todo:: sample documents

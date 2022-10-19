@@ -5,6 +5,7 @@
     :hidden:
 
     intro
+    showcase
     install
     quickstart
     basicstyling
