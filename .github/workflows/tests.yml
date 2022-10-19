@@ -32,11 +32,11 @@ jobs:
           - NOXENV: build_docs
     env: ${{ matrix.env}}
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
       with:
         submodules: true
     - name: Install Python ${{ env.current_python }}
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v4
       with:
         python-version: ${{ env.current_python }}
     - name: Install Nox & co
@@ -47,7 +47,7 @@ jobs:
 
     - name: Cache docs references cache
       if: env.NOXENV == 'build_docs'
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       with:
         path: doc/_build/rinoh/*.rtc
         key: ${{ env.NOXENV }}-references-${{ hashFiles('doc/_build/rinoh/*.rtc') }}
@@ -91,7 +91,7 @@ jobs:
     if: needs.check.outputs.docs-target != ''
     runs-on: Ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
       with:
         ref: gh-pages
     - name: Write versions to JSON file
@@ -140,9 +140,9 @@ jobs:
       NOXENV: ${{ matrix.noxenv }}
       WITH_COVERAGE: ${{ matrix.cov }}
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: Install Python ${{ env.current_python }}
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v4
       with:
         python-version: ${{ env.current_python }}
     - name: Install Nox & co
@@ -152,7 +152,7 @@ jobs:
         pip${{ env.current_python }} install --constraint requirements.txt nox nox-poetry
     - name: Install Python ${{ matrix.python-version }}
       if: matrix.python-version != env.current_python
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v4
       with:
         python-version: ${{ matrix.python-version }}
     - name: Set NOXENV for Python ${{ matrix.python-version }}
@@ -190,9 +190,9 @@ jobs:
       NOXENV: ${{ matrix.noxenv }}
       WITH_COVERAGE: ${{ matrix.cov }}
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: Install Python ${{ env.current_python }}
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v4
       with:
         python-version: ${{ env.current_python }}
     - name: Install Nox & co
@@ -202,7 +202,7 @@ jobs:
         pip${{ env.current_python }} install --constraint requirements.txt nox nox-poetry
     - name: Install Python ${{ matrix.python-version }}
       if: matrix.python-version != env.current_python
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v4
       with:
         python-version: ${{ matrix.python-version }}
     - name: Set NOXENV for Python ${{ matrix.python-version }}
@@ -226,7 +226,7 @@ jobs:
         echo "::set-output name=graphviz::$(brew info --json graphviz | jq -r '.[0].versions.stable')"
     - name: Cache Homebrew downloads
       if: startsWith(runner.os, 'macOS')
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       with:
         path: ${{ steps.cache-dirs-macos.outputs.dir }}
         key: ${{ runner.os }}-homebrew-mupdftools${{ steps.homebrew-versions.outputs.mupdftools }}-im${{ steps.homebrew-versions.outputs.imagemagick }}-graphviz${{ steps.homebrew-versions.outputs.graphviz }}
@@ -238,7 +238,7 @@ jobs:
         echo "::set-output name=dir::$(echo $env:USERPROFILE\scoop\cache)"
     - name: Cache scoop downloads
       if: startsWith(runner.os, 'Windows')
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       with:
         path: ${{ steps.cache-dirs-windows.outputs.dir }}
         key: ${{ runner.os }}-scoop
@@ -268,7 +268,7 @@ jobs:
       run: ${{ env.nox_cmd }} ${{ env.NOXENV }} -- -s
     - name: Store test artifacts
       if: failure()
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: ${{ matrix.os }} ${{ matrix.python-version }} regression tests${{ matrix.name }}
         path: tests_regression/*_output/
@@ -290,13 +290,13 @@ jobs:
     if: startsWith(github.ref, 'refs/tags/')
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
       with:
         submodules: true
     - name: Get tag
       uses: olegtarasov/get-tag@v2.1
     - name: Install Python ${{ env.current_python }}
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v4
       with:
         python-version: ${{ env.current_python }}
     - name: Install Poetry
@@ -343,11 +343,11 @@ jobs:
     if: needs.check-tag.outputs.develop == 'true'
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
       with:
         submodules: true
     - name: Install Python ${{ env.current_python }}
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v4
       with:
         python-version: ${{ env.current_python }}
     - name: Install Poetry
@@ -368,11 +368,11 @@ jobs:
     if: needs.check-tag.outputs.stable == 'true'
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
       with:
         submodules: true
     - name: Install Python ${{ env.current_python }}
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v4
       with:
         python-version: ${{ env.current_python }}
     - name: Install Poetry
