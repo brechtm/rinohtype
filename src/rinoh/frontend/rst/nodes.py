@@ -349,9 +349,9 @@ class Literal_Block(DocutilsBodyNode):
     @property
     def language(self):
         classes = self.get('classes')
-        if classes and classes[0] == 'code':    # .. code::
-            return classes[1]
-        return None                             # literal block (double colon)
+        if len(classes) > 1 and classes[0] == 'code':    # .. code::
+            return classes[1]                            # (MyST doesn't add the
+        return None     # literal block (double colon)      language as class)
 
     def build_flowable(self):
         return rt.CodeBlock(self.text, language=self.language,

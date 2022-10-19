@@ -5,7 +5,7 @@
 # Use of this source code is subject to the terms of the GNU Affero General
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
-from recommonmark.parser import CommonMarkParser
+from myst_parser.docutils_ import Parser
 
 from ..rst import DocutilsReader
 
@@ -15,4 +15,4 @@ __all__ = ['CommonMarkReader']
 
 class CommonMarkReader(DocutilsReader):
     extensions = ('md', )
-    parser_class = CommonMarkParser
+    parser_class = Parser

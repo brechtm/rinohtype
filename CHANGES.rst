@@ -32,6 +32,9 @@ New Features:
 
 Changed:
 
+* `MyST <https://github.com/executablebooks/MyST-Parser>`_ replaces
+  `recommonmark <https://github.com/readthedocs/recommonmark>`_ for Markdown
+  support (issues #265 and #370)
 * The Article template has been overhauled. The title page and front matter
   parts have been removed and their contents are moved to the first content
   page. This makes the Article template more useful, since it was too similar
