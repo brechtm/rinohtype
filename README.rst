@@ -111,7 +111,7 @@ Requirements
 
 rinohtype supports all stable Python 3 versions that have not reached
 end-of-life_ status. For parsing reStructuredText and CommonMark documents,
-rinohtype depends on docutils_ and recommonmark_ respectively. pip_ takes care
+rinohtype depends on docutils_ and myst-parser_ respectively. pip_ takes care
 of installing these requirements when you install rinohtype.
 
 Syntax highlighting of code blocks is enabled if Pygments_ is installed, which
@@ -120,7 +120,7 @@ other than PDF, PNG or JPEG, you also need to install Pillow_.
 
 .. _end-of-life: https://devguide.python.org/#status-of-python-branches
 .. _docutils: http://docutils.sourceforge.net/index.html
-.. _recommonmark: https://recommonmark.readthedocs.io
+.. _myst-parser: https://myst-parser.readthedocs.io
 .. _pip: https://pip.pypa.io
 .. _Pygments: https://pygments.org
 .. _Pillow: http://python-pillow.github.io
