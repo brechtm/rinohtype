@@ -214,7 +214,7 @@ jobs:
       id: cache-dirs-macos
       if: startsWith(runner.os, 'macOS')
       run: |
-        echo "::set-output name=dir::$(brew --cache)"
+        echo "dir=$(brew --cache)" >> $GITHUB_OUTPUT
     - name: Delete Homebrew cache dir to minimize cache size (macOS)
       if: startsWith(runner.os, 'macOS')
       run: |
@@ -223,9 +223,9 @@ jobs:
       id: homebrew-versions
       if: startsWith(runner.os, 'macOS')
       run: |
-        echo "::set-output name=mupdftools::$(brew info --json mupdf-tools | jq -r '.[0].versions.stable')"
-        echo "::set-output name=imagemagick::$(brew info --json imagemagick | jq -r '.[0].versions.stable')"
-        echo "::set-output name=graphviz::$(brew info --json graphviz | jq -r '.[0].versions.stable')"
+        echo "mupdftools=$(brew info --json mupdf-tools | jq -r '.[0].versions.stable')" >> $GITHUB_OUTPUT
+        echo "imagemagick=$(brew info --json imagemagick | jq -r '.[0].versions.stable')" >> $GITHUB_OUTPUT
+        echo "graphviz=$(brew info --json graphviz | jq -r '.[0].versions.stable')" >> $GITHUB_OUTPUT
     - name: Cache Homebrew downloads
       if: startsWith(runner.os, 'macOS')
       uses: actions/cache@v3
@@ -237,7 +237,7 @@ jobs:
       id: cache-dirs-windows
       if: startsWith(runner.os, 'Windows')
       run: |
-        echo "::set-output name=dir::$(echo $env:USERPROFILE\scoop\cache)"
+        echo "dir=$(echo $env:USERPROFILE\scoop\cache)" >> $GITHUB_OUTPUT
     - name: Cache scoop downloads
       if: startsWith(runner.os, 'Windows')
       uses: actions/cache@v3
