@@ -62,7 +62,7 @@ jobs:
     - name: Determine directory to publish docs to
       id: docs-publish-dir
       if: env.NOXENV == 'build_docs'
-      uses: jannekem/run-python-script-action@v1
+      uses: jannekem/run-python-script-action@fix/output
       with:
         script: |
           import os, re
@@ -97,7 +97,7 @@ jobs:
       with:
         ref: gh-pages
     - name: Write versions to JSON file
-      uses: jannekem/run-python-script-action@v1
+      uses: jannekem/run-python-script-action@fix/output
       with:
         script: |
           import json
@@ -307,7 +307,7 @@ jobs:
     - name: Get package version from Poetry
       run: echo "PKG_VERSION=$(poetry version --short)" >> $GITHUB_ENV
     - name: Check whether the tag matches the package version
-      uses: jannekem/run-python-script-action@v1
+      uses: jannekem/run-python-script-action@fix/output
       with:
         script: |
           if '${{ env.GIT_TAG_NAME }}' != 'v${{ env.PKG_VERSION }}':
@@ -316,7 +316,7 @@ jobs:
 
     - name: Check whether the tag matches a stable version
       id: check-stable
-      uses: jannekem/run-python-script-action@v1
+      uses: jannekem/run-python-script-action@fix/output
       with:
         script: |
           import os, re
@@ -327,7 +327,7 @@ jobs:
           set_output('stable', output)
     - name: Check whether the tag matches a development version
       id: check-develop
-      uses: jannekem/run-python-script-action@v1
+      uses: jannekem/run-python-script-action@fix/output
       with:
         script: |
           import os, re
