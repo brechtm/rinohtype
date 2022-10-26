@@ -237,7 +237,7 @@ jobs:
       id: cache-dirs-windows
       if: startsWith(runner.os, 'Windows')
       run: |
-        echo "dir=$(echo $env:USERPROFILE\scoop\cache)" >> $GITHUB_OUTPUT
+        echo "dir=$(echo $env:USERPROFILE\scoop\cache)" >> $env:GITHUB_OUTPUT
     - name: Cache scoop downloads
       if: startsWith(runner.os, 'Windows')
       uses: actions/cache@v3
