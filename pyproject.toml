@@ -97,18 +97,18 @@ rinoh-typeface-texgyrepagella = "^0.1.1"
 Sphinx = { version = ">=2.2.1", optional = true }
 
 [tool.poetry.dev-dependencies]
-doc8 = "^0.11.1"
+doc8 = "^1.0.0"
 nox = ">=2022.1.7"
 nox-poetry = "^1.0.1"
 poetry-core = "^1.1.0b3"
 pytest = "^7.1.1"
 pytest-assume = "^2.4.3"
 pytest-console-scripts = "^1.3"
-pytest-cov = "^3.0.0"
-pytest-xdist = "^2.4.0"
+pytest-cov = "^4.0.0"
+pytest-xdist = "^3.0.2"
 restview = "^3.0.0"
 Sphinx = "^5.2.1"
-sphinx-immaterial = "^0.9.0"
+sphinx-immaterial = "^0.10.0"
 sphinxcontrib-autoprogram = "^0.1.7"
 pytest-github-actions-annotate-failures = { version = "^0.1.7", optional = true }
 pytest-pycharm = "^0.7.0"
