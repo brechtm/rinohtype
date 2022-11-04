@@ -20,3 +20,6 @@ header_text = $(header_text)
 footer_text = IMAGE('template_configuration.png')
               '\t'
               '{PAGE_NUMBER} / {NUMBER_OF_PAGES}'
+
+[rear_cover_page]
+background = 'template_configuration.png', scale=fill
