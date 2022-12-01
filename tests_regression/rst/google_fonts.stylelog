@@ -1,4 +1,6 @@
 ---------------------------------- page 1 ----------------------------------
+#### FlowablesContainer('background')
+  StaticGroupedFlowables()
 #### FootnoteContainer('footnotes')
   StaticGroupedFlowables()
 #### DownExpandingContainer('floats')
@@ -12,7 +14,9 @@
         Heading('1 Inline Markup')   google_fonts.rst:2   <title>
              > (0,0,0,1,2) heading level 1 [Sphinx] > DEFAULT
                (0,0,0,0,2) other heading levels [Sphinx] > heading level 5
-            MixedStyledText('1 ')
+            MixedStyledText('1 ', style='label')
+                 x (0,0,1,1,3) heading level 1 label
+              SingleStyledText('')
               SingleStyledText('1')
               SingleStyledText(' ')
             MixedStyledText('Inline Markup')
@@ -20,6 +24,129 @@
                 SingleStyledText('Inline Markup')
         Paragraph('Paragraphs contain text and may ...')   google_fonts.rst:4   <paragraph>
              > (0,0,0,0,2) body [Sphinx] > default
+            MixedStyledText('Paragraphs contain text and may ...')
+              MixedStyledText('Paragraphs contain text and may ...')
+                SingleStyledText('Paragraphs contain text and may ...')
+            MixedStyledText('Paragraphs contain text and may ...')
+              MixedStyledText('Paragraphs contain text and may ...')
+                SingleStyledText('Paragraphs contain text and may ...')
+                MixedStyledText('emphasis', style='emphasis')   <emphasis>
+                     > (0,0,1,0,1) emphasis [Sphinx] > DEFAULT
+                  SingleStyledText('emphasis')
+                SingleStyledText(', ')
+                MixedStyledText('strong emphasis', style='strong')   <strong>
+                     > (0,0,1,0,1) strong [Sphinx] > DEFAULT
+                  SingleStyledText('strong emphasis')
+                SingleStyledText(', ')
+                MixedStyledText('inline literals', style='monospaced')   <literal>
+                     > (0,0,1,0,1) monospaced [Sphinx] > DEFAULT
+                  SingleStyledText('inline literals')
+                SingleStyledText(', standalone hyperlinks (')
+            MixedStyledText('Paragraphs contain text and may ...')
+              MixedStyledText('Paragraphs contain text and may ...')
+                SingleStyledText('Paragraphs contain text and may ...')
+                MixedStyledText('emphasis', style='emphasis')   <emphasis>
+                     > (0,0,1,0,1) emphasis [Sphinx] > DEFAULT
+                  SingleStyledText('emphasis')
+                SingleStyledText(', ')
+                MixedStyledText('strong emphasis', style='strong')   <strong>
+                     > (0,0,1,0,1) strong [Sphinx] > DEFAULT
+                  SingleStyledText('strong emphasis')
+                SingleStyledText(', ')
+                MixedStyledText('inline literals', style='monospaced')   <literal>
+                     > (0,0,1,0,1) monospaced [Sphinx] > DEFAULT
+                  SingleStyledText('inline literals')
+                SingleStyledText(', standalone hyperlinks (')
+                MixedStyledText('http://www.python.org', style='external link')   <reference>
+                     > (0,0,1,0,1) external hyperlink [Sphinx] > DEFAULT
+                  SingleStyledText('http://www.python.org')
+                SingleStyledText('), external hyperlinks (')
+            MixedStyledText('Paragraphs contain text and may ...')
+              MixedStyledText('Paragraphs contain text and may ...')
+                SingleStyledText('Paragraphs contain text and may ...')
+                MixedStyledText('emphasis', style='emphasis')   <emphasis>
+                     > (0,0,1,0,1) emphasis [Sphinx] > DEFAULT
+                  SingleStyledText('emphasis')
+                SingleStyledText(', ')
+                MixedStyledText('strong emphasis', style='strong')   <strong>
+                     > (0,0,1,0,1) strong [Sphinx] > DEFAULT
+                  SingleStyledText('strong emphasis')
+                SingleStyledText(', ')
+                MixedStyledText('inline literals', style='monospaced')   <literal>
+                     > (0,0,1,0,1) monospaced [Sphinx] > DEFAULT
+                  SingleStyledText('inline literals')
+                SingleStyledText(', standalone hyperlinks (')
+                MixedStyledText('http://www.python.org', style='external link')   <reference>
+                     > (0,0,1,0,1) external hyperlink [Sphinx] > DEFAULT
+                  SingleStyledText('http://www.python.org')
+                SingleStyledText('), external hyperlinks (')
+                MixedStyledText('Python', style='external link')   <reference>
+                     > (0,0,1,0,1) external hyperlink [Sphinx] > DEFAULT
+                  SingleStyledText('Python')
+                SingleStyledText('), internal cross-references (')
+            MixedStyledText('Paragraphs contain text and may ...')
+              MixedStyledText('Paragraphs contain text and may ...')
+                SingleStyledText('Paragraphs contain text and may ...')
+                MixedStyledText('emphasis', style='emphasis')   <emphasis>
+                     > (0,0,1,0,1) emphasis [Sphinx] > DEFAULT
+                  SingleStyledText('emphasis')
+                SingleStyledText(', ')
+                MixedStyledText('strong emphasis', style='strong')   <strong>
+                     > (0,0,1,0,1) strong [Sphinx] > DEFAULT
+                  SingleStyledText('strong emphasis')
+                SingleStyledText(', ')
+                MixedStyledText('inline literals', style='monospaced')   <literal>
+                     > (0,0,1,0,1) monospaced [Sphinx] > DEFAULT
+                  SingleStyledText('inline literals')
+                SingleStyledText(', standalone hyperlinks (')
+                MixedStyledText('http://www.python.org', style='external link')   <reference>
+                     > (0,0,1,0,1) external hyperlink [Sphinx] > DEFAULT
+                  SingleStyledText('http://www.python.org')
+                SingleStyledText('), external hyperlinks (')
+                MixedStyledText('Python', style='external link')   <reference>
+                     > (0,0,1,0,1) external hyperlink [Sphinx] > DEFAULT
+                  SingleStyledText('Python')
+                SingleStyledText('), internal cross-references (')
+                Reference('Chapter 2')   <reference>
+                     > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                  MixedStyledText('Chapter 2')
+                    SingleStyledText('Chapter')
+                    SingleStyledText(' ')
+                    SingleStyledText('2')
+                SingleStyledText('), external hyperlinks with embe...')
+            MixedStyledText('Paragraphs contain text and may ...')
+              MixedStyledText('Paragraphs contain text and may ...')
+                SingleStyledText('Paragraphs contain text and may ...')
+                MixedStyledText('emphasis', style='emphasis')   <emphasis>
+                     > (0,0,1,0,1) emphasis [Sphinx] > DEFAULT
+                  SingleStyledText('emphasis')
+                SingleStyledText(', ')
+                MixedStyledText('strong emphasis', style='strong')   <strong>
+                     > (0,0,1,0,1) strong [Sphinx] > DEFAULT
+                  SingleStyledText('strong emphasis')
+                SingleStyledText(', ')
+                MixedStyledText('inline literals', style='monospaced')   <literal>
+                     > (0,0,1,0,1) monospaced [Sphinx] > DEFAULT
+                  SingleStyledText('inline literals')
+                SingleStyledText(', standalone hyperlinks (')
+                MixedStyledText('http://www.python.org', style='external link')   <reference>
+                     > (0,0,1,0,1) external hyperlink [Sphinx] > DEFAULT
+                  SingleStyledText('http://www.python.org')
+                SingleStyledText('), external hyperlinks (')
+                MixedStyledText('Python', style='external link')   <reference>
+                     > (0,0,1,0,1) external hyperlink [Sphinx] > DEFAULT
+                  SingleStyledText('Python')
+                SingleStyledText('), internal cross-references (')
+                Reference('Chapter 2')   <reference>
+                     > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                  MixedStyledText('Chapter 2')
+                    SingleStyledText('Chapter')
+                    SingleStyledText(' ')
+                    SingleStyledText('2')
+                SingleStyledText('), external hyperlinks with embe...')
+                MixedStyledText('Python web site', style='external link')   <reference>
+                     > (0,0,1,0,1) external hyperlink [Sphinx] > DEFAULT
+                  SingleStyledText('Python web site')
             MixedStyledText('Paragraphs contain text and may ...')
               MixedStyledText('Paragraphs contain text and may ...')
                 SingleStyledText('Paragraphs contain text and may ...')
@@ -59,6 +186,12 @@
             MixedStyledText('Literal blocks are indicated wit...')
               MixedStyledText('Literal blocks are indicated wit...')
                 SingleStyledText('Literal blocks are indicated wit...')
+            MixedStyledText('Literal blocks are indicated wit...')
+              MixedStyledText('Literal blocks are indicated wit...')
+                SingleStyledText('Literal blocks are indicated wit...')
+            MixedStyledText('Literal blocks are indicated wit...')
+              MixedStyledText('Literal blocks are indicated wit...')
+                SingleStyledText('Literal blocks are indicated wit...')
                 MixedStyledText('-->', style='monospaced')   <literal>
                      > (0,0,1,0,1) monospaced [Sphinx] > DEFAULT
                   SingleStyledText('-->')
@@ -76,7 +209,9 @@
         Heading('2 Table')   google_fonts.rst:24   <title>
              > (0,0,0,1,2) heading level 1 [Sphinx] > DEFAULT
                (0,0,0,0,2) other heading levels [Sphinx] > heading level 5
-            MixedStyledText('2 ')
+            MixedStyledText('2 ', style='label')
+                 x (0,0,1,1,3) heading level 1 label
+              SingleStyledText('')
               SingleStyledText('2')
               SingleStyledText(' ')
             MixedStyledText('Table')
@@ -86,6 +221,21 @@
              > (0,0,0,0,2) table [Sphinx] > DEFAULT
           TableHead()
             TableRow()
+                TableCellBackground()
+                     x (0,0,0,0,10) table head cell background
+                TableCellBorder('top')
+                     > (0,0,0,2,8) table top border [Sphinx] > DEFAULT
+                       (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+                TableCellBorder('right')
+                     x (0,0,0,1,8) table head cell right border
+                     > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+                TableCellBorder('bottom')
+                     > (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+                TableCellBorder('left')
+                     x (0,0,0,2,8) table head left border
+                     x (0,0,0,2,4) table left border
+                     x (0,0,0,1,8) table head cell left border
+                     > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
               TableCell()   <entry>
                    x (0,0,0,0,8) table head cell
                    > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
@@ -98,6 +248,19 @@
                         SingleStyledText('Inputs')
                 TableCellBackground()
                      x (0,0,0,0,10) table head cell background
+                TableCellBorder('top')
+                     > (0,0,0,2,8) table top border [Sphinx] > DEFAULT
+                       (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+                TableCellBorder('right')
+                     x (0,0,0,2,8) table head right border
+                     x (0,0,0,2,4) table right border
+                     x (0,0,0,1,8) table head cell right border
+                     > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+                TableCellBorder('bottom')
+                     > (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+                TableCellBorder('left')
+                     x (0,0,0,1,8) table head cell left border
+                     > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
               TableCell()   <entry>
                    x (0,0,0,0,8) table head cell
                    > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
@@ -108,9 +271,22 @@
                     MixedStyledText('Output')
                       MixedStyledText('Output')
                         SingleStyledText('Output')
+            TableRow()
                 TableCellBackground()
                      x (0,0,0,0,10) table head cell background
-            TableRow()
+                TableCellBorder('top')
+                     > (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+                TableCellBorder('right')
+                     x (0,0,0,1,8) table head cell right border
+                     > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+                TableCellBorder('bottom')
+                     > (0,0,0,2,8) table head bottom border [Sphinx] > table top border
+                       (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+                TableCellBorder('left')
+                     x (0,0,0,2,8) table head left border
+                     x (0,0,0,2,4) table left border
+                     x (0,0,0,1,8) table head cell left border
+                     > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
               TableCell()   <entry>
                    x (0,0,0,0,8) table head cell
                    > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
@@ -123,6 +299,17 @@
                         SingleStyledText('A')
                 TableCellBackground()
                      x (0,0,0,0,10) table head cell background
+                TableCellBorder('top')
+                     > (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+                TableCellBorder('right')
+                     x (0,0,0,1,8) table head cell right border
+                     > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+                TableCellBorder('bottom')
+                     > (0,0,0,2,8) table head bottom border [Sphinx] > table top border
+                       (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+                TableCellBorder('left')
+                     x (0,0,0,1,8) table head cell left border
+                     > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
               TableCell()   <entry>
                    x (0,0,0,0,8) table head cell
                    > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
@@ -135,6 +322,19 @@
                         SingleStyledText('B')
                 TableCellBackground()
                      x (0,0,0,0,10) table head cell background
+                TableCellBorder('top')
+                     > (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+                TableCellBorder('right')
+                     x (0,0,0,2,8) table head right border
+                     x (0,0,0,2,4) table right border
+                     x (0,0,0,1,8) table head cell right border
+                     > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+                TableCellBorder('bottom')
+                     > (0,0,0,2,8) table head bottom border [Sphinx] > table top border
+                       (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+                TableCellBorder('left')
+                     x (0,0,0,1,8) table head cell left border
+                     > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
               TableCell()   <entry>
                    x (0,0,0,0,8) table head cell
                    > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
@@ -145,10 +345,21 @@
                     MixedStyledText('A or B')
                       MixedStyledText('A or B')
                         SingleStyledText('A or B')
-                TableCellBackground()
-                     x (0,0,0,0,10) table head cell background
           TableBody()
             TableRow()
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+                TableCellBorder('top')
+                     > (0,0,0,2,8) table body top border [Sphinx] > table head bottom border
+                       (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+                TableCellBorder('right')
+                     > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+                TableCellBorder('bottom')
+                     > (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+                TableCellBorder('left')
+                     x (0,0,0,2,8) table body left border
+                     x (0,0,0,2,4) table left border
+                     > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
               TableCell()   <entry>
                    > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
                 Paragraph('False')   google_fonts.rst:31   <paragraph>
@@ -160,6 +371,15 @@
                         SingleStyledText('False')
                 TableCellBackground()
                      x (0,0,0,2,8) table body cell background on odd row
+                TableCellBorder('top')
+                     > (0,0,0,2,8) table body top border [Sphinx] > table head bottom border
+                       (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+                TableCellBorder('right')
+                     > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+                TableCellBorder('bottom')
+                     > (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+                TableCellBorder('left')
+                     > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
               TableCell()   <entry>
                    > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
                 Paragraph('False')   google_fonts.rst:31   <paragraph>
@@ -170,6 +390,17 @@
                         SingleStyledText('False')
                 TableCellBackground()
                      x (0,0,0,2,8) table body cell background on odd row
+                TableCellBorder('top')
+                     > (0,0,0,2,8) table body top border [Sphinx] > table head bottom border
+                       (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+                TableCellBorder('right')
+                     x (0,0,0,2,8) table body right border
+                     x (0,0,0,2,4) table right border
+                     > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+                TableCellBorder('bottom')
+                     > (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+                TableCellBorder('left')
+                     > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
               TableCell()   <entry>
                    > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
                 Paragraph('False')   google_fonts.rst:31   <paragraph>
@@ -178,9 +409,19 @@
                     MixedStyledText('False')
                       MixedStyledText('False')
                         SingleStyledText('False')
-                TableCellBackground()
-                     x (0,0,0,2,8) table body cell background on odd row
             TableRow()
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on even row
+                TableCellBorder('top')
+                     > (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+                TableCellBorder('right')
+                     > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+                TableCellBorder('bottom')
+                     > (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+                TableCellBorder('left')
+                     x (0,0,0,2,8) table body left border
+                     x (0,0,0,2,4) table left border
+                     > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
               TableCell()   <entry>
                    > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
                 Paragraph('True')   google_fonts.rst:32   <paragraph>
@@ -192,6 +433,14 @@
                         SingleStyledText('True')
                 TableCellBackground()
                      x (0,0,0,2,8) table body cell background on even row
+                TableCellBorder('top')
+                     > (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+                TableCellBorder('right')
+                     > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+                TableCellBorder('bottom')
+                     > (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+                TableCellBorder('left')
+                     > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
               TableCell()   <entry>
                    > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
                 Paragraph('False')   google_fonts.rst:32   <paragraph>
@@ -202,6 +451,16 @@
                         SingleStyledText('False')
                 TableCellBackground()
                      x (0,0,0,2,8) table body cell background on even row
+                TableCellBorder('top')
+                     > (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+                TableCellBorder('right')
+                     x (0,0,0,2,8) table body right border
+                     x (0,0,0,2,4) table right border
+                     > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+                TableCellBorder('bottom')
+                     > (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+                TableCellBorder('left')
+                     > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
               TableCell()   <entry>
                    > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
                 Paragraph('True')   google_fonts.rst:32   <paragraph>
@@ -210,9 +469,19 @@
                     MixedStyledText('True')
                       MixedStyledText('True')
                         SingleStyledText('True')
-                TableCellBackground()
-                     x (0,0,0,2,8) table body cell background on even row
             TableRow()
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+                TableCellBorder('top')
+                     > (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+                TableCellBorder('right')
+                     > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+                TableCellBorder('bottom')
+                     > (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+                TableCellBorder('left')
+                     x (0,0,0,2,8) table body left border
+                     x (0,0,0,2,4) table left border
+                     > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
               TableCell()   <entry>
                    > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
                 Paragraph('False')   google_fonts.rst:33   <paragraph>
@@ -224,6 +493,14 @@
                         SingleStyledText('False')
                 TableCellBackground()
                      x (0,0,0,2,8) table body cell background on odd row
+                TableCellBorder('top')
+                     > (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+                TableCellBorder('right')
+                     > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+                TableCellBorder('bottom')
+                     > (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+                TableCellBorder('left')
+                     > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
               TableCell()   <entry>
                    > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
                 Paragraph('True')   google_fonts.rst:33   <paragraph>
@@ -234,6 +511,16 @@
                         SingleStyledText('True')
                 TableCellBackground()
                      x (0,0,0,2,8) table body cell background on odd row
+                TableCellBorder('top')
+                     > (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+                TableCellBorder('right')
+                     x (0,0,0,2,8) table body right border
+                     x (0,0,0,2,4) table right border
+                     > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+                TableCellBorder('bottom')
+                     > (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+                TableCellBorder('left')
+                     > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
               TableCell()   <entry>
                    > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
                 Paragraph('True')   google_fonts.rst:33   <paragraph>
@@ -242,9 +529,20 @@
                     MixedStyledText('True')
                       MixedStyledText('True')
                         SingleStyledText('True')
-                TableCellBackground()
-                     x (0,0,0,2,8) table body cell background on odd row
             TableRow()
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on even row
+                TableCellBorder('top')
+                     > (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+                TableCellBorder('right')
+                     > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+                TableCellBorder('bottom')
+                     > (0,0,0,2,8) table bottom border [Sphinx] > table top border
+                       (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+                TableCellBorder('left')
+                     x (0,0,0,2,8) table body left border
+                     x (0,0,0,2,4) table left border
+                     > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
               TableCell()   <entry>
                    > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
                 Paragraph('True')   google_fonts.rst:34   <paragraph>
@@ -256,6 +554,15 @@
                         SingleStyledText('True')
                 TableCellBackground()
                      x (0,0,0,2,8) table body cell background on even row
+                TableCellBorder('top')
+                     > (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+                TableCellBorder('right')
+                     > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+                TableCellBorder('bottom')
+                     > (0,0,0,2,8) table bottom border [Sphinx] > table top border
+                       (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+                TableCellBorder('left')
+                     > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
               TableCell()   <entry>
                    > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
                 Paragraph('True')   google_fonts.rst:34   <paragraph>
@@ -266,6 +573,17 @@
                         SingleStyledText('True')
                 TableCellBackground()
                      x (0,0,0,2,8) table body cell background on even row
+                TableCellBorder('top')
+                     > (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+                TableCellBorder('right')
+                     x (0,0,0,2,8) table body right border
+                     x (0,0,0,2,4) table right border
+                     > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+                TableCellBorder('bottom')
+                     > (0,0,0,2,8) table bottom border [Sphinx] > table top border
+                       (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+                TableCellBorder('left')
+                     > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
               TableCell()   <entry>
                    > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
                 Paragraph('True')   google_fonts.rst:34   <paragraph>
@@ -274,5 +592,3 @@
                     MixedStyledText('True')
                       MixedStyledText('True')
                         SingleStyledText('True')
-                TableCellBackground()
-                     x (0,0,0,2,8) table body cell background on even row

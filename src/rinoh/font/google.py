@@ -72,8 +72,8 @@ def installed_google_fonts_typefaces():
 def find_static_font_files(path):
     static = path / 'static'
     path = static if static.is_dir() else path
-    yield from path.glob('*.ttf')
-    yield from path.glob('*.otf')
+    yield from path.glob('**/*.ttf')
+    yield from path.glob('**/*.otf')
 
 
 def try_install_family(name, family_path):

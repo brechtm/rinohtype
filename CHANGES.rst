@@ -58,8 +58,12 @@ Fixed:
 * Crash on rendering a heading with an index entry annotation (#369)
 * Crash on encountering a fully-spanned table row (#369)
 * Crash on rendering a figure caption with the default style (#368)
-* Some fonts on Google Fonts have the 'otf' extension (instead of 'ttf'); also
-  collect these.
+* Google Fonts fixes
+
+  - Some fonts on Google Fonts have the 'otf' extension (instead of 'ttf');
+    also collect these.
+  - Look recursively for font files in the a Google Fonts directory (e.g. Asap
+    fonts are now stored in a deeper directory).
 
 
 Release 0.5.4 (2022-06-17)
