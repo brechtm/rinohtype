@@ -1,4 +1,6 @@
 ---------------------------------- page  ----------------------------------
+#### FlowablesContainer('background')
+  StaticGroupedFlowables()
 #### FootnoteContainer('footnotes')
   StaticGroupedFlowables()
 #### DownExpandingContainer('floats')
@@ -17,7 +19,8 @@
              > (0,0,0,0,4) figure caption [Sphinx] > caption
             SingleStyledText('Figure')
             SingleStyledText(' ')
-            MixedStyledText('1. ')
+            MixedStyledText('1. ', style='label')
+              SingleStyledText('')
               SingleStyledText('1')
               SingleStyledText('. ')
             MixedStyledText('This figure is rendered incorrec...')
