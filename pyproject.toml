@@ -108,7 +108,7 @@ pytest-cov = "^4.0.0"
 pytest-xdist = "^3.0.2"
 restview = "^3.0.0"
 Sphinx = "^5.2.1"
-sphinx-immaterial = "^0.10.0"
+sphinx-immaterial = "^0.11.0"
 sphinxcontrib-autoprogram = "^0.1.7"
 pytest-github-actions-annotate-failures = { version = "^0.1.7", optional = true }
 pytest-pycharm = "^0.7.0"
