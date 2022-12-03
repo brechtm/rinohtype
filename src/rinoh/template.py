@@ -684,12 +684,12 @@ class DocumentTemplateMeta(WithAttributes):
         return cls._get_default(name)
 
     def get_entries(cls, name, document):
-        if name in cls._templates:
-            yield cls._templates[name]
+        with suppress(KeyError):
+            yield cls.get_template(name)
         m = cls.RE_PAGE.match(name)
         if m:
             general_template = m.group(1) + '_page'
-            yield cls._templates[general_template]
+            yield cls.get_template(general_template)
 
     def _get_value_recursive(cls, name, attribute):
         if name in cls._templates:
