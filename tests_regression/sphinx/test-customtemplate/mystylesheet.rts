@@ -1,0 +1,12 @@
+[STYLESHEET]
+name=Custom
+base=sphinx
+description=The Sphinx stylesheet, but using core PDF fonts
+
+[VARIABLES]
+mono_typeface=Courier
+serif_typeface=Times
+sans_typeface=Helvetica
+
+[title page date : Paragraph('title page date')]
+hide = true

@@ -1,0 +1,7 @@
+[TEMPLATE_CONFIGURATION]
+name=my template configuration
+template=my_template
+stylesheet=mystylesheet.rts
+
+[rear_cover_page]
+background = 'rear_page_bg.png', scale=fit
