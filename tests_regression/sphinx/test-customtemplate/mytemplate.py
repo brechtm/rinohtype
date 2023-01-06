@@ -2,12 +2,11 @@ from pathlib import Path
 
 from rinoh import register_template
 from rinoh.attribute import OverrideDefault
-from rinoh.dimension import CM, PT
+from rinoh.dimension import CM
 from rinoh.image import Image
 from rinoh.layout import CONTENT, DownExpandingContainer, UpExpandingContainer
 from rinoh.paragraph import Paragraph
-from rinoh.template import (DocumentTemplate, DocumentPartTemplate,
-                            PageBase, PageTemplateBase)
+from rinoh.template import DocumentPartTemplate, PageBase, PageTemplateBase
 from rinoh.templates import Book
 from rinoh.text import StyledText
 
@@ -18,8 +17,8 @@ class RearCoverPageTemplate(PageTemplateBase):
 
 
 REAR_COVER_PAGE_TEXT = r"""
-'Some '(style 1) 'Text\n'(style 2)
-'Some '(style 1) 'Text'(style 2)
+'Some '(rear cover small) 'Text\n'(rear cover large)
+'Some '(rear cover large) 'Text'(rear cover small)
 """
 
 
@@ -55,5 +54,6 @@ class MyDocumentTemplate(Book):
                              'rear_cover'])
     rear_cover = RearCoverPartTemplate()
     rear_cover_page = RearCoverPageTemplate(base='page')
+
 
 register_template('my_template', MyDocumentTemplate)
