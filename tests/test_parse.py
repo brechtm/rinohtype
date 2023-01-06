@@ -350,6 +350,11 @@ def test_styledtext_from_string():
     assert StyledText.from_string("'one' '{gt}two'(style2)") \
            == MixedStyledText([SingleStyledText('one'),
                                SingleStyledText('>two', style='style2')])
+    assert StyledText.from_string("'one'\n'two' (style2)") \
+           == MixedStyledText([SingleStyledText('one'),
+                               SingleStyledText('two', style='style2')])
+    assert StyledText.from_string("\n'one'") \
+           == SingleStyledText('one')
 
 
 def test_styledtext_from_string_field():

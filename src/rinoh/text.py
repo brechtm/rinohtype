@@ -29,7 +29,7 @@ import re
 
 from ast import literal_eval
 from html.entities import name2codepoint
-from token import NAME, STRING, NEWLINE, LPAR, RPAR, ENDMARKER
+from token import NAME, STRING, NEWLINE, NL, LPAR, RPAR, ENDMARKER
 
 from .annotation import AnchorAnnotation, LinkAnnotation, AnnotatedSpan
 from .attribute import (AttributeType, AcceptNoneAttributeType, Attribute,
@@ -198,7 +198,7 @@ class StyledText(InlineStyled, AcceptNoneAttributeType):
                 items.append(InlineFlowable.from_tokens(tokens, source))
             elif tokens.next.type == STRING:
                 items.append(cls.text_from_tokens(tokens))
-            elif tokens.next.type == NEWLINE:
+            elif tokens.next.type in (NEWLINE, NL):
                 next(tokens)
             elif tokens.next.type == ENDMARKER:
                 break

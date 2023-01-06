@@ -20,7 +20,7 @@ class RearCoverPageTemplate(PageTemplateBase):
 REAR_COVER_PAGE_TEXT = r"""
 'Some '(style 1) 'Text\n'(style 2)
 'Some '(style 1) 'Text'(style 2)
-""".replace('\n', '') # work around rinohtype bug
+"""
 
 
 class RearCoverPage(PageBase):
