@@ -54,6 +54,7 @@ Changed:
 
 Fixed:
 
+* Compatibility with importlib-metadata 6.0.0 (#389)
 * Document part templates were not retrieved recursively (#379 comment)
 * Listing the installed fonts in a PDF: ``rinoh --list-fonts <filename>``
 * Crash on rendering a heading with an index entry annotation (#369)
