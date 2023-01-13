@@ -16,7 +16,7 @@ on:
 
 env:
   current_python: '3.11'
-  poetry_version: '1.1.12'
+  poetry_version: '1.3.2'
   nox_cmd: 'nox --verbose --error-on-missing-interpreters --session'
 jobs:
   check:
