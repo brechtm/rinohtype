@@ -23,7 +23,7 @@ sheet. The custom template (Python) and configuration (INI file):
 Actually, there are two template configuration files: a base configuration and
 one for a special type of documents. The latter inherits from the base template
 configuration and only overrides what needs changing. In this case, it omits
-the table of contents part from the document. The PDF linked to above is an
+the table of contents part from the document. :showcase:`Odpisy.pdf` is an
 example of such a document.
 
 
