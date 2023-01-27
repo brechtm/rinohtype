@@ -43,7 +43,7 @@ jobs:
         python-version: ${{ env.current_python }}
     - name: Install Nox & co
       run: |
-        pip${{ env.current_python }} install poetry==${{ env.poetry_version }}
+        pip${{ env.current_python }} install poetry==${{ env.poetry_version }} https://github.com/python-poetry/poetry-plugin-export/archive/ead1dfba7050e691be1aba8e612e6f033e3815de.zip https://github.com/python-poetry/poetry-plugin-export/archive/ead1dfba7050e691be1aba8e612e6f033e3815de.zip
         poetry export --with dev --without-hashes --format constraints.txt --output constraints.txt
         pip${{ env.current_python }} install --constraint constraints.txt nox nox-poetry
 
@@ -149,7 +149,7 @@ jobs:
         python-version: ${{ env.current_python }}
     - name: Install Nox & co
       run: |
-        pip${{ env.current_python }} install poetry==${{ env.poetry_version }}
+        pip${{ env.current_python }} install poetry==${{ env.poetry_version }} https://github.com/python-poetry/poetry-plugin-export/archive/ead1dfba7050e691be1aba8e612e6f033e3815de.zip
         poetry export --with dev --without-hashes --format constraints.txt --output constraints.txt
         pip${{ env.current_python }} install --constraint constraints.txt nox nox-poetry
     - name: Install Python ${{ matrix.python-version }}
@@ -200,7 +200,7 @@ jobs:
         python-version: ${{ env.current_python }}
     - name: Install Nox & co
       run: |
-        pip${{ env.current_python }} install poetry==${{ env.poetry_version }}
+        pip${{ env.current_python }} install poetry==${{ env.poetry_version }} https://github.com/python-poetry/poetry-plugin-export/archive/ead1dfba7050e691be1aba8e612e6f033e3815de.zip
         poetry export --with dev --without-hashes --format constraints.txt --output constraints.txt
         pip${{ env.current_python }} install --constraint constraints.txt nox nox-poetry
     - name: Install Python ${{ matrix.python-version }}
@@ -304,7 +304,7 @@ jobs:
         python-version: ${{ env.current_python }}
     - name: Install Poetry
       run: |
-        pip${{ env.current_python }} install poetry==${{ env.poetry_version }}
+        pip${{ env.current_python }} install poetry==${{ env.poetry_version }} https://github.com/python-poetry/poetry-plugin-export/archive/ead1dfba7050e691be1aba8e612e6f033e3815de.zip
     - name: Get package version from Poetry
       run: echo "PKG_VERSION=$(poetry version --short)" >> $GITHUB_ENV
     - name: Check whether the tag matches the package version
@@ -355,7 +355,7 @@ jobs:
         python-version: ${{ env.current_python }}
     - name: Install Poetry
       run: |
-        pip${{ env.current_python }} install poetry==${{ env.poetry_version }}
+        pip${{ env.current_python }} install poetry==${{ env.poetry_version }} https://github.com/python-poetry/poetry-plugin-export/archive/ead1dfba7050e691be1aba8e612e6f033e3815de.zip
 
     - name: Build the wheel
       run: poetry build --format wheel
@@ -380,7 +380,7 @@ jobs:
         python-version: ${{ env.current_python }}
     - name: Install Poetry
       run: |
-        pip${{ env.current_python }} install poetry==${{ env.poetry_version }}
+        pip${{ env.current_python }} install poetry==${{ env.poetry_version }} https://github.com/python-poetry/poetry-plugin-export/archive/ead1dfba7050e691be1aba8e612e6f033e3815de.zip
 
     - name: Publish to PyPI
       env:
