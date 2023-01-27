@@ -24,7 +24,7 @@ Dependencies
 ------------
 
 For parsing reStructuredText and CommonMark documents, rinohtype depends on
-docutils_ and recommonmark_ respectively. pip takes care of these requirements
+docutils_ and myst-parser_ respectively. pip takes care of these requirements
 automatically when you install rinohtype.
 
 If you want to include images other than PDF, PNG or JPEG, you need to install
@@ -32,5 +32,5 @@ Pillow_ additionally.
 
 .. _pip: https://pip.pypa.io
 .. _docutils: http://docutils.sourceforge.net/index.html
-.. _recommonmark: https://recommonmark.readthedocs.io
+.. _myst-parser: https://myst-parser.readthedocs.io
 .. _Pillow: http://python-pillow.github.io
