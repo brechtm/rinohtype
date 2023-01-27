@@ -603,7 +603,7 @@ class ParagraphState(FlowableState):
                                      if word_string else '')
                         if not (last_word.lower() in no_break_after
                                 and special is Space):
-                            self.group_index = group_index
+                            self.group_index = group_index - 1
                             if word:
                                 container = yield word
                             for _ in chars:

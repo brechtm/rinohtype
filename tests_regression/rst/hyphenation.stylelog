@@ -1,0 +1,51 @@
+---------------------------------- page 1 ----------------------------------
+#### FlowablesContainer('background')
+  StaticGroupedFlowables()
+#### FootnoteContainer('footnotes')
+  StaticGroupedFlowables()
+#### DownExpandingContainer('floats')
+  StaticGroupedFlowables()
+#### ChainedContainer('column1')
+  StaticGroupedFlowables()
+    DocumentTree()   hyphenation.rst   <document>
+      Paragraph('spacer')   hyphenation.rst:3   <paragraph>
+           > (0,0,0,1,2) spacer [hyphenation.rts] > DEFAULT
+             (0,0,0,0,2) body [hyphenation.rts] > DEFAULT
+          MixedStyledText('spacer')
+            MixedStyledText('spacer')
+              SingleStyledText('spacer')
+      Paragraph('Alice was beginning to get very ...')   hyphenation.rst:6   <paragraph>
+           > (0,0,0,0,2) body [hyphenation.rts] > DEFAULT
+          MixedStyledText('Alice was beginning to get very ...')
+            MixedStyledText('Alice was beginning to get very ...')
+              SingleStyledText('Alice was beginning to get very ...')
+          MixedStyledText('Alice was beginning to get very ...')
+            MixedStyledText('Alice was beginning to get very ...')
+              SingleStyledText('Alice was beginning to get very ...')
+          MixedStyledText('Alice was beginning to get very ...')
+            MixedStyledText('Alice was beginning to get very ...')
+              SingleStyledText('Alice was beginning to get very ...')
+          MixedStyledText('Alice was beginning to get very ...')
+            MixedStyledText('Alice was beginning to get very ...')
+              SingleStyledText('Alice was beginning to get very ...')
+          MixedStyledText('Alice was beginning to get very ...')
+            MixedStyledText('Alice was beginning to get very ...')
+              SingleStyledText('Alice was beginning to get very ...')
+          MixedStyledText('Alice was beginning to get very ...')
+            MixedStyledText('Alice was beginning to get very ...')
+              SingleStyledText('Alice was beginning to get very ...')
+---------------------------------- page 2 ----------------------------------
+#### FlowablesContainer('background')
+  StaticGroupedFlowables()
+#### FootnoteContainer('footnotes')
+  StaticGroupedFlowables()
+#### DownExpandingContainer('floats')
+  StaticGroupedFlowables()
+#### ChainedContainer('column1')
+  (continued) StaticGroupedFlowables()
+    (continued) DocumentTree()   hyphenation.rst   <document>
+      (continued) Paragraph('Alice was beginning to get very ...')   hyphenation.rst:6   <paragraph>
+           > (0,0,0,0,2) body [hyphenation.rts] > DEFAULT
+          MixedStyledText('Alice was beginning to get very ...')
+            MixedStyledText('Alice was beginning to get very ...')
+              SingleStyledText('Alice was beginning to get very ...')
