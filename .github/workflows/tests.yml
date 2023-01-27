@@ -44,7 +44,7 @@ jobs:
     - name: Install Nox & co
       run: |
         pip${{ env.current_python }} install poetry==${{ env.poetry_version }}
-        poetry export --dev --without-hashes --output requirements.txt
+        poetry export --with dev --without-hashes --output requirements.txt
         pip${{ env.current_python }} install --constraint requirements.txt nox nox-poetry
 
     - name: Cache docs references cache
@@ -150,7 +150,7 @@ jobs:
     - name: Install Nox & co
       run: |
         pip${{ env.current_python }} install poetry==${{ env.poetry_version }}
-        poetry export --dev --without-hashes --output requirements.txt
+        poetry export --with dev --without-hashes --output requirements.txt
         pip${{ env.current_python }} install --constraint requirements.txt nox nox-poetry
     - name: Install Python ${{ matrix.python-version }}
       if: matrix.python-version != env.current_python
@@ -201,7 +201,7 @@ jobs:
     - name: Install Nox & co
       run: |
         pip${{ env.current_python }} install poetry==${{ env.poetry_version }}
-        poetry export --dev --without-hashes --output requirements.txt
+        poetry export --with dev --without-hashes --output requirements.txt
         pip${{ env.current_python }} install --constraint requirements.txt nox nox-poetry
     - name: Install Python ${{ matrix.python-version }}
       if: matrix.python-version != env.current_python
