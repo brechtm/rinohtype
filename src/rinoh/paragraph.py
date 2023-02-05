@@ -526,14 +526,13 @@ class DefaultTabStops(object):
 
 
 class ParagraphState(FlowableState):
-    def __init__(self, paragraph, language, span_index=0, group_index=None,
+    def __init__(self, paragraph, language, span_index=0, group_index=0,
                  nested_flowable_state=None, _first_word=None, _initial=True):
         super().__init__(paragraph, _initial)
         self.language = language
         self._words = None
         self.span_index = max(span_index, 0)
         self.group_index = group_index
-        self.start_group_index = group_index
         self.nested_flowable_state = nested_flowable_state
         self._first_word = _first_word
         self._saved = None
@@ -570,7 +569,7 @@ class ParagraphState(FlowableState):
         self.span_index -= 1
         while True:
             if group_index:
-                self.start_group_index = None
+                self.group_index = 0
             group_index = 0
             if missing_glyphs_spans:
                 try:
@@ -592,9 +591,9 @@ class ParagraphState(FlowableState):
             try:
                 get_glyph_metrics, lig_kern = create_lig_kern(span, container)
                 groups = groupby(iter(span.text(container)), WHITESPACE.get)
-                if self.start_group_index:
-                    for _ in islice(groups, 0, self.start_group_index):
-                        group_index += 1
+                for _ in range(self.group_index):
+                    next(groups)
+                    group_index += 1
                 for special, chars in groups:
                     group_index += 1
                     if special:
@@ -644,7 +643,6 @@ class ParagraphState(FlowableState):
         self._first_word = first_word
         self._words = None
         self.span_index = span_index
-        self.start_group_index = group_index
         self.group_index = group_index
         self.nested_flowable_state = nested_state
         self.initial = initial
