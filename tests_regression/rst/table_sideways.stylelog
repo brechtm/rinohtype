@@ -16,6 +16,7 @@
                (0,0,0,0,2) other heading levels [Sphinx] > heading level 5
             MixedStyledText('1 ', style='label')
                  x (0,0,1,1,3) heading level 1 label
+              SingleStyledText('')
               SingleStyledText('1')
               SingleStyledText(' ')
             MixedStyledText('First Section')
@@ -51,6 +52,7 @@
           SingleStyledText('Table')
           SingleStyledText(' ')
           MixedStyledText('1.1. ', style='label')
+            SingleStyledText('')
             SingleStyledText('1.1')
             SingleStyledText('. ')
           MixedStyledText('Sideways table')
@@ -307,10 +309,13 @@
                   MixedStyledText('body row 31')
                     MixedStyledText('body row 31')
                       SingleStyledText('body row 3')
-                      NoteMarkerByID('1', id='id1', style='footnote')   <footnote_reference>
+                      NoteMarkerByID('1', id='footnote-reference-1', style='footnote')   <footnote_reference>
                            > (0,0,1,0,1) footnote marker [Sphinx] > linked reference
                              (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
-                        SingleStyledText('1')
+                        MixedStyledText('1')
+                          SingleStyledText('')
+                          SingleStyledText('1')
+                          SingleStyledText('')
               TableCellBackground()
               TableCellBorder('top')
                    > (0,0,0,1,2) table cell top border [Sphinx] > table cell border
@@ -503,6 +508,7 @@
           SingleStyledText('Table')
           SingleStyledText(' ')
           MixedStyledText('1.2. ', style='label')
+            SingleStyledText('')
             SingleStyledText('1.2')
             SingleStyledText('. ')
           MixedStyledText('Another sideways table')
@@ -674,6 +680,7 @@
                (0,0,0,0,2) other heading levels [Sphinx] > heading level 5
             MixedStyledText('2 ', style='label')
                  x (0,0,1,1,3) heading level 1 label
+              SingleStyledText('')
               SingleStyledText('2')
               SingleStyledText(' ')
             MixedStyledText('Second Section')
@@ -704,6 +711,7 @@
           SingleStyledText('Table')
           SingleStyledText(' ')
           MixedStyledText('2.1. ', style='label')
+            SingleStyledText('')
             SingleStyledText('2.1')
             SingleStyledText('. ')
           MixedStyledText('Sideways table spanning two page...')
@@ -960,10 +968,13 @@
                   MixedStyledText('body row 32')
                     MixedStyledText('body row 32')
                       SingleStyledText('body row 3')
-                      NoteMarkerByID('2', id='id2', style='footnote')   <footnote_reference>
+                      NoteMarkerByID('2', id='footnote-reference-2', style='footnote')   <footnote_reference>
                            > (0,0,1,0,1) footnote marker [Sphinx] > linked reference
                              (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
-                        SingleStyledText('2')
+                        MixedStyledText('2')
+                          SingleStyledText('')
+                          SingleStyledText('2')
+                          SingleStyledText('')
               TableCellBackground()
               TableCellBorder('top')
                    > (0,0,0,1,2) table cell top border [Sphinx] > table cell border
@@ -1278,10 +1289,13 @@
                   MixedStyledText('body row 83')
                     MixedStyledText('body row 83')
                       SingleStyledText('body row 8')
-                      NoteMarkerByID('3', id='id3', style='footnote')   <footnote_reference>
+                      NoteMarkerByID('3', id='footnote-reference-3', style='footnote')   <footnote_reference>
                            > (0,0,1,0,1) footnote marker [Sphinx] > linked reference
                              (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
-                        SingleStyledText('3')
+                        MixedStyledText('3')
+                          SingleStyledText('')
+                          SingleStyledText('3')
+                          SingleStyledText('')
               TableCellBackground()
               TableCellBorder('top')
                    > (0,0,0,1,2) table cell top border [Sphinx] > table cell border
@@ -1603,13 +1617,20 @@
                    > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
             TableCell()   <entry>
                  > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
-              Paragraph('body row 13')   table_sideways.rst:83   <paragraph>
+              Paragraph('body row 134')   table_sideways.rst:83   <paragraph>
                    > (0,0,0,1,8) table first column paragraph [Sphinx] > table body cell paragraph
                      (0,0,0,0,9) table body cell paragraph [Sphinx] > default
                      (0,0,0,0,2) body [Sphinx] > default
-                  MixedStyledText('body row 13')
-                    MixedStyledText('body row 13')
+                  MixedStyledText('body row 134')
+                    MixedStyledText('body row 134')
                       SingleStyledText('body row 13')
+                      NoteMarkerByID('4', id='footnote-reference-4', style='footnote')   <footnote_reference>
+                           > (0,0,1,0,1) footnote marker [Sphinx] > linked reference
+                             (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                        MixedStyledText('4')
+                          SingleStyledText('')
+                          SingleStyledText('4')
+                          SingleStyledText('')
               TableCellBackground()
               TableCellBorder('top')
                    > (0,0,0,1,2) table cell top border [Sphinx] > table cell border

@@ -80,7 +80,7 @@ Paragraph preceding the third sideways table which spans two pages.
    +------------------------+------------+----------+----------+
    | body row 12            | Cells may span columns.          |
    +------------------------+------------+---------------------+
-   | body row 13            | Cells may  | - Table cells       |
+   | body row 13\ [#f4]_    | Cells may  | - Table cells       |
    +------------------------+ span rows. | - contain           |
    | body row 14            |            | - body elements.    |
    +------------------------+------------+----------+----------+
@@ -91,3 +91,5 @@ Paragraph preceding the third sideways table which spans two pages.
 .. [#f2] Footnote in a sideways table spanning multiple pages.
 
 .. [#f3] Another footnote.
+
+.. [#f4] And the last footnote.
