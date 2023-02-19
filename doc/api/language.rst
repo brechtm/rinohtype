@@ -21,6 +21,8 @@ The following languages are supported:
 
 .. autodata:: EN
 
+.. autodata:: ES
+
 .. autodata:: FR
 
 .. autodata:: IT
