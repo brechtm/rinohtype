@@ -33,7 +33,7 @@
       
     
         <link rel="stylesheet" type="text/css" href="_static/google_fonts.css" />
-        <link rel="stylesheet" type="text/css" href="_static/stylesheets/sphinx_immaterial_theme.7e770c658028b1997.min.css" />
+        <link rel="stylesheet" type="text/css" href="_static/stylesheets/sphinx_immaterial_theme.e10f1df50225cf229.min.css" />
         <link rel="stylesheet" type="text/css" href="_static/tweaks.css" />
     <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -1036,14 +1036,14 @@ style sheet</p></li>
 correspond to the labels associated with selectors in the
 <a class="reference internal" href="api/style.html#rinoh.style.StyledMatcher" title="rinoh.style.StyledMatcher (Python class) — Dictionary mapping labels to selectors."><code class="xref py py-class docutils literal notranslate"><span class="pre">StyledMatcher</span></code></a>. Each entry in a section sets a value for a style
 attribute. The style for enumerated lists is defined like this, for example:</p>
-<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><code><span class="k">[enumerated list]</span><span class="w"></span>
-<span class="na">margin_left</span><span class="o">=</span><span class="s">8pt</span><span class="w"></span>
-<span class="na">space_above</span><span class="o">=</span><span class="s">5pt</span><span class="w"></span>
-<span class="na">space_below</span><span class="o">=</span><span class="s">5pt</span><span class="w"></span>
-<span class="na">ordered</span><span class="o">=</span><span class="s">true</span><span class="w"></span>
-<span class="na">flowable_spacing</span><span class="o">=</span><span class="s">5pt</span><span class="w"></span>
-<span class="na">number_format</span><span class="o">=</span><span class="s">NUMBER</span><span class="w"></span>
-<span class="na">label_suffix</span><span class="o">=</span><span class="s">&#39;)&#39;</span><span class="w"></span>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><code><span class="k">[enumerated list]</span>
+<span class="na">margin_left</span><span class="o">=</span><span class="s">8pt</span>
+<span class="na">space_above</span><span class="o">=</span><span class="s">5pt</span>
+<span class="na">space_below</span><span class="o">=</span><span class="s">5pt</span>
+<span class="na">ordered</span><span class="o">=</span><span class="s">true</span>
+<span class="na">flowable_spacing</span><span class="o">=</span><span class="s">5pt</span>
+<span class="na">number_format</span><span class="o">=</span><span class="s">NUMBER</span>
+<span class="na">label_suffix</span><span class="o">=</span><span class="s">&#39;)&#39;</span>
 </code></pre></div>
 </div>
 <p>Since this is an enumerated list, <em>ordered</em> is set to <code class="docutils literal notranslate"><span class="pre">true</span></code>. <em>number_format</em>
@@ -1055,25 +1055,25 @@ for the full list of accepted style attributes.</p>
 be useful to collect common attributes in a base style for a set of style
 definitions. For example, the Sphinx style sheet defines the <em>header_footer</em>
 style to serve as a base for the <em>header</em> and <em>footer</em> styles:</p>
-<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><code><span class="k">[header_footer : Paragraph]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">default</span><span class="w"></span>
-<span class="na">typeface</span><span class="o">=</span><span class="s">$(sans_typeface)</span><span class="w"></span>
-<span class="na">font_size</span><span class="o">=</span><span class="s">10pt</span><span class="w"></span>
-<span class="na">font_weight</span><span class="o">=</span><span class="s">BOLD</span><span class="w"></span>
-<span class="na">indent_first</span><span class="o">=</span><span class="s">0pt</span><span class="w"></span>
-<span class="na">tab_stops</span><span class="o">=</span><span class="s">50% CENTER, 100% RIGHT</span><span class="w"></span>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><code><span class="k">[header_footer : Paragraph]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">default</span>
+<span class="na">typeface</span><span class="o">=</span><span class="s">$(sans_typeface)</span>
+<span class="na">font_size</span><span class="o">=</span><span class="s">10pt</span>
+<span class="na">font_weight</span><span class="o">=</span><span class="s">BOLD</span>
+<span class="na">indent_first</span><span class="o">=</span><span class="s">0pt</span>
+<span class="na">tab_stops</span><span class="o">=</span><span class="s">50% CENTER, 100% RIGHT</span>
 
-<span class="k">[header]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">header_footer</span><span class="w"></span>
-<span class="na">padding_bottom</span><span class="o">=</span><span class="s">2pt</span><span class="w"></span>
-<span class="na">border_bottom</span><span class="o">=</span><span class="s">$(thin_black_stroke)</span><span class="w"></span>
-<span class="na">space_below</span><span class="o">=</span><span class="s">24pt</span><span class="w"></span>
+<span class="k">[header]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">header_footer</span>
+<span class="na">padding_bottom</span><span class="o">=</span><span class="s">2pt</span>
+<span class="na">border_bottom</span><span class="o">=</span><span class="s">$(thin_black_stroke)</span>
+<span class="na">space_below</span><span class="o">=</span><span class="s">24pt</span>
 
-<span class="k">[footer]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">header_footer</span><span class="w"></span>
-<span class="na">padding_top</span><span class="o">=</span><span class="s">4pt</span><span class="w"></span>
-<span class="na">border_top</span><span class="o">=</span><span class="s">$(thin_black_stroke)</span><span class="w"></span>
-<span class="na">space_above</span><span class="o">=</span><span class="s">18pt</span><span class="w"></span>
+<span class="k">[footer]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">header_footer</span>
+<span class="na">padding_top</span><span class="o">=</span><span class="s">4pt</span>
+<span class="na">border_top</span><span class="o">=</span><span class="s">$(thin_black_stroke)</span>
+<span class="na">space_above</span><span class="o">=</span><span class="s">18pt</span>
 </code></pre></div>
 </div>
 <p>Because there is no selector associated with <em>header_footer</em>, the element type
@@ -1091,11 +1091,11 @@ constructing selectors in a Python source code (see <a class="reference internal
 number of important differences. A <a class="reference internal" href="api/style.html#rinoh.style.Styled" title="rinoh.style.Styled (Python class) — A document element who's style can be configured."><code class="xref py py-class docutils literal notranslate"><span class="pre">Styled</span></code></a> subclass name followed by
 parentheses represents a simple class selector (without context). Arguments to
 be passed to <code class="xref py py-meth docutils literal notranslate"><span class="pre">Styled.like()</span></code> can be included within the parentheses.</p>
-<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><code><span class="k">[special text : StyledText(&#39;special&#39;)]</span><span class="w"></span>
-<span class="na">font_color</span><span class="o">=</span><span class="s">#FF00FF</span><span class="w"></span>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><code><span class="k">[special text : StyledText(&#39;special&#39;)]</span>
+<span class="na">font_color</span><span class="o">=</span><span class="c1">#FF00FF</span>
 
-<span class="k">[accept button : InlineImage(filename=&#39;images/ok_button.png&#39;)]</span><span class="w"></span>
-<span class="na">baseline</span><span class="o">=</span><span class="s">20%</span><span class="w"></span>
+<span class="k">[accept button : InlineImage(filename=&#39;images/ok_button.png&#39;)]</span>
+<span class="na">baseline</span><span class="o">=</span><span class="s">20%</span>
 </code></pre></div>
 </div>
 <p>Even if no arguments are passed to the class selector, it is important that the
@@ -1105,44 +1105,44 @@ base style for other style definitions (see <a class="reference internal" href="
 <p>As in Python source code, context selectors are constructed using forward
 slashes (<code class="docutils literal notranslate"><span class="pre">/</span></code>) and the ellipsis (<code class="docutils literal notranslate"><span class="pre">...</span></code>). Another selector can be referenced
 in a context selector by enclosing its name in single or double quotes.</p>
-<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><code><span class="k">[admonition title colon : Admonition / ... / StyledText(&#39;colon&#39;)]</span><span class="w"></span>
-<span class="na">font_size</span><span class="o">=</span><span class="s">10pt</span><span class="w"></span>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><code><span class="k">[admonition title colon : Admonition / ... / StyledText(&#39;colon&#39;)]</span>
+<span class="na">font_size</span><span class="o">=</span><span class="s">10pt</span>
 
-<span class="k">[chapter title : LabeledFlowable(&#39;chapter title&#39;)]</span><span class="w"></span>
-<span class="na">label_spacing</span><span class="o">=</span><span class="s">1cm</span><span class="w"></span>
-<span class="na">align_baselines</span><span class="o">=</span><span class="s">false</span><span class="w"></span>
+<span class="k">[chapter title : LabeledFlowable(&#39;chapter title&#39;)]</span>
+<span class="na">label_spacing</span><span class="o">=</span><span class="s">1cm</span>
+<span class="na">align_baselines</span><span class="o">=</span><span class="s">false</span>
 
-<span class="k">[chapter title number : &#39;chapter title&#39; / Paragraph(&#39;number&#39;)]</span><span class="w"></span>
-<span class="na">font_size</span><span class="o">=</span><span class="s">96pt</span><span class="w"></span>
-<span class="na">text_align</span><span class="o">=</span><span class="s">right</span><span class="w"></span>
+<span class="k">[chapter title number : &#39;chapter title&#39; / Paragraph(&#39;number&#39;)]</span>
+<span class="na">font_size</span><span class="o">=</span><span class="s">96pt</span>
+<span class="na">text_align</span><span class="o">=</span><span class="s">right</span>
 </code></pre></div>
 </div>
 <h3 id="variables">Variables<a class="headerlink" href="#variables" title="Permalink to this heading">¶</a></h3>
 <p>Variables can be used for values that are used in multiple style definitions.
 This example declares a number of typefaces to allow easily replacing the
 fonts in a style sheet:</p>
-<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><code><span class="k">[VARIABLES]</span><span class="w"></span>
-<span class="na">mono_typeface</span><span class="o">=</span><span class="s">TeX Gyre Cursor</span><span class="w"></span>
-<span class="na">serif_typeface</span><span class="o">=</span><span class="s">TeX Gyre Pagella</span><span class="w"></span>
-<span class="na">sans_typeface</span><span class="o">=</span><span class="s">Tex Gyre Heros</span><span class="w"></span>
-<span class="na">thin_black_stroke</span><span class="o">=</span><span class="s">0.5pt,#000</span><span class="w"></span>
-<span class="na">blue</span><span class="o">=</span><span class="s">#20435c</span><span class="w"></span>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><code><span class="k">[VARIABLES]</span>
+<span class="na">mono_typeface</span><span class="o">=</span><span class="s">TeX Gyre Cursor</span>
+<span class="na">serif_typeface</span><span class="o">=</span><span class="s">TeX Gyre Pagella</span>
+<span class="na">sans_typeface</span><span class="o">=</span><span class="s">Tex Gyre Heros</span>
+<span class="na">thin_black_stroke</span><span class="o">=</span><span class="s">0.5pt,</span><span class="c1">#000</span>
+<span class="na">blue</span><span class="o">=</span><span class="c1">#20435c</span>
 </code></pre></div>
 </div>
 <p>It also defines the <em>thin_black_stroke</em> line style for use in table and frame
 styles, and a specific color labelled <em>blue</em>. These variables can be referenced
 in style definitions as follows:</p>
-<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><code><span class="k">[code block]</span><span class="w"></span>
-<span class="na">typeface</span><span class="o">=</span><span class="s">$(mono_typeface)</span><span class="w"></span>
-<span class="na">font_size</span><span class="o">=</span><span class="s">9pt</span><span class="w"></span>
-<span class="na">text_align</span><span class="o">=</span><span class="s">LEFT</span><span class="w"></span>
-<span class="na">indent_first</span><span class="o">=</span><span class="s">0</span><span class="w"></span>
-<span class="na">space_above</span><span class="o">=</span><span class="s">6pt</span><span class="w"></span>
-<span class="na">space_below</span><span class="o">=</span><span class="s">4pt</span><span class="w"></span>
-<span class="na">border</span><span class="o">=</span><span class="s">$(thin_black_stroke)</span><span class="w"></span>
-<span class="na">padding_left</span><span class="o">=</span><span class="s">5pt</span><span class="w"></span>
-<span class="na">padding_top</span><span class="o">=</span><span class="s">1pt</span><span class="w"></span>
-<span class="na">padding_bottom</span><span class="o">=</span><span class="s">3pt</span><span class="w"></span>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><code><span class="k">[code block]</span>
+<span class="na">typeface</span><span class="o">=</span><span class="s">$(mono_typeface)</span>
+<span class="na">font_size</span><span class="o">=</span><span class="s">9pt</span>
+<span class="na">text_align</span><span class="o">=</span><span class="s">LEFT</span>
+<span class="na">indent_first</span><span class="o">=</span><span class="s">0</span>
+<span class="na">space_above</span><span class="o">=</span><span class="s">6pt</span>
+<span class="na">space_below</span><span class="o">=</span><span class="s">4pt</span>
+<span class="na">border</span><span class="o">=</span><span class="s">$(thin_black_stroke)</span>
+<span class="na">padding_left</span><span class="o">=</span><span class="s">5pt</span>
+<span class="na">padding_top</span><span class="o">=</span><span class="s">1pt</span>
+<span class="na">padding_bottom</span><span class="o">=</span><span class="s">3pt</span>
 </code></pre></div>
 </div>
 <p>Another stylesheet can inherit (see below) from this one and easily replace
@@ -1167,20 +1167,20 @@ can help avoid duplication of style information and the resulting maintenance
 difficulties. In the following example, the <em>unnumbered heading level 1</em> style
 inherits all properties from <em>heading level 1</em>, overriding only the
 <em>number_format</em> attribute:</p>
-<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><code><span class="k">[heading level 1]</span><span class="w"></span>
-<span class="na">typeface</span><span class="o">=</span><span class="s">$(sans_typeface)</span><span class="w"></span>
-<span class="na">font_weight</span><span class="o">=</span><span class="s">BOLD</span><span class="w"></span>
-<span class="na">font_size</span><span class="o">=</span><span class="s">16pt</span><span class="w"></span>
-<span class="na">font_color</span><span class="o">=</span><span class="s">$(blue)</span><span class="w"></span>
-<span class="na">line_spacing</span><span class="o">=</span><span class="s">SINGLE</span><span class="w"></span>
-<span class="na">space_above</span><span class="o">=</span><span class="s">18pt</span><span class="w"></span>
-<span class="na">space_below</span><span class="o">=</span><span class="s">12pt</span><span class="w"></span>
-<span class="na">number_format</span><span class="o">=</span><span class="s">NUMBER</span><span class="w"></span>
-<span class="na">label_suffix</span><span class="o">=</span><span class="s">&#39; &#39;</span><span class="w"></span>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><code><span class="k">[heading level 1]</span>
+<span class="na">typeface</span><span class="o">=</span><span class="s">$(sans_typeface)</span>
+<span class="na">font_weight</span><span class="o">=</span><span class="s">BOLD</span>
+<span class="na">font_size</span><span class="o">=</span><span class="s">16pt</span>
+<span class="na">font_color</span><span class="o">=</span><span class="s">$(blue)</span>
+<span class="na">line_spacing</span><span class="o">=</span><span class="s">SINGLE</span>
+<span class="na">space_above</span><span class="o">=</span><span class="s">18pt</span>
+<span class="na">space_below</span><span class="o">=</span><span class="s">12pt</span>
+<span class="na">number_format</span><span class="o">=</span><span class="s">NUMBER</span>
+<span class="na">label_suffix</span><span class="o">=</span><span class="s">&#39; &#39;</span>
 
-<span class="k">[unnumbered heading level 1]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">heading level 1</span><span class="w"></span>
-<span class="na">number_format</span><span class="o">=</span><span class="s">None</span><span class="w"></span>
+<span class="k">[unnumbered heading level 1]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">heading level 1</span>
+<span class="na">number_format</span><span class="o">=</span><span class="s">None</span>
 </code></pre></div>
 </div>
 <p>In addition to the names of other styles, the <em>base</em> attribute accepts two

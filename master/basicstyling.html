@@ -33,7 +33,7 @@
       
     
         <link rel="stylesheet" type="text/css" href="_static/google_fonts.css" />
-        <link rel="stylesheet" type="text/css" href="_static/stylesheets/sphinx_immaterial_theme.7e770c658028b1997.min.css" />
+        <link rel="stylesheet" type="text/css" href="_static/stylesheets/sphinx_immaterial_theme.e10f1df50225cf229.min.css" />
         <link rel="stylesheet" type="text/css" href="_static/tweaks.css" />
     <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -797,65 +797,65 @@ document element, the style sheet assign values to the style properties
 available for that element. Style sheets are stored in plain text files using
 the Windows INI<a class="footnote-reference brackets" href="#ini" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> format with the <code class="docutils literal notranslate"><span class="pre">.rts</span></code> extension. Below is an
 excerpt from the <a class="reference internal" href="sphinx_stylesheet.html"><span class="doc">Sphinx style sheet</span></a> included with rinohtype.</p>
-<div class="highlight-ini notranslate" id="base-style-sheet"><div class="highlight"><pre><span></span><code><span class="k">[STYLESHEET]</span><span class="w"></span>
-<span class="na">name</span><span class="o">=</span><span class="s">Sphinx</span><span class="w"></span>
-<span class="na">description</span><span class="o">=</span><span class="s">Mostly a copy of the LaTeX style included with Sphinx</span><span class="w"></span>
-<span class="na">pygments_style</span><span class="o">=</span><span class="s">friendly</span><span class="w"></span>
+<div class="highlight-ini notranslate" id="base-style-sheet"><div class="highlight"><pre><span></span><code><span class="k">[STYLESHEET]</span>
+<span class="na">name</span><span class="o">=</span><span class="s">Sphinx</span>
+<span class="na">description</span><span class="o">=</span><span class="s">Mostly a copy of the LaTeX style included with Sphinx</span>
+<span class="na">pygments_style</span><span class="o">=</span><span class="s">friendly</span>
 
-<span class="k">[VARIABLES]</span><span class="w"></span>
-<span class="na">mono_typeface</span><span class="o">=</span><span class="s">TeX Gyre Cursor</span><span class="w"></span>
-<span class="na">serif_typeface</span><span class="o">=</span><span class="s">TeX Gyre Pagella</span><span class="w"></span>
-<span class="na">sans_typeface</span><span class="o">=</span><span class="s">Tex Gyre Heros</span><span class="w"></span>
-<span class="na">fallback_typeface</span><span class="o">=</span><span class="s">DejaVu Serif</span><span class="w"></span>
-<span class="na">thin_black_stroke</span><span class="o">=</span><span class="s">0.5pt,#000</span><span class="w"></span>
-<span class="na">blue</span><span class="o">=</span><span class="s">#20435c</span><span class="w"></span>
+<span class="k">[VARIABLES]</span>
+<span class="na">mono_typeface</span><span class="o">=</span><span class="s">TeX Gyre Cursor</span>
+<span class="na">serif_typeface</span><span class="o">=</span><span class="s">TeX Gyre Pagella</span>
+<span class="na">sans_typeface</span><span class="o">=</span><span class="s">Tex Gyre Heros</span>
+<span class="na">fallback_typeface</span><span class="o">=</span><span class="s">DejaVu Serif</span>
+<span class="na">thin_black_stroke</span><span class="o">=</span><span class="s">0.5pt,</span><span class="c1">#000</span>
+<span class="na">blue</span><span class="o">=</span><span class="c1">#20435c</span>
 
-<span class="k">[default:Paragraph]</span><span class="w"></span>
-<span class="na">typeface</span><span class="o">=</span><span class="s">$(serif_typeface)</span><span class="w"></span>
-<span class="na">font_weight</span><span class="o">=</span><span class="s">REGULAR</span><span class="w"></span>
-<span class="na">font_size</span><span class="o">=</span><span class="s">10pt</span><span class="w"></span>
-<span class="na">line_spacing</span><span class="o">=</span><span class="s">fixed(12pt, leading(0))</span><span class="w"></span>
-<span class="na">indent_first</span><span class="o">=</span><span class="s">0</span><span class="w"></span>
-<span class="na">space_above</span><span class="o">=</span><span class="s">0</span><span class="w"></span>
-<span class="na">space_below</span><span class="o">=</span><span class="s">0</span><span class="w"></span>
-<span class="na">text_align</span><span class="o">=</span><span class="s">JUSTIFY</span><span class="w"></span>
-<span class="na">kerning</span><span class="o">=</span><span class="s">True</span><span class="w"></span>
-<span class="na">ligatures</span><span class="o">=</span><span class="s">True</span><span class="w"></span>
-<span class="na">hyphen_lang</span><span class="o">=</span><span class="s">en_US</span><span class="w"></span>
-<span class="na">hyphen_chars</span><span class="o">=</span><span class="s">4</span><span class="w"></span>
+<span class="k">[default:Paragraph]</span>
+<span class="na">typeface</span><span class="o">=</span><span class="s">$(serif_typeface)</span>
+<span class="na">font_weight</span><span class="o">=</span><span class="s">REGULAR</span>
+<span class="na">font_size</span><span class="o">=</span><span class="s">10pt</span>
+<span class="na">line_spacing</span><span class="o">=</span><span class="s">fixed(12pt, leading(0))</span>
+<span class="na">indent_first</span><span class="o">=</span><span class="s">0</span>
+<span class="na">space_above</span><span class="o">=</span><span class="s">0</span>
+<span class="na">space_below</span><span class="o">=</span><span class="s">0</span>
+<span class="na">text_align</span><span class="o">=</span><span class="s">JUSTIFY</span>
+<span class="na">kerning</span><span class="o">=</span><span class="s">True</span>
+<span class="na">ligatures</span><span class="o">=</span><span class="s">True</span>
+<span class="na">hyphen_lang</span><span class="o">=</span><span class="s">en_US</span>
+<span class="na">hyphen_chars</span><span class="o">=</span><span class="s">4</span>
 
-<span class="k">[fallback]</span><span class="w"></span>
-<span class="na">typeface</span><span class="o">=</span><span class="s">$(fallback_typeface)</span><span class="w"></span>
+<span class="k">[fallback]</span>
+<span class="na">typeface</span><span class="o">=</span><span class="s">$(fallback_typeface)</span>
 
-<span class="k">[body]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">default</span><span class="w"></span>
-<span class="na">space_above</span><span class="o">=</span><span class="s">5pt</span><span class="w"></span>
-<span class="na">space_below</span><span class="o">=</span><span class="s">0</span><span class="w"></span>
-<span class="na">text_align</span><span class="o">=</span><span class="s">justify</span><span class="w"></span>
+<span class="k">[body]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">default</span>
+<span class="na">space_above</span><span class="o">=</span><span class="s">5pt</span>
+<span class="na">space_below</span><span class="o">=</span><span class="s">0</span>
+<span class="na">text_align</span><span class="o">=</span><span class="s">justify</span>
 
-<span class="k">[emphasis]</span><span class="w"></span>
-<span class="na">font_slant</span><span class="o">=</span><span class="s">italic</span><span class="w"></span>
+<span class="k">[emphasis]</span>
+<span class="na">font_slant</span><span class="o">=</span><span class="s">italic</span>
 
-<span class="k">[strong]</span><span class="w"></span>
-<span class="na">font_weight</span><span class="o">=</span><span class="s">BOLD</span><span class="w"></span>
+<span class="k">[strong]</span>
+<span class="na">font_weight</span><span class="o">=</span><span class="s">BOLD</span>
 
-<span class="k">[literal emphasis]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">emphasis</span><span class="w"></span>
-<span class="na">typeface</span><span class="o">=</span><span class="s">$(mono_typeface)</span><span class="w"></span>
-<span class="na">hyphenate</span><span class="o">=</span><span class="s">False</span><span class="w"></span>
-<span class="na">ligatures</span><span class="o">=</span><span class="s">False</span><span class="w"></span>
+<span class="k">[literal emphasis]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">emphasis</span>
+<span class="na">typeface</span><span class="o">=</span><span class="s">$(mono_typeface)</span>
+<span class="na">hyphenate</span><span class="o">=</span><span class="s">False</span>
+<span class="na">ligatures</span><span class="o">=</span><span class="s">False</span>
 
-<span class="k">[literal strong]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">strong</span><span class="w"></span>
-<span class="na">typeface</span><span class="o">=</span><span class="s">$(mono_typeface)</span><span class="w"></span>
-<span class="na">hyphenate</span><span class="o">=</span><span class="s">False</span><span class="w"></span>
-<span class="na">ligatures</span><span class="o">=</span><span class="s">False</span><span class="w"></span>
+<span class="k">[literal strong]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">strong</span>
+<span class="na">typeface</span><span class="o">=</span><span class="s">$(mono_typeface)</span>
+<span class="na">hyphenate</span><span class="o">=</span><span class="s">False</span>
+<span class="na">ligatures</span><span class="o">=</span><span class="s">False</span>
 
-<span class="k">[inline math]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">monospaced</span><span class="w"></span>
+<span class="k">[inline math]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">monospaced</span>
 
-<span class="k">[quote]</span><span class="w"></span>
-<span class="na">font_slant</span><span class="o">=</span><span class="s">italic</span><span class="w"></span>
+<span class="k">[quote]</span>
+<span class="na">font_slant</span><span class="o">=</span><span class="s">italic</span>
 </code></pre></div>
 </div>
 <p>Except for <code class="docutils literal notranslate"><span class="pre">[STYLESHEET]</span></code> and <code class="docutils literal notranslate"><span class="pre">[VARIABLES]</span></code>, each configuration section
@@ -876,20 +876,20 @@ on style sheets, please refer to <a class="reference internal" href="elementstyl
 <p>Starting from an existing style sheet, it is easy to make small changes to the
 style of individual document elements. The following style sheet file is based
 on the Sphinx stylesheet included with rinohtype.</p>
-<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><code><span class="k">[STYLESHEET]</span><span class="w"></span>
-<span class="na">name</span><span class="o">=</span><span class="s">My Style Sheet</span><span class="w"></span>
-<span class="na">description</span><span class="o">=</span><span class="s">Small tweaks made to the Sphinx style sheet</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">sphinx</span><span class="w"></span>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><code><span class="k">[STYLESHEET]</span>
+<span class="na">name</span><span class="o">=</span><span class="s">My Style Sheet</span>
+<span class="na">description</span><span class="o">=</span><span class="s">Small tweaks made to the Sphinx style sheet</span>
+<span class="na">base</span><span class="o">=</span><span class="s">sphinx</span>
 
-<span class="k">[VARIABLES]</span><span class="w"></span>
-<span class="na">mono_typeface</span><span class="o">=</span><span class="s">Courier</span><span class="w"></span>
+<span class="k">[VARIABLES]</span>
+<span class="na">mono_typeface</span><span class="o">=</span><span class="s">Courier</span>
 
-<span class="k">[emphasis]</span><span class="w"></span>
-<span class="na">font_color</span><span class="o">=</span><span class="s">#00a</span><span class="w"></span>
+<span class="k">[emphasis]</span>
+<span class="na">font_color</span><span class="o">=</span><span class="c1">#00a</span>
 
-<span class="k">[strong]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">DEFAULT_STYLE</span><span class="w"></span>
-<span class="na">font_color</span><span class="o">=</span><span class="s">#a00</span><span class="w"></span>
+<span class="k">[strong]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">DEFAULT_STYLE</span>
+<span class="na">font_color</span><span class="o">=</span><span class="c1">#a00</span>
 </code></pre></div>
 </div>
 <p>By default, styles defined in a style sheet <em>extend</em> the corresponding style
@@ -932,37 +932,37 @@ scratch. This section discusses how you can configure an existing template. See
 customized by means of a template configuration file; a plain text file in the
 INI<a class="footnote-reference brackets" href="#ini" id="id3" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> format with the <code class="docutils literal notranslate"><span class="pre">.rtt</span></code> extension. Here is an example
 configuration for the Book template:</p>
-<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><code><span class="k">[TEMPLATE_CONFIGURATION]</span><span class="w"></span>
-<span class="na">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">my book configuration</span><span class="w"></span>
-<span class="na">template</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">book</span><span class="w"></span>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><code><span class="k">[TEMPLATE_CONFIGURATION]</span>
+<span class="na">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">my book configuration</span>
+<span class="na">template</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">book</span>
 
-<span class="na">parts</span><span class="w"> </span><span class="o">=</span><span class="w"></span>
-<span class="w">    </span><span class="na">title</span><span class="w"></span>
-<span class="w">    </span><span class="c1">;front_matter</span><span class="w"></span>
-<span class="w">    </span><span class="na">contents</span><span class="w"></span>
-<span class="w">    </span><span class="c1">;back_matter</span><span class="w"></span>
-<span class="na">stylesheet</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">sphinx_base14</span><span class="w"></span>
-<span class="na">language</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">fr</span><span class="w"></span>
+<span class="na">parts</span><span class="w"> </span><span class="o">=</span>
+<span class="w">    </span><span class="na">title</span>
+<span class="w">    </span><span class="c1">;front_matter</span>
+<span class="w">    </span><span class="na">contents</span>
+<span class="w">    </span><span class="c1">;back_matter</span>
+<span class="na">stylesheet</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">sphinx_base14</span>
+<span class="na">language</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">fr</span>
 
-<span class="k">[SectionTitles]</span><span class="w"></span>
-<span class="na">contents</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#39;Contents&#39;</span><span class="w"></span>
+<span class="k">[SectionTitles]</span>
+<span class="na">contents</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#39;Contents&#39;</span>
 
-<span class="k">[AdmonitionTitles]</span><span class="w"></span>
-<span class="na">caution</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#39;Careful!&#39;</span><span class="w"></span>
-<span class="na">warning</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#39;Please be warned&#39;</span><span class="w"></span>
+<span class="k">[AdmonitionTitles]</span>
+<span class="na">caution</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#39;Careful!&#39;</span>
+<span class="na">warning</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#39;Please be warned&#39;</span>
 
-<span class="k">[VARIABLES]</span><span class="w"></span>
-<span class="na">paper_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">A5</span><span class="w"></span>
+<span class="k">[VARIABLES]</span>
+<span class="na">paper_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">A5</span>
 
-<span class="k">[front_matter]</span><span class="w"></span>
-<span class="na">page_number_format</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">lowercase roman</span><span class="w"></span>
-<span class="na">end_at_page</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">left</span><span class="w"></span>
+<span class="k">[front_matter]</span>
+<span class="na">page_number_format</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">lowercase roman</span>
+<span class="na">end_at_page</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">left</span>
 
-<span class="k">[contents]</span><span class="w"></span>
-<span class="na">page_number_format</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">number</span><span class="w"></span>
+<span class="k">[contents]</span>
+<span class="na">page_number_format</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">number</span>
 
-<span class="k">[title_page]</span><span class="w"></span>
-<span class="na">top_margin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">2cm</span><span class="w"></span>
+<span class="k">[title_page]</span>
+<span class="na">top_margin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">2cm</span>
 </code></pre></div>
 </div>
 <p>The <code class="docutils literal notranslate"><span class="pre">TEMPLATE_CONFIGURATION</span></code> sections collects global template options. Set

@@ -33,7 +33,7 @@
       
     
         <link rel="stylesheet" type="text/css" href="_static/google_fonts.css" />
-        <link rel="stylesheet" type="text/css" href="_static/stylesheets/sphinx_immaterial_theme.7e770c658028b1997.min.css" />
+        <link rel="stylesheet" type="text/css" href="_static/stylesheets/sphinx_immaterial_theme.e10f1df50225cf229.min.css" />
         <link rel="stylesheet" type="text/css" href="_static/tweaks.css" />
     <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -629,909 +629,909 @@
   </a>
 
 <h1 id="sphinx-style-sheet"><span id="id1"></span>Sphinx style sheet<a class="headerlink" href="#sphinx-style-sheet" title="Permalink to this heading">¶</a></h1>
-<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><code><span class="k">[STYLESHEET]</span><span class="w"></span>
-<span class="na">name</span><span class="o">=</span><span class="s">Sphinx</span><span class="w"></span>
-<span class="na">description</span><span class="o">=</span><span class="s">Mostly a copy of the LaTeX style included with Sphinx</span><span class="w"></span>
-<span class="na">pygments_style</span><span class="o">=</span><span class="s">friendly</span><span class="w"></span>
-
-<span class="k">[VARIABLES]</span><span class="w"></span>
-<span class="na">mono_typeface</span><span class="o">=</span><span class="s">TeX Gyre Cursor</span><span class="w"></span>
-<span class="na">serif_typeface</span><span class="o">=</span><span class="s">TeX Gyre Pagella</span><span class="w"></span>
-<span class="na">sans_typeface</span><span class="o">=</span><span class="s">Tex Gyre Heros</span><span class="w"></span>
-<span class="na">fallback_typeface</span><span class="o">=</span><span class="s">DejaVu Serif</span><span class="w"></span>
-<span class="na">thin_black_stroke</span><span class="o">=</span><span class="s">0.5pt,#000</span><span class="w"></span>
-<span class="na">blue</span><span class="o">=</span><span class="s">#20435c</span><span class="w"></span>
-
-<span class="k">[default:Paragraph]</span><span class="w"></span>
-<span class="na">typeface</span><span class="o">=</span><span class="s">$(serif_typeface)</span><span class="w"></span>
-<span class="na">font_weight</span><span class="o">=</span><span class="s">REGULAR</span><span class="w"></span>
-<span class="na">font_size</span><span class="o">=</span><span class="s">10pt</span><span class="w"></span>
-<span class="na">line_spacing</span><span class="o">=</span><span class="s">fixed(12pt, leading(0))</span><span class="w"></span>
-<span class="na">indent_first</span><span class="o">=</span><span class="s">0</span><span class="w"></span>
-<span class="na">space_above</span><span class="o">=</span><span class="s">0</span><span class="w"></span>
-<span class="na">space_below</span><span class="o">=</span><span class="s">0</span><span class="w"></span>
-<span class="na">text_align</span><span class="o">=</span><span class="s">JUSTIFY</span><span class="w"></span>
-<span class="na">kerning</span><span class="o">=</span><span class="s">True</span><span class="w"></span>
-<span class="na">ligatures</span><span class="o">=</span><span class="s">True</span><span class="w"></span>
-<span class="na">hyphen_lang</span><span class="o">=</span><span class="s">en_US</span><span class="w"></span>
-<span class="na">hyphen_chars</span><span class="o">=</span><span class="s">4</span><span class="w"></span>
-
-<span class="k">[fallback]</span><span class="w"></span>
-<span class="na">typeface</span><span class="o">=</span><span class="s">$(fallback_typeface)</span><span class="w"></span>
-
-<span class="k">[body]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">default</span><span class="w"></span>
-<span class="na">space_above</span><span class="o">=</span><span class="s">5pt</span><span class="w"></span>
-<span class="na">space_below</span><span class="o">=</span><span class="s">0</span><span class="w"></span>
-<span class="na">text_align</span><span class="o">=</span><span class="s">justify</span><span class="w"></span>
-
-<span class="k">[emphasis]</span><span class="w"></span>
-<span class="na">font_slant</span><span class="o">=</span><span class="s">italic</span><span class="w"></span>
-
-<span class="k">[strong]</span><span class="w"></span>
-<span class="na">font_weight</span><span class="o">=</span><span class="s">BOLD</span><span class="w"></span>
-
-<span class="k">[literal emphasis]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">emphasis</span><span class="w"></span>
-<span class="na">typeface</span><span class="o">=</span><span class="s">$(mono_typeface)</span><span class="w"></span>
-<span class="na">hyphenate</span><span class="o">=</span><span class="s">False</span><span class="w"></span>
-<span class="na">ligatures</span><span class="o">=</span><span class="s">False</span><span class="w"></span>
-
-<span class="k">[literal strong]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">strong</span><span class="w"></span>
-<span class="na">typeface</span><span class="o">=</span><span class="s">$(mono_typeface)</span><span class="w"></span>
-<span class="na">hyphenate</span><span class="o">=</span><span class="s">False</span><span class="w"></span>
-<span class="na">ligatures</span><span class="o">=</span><span class="s">False</span><span class="w"></span>
-
-<span class="k">[inline math]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">monospaced</span><span class="w"></span>
-
-<span class="k">[quote]</span><span class="w"></span>
-<span class="na">font_slant</span><span class="o">=</span><span class="s">italic</span><span class="w"></span>
-
-<span class="k">[italic]</span><span class="w"></span>
-<span class="na">font_slant</span><span class="o">=</span><span class="s">italic</span><span class="w"></span>
-
-<span class="k">[bold]</span><span class="w"></span>
-<span class="na">font_weight</span><span class="o">=</span><span class="s">BOLD</span><span class="w"></span>
-
-<span class="k">[file path]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">monospaced</span><span class="w"></span>
-<span class="na">ligatures</span><span class="o">=</span><span class="s">False</span><span class="w"></span>
-
-<span class="k">[keystrokes]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">monospaced</span><span class="w"></span>
-<span class="na">ligatures</span><span class="o">=</span><span class="s">False</span><span class="w"></span>
-
-<span class="k">[regular expression]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">monospaced</span><span class="w"></span>
-<span class="na">ligatures</span><span class="o">=</span><span class="s">False</span><span class="w"></span>
-<span class="na">hyphenate</span><span class="o">=</span><span class="s">False</span><span class="w"></span>
-
-<span class="k">[code with variable]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">monospaced</span><span class="w"></span>
-<span class="na">ligatures</span><span class="o">=</span><span class="s">False</span><span class="w"></span>
-<span class="na">hyphenate</span><span class="o">=</span><span class="s">False</span><span class="w"></span>
-
-<span class="k">[mail header]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">literal emphasis</span><span class="w"></span>
-
-<span class="k">[MIME type]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">literal emphasis</span><span class="w"></span>
-
-<span class="k">[newsgroup]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">literal emphasis</span><span class="w"></span>
-
-<span class="k">[command]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">literal strong</span><span class="w"></span>
-
-<span class="k">[make variable]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">literal strong</span><span class="w"></span>
-
-<span class="k">[program]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">literal strong</span><span class="w"></span>
-
-<span class="k">[man page]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">literal emphasis</span><span class="w"></span>
-
-<span class="k">[window title]</span><span class="w"></span>
-<span class="na">font_weight</span><span class="o">=</span><span class="s">BOLD</span><span class="w"></span>
-
-<span class="k">[UI control]</span><span class="w"></span>
-<span class="na">font_slant</span><span class="o">=</span><span class="s">italic</span><span class="w"></span>
-
-<span class="k">[UI control accelerator]</span><span class="w"></span>
-<span class="na">font_weight</span><span class="o">=</span><span class="s">bold</span><span class="w"></span>
-
-<span class="k">[menu cascade]</span><span class="w"></span>
-<span class="na">font_weight</span><span class="o">=</span><span class="s">BOLD</span><span class="w"></span>
-
-<span class="k">[draft comment]</span><span class="w"></span>
-<span class="na">font_color</span><span class="o">=</span><span class="s">#f00</span><span class="w"></span>
-
-<span class="k">[title reference]</span><span class="w"></span>
-<span class="na">font_slant</span><span class="o">=</span><span class="s">ITALIC</span><span class="w"></span>
-
-<span class="k">[monospaced]</span><span class="w"></span>
-<span class="na">typeface</span><span class="o">=</span><span class="s">$(mono_typeface)</span><span class="w"></span>
-<span class="na">hyphenate</span><span class="o">=</span><span class="s">False</span><span class="w"></span>
-<span class="na">ligatures</span><span class="o">=</span><span class="s">False</span><span class="w"></span>
-
-<span class="k">[error]</span><span class="w"></span>
-<span class="na">font_color</span><span class="o">=</span><span class="s">#f00</span><span class="w"></span>
-
-<span class="k">[linked reference]</span><span class="w"></span>
-<span class="na">font_color</span><span class="o">=</span><span class="s">#355f7c</span><span class="w"></span>
-
-<span class="k">[external hyperlink]</span><span class="w"></span>
-<span class="na">font_color</span><span class="o">=</span><span class="s">#376f62</span><span class="w"></span>
-
-<span class="k">[broken hyperlink]</span><span class="w"></span>
-<span class="na">font_color</span><span class="o">=</span><span class="s">#7f7f7f</span><span class="w"></span>
-
-<span class="k">[glossary inline definition]</span><span class="w"></span>
-<span class="na">before</span><span class="o">=</span><span class="s">&#39; (&#39;</span><span class="w"></span>
-<span class="na">after</span><span class="o">=</span><span class="s">&#39;)&#39;</span><span class="w"></span>
-
-<span class="k">[code block]</span><span class="w"></span>
-<span class="na">typeface</span><span class="o">=</span><span class="s">$(mono_typeface)</span><span class="w"></span>
-<span class="na">font_size</span><span class="o">=</span><span class="s">9pt</span><span class="w"></span>
-<span class="na">text_align</span><span class="o">=</span><span class="s">LEFT</span><span class="w"></span>
-<span class="na">indent_first</span><span class="o">=</span><span class="s">0</span><span class="w"></span>
-<span class="na">ligatures</span><span class="o">=</span><span class="s">False</span><span class="w"></span>
-<span class="na">hyphenate</span><span class="o">=</span><span class="s">False</span><span class="w"></span>
-<span class="na">space_above</span><span class="o">=</span><span class="s">6pt</span><span class="w"></span>
-<span class="na">space_below</span><span class="o">=</span><span class="s">4pt</span><span class="w"></span>
-<span class="na">border</span><span class="o">=</span><span class="s">$(thin_black_stroke)</span><span class="w"></span>
-<span class="na">padding_left</span><span class="o">=</span><span class="s">5pt</span><span class="w"></span>
-<span class="na">padding_top</span><span class="o">=</span><span class="s">3pt</span><span class="w"></span>
-<span class="na">padding_bottom</span><span class="o">=</span><span class="s">3pt</span><span class="w"></span>
-
-<span class="k">[code block caption]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">caption</span><span class="w"></span>
-<span class="na">keep_with_next</span><span class="o">=</span><span class="s">true</span><span class="w"></span>
-
-<span class="k">[math block]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">code block</span><span class="w"></span>
-<span class="na">border</span><span class="o">=</span><span class="s">none</span><span class="w"></span>
-
-<span class="k">[graphviz code block]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">code block</span><span class="w"></span>
-<span class="na">border</span><span class="o">=</span><span class="s">none</span><span class="w"></span>
-
-<span class="k">[block quote]</span><span class="w"></span>
-<span class="na">margin_left</span><span class="o">=</span><span class="s">1cm</span><span class="w"></span>
-
-<span class="k">[attribution]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">default</span><span class="w"></span>
-<span class="na">text_align</span><span class="o">=</span><span class="s">RIGHT</span><span class="w"></span>
-
-<span class="k">[centered]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">default</span><span class="w"></span>
-<span class="na">text_align</span><span class="o">=</span><span class="s">CENTER</span><span class="w"></span>
-<span class="na">font_weight</span><span class="o">=</span><span class="s">BOLD</span><span class="w"></span>
-<span class="na">space_below</span><span class="o">=</span><span class="s">4pt</span><span class="w"></span>
-
-<span class="k">[line block]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">body</span><span class="w"></span>
-<span class="na">text_align</span><span class="o">=</span><span class="s">left</span><span class="w"></span>
-
-<span class="k">[chapter]</span><span class="w"></span>
-<span class="na">page_break</span><span class="o">=</span><span class="s">RIGHT</span><span class="w"></span>
-
-<span class="k">[content chapter]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">chapter</span><span class="w"></span>
-
-<span class="k">[heading level 1]</span><span class="w"></span>
-<span class="na">typeface</span><span class="o">=</span><span class="s">$(sans_typeface)</span><span class="w"></span>
-<span class="na">font_weight</span><span class="o">=</span><span class="s">BOLD</span><span class="w"></span>
-<span class="na">font_size</span><span class="o">=</span><span class="s">16pt</span><span class="w"></span>
-<span class="na">font_color</span><span class="o">=</span><span class="s">$(blue)</span><span class="w"></span>
-<span class="na">line_spacing</span><span class="o">=</span><span class="s">SINGLE</span><span class="w"></span>
-<span class="na">space_above</span><span class="o">=</span><span class="s">18pt</span><span class="w"></span>
-<span class="na">space_below</span><span class="o">=</span><span class="s">12pt</span><span class="w"></span>
-<span class="na">number_format</span><span class="o">=</span><span class="s">NUMBER</span><span class="w"></span>
-<span class="na">label_suffix</span><span class="o">=</span><span class="s">&#39; &#39;</span><span class="w"></span>
-
-<span class="k">[unnumbered heading level 1]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">heading level 1</span><span class="w"></span>
-<span class="na">number_format</span><span class="o">=</span><span class="s">None</span><span class="w"></span>
-
-<span class="k">[heading level 2]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">heading level 1</span><span class="w"></span>
-<span class="na">font_size</span><span class="o">=</span><span class="s">14pt</span><span class="w"></span>
-<span class="na">space_above</span><span class="o">=</span><span class="s">26pt</span><span class="w"></span>
-<span class="na">space_below</span><span class="o">=</span><span class="s">10pt</span><span class="w"></span>
-
-<span class="k">[heading level 3]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">heading level 2</span><span class="w"></span>
-<span class="na">font_size</span><span class="o">=</span><span class="s">12pt</span><span class="w"></span>
-<span class="na">space_above</span><span class="o">=</span><span class="s">10pt</span><span class="w"></span>
-<span class="na">space_below</span><span class="o">=</span><span class="s">6pt</span><span class="w"></span>
-
-<span class="k">[heading level 4]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">heading level 3</span><span class="w"></span>
-<span class="na">font_size</span><span class="o">=</span><span class="s">9pt</span><span class="w"></span>
-<span class="na">space_above</span><span class="o">=</span><span class="s">8pt</span><span class="w"></span>
-<span class="na">space_below</span><span class="o">=</span><span class="s">4pt</span><span class="w"></span>
-<span class="na">number_format</span><span class="o">=</span><span class="s">None</span><span class="w"></span>
-
-<span class="k">[heading level 5]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">heading level 2</span><span class="w"></span>
-<span class="na">font_size</span><span class="o">=</span><span class="s">9pt</span><span class="w"></span>
-<span class="na">font_slant</span><span class="o">=</span><span class="s">ITALIC</span><span class="w"></span>
-<span class="na">font_weight</span><span class="o">=</span><span class="s">REGULAR</span><span class="w"></span>
-<span class="na">line_spacing</span><span class="o">=</span><span class="s">Fixed(10pt)</span><span class="w"></span>
-<span class="na">space_above</span><span class="o">=</span><span class="s">2pt</span><span class="w"></span>
-<span class="na">space_below</span><span class="o">=</span><span class="s">2pt</span><span class="w"></span>
-<span class="na">number_format</span><span class="o">=</span><span class="s">None</span><span class="w"></span>
-
-<span class="k">[other heading levels]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">heading level 5</span><span class="w"></span>
-<span class="na">font_size</span><span class="o">=</span><span class="s">9pt</span><span class="w"></span>
-<span class="na">font_slant</span><span class="o">=</span><span class="s">ITALIC</span><span class="w"></span>
-<span class="na">font_weight</span><span class="o">=</span><span class="s">REGULAR</span><span class="w"></span>
-<span class="na">line_spacing</span><span class="o">=</span><span class="s">Fixed(10pt)</span><span class="w"></span>
-<span class="na">space_above</span><span class="o">=</span><span class="s">2pt</span><span class="w"></span>
-<span class="na">space_below</span><span class="o">=</span><span class="s">2pt</span><span class="w"></span>
-<span class="na">number_format</span><span class="o">=</span><span class="s">None</span><span class="w"></span>
-
-<span class="k">[appendix heading level 1]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">heading level 1</span><span class="w"></span>
-<span class="na">number_format</span><span class="o">=</span><span class="s">uppercase character</span><span class="w"></span>
-
-<span class="k">[title]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">default</span><span class="w"></span>
-<span class="na">font_weight</span><span class="o">=</span><span class="s">BOLD</span><span class="w"></span>
-<span class="na">indent_first</span><span class="o">=</span><span class="s">0</span><span class="w"></span>
-<span class="na">space_above</span><span class="o">=</span><span class="s">10pt</span><span class="w"></span>
-<span class="na">space_below</span><span class="o">=</span><span class="s">5pt</span><span class="w"></span>
-
-<span class="k">[topic]</span><span class="w"></span>
-<span class="na">space_above</span><span class="o">=</span><span class="s">5pt</span><span class="w"></span>
-<span class="na">space_below</span><span class="o">=</span><span class="s">5pt</span><span class="w"></span>
-<span class="na">margin_left</span><span class="o">=</span><span class="s">0.5cm</span><span class="w"></span>
-<span class="na">margin_right</span><span class="o">=</span><span class="s">0.5cm</span><span class="w"></span>
-<span class="na">border</span><span class="o">=</span><span class="s">$(thin_black_stroke)</span><span class="w"></span>
-<span class="na">padding_left</span><span class="o">=</span><span class="s">10pt</span><span class="w"></span>
-<span class="na">padding_right</span><span class="o">=</span><span class="s">10pt</span><span class="w"></span>
-<span class="na">padding_top</span><span class="o">=</span><span class="s">4pt</span><span class="w"></span>
-<span class="na">padding_bottom</span><span class="o">=</span><span class="s">4pt</span><span class="w"></span>
-<span class="na">background_color</span><span class="o">=</span><span class="s">#f5f5f5</span><span class="w"></span>
-
-<span class="k">[topic title]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">default</span><span class="w"></span>
-<span class="na">font_weight</span><span class="o">=</span><span class="s">BOLD</span><span class="w"></span>
-<span class="na">indent_first</span><span class="o">=</span><span class="s">0</span><span class="w"></span>
-<span class="na">space_above</span><span class="o">=</span><span class="s">5pt</span><span class="w"></span>
-<span class="na">space_below</span><span class="o">=</span><span class="s">5pt</span><span class="w"></span>
-
-<span class="k">[post requirement]</span><span class="w"></span>
-
-<span class="k">[rubric]</span><span class="w"></span>
-<span class="na">typeface</span><span class="o">=</span><span class="s">$(sans_typeface)</span><span class="w"></span>
-<span class="na">font_size</span><span class="o">=</span><span class="s">9pt</span><span class="w"></span>
-<span class="na">font_weight</span><span class="o">=</span><span class="s">bold</span><span class="w"></span>
-<span class="na">font_color</span><span class="o">=</span><span class="s">$(blue)</span><span class="w"></span>
-<span class="na">space_above</span><span class="o">=</span><span class="s">8pt</span><span class="w"></span>
-
-<span class="k">[sidebar]</span><span class="w"></span>
-<span class="na">space_above</span><span class="o">=</span><span class="s">5pt</span><span class="w"></span>
-<span class="na">space_below</span><span class="o">=</span><span class="s">5pt</span><span class="w"></span>
-<span class="na">padding_left</span><span class="o">=</span><span class="s">10pt</span><span class="w"></span>
-<span class="na">padding_right</span><span class="o">=</span><span class="s">10pt</span><span class="w"></span>
-<span class="na">padding_top</span><span class="o">=</span><span class="s">4pt</span><span class="w"></span>
-<span class="na">padding_bottom</span><span class="o">=</span><span class="s">4pt</span><span class="w"></span>
-<span class="na">background_color</span><span class="o">=</span><span class="s">#ffffe5</span><span class="w"></span>
-<span class="na">border</span><span class="o">=</span><span class="s">1pt,#666</span><span class="w"></span>
-
-<span class="k">[sidebar title]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">default</span><span class="w"></span>
-<span class="na">font_size</span><span class="o">=</span><span class="s">12pt</span><span class="w"></span>
-<span class="na">font_weight</span><span class="o">=</span><span class="s">BOLD</span><span class="w"></span>
-<span class="na">indent_first</span><span class="o">=</span><span class="s">0</span><span class="w"></span>
-<span class="na">space_above</span><span class="o">=</span><span class="s">5pt</span><span class="w"></span>
-<span class="na">space_below</span><span class="o">=</span><span class="s">5pt</span><span class="w"></span>
-
-<span class="k">[sidebar subtitle]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">default</span><span class="w"></span>
-<span class="na">font_weight</span><span class="o">=</span><span class="s">BOLD</span><span class="w"></span>
-<span class="na">indent_first</span><span class="o">=</span><span class="s">0</span><span class="w"></span>
-<span class="na">space_above</span><span class="o">=</span><span class="s">2pt</span><span class="w"></span>
-<span class="na">space_below</span><span class="o">=</span><span class="s">2pt</span><span class="w"></span>
-
-<span class="k">[list item label]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">default</span><span class="w"></span>
-<span class="na">indent_first</span><span class="o">=</span><span class="s">0</span><span class="w"></span>
-<span class="na">text_align</span><span class="o">=</span><span class="s">RIGHT</span><span class="w"></span>
-
-<span class="k">[bulleted list item label]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">list item label</span><span class="w"></span>
-
-<span class="k">[enumerated list item label]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">list item label</span><span class="w"></span>
-<span class="na">label_suffix</span><span class="o">=</span><span class="s">&#39;.&#39;</span><span class="w"></span>
-
-<span class="k">[enumerated list]</span><span class="w"></span>
-<span class="na">margin_left</span><span class="o">=</span><span class="s">8pt</span><span class="w"></span>
-<span class="na">space_above</span><span class="o">=</span><span class="s">5pt</span><span class="w"></span>
-<span class="na">space_below</span><span class="o">=</span><span class="s">5pt</span><span class="w"></span>
-<span class="na">ordered</span><span class="o">=</span><span class="s">True</span><span class="w"></span>
-<span class="na">flowable_spacing</span><span class="o">=</span><span class="s">5pt</span><span class="w"></span>
-<span class="na">number_format</span><span class="o">=</span><span class="s">NUMBER</span><span class="w"></span>
-<span class="na">label_suffix</span><span class="o">=</span><span class="s">&#39;)&#39;</span><span class="w"></span>
-
-<span class="k">[nested enumerated list]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">enumerated list</span><span class="w"></span>
-<span class="na">margin_left</span><span class="o">=</span><span class="s">10pt</span><span class="w"></span>
-<span class="na">space_below</span><span class="o">=</span><span class="s">0</span><span class="w"></span>
-
-<span class="k">[bulleted list]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">enumerated list</span><span class="w"></span>
-<span class="na">ordered</span><span class="o">=</span><span class="s">False</span><span class="w"></span>
-<span class="na">label_suffix</span><span class="o">=</span><span class="s">None</span><span class="w"></span>
-
-<span class="k">[nested bulleted list]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">bulleted list</span><span class="w"></span>
-<span class="na">margin_left</span><span class="o">=</span><span class="s">10pt</span><span class="w"></span>
-<span class="na">space_below</span><span class="o">=</span><span class="s">0</span><span class="w"></span>
-
-<span class="k">[steps list]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">enumerated list</span><span class="w"></span>
-
-<span class="k">[steps list item label]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">enumerated list item label</span><span class="w"></span>
-
-<span class="k">[unordered steps list]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">bulleted list</span><span class="w"></span>
-
-<span class="k">[unordered steps list item label]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">bulleted list item label</span><span class="w"></span>
-
-<span class="k">[choices list]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">bulleted list</span><span class="w"></span>
-
-<span class="k">[choices list item label]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">bulleted list item label</span><span class="w"></span>
-
-<span class="k">[list item body]</span><span class="w"></span>
-<span class="na">space_above</span><span class="o">=</span><span class="s">0</span><span class="w"></span>
-<span class="na">space_below</span><span class="o">=</span><span class="s">0</span><span class="w"></span>
-<span class="na">margin_left</span><span class="o">=</span><span class="s">0</span><span class="w"></span>
-<span class="na">margin_right</span><span class="o">=</span><span class="s">0</span><span class="w"></span>
-
-<span class="k">[list item paragraph]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">default</span><span class="w"></span>
-<span class="na">space_above</span><span class="o">=</span><span class="s">0pt</span><span class="w"></span>
-<span class="na">space_below</span><span class="o">=</span><span class="s">0pt</span><span class="w"></span>
-<span class="na">margin_left</span><span class="o">=</span><span class="s">0pt</span><span class="w"></span>
-<span class="na">indent_first</span><span class="o">=</span><span class="s">0pt</span><span class="w"></span>
-
-<span class="k">[definition list]</span><span class="w"></span>
-
-<span class="k">[definition list item]</span><span class="w"></span>
-<span class="na">label_min_width</span><span class="o">=</span><span class="s">17pt</span><span class="w"></span>
-<span class="na">label_max_width</span><span class="o">=</span><span class="s">0</span><span class="w"></span>
-
-<span class="k">[definition term]</span><span class="w"></span>
-<span class="na">space_above</span><span class="o">=</span><span class="s">4pt</span><span class="w"></span>
-<span class="na">keep_with_next</span><span class="o">=</span><span class="s">true</span><span class="w"></span>
-
-<span class="k">[definition term paragraph]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">default</span><span class="w"></span>
-<span class="na">indent_first</span><span class="o">=</span><span class="s">0</span><span class="w"></span>
-<span class="na">font_weight</span><span class="o">=</span><span class="s">BOLD</span><span class="w"></span>
-
-<span class="k">[definition term classifier]</span><span class="w"></span>
-<span class="na">font_weight</span><span class="o">=</span><span class="s">REGULAR</span><span class="w"></span>
-<span class="na">font_slant</span><span class="o">=</span><span class="s">italic</span><span class="w"></span>
-
-<span class="k">[definition]</span><span class="w"></span>
-
-<span class="k">[definition paragraph]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">body</span><span class="w"></span>
-<span class="na">space_above</span><span class="o">=</span><span class="s">1pt</span><span class="w"></span>
-
-
-<span class="c1"># (Sphinx) version added/changed &amp; deprecated</span><span class="w"></span>
-
-<span class="k">[versionmodified]</span><span class="w"></span>
-<span class="na">font_slant</span><span class="o">=</span><span class="s">ITALIC</span><span class="w"></span>
-
-<span class="c1"># (Sphinx) object descriptions</span><span class="w"></span>
-
-<span class="k">[object description]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">definition list item</span><span class="w"></span>
-<span class="na">space_above</span><span class="o">=</span><span class="s">3pt</span><span class="w"></span>
-<span class="na">space_below</span><span class="o">=</span><span class="s">3pt</span><span class="w"></span>
-<span class="na">label_max_width</span><span class="o">=</span><span class="s">0</span><span class="w"></span>
-
-<span class="k">[object signatures]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">definition term</span><span class="w"></span>
-
-<span class="k">[object signature]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">definition term paragraph</span><span class="w"></span>
-<span class="na">font_weight</span><span class="o">=</span><span class="s">regular</span><span class="w"></span>
-
-<span class="k">[object name]</span><span class="w"></span>
-<span class="na">typeface</span><span class="o">=</span><span class="s">$(mono_typeface)</span><span class="w"></span>
-<span class="na">font_weight</span><span class="o">=</span><span class="s">BOLD</span><span class="w"></span>
-<span class="na">ligatures</span><span class="o">=</span><span class="s">False</span><span class="w"></span>
-<span class="na">hyphenate</span><span class="o">=</span><span class="s">False</span><span class="w"></span>
-
-<span class="k">[additional name part]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">monospaced</span><span class="w"></span>
-
-<span class="k">[object type]</span><span class="w"></span>
-
-<span class="k">[object returns]</span><span class="w"></span>
-
-<span class="k">[object parentheses]</span><span class="w"></span>
-<span class="na">font_size</span><span class="o">=</span><span class="s">11pt</span><span class="w"></span>
-
-<span class="k">[object parameter list]</span><span class="w"></span>
-
-<span class="k">[object parameter (no emphasis)]</span><span class="w"></span>
-
-<span class="k">[object parameter]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">object parameter (no emphasis)</span><span class="w"></span>
-<span class="na">font_slant</span><span class="o">=</span><span class="s">ITALIC</span><span class="w"></span>
-
-<span class="k">[object brackets]</span><span class="w"></span>
-<span class="na">font_size</span><span class="o">=</span><span class="s">11pt</span><span class="w"></span>
-<span class="na">font_weight</span><span class="o">=</span><span class="s">BOLD</span><span class="w"></span>
-
-<span class="k">[object optional parameter]</span><span class="w"></span>
-
-<span class="k">[object annotation]</span><span class="w"></span>
-<span class="na">font_weight</span><span class="o">=</span><span class="s">BOLD</span><span class="w"></span>
-
-<span class="k">[object description content]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">definition</span><span class="w"></span>
-
-<span class="k">[object description content paragraph]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">body</span><span class="w"></span>
-<span class="na">space_above</span><span class="o">=</span><span class="s">1pt</span><span class="w"></span>
-
-
-<span class="c1"># (Sphinx) production list</span><span class="w"></span>
-
-<span class="k">[production list]</span><span class="w"></span>
-<span class="na">space_above</span><span class="o">=</span><span class="s">5pt</span><span class="w"></span>
-<span class="na">space_below</span><span class="o">=</span><span class="s">5pt</span><span class="w"></span>
-
-<span class="k">[production]</span><span class="w"></span>
-
-<span class="k">[token name]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">literal</span><span class="w"></span>
-<span class="na">font_weight</span><span class="o">=</span><span class="s">BOLD</span><span class="w"></span>
-<span class="na">space_above</span><span class="o">=</span><span class="s">0</span><span class="w"></span>
-<span class="na">space_below</span><span class="o">=</span><span class="s">0</span><span class="w"></span>
-
-<span class="k">[token definition]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">literal</span><span class="w"></span>
-<span class="na">space_above</span><span class="o">=</span><span class="s">0</span><span class="w"></span>
-<span class="na">space_below</span><span class="o">=</span><span class="s">0</span><span class="w"></span>
-
-
-<span class="c1"># field lists</span><span class="w"></span>
-
-<span class="k">[field list]</span><span class="w"></span>
-
-<span class="k">[field list item]</span><span class="w"></span>
-<span class="na">label_max_width</span><span class="o">=</span><span class="s">80pt</span><span class="w"></span>
-
-<span class="k">[field name]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">default</span><span class="w"></span>
-<span class="na">indent_first</span><span class="o">=</span><span class="s">0</span><span class="w"></span>
-<span class="na">text_align</span><span class="o">=</span><span class="s">LEFT</span><span class="w"></span>
-<span class="na">font_weight</span><span class="o">=</span><span class="s">BOLD</span><span class="w"></span>
-
-
-<span class="c1"># option lists</span><span class="w"></span>
-
-<span class="k">[option list]</span><span class="w"></span>
-
-<span class="k">[option list item]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">field list item</span><span class="w"></span>
-
-<span class="k">[option]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">body</span><span class="w"></span>
-<span class="na">indent_first</span><span class="o">=</span><span class="s">0</span><span class="w"></span>
-<span class="na">text_align</span><span class="o">=</span><span class="s">LEFT</span><span class="w"></span>
-
-<span class="k">[option string]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">default</span><span class="w"></span>
-<span class="na">typeface</span><span class="o">=</span><span class="s">$(mono_typeface)</span><span class="w"></span>
-<span class="na">font_size</span><span class="o">=</span><span class="s">8pt</span><span class="w"></span>
-<span class="na">ligatures</span><span class="o">=</span><span class="s">False</span><span class="w"></span>
-<span class="na">hyphenate</span><span class="o">=</span><span class="s">False</span><span class="w"></span>
-
-<span class="k">[option argument]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">default</span><span class="w"></span>
-<span class="na">font_slant</span><span class="o">=</span><span class="s">ITALIC</span><span class="w"></span>
-
-<span class="k">[admonition]</span><span class="w"></span>
-<span class="na">inline_title</span><span class="o">=</span><span class="s">false</span><span class="w"></span>
-<span class="na">space_above</span><span class="o">=</span><span class="s">9pt</span><span class="w"></span>
-<span class="na">space_below</span><span class="o">=</span><span class="s">5pt</span><span class="w"></span>
-<span class="na">padding_top</span><span class="o">=</span><span class="s">0</span><span class="w"></span>
-<span class="na">padding_bottom</span><span class="o">=</span><span class="s">4pt</span><span class="w"></span>
-<span class="na">border_top</span><span class="o">=</span><span class="s">$(thin_black_stroke)</span><span class="w"></span>
-<span class="na">border_bottom</span><span class="o">=</span><span class="s">$(thin_black_stroke)</span><span class="w"></span>
-
-<span class="k">[admonition title]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">body</span><span class="w"></span>
-<span class="na">keep_with_next</span><span class="o">=</span><span class="s">true</span><span class="w"></span>
-<span class="na">font_weight</span><span class="o">=</span><span class="s">BOLD</span><span class="w"></span>
-<span class="na">space_below</span><span class="o">=</span><span class="s">2pt</span><span class="w"></span>
-
-<span class="k">[admonition inline title]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">admonition title</span><span class="w"></span>
-<span class="na">after</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#39; &#39;</span><span class="w"></span>
-
-<span class="k">[builtin admonition:Admonition]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">admonition</span><span class="w"></span>
-<span class="na">inline_title</span><span class="o">=</span><span class="s">true</span><span class="w"></span>
-
-<span class="k">[boxed builtin admonition:Admonition]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">builtin admonition</span><span class="w"></span>
-<span class="na">border</span><span class="o">=</span><span class="s">$(thin_black_stroke)</span><span class="w"></span>
-<span class="na">padding_left</span><span class="o">=</span><span class="s">8pt</span><span class="w"></span>
-<span class="na">padding_right</span><span class="o">=</span><span class="s">8pt</span><span class="w"></span>
-
-<span class="k">[red adminition title:Paragraph]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">admonition title</span><span class="w"></span>
-<span class="na">font_color</span><span class="o">=</span><span class="s">#f00</span><span class="w"></span>
-
-<span class="k">[attention admonition]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">boxed builtin admonition</span><span class="w"></span>
-
-<span class="k">[caution admonition]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">boxed builtin admonition</span><span class="w"></span>
-
-<span class="k">[danger admonition]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">boxed builtin admonition</span><span class="w"></span>
-
-<span class="k">[warning admonition]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">boxed builtin admonition</span><span class="w"></span>
-
-<span class="k">[error admonition]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">boxed builtin admonition</span><span class="w"></span>
-
-<span class="k">[hint admonition]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">builtin admonition</span><span class="w"></span>
-
-<span class="k">[important admonition]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">builtin admonition</span><span class="w"></span>
-
-<span class="k">[note admonition]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">builtin admonition</span><span class="w"></span>
-
-<span class="k">[tip admonition]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">builtin admonition</span><span class="w"></span>
-
-<span class="k">[seealso admonition]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">admonition</span><span class="w"></span>
-<span class="na">border_top</span><span class="o">=</span><span class="s">none</span><span class="w"></span>
-<span class="na">border_bottom</span><span class="o">=</span><span class="s">none</span><span class="w"></span>
-
-<span class="k">[header_footer:Paragraph]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">default</span><span class="w"></span>
-<span class="na">typeface</span><span class="o">=</span><span class="s">$(sans_typeface)</span><span class="w"></span>
-<span class="na">font_size</span><span class="o">=</span><span class="s">10pt</span><span class="w"></span>
-<span class="na">font_weight</span><span class="o">=</span><span class="s">BOLD</span><span class="w"></span>
-<span class="na">indent_first</span><span class="o">=</span><span class="s">0pt</span><span class="w"></span>
-<span class="na">tab_stops</span><span class="o">=</span><span class="s">50% CENTER, 100% RIGHT</span><span class="w"></span>
-
-<span class="k">[header]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">header_footer</span><span class="w"></span>
-<span class="na">padding_bottom</span><span class="o">=</span><span class="s">2pt</span><span class="w"></span>
-<span class="na">border_bottom</span><span class="o">=</span><span class="s">$(thin_black_stroke)</span><span class="w"></span>
-<span class="na">space_below</span><span class="o">=</span><span class="s">24pt</span><span class="w"></span>
-
-<span class="k">[footer]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">header_footer</span><span class="w"></span>
-<span class="na">padding_top</span><span class="o">=</span><span class="s">4pt</span><span class="w"></span>
-<span class="na">border_top</span><span class="o">=</span><span class="s">$(thin_black_stroke)</span><span class="w"></span>
-<span class="na">space_above</span><span class="o">=</span><span class="s">18pt</span><span class="w"></span>
-
-<span class="k">[footnote]</span><span class="w"></span>
-<span class="na">location</span><span class="o">=</span><span class="s">footer</span><span class="w"></span>
-
-<span class="k">[footnote marker]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">linked reference</span><span class="w"></span>
-<span class="na">position</span><span class="o">=</span><span class="s">SUPERSCRIPT</span><span class="w"></span>
-<span class="na">number_format</span><span class="o">=</span><span class="s">number</span><span class="w"></span>
-
-<span class="k">[footnote paragraph]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">default</span><span class="w"></span>
-<span class="na">font_size</span><span class="o">=</span><span class="s">8pt</span><span class="w"></span>
-<span class="na">indent_first</span><span class="o">=</span><span class="s">0</span><span class="w"></span>
-<span class="na">line_spacing</span><span class="o">=</span><span class="s">Fixed(10pt)</span><span class="w"></span>
-
-<span class="k">[footnote label]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">footnote paragraph</span><span class="w"></span>
-<span class="na">text_align</span><span class="o">=</span><span class="s">RIGHT</span><span class="w"></span>
-
-<span class="k">[citation]</span><span class="w"></span>
-<span class="na">location</span><span class="o">=</span><span class="s">footer</span><span class="w"></span>
-
-<span class="k">[citation marker]</span><span class="w"></span>
-<span class="na">label_prefix</span><span class="o">=</span><span class="s">&#39;[&#39;</span><span class="w"></span>
-<span class="na">label_suffix</span><span class="o">=</span><span class="s">&#39;]&#39;</span><span class="w"></span>
-<span class="na">custom_label</span><span class="o">=</span><span class="s">True</span><span class="w"></span>
-
-<span class="k">[citation paragraph]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">footnote paragraph</span><span class="w"></span>
-
-<span class="k">[citation label]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">citation paragraph</span><span class="w"></span>
-<span class="na">text_align</span><span class="o">=</span><span class="s">RIGHT</span><span class="w"></span>
-
-<span class="k">[image]</span><span class="w"></span>
-<span class="na">space_above</span><span class="o">=</span><span class="s">10pt</span><span class="w"></span>
-<span class="na">horizontal_align</span><span class="o">=</span><span class="s">CENTER</span><span class="w"></span>
-
-<span class="c1">; sideways figures and tables</span><span class="w"></span>
-<span class="k">[sideways float : Float(has_class=&#39;sideways&#39;)]</span><span class="w"></span>
-<span class="na">base</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">NEXT_MATCH</span><span class="w"></span>
-<span class="na">float</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">sideways</span><span class="w"></span>
-
-<span class="k">[figure]</span><span class="w"></span>
-<span class="na">space_above</span><span class="o">=</span><span class="s">10pt</span><span class="w"></span>
-<span class="na">space_below</span><span class="o">=</span><span class="s">12pt</span><span class="w"></span>
-
-<span class="k">[figure image]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">image</span><span class="w"></span>
-<span class="na">keep_with_next</span><span class="o">=</span><span class="s">true</span><span class="w"></span>
-
-<span class="k">[caption : Caption]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">default</span><span class="w"></span>
-<span class="na">font_size</span><span class="o">=</span><span class="s">9pt</span><span class="w"></span>
-<span class="na">line_spacing</span><span class="o">=</span><span class="s">Fixed(10pt)</span><span class="w"></span>
-<span class="na">indent_first</span><span class="o">=</span><span class="s">0pt</span><span class="w"></span>
-<span class="na">space_above</span><span class="o">=</span><span class="s">4pt</span><span class="w"></span>
-<span class="na">space_below</span><span class="o">=</span><span class="s">0pt</span><span class="w"></span>
-<span class="na">text_align</span><span class="o">=</span><span class="s">CENTER</span><span class="w"></span>
-<span class="na">label_suffix</span><span class="o">=</span><span class="s">&#39;. &#39;</span><span class="w"></span>
-
-<span class="k">[figure caption]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">caption</span><span class="w"></span>
-
-<span class="k">[figure legend]</span><span class="w"></span>
-<span class="na">margin_left</span><span class="o">=</span><span class="s">30pt</span><span class="w"></span>
-
-<span class="k">[figure legend paragraph]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">caption</span><span class="w"></span>
-<span class="na">space_above</span><span class="o">=</span><span class="s">5pt</span><span class="w"></span>
-<span class="na">text_align</span><span class="o">=</span><span class="s">LEFT</span><span class="w"></span>
-
-<span class="k">[table of contents section]</span><span class="w"></span>
-<span class="na">show_in_toc</span><span class="o">=</span><span class="s">False</span><span class="w"></span>
-
-<span class="k">[table of contents]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">default</span><span class="w"></span>
-<span class="na">indent_first</span><span class="o">=</span><span class="s">0</span><span class="w"></span>
-<span class="na">depth</span><span class="o">=</span><span class="s">2</span><span class="w"></span>
-
-<span class="k">[toc level 1]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">table of contents</span><span class="w"></span>
-<span class="na">font_weight</span><span class="o">=</span><span class="s">BOLD</span><span class="w"></span>
-<span class="na">space_above</span><span class="o">=</span><span class="s">14pt</span><span class="w"></span>
-<span class="na">tab_stops</span><span class="o">=</span><span class="s">0.6cm, 100% RIGHT</span><span class="w"></span>
-
-<span class="k">[toc level 2]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">table of contents</span><span class="w"></span>
-<span class="na">margin_left</span><span class="o">=</span><span class="s">0.6cm</span><span class="w"></span>
-<span class="na">tab_stops</span><span class="o">=</span><span class="s">1.0cm, 100% RIGHT &#39;.  &#39;</span><span class="w"></span>
-
-<span class="k">[toc level 3]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">table of contents</span><span class="w"></span>
-<span class="na">margin_left</span><span class="o">=</span><span class="s">1.6cm</span><span class="w"></span>
-<span class="na">tab_stops</span><span class="o">=</span><span class="s">1.4cm, 100% RIGHT &#39;.  &#39;</span><span class="w"></span>
-
-<span class="k">[L3 toc level 3]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">table of contents</span><span class="w"></span>
-<span class="na">margin_left</span><span class="o">=</span><span class="s">0</span><span class="w"></span>
-<span class="na">tab_stops</span><span class="o">=</span><span class="s">0.6cm, 100% RIGHT &#39;. &#39;</span><span class="w"></span>
-
-<span class="k">[toc entry number reference field]</span><span class="w"></span>
-<span class="na">base</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">linked reference</span><span class="w"></span>
-<span class="na">quiet</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">True</span><span class="w"></span>
-
-<span class="k">[list of figures section]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">table of contents section</span><span class="w"></span>
-
-<span class="k">[list of figures]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">table of contents</span><span class="w"></span>
-
-<span class="k">[list of figures entry]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">list of figures</span><span class="w"></span>
-<span class="na">tab_stops</span><span class="o">=</span><span class="s">100% RIGHT &#39;.  &#39;</span><span class="w"></span>
-
-<span class="k">[list of tables section]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">list of figures section</span><span class="w"></span>
-
-<span class="k">[list of tables]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">list of figures</span><span class="w"></span>
-
-<span class="k">[list of tables entry]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">list of figures entry</span><span class="w"></span>
-
-<span class="k">[table]</span><span class="w"></span>
-<span class="na">space_above</span><span class="o">=</span><span class="s">5pt</span><span class="w"></span>
-<span class="na">space_below</span><span class="o">=</span><span class="s">5pt</span><span class="w"></span>
-<span class="na">horizontal_align</span><span class="o">=</span><span class="s">CENTER</span><span class="w"></span>
-
-<span class="k">[table caption]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">caption</span><span class="w"></span>
-<span class="na">keep_with_next</span><span class="o">=</span><span class="s">true</span><span class="w"></span>
-
-<span class="k">[table cell]</span><span class="w"></span>
-<span class="na">space_above</span><span class="o">=</span><span class="s">2pt</span><span class="w"></span>
-<span class="na">space_below</span><span class="o">=</span><span class="s">2pt</span><span class="w"></span>
-<span class="na">margin_left</span><span class="o">=</span><span class="s">2pt</span><span class="w"></span>
-<span class="na">margin_right</span><span class="o">=</span><span class="s">2pt</span><span class="w"></span>
-<span class="na">vertical_align</span><span class="o">=</span><span class="s">MIDDLE</span><span class="w"></span>
-
-<span class="k">[table body cell paragraph]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">default</span><span class="w"></span>
-<span class="na">indent_first</span><span class="o">=</span><span class="s">0</span><span class="w"></span>
-<span class="na">margin_left</span><span class="o">=</span><span class="s">3pt</span><span class="w"></span>
-<span class="na">margin_right</span><span class="o">=</span><span class="s">3pt</span><span class="w"></span>
-
-<span class="k">[table body cell list item number]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">table body cell paragraph</span><span class="w"></span>
-<span class="na">indent_first</span><span class="o">=</span><span class="s">0</span><span class="w"></span>
-<span class="na">text_align</span><span class="o">=</span><span class="s">RIGHT</span><span class="w"></span>
-
-<span class="k">[table head cell paragraph]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">table body cell paragraph</span><span class="w"></span>
-<span class="na">font_weight</span><span class="o">=</span><span class="s">BOLD</span><span class="w"></span>
-<span class="na">text_align</span><span class="o">=</span><span class="s">CENTER</span><span class="w"></span>
-
-<span class="k">[table first column paragraph]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">table body cell paragraph</span><span class="w"></span>
-<span class="na">text_align</span><span class="o">=</span><span class="s">LEFT</span><span class="w"></span>
-
-<span class="k">[table top border]</span><span class="w"></span>
-<span class="na">stroke</span><span class="o">=</span><span class="s">$(thin_black_stroke)</span><span class="w"></span>
-
-<span class="k">[table bottom border]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">table top border</span><span class="w"></span>
-
-<span class="k">[table head bottom border]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">table top border</span><span class="w"></span>
-
-<span class="k">[table body top border]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">table head bottom border</span><span class="w"></span>
-
-<span class="k">[table cell border:TableCellBorder]</span><span class="w"></span>
-<span class="na">stroke</span><span class="o">=</span><span class="s">$(thin_black_stroke)</span><span class="w"></span>
-
-<span class="k">[table cell left border]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">table cell border</span><span class="w"></span>
-
-<span class="k">[table cell top border]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">table cell border</span><span class="w"></span>
-
-<span class="k">[table cell right border]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">table cell border</span><span class="w"></span>
-
-<span class="k">[table cell bottom border]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">table cell border</span><span class="w"></span>
-
-<span class="k">[horizontal rule]</span><span class="w"></span>
-<span class="na">space_above</span><span class="o">=</span><span class="s">10pt</span><span class="w"></span>
-<span class="na">space_below</span><span class="o">=</span><span class="s">15pt</span><span class="w"></span>
-<span class="na">margin_left</span><span class="o">=</span><span class="s">40pt</span><span class="w"></span>
-<span class="na">margin_right</span><span class="o">=</span><span class="s">40pt</span><span class="w"></span>
-
-
-<span class="c1"># title page</span><span class="w"></span>
-
-<span class="k">[title page rule]</span><span class="w"></span>
-<span class="na">stroke</span><span class="o">=</span><span class="s">1pt,#000</span><span class="w"></span>
-
-<span class="k">[title page logo]</span><span class="w"></span>
-<span class="na">horizontal_align</span><span class="o">=</span><span class="s">right</span><span class="w"></span>
-<span class="na">padding_top</span><span class="o">=</span><span class="s">14pt</span><span class="w"></span>
-<span class="na">space_above</span><span class="o">=</span><span class="s">10pt</span><span class="w"></span>
-
-<span class="k">[title page title]</span><span class="w"></span>
-<span class="na">typeface</span><span class="o">=</span><span class="s">$(sans_typeface)</span><span class="w"></span>
-<span class="na">font_weight</span><span class="o">=</span><span class="s">bold</span><span class="w"></span>
-<span class="na">font_size</span><span class="o">=</span><span class="s">25pt</span><span class="w"></span>
-<span class="na">text_align</span><span class="o">=</span><span class="s">right</span><span class="w"></span>
-<span class="na">space_above</span><span class="o">=</span><span class="s">12pt</span><span class="w"></span>
-
-<span class="k">[title page subtitle]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">title page title</span><span class="w"></span>
-<span class="na">font_slant</span><span class="o">=</span><span class="s">italic</span><span class="w"></span>
-<span class="na">font_size</span><span class="o">=</span><span class="s">17pt</span><span class="w"></span>
-<span class="na">space_above</span><span class="o">=</span><span class="s">6pt</span><span class="w"></span>
-
-<span class="k">[title page author]</span><span class="w"></span>
-<span class="na">typeface</span><span class="o">=</span><span class="s">$(sans_typeface)</span><span class="w"></span>
-<span class="na">font_weight</span><span class="o">=</span><span class="s">bold</span><span class="w"></span>
-<span class="na">font_size</span><span class="o">=</span><span class="s">17pt</span><span class="w"></span>
-<span class="na">text_align</span><span class="o">=</span><span class="s">right</span><span class="w"></span>
-<span class="na">space_above</span><span class="o">=</span><span class="s">110pt</span><span class="w"></span>
-
-<span class="k">[title page date]</span><span class="w"></span>
-<span class="na">typeface</span><span class="o">=</span><span class="s">$(serif_typeface)</span><span class="w"></span>
-<span class="na">font_size</span><span class="o">=</span><span class="s">12pt</span><span class="w"></span>
-<span class="na">text_align</span><span class="o">=</span><span class="s">right</span><span class="w"></span>
-<span class="na">space_above</span><span class="o">=</span><span class="s">220pt</span><span class="w"></span>
-
-<span class="k">[index]</span><span class="w"></span>
-
-<span class="k">[index section label]</span><span class="w"></span>
-<span class="na">typeface</span><span class="o">=</span><span class="s">$(sans_typeface)</span><span class="w"></span>
-<span class="na">font_size</span><span class="o">=</span><span class="s">14pt</span><span class="w"></span>
-<span class="na">space_above</span><span class="o">=</span><span class="s">10pt</span><span class="w"></span>
-<span class="na">space_below</span><span class="o">=</span><span class="s">2pt</span><span class="w"></span>
-<span class="na">keep_with_next</span><span class="o">=</span><span class="s">true</span><span class="w"></span>
-
-<span class="k">[level 1 index entry]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">default</span><span class="w"></span>
-<span class="na">text_align</span><span class="o">=</span><span class="s">left</span><span class="w"></span>
-<span class="na">margin_left</span><span class="o">=</span><span class="s">40pt</span><span class="w"></span>
-<span class="na">indent_first</span><span class="o">=</span><span class="s">-40pt</span><span class="w"></span>
-
-<span class="k">[level 2 index entry]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">level 1 index entry</span><span class="w"></span>
-<span class="na">margin_left</span><span class="o">=</span><span class="s">60pt</span><span class="w"></span>
-<span class="na">indent_first</span><span class="o">=</span><span class="s">-40pt</span><span class="w"></span>
-
-<span class="k">[level 3 index entry]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">level 1 index entry</span><span class="w"></span>
-<span class="na">margin_left</span><span class="o">=</span><span class="s">80pt</span><span class="w"></span>
-<span class="na">indent_first</span><span class="o">=</span><span class="s">-40pt</span><span class="w"></span>
-
-<span class="k">[level 4 index entry]</span><span class="w"></span>
-<span class="na">base</span><span class="o">=</span><span class="s">level 1 index entry</span><span class="w"></span>
-<span class="na">margin_left</span><span class="o">=</span><span class="s">100pt</span><span class="w"></span>
-<span class="na">indent_first</span><span class="o">=</span><span class="s">-40pt</span><span class="w"></span>
-
-<span class="k">[domain index entry name]</span><span class="w"></span>
-<span class="na">typeface</span><span class="o">=</span><span class="s">$(mono_typeface)</span><span class="w"></span>
-<span class="na">ligatures</span><span class="o">=</span><span class="s">False</span><span class="w"></span>
-<span class="na">hyphenate</span><span class="o">=</span><span class="s">False</span><span class="w"></span>
-
-
-<span class="c1"># chapter titles</span><span class="w"></span>
-
-<span class="k">[front matter section title]</span><span class="w"></span>
-<span class="na">typeface</span><span class="o">=</span><span class="s">$(serif_typeface)</span><span class="w"></span>
-<span class="na">font_size</span><span class="o">=</span><span class="s">10pt</span><span class="w"></span>
-<span class="na">text_align</span><span class="o">=</span><span class="s">right</span><span class="w"></span>
-<span class="na">space_above</span><span class="o">=</span><span class="s">1in</span><span class="w"></span>
-<span class="na">border_top</span><span class="o">=</span><span class="s">$(thin_black_stroke)</span><span class="w"></span>
-<span class="na">border_bottom</span><span class="o">=</span><span class="s">$(thin_black_stroke)</span><span class="w"></span>
-<span class="na">padding_top</span><span class="o">=</span><span class="s">8pt</span><span class="w"></span>
-<span class="na">padding_bottom</span><span class="o">=</span><span class="s">9pt</span><span class="w"></span>
-
-<span class="k">[body matter chapter label]</span><span class="w"></span>
-<span class="na">typeface</span><span class="o">=</span><span class="s">$(sans_typeface)</span><span class="w"></span>
-<span class="na">font_size</span><span class="o">=</span><span class="s">10pt</span><span class="w"></span>
-<span class="na">font_weight</span><span class="o">=</span><span class="s">bold</span><span class="w"></span>
-<span class="na">text_align</span><span class="o">=</span><span class="s">right</span><span class="w"></span>
-
-<span class="k">[body matter chapter number]</span><span class="w"></span>
-<span class="na">font_size</span><span class="o">=</span><span class="s">14pt</span><span class="w"></span>
-
-<span class="k">[body matter chapter title]</span><span class="w"></span>
-<span class="na">typeface</span><span class="o">=</span><span class="s">$(sans_typeface)</span><span class="w"></span>
-<span class="na">font_size</span><span class="o">=</span><span class="s">14pt</span><span class="w"></span>
-<span class="na">font_weight</span><span class="o">=</span><span class="s">bold</span><span class="w"></span>
-<span class="na">text_align</span><span class="o">=</span><span class="s">right</span><span class="w"></span>
-<span class="na">space_above</span><span class="o">=</span><span class="s">0.83in</span><span class="w"></span>
-<span class="na">border_top</span><span class="o">=</span><span class="s">$(thin_black_stroke)</span><span class="w"></span>
-<span class="na">border_bottom</span><span class="o">=</span><span class="s">$(thin_black_stroke)</span><span class="w"></span>
-<span class="na">padding_top</span><span class="o">=</span><span class="s">18pt</span><span class="w"></span>
-<span class="na">padding_bottom</span><span class="o">=</span><span class="s">18pt</span><span class="w"></span>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><code><span class="k">[STYLESHEET]</span>
+<span class="na">name</span><span class="o">=</span><span class="s">Sphinx</span>
+<span class="na">description</span><span class="o">=</span><span class="s">Mostly a copy of the LaTeX style included with Sphinx</span>
+<span class="na">pygments_style</span><span class="o">=</span><span class="s">friendly</span>
+
+<span class="k">[VARIABLES]</span>
+<span class="na">mono_typeface</span><span class="o">=</span><span class="s">TeX Gyre Cursor</span>
+<span class="na">serif_typeface</span><span class="o">=</span><span class="s">TeX Gyre Pagella</span>
+<span class="na">sans_typeface</span><span class="o">=</span><span class="s">Tex Gyre Heros</span>
+<span class="na">fallback_typeface</span><span class="o">=</span><span class="s">DejaVu Serif</span>
+<span class="na">thin_black_stroke</span><span class="o">=</span><span class="s">0.5pt,</span><span class="c1">#000</span>
+<span class="na">blue</span><span class="o">=</span><span class="c1">#20435c</span>
+
+<span class="k">[default:Paragraph]</span>
+<span class="na">typeface</span><span class="o">=</span><span class="s">$(serif_typeface)</span>
+<span class="na">font_weight</span><span class="o">=</span><span class="s">REGULAR</span>
+<span class="na">font_size</span><span class="o">=</span><span class="s">10pt</span>
+<span class="na">line_spacing</span><span class="o">=</span><span class="s">fixed(12pt, leading(0))</span>
+<span class="na">indent_first</span><span class="o">=</span><span class="s">0</span>
+<span class="na">space_above</span><span class="o">=</span><span class="s">0</span>
+<span class="na">space_below</span><span class="o">=</span><span class="s">0</span>
+<span class="na">text_align</span><span class="o">=</span><span class="s">JUSTIFY</span>
+<span class="na">kerning</span><span class="o">=</span><span class="s">True</span>
+<span class="na">ligatures</span><span class="o">=</span><span class="s">True</span>
+<span class="na">hyphen_lang</span><span class="o">=</span><span class="s">en_US</span>
+<span class="na">hyphen_chars</span><span class="o">=</span><span class="s">4</span>
+
+<span class="k">[fallback]</span>
+<span class="na">typeface</span><span class="o">=</span><span class="s">$(fallback_typeface)</span>
+
+<span class="k">[body]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">default</span>
+<span class="na">space_above</span><span class="o">=</span><span class="s">5pt</span>
+<span class="na">space_below</span><span class="o">=</span><span class="s">0</span>
+<span class="na">text_align</span><span class="o">=</span><span class="s">justify</span>
+
+<span class="k">[emphasis]</span>
+<span class="na">font_slant</span><span class="o">=</span><span class="s">italic</span>
+
+<span class="k">[strong]</span>
+<span class="na">font_weight</span><span class="o">=</span><span class="s">BOLD</span>
+
+<span class="k">[literal emphasis]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">emphasis</span>
+<span class="na">typeface</span><span class="o">=</span><span class="s">$(mono_typeface)</span>
+<span class="na">hyphenate</span><span class="o">=</span><span class="s">False</span>
+<span class="na">ligatures</span><span class="o">=</span><span class="s">False</span>
+
+<span class="k">[literal strong]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">strong</span>
+<span class="na">typeface</span><span class="o">=</span><span class="s">$(mono_typeface)</span>
+<span class="na">hyphenate</span><span class="o">=</span><span class="s">False</span>
+<span class="na">ligatures</span><span class="o">=</span><span class="s">False</span>
+
+<span class="k">[inline math]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">monospaced</span>
+
+<span class="k">[quote]</span>
+<span class="na">font_slant</span><span class="o">=</span><span class="s">italic</span>
+
+<span class="k">[italic]</span>
+<span class="na">font_slant</span><span class="o">=</span><span class="s">italic</span>
+
+<span class="k">[bold]</span>
+<span class="na">font_weight</span><span class="o">=</span><span class="s">BOLD</span>
+
+<span class="k">[file path]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">monospaced</span>
+<span class="na">ligatures</span><span class="o">=</span><span class="s">False</span>
+
+<span class="k">[keystrokes]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">monospaced</span>
+<span class="na">ligatures</span><span class="o">=</span><span class="s">False</span>
+
+<span class="k">[regular expression]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">monospaced</span>
+<span class="na">ligatures</span><span class="o">=</span><span class="s">False</span>
+<span class="na">hyphenate</span><span class="o">=</span><span class="s">False</span>
+
+<span class="k">[code with variable]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">monospaced</span>
+<span class="na">ligatures</span><span class="o">=</span><span class="s">False</span>
+<span class="na">hyphenate</span><span class="o">=</span><span class="s">False</span>
+
+<span class="k">[mail header]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">literal emphasis</span>
+
+<span class="k">[MIME type]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">literal emphasis</span>
+
+<span class="k">[newsgroup]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">literal emphasis</span>
+
+<span class="k">[command]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">literal strong</span>
+
+<span class="k">[make variable]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">literal strong</span>
+
+<span class="k">[program]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">literal strong</span>
+
+<span class="k">[man page]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">literal emphasis</span>
+
+<span class="k">[window title]</span>
+<span class="na">font_weight</span><span class="o">=</span><span class="s">BOLD</span>
+
+<span class="k">[UI control]</span>
+<span class="na">font_slant</span><span class="o">=</span><span class="s">italic</span>
+
+<span class="k">[UI control accelerator]</span>
+<span class="na">font_weight</span><span class="o">=</span><span class="s">bold</span>
+
+<span class="k">[menu cascade]</span>
+<span class="na">font_weight</span><span class="o">=</span><span class="s">BOLD</span>
+
+<span class="k">[draft comment]</span>
+<span class="na">font_color</span><span class="o">=</span><span class="c1">#f00</span>
+
+<span class="k">[title reference]</span>
+<span class="na">font_slant</span><span class="o">=</span><span class="s">ITALIC</span>
+
+<span class="k">[monospaced]</span>
+<span class="na">typeface</span><span class="o">=</span><span class="s">$(mono_typeface)</span>
+<span class="na">hyphenate</span><span class="o">=</span><span class="s">False</span>
+<span class="na">ligatures</span><span class="o">=</span><span class="s">False</span>
+
+<span class="k">[error]</span>
+<span class="na">font_color</span><span class="o">=</span><span class="c1">#f00</span>
+
+<span class="k">[linked reference]</span>
+<span class="na">font_color</span><span class="o">=</span><span class="c1">#355f7c</span>
+
+<span class="k">[external hyperlink]</span>
+<span class="na">font_color</span><span class="o">=</span><span class="c1">#376f62</span>
+
+<span class="k">[broken hyperlink]</span>
+<span class="na">font_color</span><span class="o">=</span><span class="c1">#7f7f7f</span>
+
+<span class="k">[glossary inline definition]</span>
+<span class="na">before</span><span class="o">=</span><span class="s">&#39; (&#39;</span>
+<span class="na">after</span><span class="o">=</span><span class="s">&#39;)&#39;</span>
+
+<span class="k">[code block]</span>
+<span class="na">typeface</span><span class="o">=</span><span class="s">$(mono_typeface)</span>
+<span class="na">font_size</span><span class="o">=</span><span class="s">9pt</span>
+<span class="na">text_align</span><span class="o">=</span><span class="s">LEFT</span>
+<span class="na">indent_first</span><span class="o">=</span><span class="s">0</span>
+<span class="na">ligatures</span><span class="o">=</span><span class="s">False</span>
+<span class="na">hyphenate</span><span class="o">=</span><span class="s">False</span>
+<span class="na">space_above</span><span class="o">=</span><span class="s">6pt</span>
+<span class="na">space_below</span><span class="o">=</span><span class="s">4pt</span>
+<span class="na">border</span><span class="o">=</span><span class="s">$(thin_black_stroke)</span>
+<span class="na">padding_left</span><span class="o">=</span><span class="s">5pt</span>
+<span class="na">padding_top</span><span class="o">=</span><span class="s">3pt</span>
+<span class="na">padding_bottom</span><span class="o">=</span><span class="s">3pt</span>
+
+<span class="k">[code block caption]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">caption</span>
+<span class="na">keep_with_next</span><span class="o">=</span><span class="s">true</span>
+
+<span class="k">[math block]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">code block</span>
+<span class="na">border</span><span class="o">=</span><span class="s">none</span>
+
+<span class="k">[graphviz code block]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">code block</span>
+<span class="na">border</span><span class="o">=</span><span class="s">none</span>
+
+<span class="k">[block quote]</span>
+<span class="na">margin_left</span><span class="o">=</span><span class="s">1cm</span>
+
+<span class="k">[attribution]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">default</span>
+<span class="na">text_align</span><span class="o">=</span><span class="s">RIGHT</span>
+
+<span class="k">[centered]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">default</span>
+<span class="na">text_align</span><span class="o">=</span><span class="s">CENTER</span>
+<span class="na">font_weight</span><span class="o">=</span><span class="s">BOLD</span>
+<span class="na">space_below</span><span class="o">=</span><span class="s">4pt</span>
+
+<span class="k">[line block]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">body</span>
+<span class="na">text_align</span><span class="o">=</span><span class="s">left</span>
+
+<span class="k">[chapter]</span>
+<span class="na">page_break</span><span class="o">=</span><span class="s">RIGHT</span>
+
+<span class="k">[content chapter]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">chapter</span>
+
+<span class="k">[heading level 1]</span>
+<span class="na">typeface</span><span class="o">=</span><span class="s">$(sans_typeface)</span>
+<span class="na">font_weight</span><span class="o">=</span><span class="s">BOLD</span>
+<span class="na">font_size</span><span class="o">=</span><span class="s">16pt</span>
+<span class="na">font_color</span><span class="o">=</span><span class="s">$(blue)</span>
+<span class="na">line_spacing</span><span class="o">=</span><span class="s">SINGLE</span>
+<span class="na">space_above</span><span class="o">=</span><span class="s">18pt</span>
+<span class="na">space_below</span><span class="o">=</span><span class="s">12pt</span>
+<span class="na">number_format</span><span class="o">=</span><span class="s">NUMBER</span>
+<span class="na">label_suffix</span><span class="o">=</span><span class="s">&#39; &#39;</span>
+
+<span class="k">[unnumbered heading level 1]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">heading level 1</span>
+<span class="na">number_format</span><span class="o">=</span><span class="s">None</span>
+
+<span class="k">[heading level 2]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">heading level 1</span>
+<span class="na">font_size</span><span class="o">=</span><span class="s">14pt</span>
+<span class="na">space_above</span><span class="o">=</span><span class="s">26pt</span>
+<span class="na">space_below</span><span class="o">=</span><span class="s">10pt</span>
+
+<span class="k">[heading level 3]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">heading level 2</span>
+<span class="na">font_size</span><span class="o">=</span><span class="s">12pt</span>
+<span class="na">space_above</span><span class="o">=</span><span class="s">10pt</span>
+<span class="na">space_below</span><span class="o">=</span><span class="s">6pt</span>
+
+<span class="k">[heading level 4]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">heading level 3</span>
+<span class="na">font_size</span><span class="o">=</span><span class="s">9pt</span>
+<span class="na">space_above</span><span class="o">=</span><span class="s">8pt</span>
+<span class="na">space_below</span><span class="o">=</span><span class="s">4pt</span>
+<span class="na">number_format</span><span class="o">=</span><span class="s">None</span>
+
+<span class="k">[heading level 5]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">heading level 2</span>
+<span class="na">font_size</span><span class="o">=</span><span class="s">9pt</span>
+<span class="na">font_slant</span><span class="o">=</span><span class="s">ITALIC</span>
+<span class="na">font_weight</span><span class="o">=</span><span class="s">REGULAR</span>
+<span class="na">line_spacing</span><span class="o">=</span><span class="s">Fixed(10pt)</span>
+<span class="na">space_above</span><span class="o">=</span><span class="s">2pt</span>
+<span class="na">space_below</span><span class="o">=</span><span class="s">2pt</span>
+<span class="na">number_format</span><span class="o">=</span><span class="s">None</span>
+
+<span class="k">[other heading levels]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">heading level 5</span>
+<span class="na">font_size</span><span class="o">=</span><span class="s">9pt</span>
+<span class="na">font_slant</span><span class="o">=</span><span class="s">ITALIC</span>
+<span class="na">font_weight</span><span class="o">=</span><span class="s">REGULAR</span>
+<span class="na">line_spacing</span><span class="o">=</span><span class="s">Fixed(10pt)</span>
+<span class="na">space_above</span><span class="o">=</span><span class="s">2pt</span>
+<span class="na">space_below</span><span class="o">=</span><span class="s">2pt</span>
+<span class="na">number_format</span><span class="o">=</span><span class="s">None</span>
+
+<span class="k">[appendix heading level 1]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">heading level 1</span>
+<span class="na">number_format</span><span class="o">=</span><span class="s">uppercase character</span>
+
+<span class="k">[title]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">default</span>
+<span class="na">font_weight</span><span class="o">=</span><span class="s">BOLD</span>
+<span class="na">indent_first</span><span class="o">=</span><span class="s">0</span>
+<span class="na">space_above</span><span class="o">=</span><span class="s">10pt</span>
+<span class="na">space_below</span><span class="o">=</span><span class="s">5pt</span>
+
+<span class="k">[topic]</span>
+<span class="na">space_above</span><span class="o">=</span><span class="s">5pt</span>
+<span class="na">space_below</span><span class="o">=</span><span class="s">5pt</span>
+<span class="na">margin_left</span><span class="o">=</span><span class="s">0.5cm</span>
+<span class="na">margin_right</span><span class="o">=</span><span class="s">0.5cm</span>
+<span class="na">border</span><span class="o">=</span><span class="s">$(thin_black_stroke)</span>
+<span class="na">padding_left</span><span class="o">=</span><span class="s">10pt</span>
+<span class="na">padding_right</span><span class="o">=</span><span class="s">10pt</span>
+<span class="na">padding_top</span><span class="o">=</span><span class="s">4pt</span>
+<span class="na">padding_bottom</span><span class="o">=</span><span class="s">4pt</span>
+<span class="na">background_color</span><span class="o">=</span><span class="c1">#f5f5f5</span>
+
+<span class="k">[topic title]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">default</span>
+<span class="na">font_weight</span><span class="o">=</span><span class="s">BOLD</span>
+<span class="na">indent_first</span><span class="o">=</span><span class="s">0</span>
+<span class="na">space_above</span><span class="o">=</span><span class="s">5pt</span>
+<span class="na">space_below</span><span class="o">=</span><span class="s">5pt</span>
+
+<span class="k">[post requirement]</span>
+
+<span class="k">[rubric]</span>
+<span class="na">typeface</span><span class="o">=</span><span class="s">$(sans_typeface)</span>
+<span class="na">font_size</span><span class="o">=</span><span class="s">9pt</span>
+<span class="na">font_weight</span><span class="o">=</span><span class="s">bold</span>
+<span class="na">font_color</span><span class="o">=</span><span class="s">$(blue)</span>
+<span class="na">space_above</span><span class="o">=</span><span class="s">8pt</span>
+
+<span class="k">[sidebar]</span>
+<span class="na">space_above</span><span class="o">=</span><span class="s">5pt</span>
+<span class="na">space_below</span><span class="o">=</span><span class="s">5pt</span>
+<span class="na">padding_left</span><span class="o">=</span><span class="s">10pt</span>
+<span class="na">padding_right</span><span class="o">=</span><span class="s">10pt</span>
+<span class="na">padding_top</span><span class="o">=</span><span class="s">4pt</span>
+<span class="na">padding_bottom</span><span class="o">=</span><span class="s">4pt</span>
+<span class="na">background_color</span><span class="o">=</span><span class="c1">#ffffe5</span>
+<span class="na">border</span><span class="o">=</span><span class="s">1pt,</span><span class="c1">#666</span>
+
+<span class="k">[sidebar title]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">default</span>
+<span class="na">font_size</span><span class="o">=</span><span class="s">12pt</span>
+<span class="na">font_weight</span><span class="o">=</span><span class="s">BOLD</span>
+<span class="na">indent_first</span><span class="o">=</span><span class="s">0</span>
+<span class="na">space_above</span><span class="o">=</span><span class="s">5pt</span>
+<span class="na">space_below</span><span class="o">=</span><span class="s">5pt</span>
+
+<span class="k">[sidebar subtitle]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">default</span>
+<span class="na">font_weight</span><span class="o">=</span><span class="s">BOLD</span>
+<span class="na">indent_first</span><span class="o">=</span><span class="s">0</span>
+<span class="na">space_above</span><span class="o">=</span><span class="s">2pt</span>
+<span class="na">space_below</span><span class="o">=</span><span class="s">2pt</span>
+
+<span class="k">[list item label]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">default</span>
+<span class="na">indent_first</span><span class="o">=</span><span class="s">0</span>
+<span class="na">text_align</span><span class="o">=</span><span class="s">RIGHT</span>
+
+<span class="k">[bulleted list item label]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">list item label</span>
+
+<span class="k">[enumerated list item label]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">list item label</span>
+<span class="na">label_suffix</span><span class="o">=</span><span class="s">&#39;.&#39;</span>
+
+<span class="k">[enumerated list]</span>
+<span class="na">margin_left</span><span class="o">=</span><span class="s">8pt</span>
+<span class="na">space_above</span><span class="o">=</span><span class="s">5pt</span>
+<span class="na">space_below</span><span class="o">=</span><span class="s">5pt</span>
+<span class="na">ordered</span><span class="o">=</span><span class="s">True</span>
+<span class="na">flowable_spacing</span><span class="o">=</span><span class="s">5pt</span>
+<span class="na">number_format</span><span class="o">=</span><span class="s">NUMBER</span>
+<span class="na">label_suffix</span><span class="o">=</span><span class="s">&#39;)&#39;</span>
+
+<span class="k">[nested enumerated list]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">enumerated list</span>
+<span class="na">margin_left</span><span class="o">=</span><span class="s">10pt</span>
+<span class="na">space_below</span><span class="o">=</span><span class="s">0</span>
+
+<span class="k">[bulleted list]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">enumerated list</span>
+<span class="na">ordered</span><span class="o">=</span><span class="s">False</span>
+<span class="na">label_suffix</span><span class="o">=</span><span class="s">None</span>
+
+<span class="k">[nested bulleted list]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">bulleted list</span>
+<span class="na">margin_left</span><span class="o">=</span><span class="s">10pt</span>
+<span class="na">space_below</span><span class="o">=</span><span class="s">0</span>
+
+<span class="k">[steps list]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">enumerated list</span>
+
+<span class="k">[steps list item label]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">enumerated list item label</span>
+
+<span class="k">[unordered steps list]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">bulleted list</span>
+
+<span class="k">[unordered steps list item label]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">bulleted list item label</span>
+
+<span class="k">[choices list]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">bulleted list</span>
+
+<span class="k">[choices list item label]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">bulleted list item label</span>
+
+<span class="k">[list item body]</span>
+<span class="na">space_above</span><span class="o">=</span><span class="s">0</span>
+<span class="na">space_below</span><span class="o">=</span><span class="s">0</span>
+<span class="na">margin_left</span><span class="o">=</span><span class="s">0</span>
+<span class="na">margin_right</span><span class="o">=</span><span class="s">0</span>
+
+<span class="k">[list item paragraph]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">default</span>
+<span class="na">space_above</span><span class="o">=</span><span class="s">0pt</span>
+<span class="na">space_below</span><span class="o">=</span><span class="s">0pt</span>
+<span class="na">margin_left</span><span class="o">=</span><span class="s">0pt</span>
+<span class="na">indent_first</span><span class="o">=</span><span class="s">0pt</span>
+
+<span class="k">[definition list]</span>
+
+<span class="k">[definition list item]</span>
+<span class="na">label_min_width</span><span class="o">=</span><span class="s">17pt</span>
+<span class="na">label_max_width</span><span class="o">=</span><span class="s">0</span>
+
+<span class="k">[definition term]</span>
+<span class="na">space_above</span><span class="o">=</span><span class="s">4pt</span>
+<span class="na">keep_with_next</span><span class="o">=</span><span class="s">true</span>
+
+<span class="k">[definition term paragraph]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">default</span>
+<span class="na">indent_first</span><span class="o">=</span><span class="s">0</span>
+<span class="na">font_weight</span><span class="o">=</span><span class="s">BOLD</span>
+
+<span class="k">[definition term classifier]</span>
+<span class="na">font_weight</span><span class="o">=</span><span class="s">REGULAR</span>
+<span class="na">font_slant</span><span class="o">=</span><span class="s">italic</span>
+
+<span class="k">[definition]</span>
+
+<span class="k">[definition paragraph]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">body</span>
+<span class="na">space_above</span><span class="o">=</span><span class="s">1pt</span>
+
+
+<span class="c1"># (Sphinx) version added/changed &amp; deprecated</span>
+
+<span class="k">[versionmodified]</span>
+<span class="na">font_slant</span><span class="o">=</span><span class="s">ITALIC</span>
+
+<span class="c1"># (Sphinx) object descriptions</span>
+
+<span class="k">[object description]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">definition list item</span>
+<span class="na">space_above</span><span class="o">=</span><span class="s">3pt</span>
+<span class="na">space_below</span><span class="o">=</span><span class="s">3pt</span>
+<span class="na">label_max_width</span><span class="o">=</span><span class="s">0</span>
+
+<span class="k">[object signatures]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">definition term</span>
+
+<span class="k">[object signature]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">definition term paragraph</span>
+<span class="na">font_weight</span><span class="o">=</span><span class="s">regular</span>
+
+<span class="k">[object name]</span>
+<span class="na">typeface</span><span class="o">=</span><span class="s">$(mono_typeface)</span>
+<span class="na">font_weight</span><span class="o">=</span><span class="s">BOLD</span>
+<span class="na">ligatures</span><span class="o">=</span><span class="s">False</span>
+<span class="na">hyphenate</span><span class="o">=</span><span class="s">False</span>
+
+<span class="k">[additional name part]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">monospaced</span>
+
+<span class="k">[object type]</span>
+
+<span class="k">[object returns]</span>
+
+<span class="k">[object parentheses]</span>
+<span class="na">font_size</span><span class="o">=</span><span class="s">11pt</span>
+
+<span class="k">[object parameter list]</span>
+
+<span class="k">[object parameter (no emphasis)]</span>
+
+<span class="k">[object parameter]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">object parameter (no emphasis)</span>
+<span class="na">font_slant</span><span class="o">=</span><span class="s">ITALIC</span>
+
+<span class="k">[object brackets]</span>
+<span class="na">font_size</span><span class="o">=</span><span class="s">11pt</span>
+<span class="na">font_weight</span><span class="o">=</span><span class="s">BOLD</span>
+
+<span class="k">[object optional parameter]</span>
+
+<span class="k">[object annotation]</span>
+<span class="na">font_weight</span><span class="o">=</span><span class="s">BOLD</span>
+
+<span class="k">[object description content]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">definition</span>
+
+<span class="k">[object description content paragraph]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">body</span>
+<span class="na">space_above</span><span class="o">=</span><span class="s">1pt</span>
+
+
+<span class="c1"># (Sphinx) production list</span>
+
+<span class="k">[production list]</span>
+<span class="na">space_above</span><span class="o">=</span><span class="s">5pt</span>
+<span class="na">space_below</span><span class="o">=</span><span class="s">5pt</span>
+
+<span class="k">[production]</span>
+
+<span class="k">[token name]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">literal</span>
+<span class="na">font_weight</span><span class="o">=</span><span class="s">BOLD</span>
+<span class="na">space_above</span><span class="o">=</span><span class="s">0</span>
+<span class="na">space_below</span><span class="o">=</span><span class="s">0</span>
+
+<span class="k">[token definition]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">literal</span>
+<span class="na">space_above</span><span class="o">=</span><span class="s">0</span>
+<span class="na">space_below</span><span class="o">=</span><span class="s">0</span>
+
+
+<span class="c1"># field lists</span>
+
+<span class="k">[field list]</span>
+
+<span class="k">[field list item]</span>
+<span class="na">label_max_width</span><span class="o">=</span><span class="s">80pt</span>
+
+<span class="k">[field name]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">default</span>
+<span class="na">indent_first</span><span class="o">=</span><span class="s">0</span>
+<span class="na">text_align</span><span class="o">=</span><span class="s">LEFT</span>
+<span class="na">font_weight</span><span class="o">=</span><span class="s">BOLD</span>
+
+
+<span class="c1"># option lists</span>
+
+<span class="k">[option list]</span>
+
+<span class="k">[option list item]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">field list item</span>
+
+<span class="k">[option]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">body</span>
+<span class="na">indent_first</span><span class="o">=</span><span class="s">0</span>
+<span class="na">text_align</span><span class="o">=</span><span class="s">LEFT</span>
+
+<span class="k">[option string]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">default</span>
+<span class="na">typeface</span><span class="o">=</span><span class="s">$(mono_typeface)</span>
+<span class="na">font_size</span><span class="o">=</span><span class="s">8pt</span>
+<span class="na">ligatures</span><span class="o">=</span><span class="s">False</span>
+<span class="na">hyphenate</span><span class="o">=</span><span class="s">False</span>
+
+<span class="k">[option argument]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">default</span>
+<span class="na">font_slant</span><span class="o">=</span><span class="s">ITALIC</span>
+
+<span class="k">[admonition]</span>
+<span class="na">inline_title</span><span class="o">=</span><span class="s">false</span>
+<span class="na">space_above</span><span class="o">=</span><span class="s">9pt</span>
+<span class="na">space_below</span><span class="o">=</span><span class="s">5pt</span>
+<span class="na">padding_top</span><span class="o">=</span><span class="s">0</span>
+<span class="na">padding_bottom</span><span class="o">=</span><span class="s">4pt</span>
+<span class="na">border_top</span><span class="o">=</span><span class="s">$(thin_black_stroke)</span>
+<span class="na">border_bottom</span><span class="o">=</span><span class="s">$(thin_black_stroke)</span>
+
+<span class="k">[admonition title]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">body</span>
+<span class="na">keep_with_next</span><span class="o">=</span><span class="s">true</span>
+<span class="na">font_weight</span><span class="o">=</span><span class="s">BOLD</span>
+<span class="na">space_below</span><span class="o">=</span><span class="s">2pt</span>
+
+<span class="k">[admonition inline title]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">admonition title</span>
+<span class="na">after</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#39; &#39;</span>
+
+<span class="k">[builtin admonition:Admonition]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">admonition</span>
+<span class="na">inline_title</span><span class="o">=</span><span class="s">true</span>
+
+<span class="k">[boxed builtin admonition:Admonition]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">builtin admonition</span>
+<span class="na">border</span><span class="o">=</span><span class="s">$(thin_black_stroke)</span>
+<span class="na">padding_left</span><span class="o">=</span><span class="s">8pt</span>
+<span class="na">padding_right</span><span class="o">=</span><span class="s">8pt</span>
+
+<span class="k">[red adminition title:Paragraph]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">admonition title</span>
+<span class="na">font_color</span><span class="o">=</span><span class="c1">#f00</span>
+
+<span class="k">[attention admonition]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">boxed builtin admonition</span>
+
+<span class="k">[caution admonition]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">boxed builtin admonition</span>
+
+<span class="k">[danger admonition]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">boxed builtin admonition</span>
+
+<span class="k">[warning admonition]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">boxed builtin admonition</span>
+
+<span class="k">[error admonition]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">boxed builtin admonition</span>
+
+<span class="k">[hint admonition]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">builtin admonition</span>
+
+<span class="k">[important admonition]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">builtin admonition</span>
+
+<span class="k">[note admonition]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">builtin admonition</span>
+
+<span class="k">[tip admonition]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">builtin admonition</span>
+
+<span class="k">[seealso admonition]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">admonition</span>
+<span class="na">border_top</span><span class="o">=</span><span class="s">none</span>
+<span class="na">border_bottom</span><span class="o">=</span><span class="s">none</span>
+
+<span class="k">[header_footer:Paragraph]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">default</span>
+<span class="na">typeface</span><span class="o">=</span><span class="s">$(sans_typeface)</span>
+<span class="na">font_size</span><span class="o">=</span><span class="s">10pt</span>
+<span class="na">font_weight</span><span class="o">=</span><span class="s">BOLD</span>
+<span class="na">indent_first</span><span class="o">=</span><span class="s">0pt</span>
+<span class="na">tab_stops</span><span class="o">=</span><span class="s">50% CENTER, 100% RIGHT</span>
+
+<span class="k">[header]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">header_footer</span>
+<span class="na">padding_bottom</span><span class="o">=</span><span class="s">2pt</span>
+<span class="na">border_bottom</span><span class="o">=</span><span class="s">$(thin_black_stroke)</span>
+<span class="na">space_below</span><span class="o">=</span><span class="s">24pt</span>
+
+<span class="k">[footer]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">header_footer</span>
+<span class="na">padding_top</span><span class="o">=</span><span class="s">4pt</span>
+<span class="na">border_top</span><span class="o">=</span><span class="s">$(thin_black_stroke)</span>
+<span class="na">space_above</span><span class="o">=</span><span class="s">18pt</span>
+
+<span class="k">[footnote]</span>
+<span class="na">location</span><span class="o">=</span><span class="s">footer</span>
+
+<span class="k">[footnote marker]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">linked reference</span>
+<span class="na">position</span><span class="o">=</span><span class="s">SUPERSCRIPT</span>
+<span class="na">number_format</span><span class="o">=</span><span class="s">number</span>
+
+<span class="k">[footnote paragraph]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">default</span>
+<span class="na">font_size</span><span class="o">=</span><span class="s">8pt</span>
+<span class="na">indent_first</span><span class="o">=</span><span class="s">0</span>
+<span class="na">line_spacing</span><span class="o">=</span><span class="s">Fixed(10pt)</span>
+
+<span class="k">[footnote label]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">footnote paragraph</span>
+<span class="na">text_align</span><span class="o">=</span><span class="s">RIGHT</span>
+
+<span class="k">[citation]</span>
+<span class="na">location</span><span class="o">=</span><span class="s">footer</span>
+
+<span class="k">[citation marker]</span>
+<span class="na">label_prefix</span><span class="o">=</span><span class="s">&#39;[&#39;</span>
+<span class="na">label_suffix</span><span class="o">=</span><span class="s">&#39;]&#39;</span>
+<span class="na">custom_label</span><span class="o">=</span><span class="s">True</span>
+
+<span class="k">[citation paragraph]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">footnote paragraph</span>
+
+<span class="k">[citation label]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">citation paragraph</span>
+<span class="na">text_align</span><span class="o">=</span><span class="s">RIGHT</span>
+
+<span class="k">[image]</span>
+<span class="na">space_above</span><span class="o">=</span><span class="s">10pt</span>
+<span class="na">horizontal_align</span><span class="o">=</span><span class="s">CENTER</span>
+
+<span class="c1">; sideways figures and tables</span>
+<span class="k">[sideways float : Float(has_class=&#39;sideways&#39;)]</span>
+<span class="na">base</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">NEXT_MATCH</span>
+<span class="na">float</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">sideways</span>
+
+<span class="k">[figure]</span>
+<span class="na">space_above</span><span class="o">=</span><span class="s">10pt</span>
+<span class="na">space_below</span><span class="o">=</span><span class="s">12pt</span>
+
+<span class="k">[figure image]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">image</span>
+<span class="na">keep_with_next</span><span class="o">=</span><span class="s">true</span>
+
+<span class="k">[caption : Caption]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">default</span>
+<span class="na">font_size</span><span class="o">=</span><span class="s">9pt</span>
+<span class="na">line_spacing</span><span class="o">=</span><span class="s">Fixed(10pt)</span>
+<span class="na">indent_first</span><span class="o">=</span><span class="s">0pt</span>
+<span class="na">space_above</span><span class="o">=</span><span class="s">4pt</span>
+<span class="na">space_below</span><span class="o">=</span><span class="s">0pt</span>
+<span class="na">text_align</span><span class="o">=</span><span class="s">CENTER</span>
+<span class="na">label_suffix</span><span class="o">=</span><span class="s">&#39;. &#39;</span>
+
+<span class="k">[figure caption]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">caption</span>
+
+<span class="k">[figure legend]</span>
+<span class="na">margin_left</span><span class="o">=</span><span class="s">30pt</span>
+
+<span class="k">[figure legend paragraph]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">caption</span>
+<span class="na">space_above</span><span class="o">=</span><span class="s">5pt</span>
+<span class="na">text_align</span><span class="o">=</span><span class="s">LEFT</span>
+
+<span class="k">[table of contents section]</span>
+<span class="na">show_in_toc</span><span class="o">=</span><span class="s">False</span>
+
+<span class="k">[table of contents]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">default</span>
+<span class="na">indent_first</span><span class="o">=</span><span class="s">0</span>
+<span class="na">depth</span><span class="o">=</span><span class="s">2</span>
+
+<span class="k">[toc level 1]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">table of contents</span>
+<span class="na">font_weight</span><span class="o">=</span><span class="s">BOLD</span>
+<span class="na">space_above</span><span class="o">=</span><span class="s">14pt</span>
+<span class="na">tab_stops</span><span class="o">=</span><span class="s">0.6cm, 100% RIGHT</span>
+
+<span class="k">[toc level 2]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">table of contents</span>
+<span class="na">margin_left</span><span class="o">=</span><span class="s">0.6cm</span>
+<span class="na">tab_stops</span><span class="o">=</span><span class="s">1.0cm, 100% RIGHT &#39;.  &#39;</span>
+
+<span class="k">[toc level 3]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">table of contents</span>
+<span class="na">margin_left</span><span class="o">=</span><span class="s">1.6cm</span>
+<span class="na">tab_stops</span><span class="o">=</span><span class="s">1.4cm, 100% RIGHT &#39;.  &#39;</span>
+
+<span class="k">[L3 toc level 3]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">table of contents</span>
+<span class="na">margin_left</span><span class="o">=</span><span class="s">0</span>
+<span class="na">tab_stops</span><span class="o">=</span><span class="s">0.6cm, 100% RIGHT &#39;. &#39;</span>
+
+<span class="k">[toc entry number reference field]</span>
+<span class="na">base</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">linked reference</span>
+<span class="na">quiet</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">True</span>
+
+<span class="k">[list of figures section]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">table of contents section</span>
+
+<span class="k">[list of figures]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">table of contents</span>
+
+<span class="k">[list of figures entry]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">list of figures</span>
+<span class="na">tab_stops</span><span class="o">=</span><span class="s">100% RIGHT &#39;.  &#39;</span>
+
+<span class="k">[list of tables section]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">list of figures section</span>
+
+<span class="k">[list of tables]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">list of figures</span>
+
+<span class="k">[list of tables entry]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">list of figures entry</span>
+
+<span class="k">[table]</span>
+<span class="na">space_above</span><span class="o">=</span><span class="s">5pt</span>
+<span class="na">space_below</span><span class="o">=</span><span class="s">5pt</span>
+<span class="na">horizontal_align</span><span class="o">=</span><span class="s">CENTER</span>
+
+<span class="k">[table caption]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">caption</span>
+<span class="na">keep_with_next</span><span class="o">=</span><span class="s">true</span>
+
+<span class="k">[table cell]</span>
+<span class="na">space_above</span><span class="o">=</span><span class="s">2pt</span>
+<span class="na">space_below</span><span class="o">=</span><span class="s">2pt</span>
+<span class="na">margin_left</span><span class="o">=</span><span class="s">2pt</span>
+<span class="na">margin_right</span><span class="o">=</span><span class="s">2pt</span>
+<span class="na">vertical_align</span><span class="o">=</span><span class="s">MIDDLE</span>
+
+<span class="k">[table body cell paragraph]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">default</span>
+<span class="na">indent_first</span><span class="o">=</span><span class="s">0</span>
+<span class="na">margin_left</span><span class="o">=</span><span class="s">3pt</span>
+<span class="na">margin_right</span><span class="o">=</span><span class="s">3pt</span>
+
+<span class="k">[table body cell list item number]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">table body cell paragraph</span>
+<span class="na">indent_first</span><span class="o">=</span><span class="s">0</span>
+<span class="na">text_align</span><span class="o">=</span><span class="s">RIGHT</span>
+
+<span class="k">[table head cell paragraph]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">table body cell paragraph</span>
+<span class="na">font_weight</span><span class="o">=</span><span class="s">BOLD</span>
+<span class="na">text_align</span><span class="o">=</span><span class="s">CENTER</span>
+
+<span class="k">[table first column paragraph]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">table body cell paragraph</span>
+<span class="na">text_align</span><span class="o">=</span><span class="s">LEFT</span>
+
+<span class="k">[table top border]</span>
+<span class="na">stroke</span><span class="o">=</span><span class="s">$(thin_black_stroke)</span>
+
+<span class="k">[table bottom border]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">table top border</span>
+
+<span class="k">[table head bottom border]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">table top border</span>
+
+<span class="k">[table body top border]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">table head bottom border</span>
+
+<span class="k">[table cell border:TableCellBorder]</span>
+<span class="na">stroke</span><span class="o">=</span><span class="s">$(thin_black_stroke)</span>
+
+<span class="k">[table cell left border]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">table cell border</span>
+
+<span class="k">[table cell top border]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">table cell border</span>
+
+<span class="k">[table cell right border]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">table cell border</span>
+
+<span class="k">[table cell bottom border]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">table cell border</span>
+
+<span class="k">[horizontal rule]</span>
+<span class="na">space_above</span><span class="o">=</span><span class="s">10pt</span>
+<span class="na">space_below</span><span class="o">=</span><span class="s">15pt</span>
+<span class="na">margin_left</span><span class="o">=</span><span class="s">40pt</span>
+<span class="na">margin_right</span><span class="o">=</span><span class="s">40pt</span>
+
+
+<span class="c1"># title page</span>
+
+<span class="k">[title page rule]</span>
+<span class="na">stroke</span><span class="o">=</span><span class="s">1pt,</span><span class="c1">#000</span>
+
+<span class="k">[title page logo]</span>
+<span class="na">horizontal_align</span><span class="o">=</span><span class="s">right</span>
+<span class="na">padding_top</span><span class="o">=</span><span class="s">14pt</span>
+<span class="na">space_above</span><span class="o">=</span><span class="s">10pt</span>
+
+<span class="k">[title page title]</span>
+<span class="na">typeface</span><span class="o">=</span><span class="s">$(sans_typeface)</span>
+<span class="na">font_weight</span><span class="o">=</span><span class="s">bold</span>
+<span class="na">font_size</span><span class="o">=</span><span class="s">25pt</span>
+<span class="na">text_align</span><span class="o">=</span><span class="s">right</span>
+<span class="na">space_above</span><span class="o">=</span><span class="s">12pt</span>
+
+<span class="k">[title page subtitle]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">title page title</span>
+<span class="na">font_slant</span><span class="o">=</span><span class="s">italic</span>
+<span class="na">font_size</span><span class="o">=</span><span class="s">17pt</span>
+<span class="na">space_above</span><span class="o">=</span><span class="s">6pt</span>
+
+<span class="k">[title page author]</span>
+<span class="na">typeface</span><span class="o">=</span><span class="s">$(sans_typeface)</span>
+<span class="na">font_weight</span><span class="o">=</span><span class="s">bold</span>
+<span class="na">font_size</span><span class="o">=</span><span class="s">17pt</span>
+<span class="na">text_align</span><span class="o">=</span><span class="s">right</span>
+<span class="na">space_above</span><span class="o">=</span><span class="s">110pt</span>
+
+<span class="k">[title page date]</span>
+<span class="na">typeface</span><span class="o">=</span><span class="s">$(serif_typeface)</span>
+<span class="na">font_size</span><span class="o">=</span><span class="s">12pt</span>
+<span class="na">text_align</span><span class="o">=</span><span class="s">right</span>
+<span class="na">space_above</span><span class="o">=</span><span class="s">220pt</span>
+
+<span class="k">[index]</span>
+
+<span class="k">[index section label]</span>
+<span class="na">typeface</span><span class="o">=</span><span class="s">$(sans_typeface)</span>
+<span class="na">font_size</span><span class="o">=</span><span class="s">14pt</span>
+<span class="na">space_above</span><span class="o">=</span><span class="s">10pt</span>
+<span class="na">space_below</span><span class="o">=</span><span class="s">2pt</span>
+<span class="na">keep_with_next</span><span class="o">=</span><span class="s">true</span>
+
+<span class="k">[level 1 index entry]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">default</span>
+<span class="na">text_align</span><span class="o">=</span><span class="s">left</span>
+<span class="na">margin_left</span><span class="o">=</span><span class="s">40pt</span>
+<span class="na">indent_first</span><span class="o">=</span><span class="s">-40pt</span>
+
+<span class="k">[level 2 index entry]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">level 1 index entry</span>
+<span class="na">margin_left</span><span class="o">=</span><span class="s">60pt</span>
+<span class="na">indent_first</span><span class="o">=</span><span class="s">-40pt</span>
+
+<span class="k">[level 3 index entry]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">level 1 index entry</span>
+<span class="na">margin_left</span><span class="o">=</span><span class="s">80pt</span>
+<span class="na">indent_first</span><span class="o">=</span><span class="s">-40pt</span>
+
+<span class="k">[level 4 index entry]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">level 1 index entry</span>
+<span class="na">margin_left</span><span class="o">=</span><span class="s">100pt</span>
+<span class="na">indent_first</span><span class="o">=</span><span class="s">-40pt</span>
+
+<span class="k">[domain index entry name]</span>
+<span class="na">typeface</span><span class="o">=</span><span class="s">$(mono_typeface)</span>
+<span class="na">ligatures</span><span class="o">=</span><span class="s">False</span>
+<span class="na">hyphenate</span><span class="o">=</span><span class="s">False</span>
+
+
+<span class="c1"># chapter titles</span>
+
+<span class="k">[front matter section title]</span>
+<span class="na">typeface</span><span class="o">=</span><span class="s">$(serif_typeface)</span>
+<span class="na">font_size</span><span class="o">=</span><span class="s">10pt</span>
+<span class="na">text_align</span><span class="o">=</span><span class="s">right</span>
+<span class="na">space_above</span><span class="o">=</span><span class="s">1in</span>
+<span class="na">border_top</span><span class="o">=</span><span class="s">$(thin_black_stroke)</span>
+<span class="na">border_bottom</span><span class="o">=</span><span class="s">$(thin_black_stroke)</span>
+<span class="na">padding_top</span><span class="o">=</span><span class="s">8pt</span>
+<span class="na">padding_bottom</span><span class="o">=</span><span class="s">9pt</span>
+
+<span class="k">[body matter chapter label]</span>
+<span class="na">typeface</span><span class="o">=</span><span class="s">$(sans_typeface)</span>
+<span class="na">font_size</span><span class="o">=</span><span class="s">10pt</span>
+<span class="na">font_weight</span><span class="o">=</span><span class="s">bold</span>
+<span class="na">text_align</span><span class="o">=</span><span class="s">right</span>
+
+<span class="k">[body matter chapter number]</span>
+<span class="na">font_size</span><span class="o">=</span><span class="s">14pt</span>
+
+<span class="k">[body matter chapter title]</span>
+<span class="na">typeface</span><span class="o">=</span><span class="s">$(sans_typeface)</span>
+<span class="na">font_size</span><span class="o">=</span><span class="s">14pt</span>
+<span class="na">font_weight</span><span class="o">=</span><span class="s">bold</span>
+<span class="na">text_align</span><span class="o">=</span><span class="s">right</span>
+<span class="na">space_above</span><span class="o">=</span><span class="s">0.83in</span>
+<span class="na">border_top</span><span class="o">=</span><span class="s">$(thin_black_stroke)</span>
+<span class="na">border_bottom</span><span class="o">=</span><span class="s">$(thin_black_stroke)</span>
+<span class="na">padding_top</span><span class="o">=</span><span class="s">18pt</span>
+<span class="na">padding_bottom</span><span class="o">=</span><span class="s">18pt</span>
 </code></pre></div>
 </div>
 
