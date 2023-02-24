@@ -24,6 +24,8 @@ Documentation changes:
 
 New Features:
 
+* Support for Spanish section and admonition titles (PR #400 by María Andrea
+    Vignau)
 * Enumerated list item labels now also respect the *number_separator* style
   property, enabling hierarchical list item labels (discussion #350).
 * Admonitions now have a 'custom_title_text' property that can be used to
