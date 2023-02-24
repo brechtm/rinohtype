@@ -12,9 +12,8 @@ import sphinx
 import pygments
 
 from pygments.style import Style
-from pygments.token import (Comment, Keyword, Number, Text, Name,
-                            Punctuation,
-                            Operator, Literal, is_token_subtype)
+from pygments.token import (Comment, Keyword, Name, Number, Text, Whitespace,
+                            Punctuation, Operator, Literal, is_token_subtype)
 
 
 from rinoh.color import HexColor
@@ -23,34 +22,38 @@ from rinoh.highlight import (highlight_block, get_pygments_style, Token,
                              pygments_style_to_stylesheet)
 
 
+SANDWICH = """\
+def sandwich(bread, cheese=True):
+    result = []
+    result.append(bread.slice())
+    if cheese:
+        result.append('cheese')
+    return result
+"""
+
+
 def test_highlight_block():
-    code = ("""def sandwich(bread, cheese=True):
-                   result = []
-                   result.append(bread.slice())
-                   if cheese:
-                       result.append('cheese')
-                   return result""")
-    indent = 15 * ' '
-    result = highlight_block('python', code, None)
+    indent = '    '
+    result = highlight_block('python', SANDWICH, None)
     reference = \
         [Token('def', Keyword), Token(' ', Text),
            Token('sandwich', Name.Function), Token('(', Punctuation),
            Token('bread', Name), Token(',', Punctuation), Token(' ', Text),
            Token('cheese', Name), Token('=', Operator),
            Token('True', Keyword.Constant), Token('):', Punctuation),
-         Token('\n' + indent + '    ', Text), Token('result', Name),
+         Token('\n', Whitespace), Token(indent, Text), Token('result', Name),
            Token(' ', Text), Token('=', Operator), Token(' ', Text),
            Token('[]', Punctuation),
-         Token('\n' + indent + '    ', Text), Token('result', Name),
+         Token('\n', Whitespace), Token(indent, Text), Token('result', Name),
            Token('.', Operator), Token('append', Name), Token('(', Punctuation),
            Token('bread', Name), Token('.', Operator), Token('slice', Name),
            Token('())', Punctuation),
-         Token('\n' + indent + '    ', Text), Token('if', Keyword),
+         Token('\n', Whitespace), Token(indent, Text), Token('if', Keyword),
            Token(' ', Text), Token('cheese', Name), Token(':', Punctuation),
-         Token('\n' + indent + '    ' + '    ', Text), Token('result', Name),
+         Token('\n', Whitespace), Token(2 * indent, Text), Token('result', Name),
            Token('.', Operator), Token('append', Name), Token('(', Punctuation),
            Token("'cheese'", Literal.String), Token(')', Punctuation),
-         Token('\n' + indent + '    ', Text), Token('return', Keyword),
+         Token('\n', Whitespace), Token(indent, Text), Token('return', Keyword),
            Token(' ', Text), Token('result', Name), Token('\n', Text)]
     for res, ref in zip(result, reference):
         assert res.text(None) == ref.text(None)
