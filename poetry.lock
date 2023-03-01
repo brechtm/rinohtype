@@ -907,14 +907,14 @@ files = [
 
 [[package]]
 name = "readme-renderer"
-version = "37.2"
+version = "36.0"
 description = "readme_renderer is a library for rendering \"readme\" descriptions for Warehouse"
 category = "dev"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "readme_renderer-37.2-py3-none-any.whl", hash = "sha256:d3f06a69e8c40fca9ab3174eca48f96d9771eddb43517b17d96583418427b106"},
-    {file = "readme_renderer-37.2.tar.gz", hash = "sha256:e8ad25293c98f781dbc2c5a36a309929390009f902f99e1798c761aaf04a7923"},
+    {file = "readme_renderer-36.0-py3-none-any.whl", hash = "sha256:2c37e472ca96755caba6cc58bcbf673a5574bc033385a2ac91d85dfef2799876"},
+    {file = "readme_renderer-36.0.tar.gz", hash = "sha256:f71aeef9a588fcbed1f4cc001ba611370e94a0cd27c75b1140537618ec78f0a2"},
 ]
 
 [package.dependencies]
@@ -963,20 +963,20 @@ docutils = ">=0.11,<1.0"
 
 [[package]]
 name = "restview"
-version = "3.0.0"
+version = "3.0.1"
 description = "ReStructuredText viewer"
 category = "dev"
 optional = false
 python-versions = "*"
 files = [
-    {file = "restview-3.0.0-py2.py3-none-any.whl", hash = "sha256:9cd358c3ddf7ef82174d90a64e82e8c1b82630269cb750c166ef94bd73cf3162"},
-    {file = "restview-3.0.0.tar.gz", hash = "sha256:2b989610aaed2fd42da64f6cdc539cf3ee70ce370bcba872db72421ad515dd1e"},
+    {file = "restview-3.0.1-py2.py3-none-any.whl", hash = "sha256:16783ed371379e43d1f8dd31f93b10a1edffa5a718e1486357d578813bad3122"},
+    {file = "restview-3.0.1.tar.gz", hash = "sha256:8c1a171c159d46d15d5569f77021828883a121d6f9baf758d641fc1e54b05ae5"},
 ]
 
 [package.dependencies]
 docutils = "*"
 pygments = "*"
-readme-renderer = "*"
+readme-renderer = "<37"
 
 [[package]]
 name = "rinoh-typeface-dejavuserif"
@@ -1358,4 +1358,4 @@ testing = ["flake8 (<5)", "func-timeout", "jaraco.functools", "jaraco.itertools"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.7.0"
-content-hash = "8e1b71c11eb14011ac592352550f3d423ac6cba905e613acf9d28cc3c862062c"
+content-hash = "0f831b475bebf624e389b2e7c5e6605f8f9835077329f4886651eb50232a12c3"
