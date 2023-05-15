@@ -612,7 +612,9 @@ class Image(DocutilsBodyNode, DocutilsInlineNode):
             width = width * scale if width else None
             height = height * scale if height else None
             scale = 1
-        return dict(align=align, width=width, height=height, scale=scale)
+        alt = self.get('alt')
+        return dict(align=align, width=width, height=height, scale=scale,
+                    alt=alt)
 
     def build_flowable(self):
         return rt.Image(self.image_path, **self.options)
