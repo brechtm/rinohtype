@@ -199,7 +199,7 @@ class ImageBase(Flowable):
     arguments = ImageArgsBase
 
     def __init__(self, filename_or_file, scale=1.0, width=None, height=None,
-                 dpi=None, rotate=0, limit_width=None,
+                 dpi=None, rotate=0, limit_width=None, alt=None,
                  id=None, style=None, parent=None, source=None, **kwargs):
         super().__init__(id=id, style=style, parent=parent, source=source,
                          **kwargs)
@@ -217,6 +217,7 @@ class ImageBase(Flowable):
         self.dpi = dpi
         self.rotate = rotate
         self.limit_width = limit_width
+        self.alt = alt
 
     def copy(self, parent=None):
         return type(self)(self.filename_or_file, scale=self.scale,
@@ -253,11 +254,14 @@ class ImageBase(Flowable):
             filename_or_file = self._absolute_path_or_file()
             image = container.document.backend.Image(filename_or_file)
         except OSError as err:
-            container.document.error = True
             message = "Error opening image file: {}".format(err)
             self.warn(message)
-            error = ErrorText(message)
-            return Paragraph(error).flow(container, last_descender)
+            if self.alt is None:
+                container.document.error = True
+                error = ErrorText(message)
+                return Paragraph(error).flow(container, last_descender)
+            alt_text = MixedStyledText(self.alt)
+            return Paragraph(alt_text).flow(container, last_descender)
         left, top = 0, float(container.cursor)
         width = self._width(container)
         try:
@@ -331,10 +335,11 @@ class InlineImage(ImageBase, InlineFlowable):
 class _Image(ImageBase):
     def __init__(self, filename_or_file, scale=1.0, width=None, height=None,
                  dpi=None, rotate=0, limit_width=100*PERCENT, align=None,
+                 alt=None,
                  id=None, style=None, parent=None, source=None):
         super().__init__(filename_or_file=filename_or_file, scale=scale,
                          width=width, height=height, dpi=dpi, rotate=rotate,
-                         limit_width=limit_width, align=align,
+                         limit_width=limit_width, align=align, alt=alt,
                          id=id, style=style, parent=parent, source=source)
 
 
