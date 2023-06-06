@@ -304,7 +304,7 @@ matcher('figure image', 'figure' / Image)
 matcher('figure caption', 'figure' / Caption)
 matcher('figure legend', 'figure' / GroupedFlowables.like('legend'))
 matcher('figure legend paragraph', 'figure legend' / Paragraph)
-
+matcher('image alt', Paragraph.like('image alt'))
 
 # front matter
 

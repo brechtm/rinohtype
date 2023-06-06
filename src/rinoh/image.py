@@ -254,14 +254,14 @@ class ImageBase(Flowable):
             filename_or_file = self._absolute_path_or_file()
             image = container.document.backend.Image(filename_or_file)
         except OSError as err:
+            container.document.error = True
             message = "Error opening image file: {}".format(err)
             self.warn(message)
             if self.alt is None:
-                container.document.error = True
                 error = ErrorText(message)
                 return Paragraph(error).flow(container, last_descender)
             alt_text = MixedStyledText(self.alt)
-            return Paragraph(alt_text).flow(container, last_descender)
+            return Paragraph(alt_text, style='image alt').flow(container, last_descender)
         left, top = 0, float(container.cursor)
         width = self._width(container)
         try:
