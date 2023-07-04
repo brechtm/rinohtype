@@ -313,10 +313,10 @@ class InlineImage(ImageBase, InlineFlowable):
     arguments = InlineImageArgs
 
     def __init__(self, filename_or_file, scale=1.0, width=None, height=None,
-                 dpi=None, rotate=0, baseline=None,
+                 dpi=None, rotate=0, alt=None, baseline=None,
                  id=None, style=None, parent=None, source=None):
         super().__init__(filename_or_file=filename_or_file, scale=scale,
-                         height=height, dpi=dpi, rotate=rotate,
+                         height=height, dpi=dpi, rotate=rotate, alt=alt,
                          baseline=baseline, id=id, style=style, parent=parent,
                          source=source)
         self.width = width
