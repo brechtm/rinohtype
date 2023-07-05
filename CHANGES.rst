@@ -24,6 +24,8 @@ Documentation changes:
 
 New Features:
 
+* Print alt text instead of error message when failing to render rst :image:
+  directive (PR #410 by Timm638)
 * Support for Spanish section and admonition titles (PR #400 by María Andrea
     Vignau)
 * Enumerated list item labels now also respect the *number_separator* style
