@@ -1,7 +1,7 @@
 .. _chapter-1:
 
-:index:`One`
-============
+One
+===
 
 .. _section-a:
 
