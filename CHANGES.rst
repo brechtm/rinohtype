@@ -58,6 +58,7 @@ Changed:
 
 Fixed:
 
+* Sphinx frontend: support the desc_sig_space document node (#414)
 * Hyphenated word split across pages merges with the next word (#388)
 * Compatibility with importlib-metadata 6.0.0 (#389)
 * Document part templates were not retrieved recursively (#379 comment)

@@ -312,6 +312,10 @@ class Desc_Signature_Line(DocutilsInlineNode):
     pass
 
 
+class Desc_Sig_Space(DocutilsInlineNode):
+    pass
+
+
 class Desc_Sig_Name(DocutilsInlineNode):
     pass
 
