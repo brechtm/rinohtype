@@ -155,7 +155,7 @@ class Typeface(Resource, dict):
     The fonts collected in a typeface differ in weight, width and/or slant.
 
     Args:
-        *fonts (:class:`Font`): the fonts that make up this typeface
+        fonts (:class:`Font`): the fonts that make up this typeface
 
     """
 

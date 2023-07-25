@@ -553,7 +553,7 @@ class TemplateConfiguration(RuleSet):
         template (DocumentTemplateMeta or str): the document template to
             configure
         description (str): a short string describing this style sheet
-        **options: configuration values for the configuration attributes
+        options: configuration values for the configuration attributes
             defined by the document :attr:`template`
 
     """
@@ -707,7 +707,7 @@ class PartsList(AttributeType, list):
     """Stores the names of the document part templates making up a document
 
     Args:
-        *parts (list[str]): the names of the document parts
+        parts (list[str]): the names of the document parts
 
     """
 

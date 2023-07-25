@@ -104,7 +104,7 @@ class Heading(StaticParagraph):
     """The title for a section
 
     Args:
-        title (StyledText): this heading's text
+        content (StyledText): this heading's text
 
     """
 
