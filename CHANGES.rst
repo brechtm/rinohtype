@@ -58,6 +58,7 @@ Changed:
 
 Fixed:
 
+* Fix a Python 3.12 DeprecationWarning regarding utcfromtimestamp()
 * Sphinx frontend: support the desc_sig_space document node (#414)
 * Hyphenated word split across pages merges with the next word (#388)
 * Compatibility with importlib-metadata 6.0.0 (#389)

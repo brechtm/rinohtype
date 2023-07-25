@@ -12,7 +12,7 @@ from binascii import hexlify
 from codecs import BOM_UTF16_BE
 from contextlib import contextmanager
 from collections import OrderedDict
-from datetime import datetime
+from datetime import datetime, timezone
 from functools import wraps
 from io import BytesIO, SEEK_END
 from itertools import chain
@@ -231,12 +231,11 @@ class HexString(Object, bytes):
 
 class Date(String):
     def __new__(cls, timestamp, indirect=False):
-        local_time = datetime.fromtimestamp(timestamp)
-        utc_time = datetime.utcfromtimestamp(timestamp)
-        utc_offset = local_time - utc_time
+        local_timezone = timestamp.astimezone().tzinfo
+        utc_offset = local_timezone.utcoffset(timestamp)
         utc_offset_minutes, utc_offset_seconds = divmod(utc_offset.seconds, 60)
         utc_offset_hours, utc_offset_minutes = divmod(utc_offset_minutes, 60)
-        string = local_time.strftime('D:%Y%m%d%H%M%S')
+        string = timestamp.strftime('D:%Y%m%d%H%M%S')
         string += "{:+03d}'{:02d}'".format(utc_offset_hours, utc_offset_minutes)
         return String.__new__(cls, string, indirect)
 
@@ -463,7 +462,7 @@ class Document(dict):
         self.catalog['PageLabels'] = Dictionary(indirect=True)
         self.catalog['PageLabels']['Nums'] = Array()
         self.info = Dictionary(indirect=True)
-        self.timestamp = time.time()
+        self.timestamp = datetime.now()
         self.set_info('Creator', creator)
         self.set_info('Producer', self.PRODUCER)
         self.set_info('Title', title)
