@@ -20,7 +20,7 @@ Release 0.5.5 (in development)
 Documentation changes:
 
 * A showcase section was added to the manual to show examples of documents that
-  can be produces by rinohtype.
+  can be produced by rinohtype.
 
 New Features:
 
@@ -49,7 +49,7 @@ Changed:
   parts have been removed and their contents are moved to the first content
   page. This makes the Article template more useful, since it was too similar
   to the Book template before.
-* Template options whose prupose can also be fulfilled by setting the *hide*
+* Template options whose purpose can also be fulfilled by setting the *hide*
   style property to ``true`` have been removed. The corresponding style
   definitions are:
 
