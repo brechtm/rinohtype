@@ -446,7 +446,8 @@ def handle_missing_glyphs(span, container):
 
 
 class LinePart(object):
-    pass
+    def hyphenate(self, container):
+        return iter([])
 
 
 class SpecialCharacter(LinePart):
