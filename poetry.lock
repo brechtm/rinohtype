@@ -51,9 +51,6 @@ files = [
     {file = "argcomplete-3.1.1.tar.gz", hash = "sha256:6c4c563f14f01440aaffa3eae13441c5db2357b5eec639abe7c0b15334627dff"},
 ]
 
-[package.dependencies]
-importlib-metadata = {version = ">=0.23,<7", markers = "python_version < \"3.8\""}
-
 [package.extras]
 test = ["coverage", "mypy", "pexpect", "ruff", "wheel"]
 
@@ -308,14 +305,14 @@ files = [
 
 [[package]]
 name = "doc8"
-version = "1.0.0"
+version = "1.1.1"
 description = "Style checker for Sphinx (or other) RST documentation"
 category = "dev"
 optional = false
-python-versions = ">=3.7"
+python-versions = ">=3.8"
 files = [
-    {file = "doc8-1.0.0-py3-none-any.whl", hash = "sha256:0c6c3104fa7f7bb2103589c0a8e272c105fdff3ddd1ef4808e51b2782185e9ab"},
-    {file = "doc8-1.0.0.tar.gz", hash = "sha256:1e999a14fe415ea96d89d5053c790d01061f19b6737706b817d1579c2a07cc16"},
+    {file = "doc8-1.1.1-py3-none-any.whl", hash = "sha256:e493aa3f36820197c49f407583521bb76a0fde4fffbcd0e092be946ff95931ac"},
+    {file = "doc8-1.1.1.tar.gz", hash = "sha256:d97a93e8f5a2efc4713a0804657dedad83745cca4cd1d88de9186f77f9776004"},
 ]
 
 [package.dependencies]
@@ -409,24 +406,23 @@ files = [
 
 [[package]]
 name = "importlib-metadata"
-version = "6.7.0"
+version = "6.8.0"
 description = "Read metadata from Python packages"
 category = "main"
 optional = false
-python-versions = ">=3.7"
+python-versions = ">=3.8"
 files = [
-    {file = "importlib_metadata-6.7.0-py3-none-any.whl", hash = "sha256:cb52082e659e97afc5dac71e79de97d8681de3aa07ff18578330904a9d18e5b5"},
-    {file = "importlib_metadata-6.7.0.tar.gz", hash = "sha256:1aaf550d4f73e5d6783e7acb77aec43d49da8017410afae93822cc9cca98c4d4"},
+    {file = "importlib_metadata-6.8.0-py3-none-any.whl", hash = "sha256:3ebb78df84a805d7698245025b975d9d67053cd94c79245ba4b3eb694abe68bb"},
+    {file = "importlib_metadata-6.8.0.tar.gz", hash = "sha256:dbace7892d8c0c4ac1ad096662232f831d4e64f4c4545bd53016a3e9d4654743"},
 ]
 
 [package.dependencies]
-typing-extensions = {version = ">=3.6.4", markers = "python_version < \"3.8\""}
 zipp = ">=0.5"
 
 [package.extras]
 docs = ["furo", "jaraco.packaging (>=9)", "jaraco.tidelift (>=1.4)", "rst.linker (>=1.9)", "sphinx (>=3.5)", "sphinx-lint"]
 perf = ["ipython"]
-testing = ["flufl.flake8", "importlib-resources (>=1.3)", "packaging", "pyfakefs", "pytest (>=6)", "pytest-black (>=0.3.7)", "pytest-checkdocs (>=2.4)", "pytest-cov", "pytest-enabler (>=1.3)", "pytest-mypy (>=0.9.1)", "pytest-perf (>=0.9.2)", "pytest-ruff"]
+testing = ["flufl.flake8", "importlib-resources (>=1.3)", "packaging", "pyfakefs", "pytest (>=6)", "pytest-black (>=0.3.7)", "pytest-checkdocs (>=2.4)", "pytest-cov", "pytest-enabler (>=2.2)", "pytest-mypy (>=0.9.1)", "pytest-perf (>=0.9.2)", "pytest-ruff"]
 
 [[package]]
 name = "iniconfig"
@@ -472,7 +468,6 @@ files = [
 
 [package.dependencies]
 mdurl = ">=0.1,<1.0"
-typing_extensions = {version = ">=3.7.4", markers = "python_version < \"3.8\""}
 
 [package.extras]
 benchmarking = ["psutil", "pytest", "pytest-benchmark"]
@@ -618,9 +613,7 @@ files = [
 [package.dependencies]
 argcomplete = ">=1.9.4,<4.0"
 colorlog = ">=2.6.1,<7.0.0"
-importlib-metadata = {version = "*", markers = "python_version < \"3.8\""}
 packaging = ">=20.9"
-typing-extensions = {version = ">=3.7.4", markers = "python_version < \"3.8\""}
 virtualenv = ">=14"
 
 [package.extras]
@@ -679,9 +672,6 @@ files = [
     {file = "platformdirs-3.9.1.tar.gz", hash = "sha256:1b42b450ad933e981d56e59f1b97495428c9bd60698baab9f3eb3d00d5822421"},
 ]
 
-[package.dependencies]
-typing-extensions = {version = ">=4.6.3", markers = "python_version < \"3.8\""}
-
 [package.extras]
 docs = ["furo (>=2023.5.20)", "proselint (>=0.13)", "sphinx (>=7.0.1)", "sphinx-autodoc-typehints (>=1.23,!=1.23.4)"]
 test = ["appdirs (==1.4.4)", "covdefaults (>=2.3)", "pytest (>=7.3.1)", "pytest-cov (>=4.1)", "pytest-mock (>=3.10)"]
@@ -698,9 +688,6 @@ files = [
     {file = "pluggy-1.2.0.tar.gz", hash = "sha256:d12f0c4b579b15f5e054301bb226ee85eeeba08ffec228092f8defbaa3a4c4b3"},
 ]
 
-[package.dependencies]
-importlib-metadata = {version = ">=0.12", markers = "python_version < \"3.8\""}
-
 [package.extras]
 dev = ["pre-commit", "tox"]
 testing = ["pytest", "pytest-benchmark"]
@@ -716,9 +703,6 @@ files = [
     {file = "poetry_core-1.6.1-py3-none-any.whl", hash = "sha256:70707340447dee0e7f334f9495ae652481c67b32d8d218f296a376ac2ed73573"},
     {file = "poetry_core-1.6.1.tar.gz", hash = "sha256:0f9b0de39665f36d6594657e7d57b6f463cc10f30c28e6d1c3b9ff54c26c9ac3"},
 ]
-
-[package.dependencies]
-importlib-metadata = {version = ">=1.7.0", markers = "python_version < \"3.8\""}
 
 [[package]]
 name = "pydantic"
@@ -855,6 +839,24 @@ files = [
 typing-extensions = ">=4.6.0,<4.7.0 || >4.7.0"
 
 [[package]]
+name = "pydantic-extra-types"
+version = "2.0.0"
+description = "Extra Pydantic types."
+category = "dev"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "pydantic_extra_types-2.0.0-py3-none-any.whl", hash = "sha256:63e5109f00815e71fff2b82090ff0523baef6b8a51889356fd984ef50c184e64"},
+    {file = "pydantic_extra_types-2.0.0.tar.gz", hash = "sha256:137ddacb168d95ea77591dbb3739ec4da5eeac0fc4df7f797371d9904451a178"},
+]
+
+[package.dependencies]
+pydantic = ">=2.0b3"
+
+[package.extras]
+all = ["phonenumbers (>=8,<9)", "pycountry (>=22,<23)"]
+
+[[package]]
 name = "pygments"
 version = "2.15.1"
 description = "Pygments is a syntax highlighting package written in Python."
@@ -884,7 +886,6 @@ files = [
 [package.dependencies]
 colorama = {version = "*", markers = "sys_platform == \"win32\""}
 exceptiongroup = {version = ">=1.0.0rc8", markers = "python_version < \"3.11\""}
-importlib-metadata = {version = ">=0.12", markers = "python_version < \"3.8\""}
 iniconfig = "*"
 packaging = "*"
 pluggy = ">=0.12,<2.0"
@@ -911,14 +912,14 @@ six = "*"
 
 [[package]]
 name = "pytest-console-scripts"
-version = "1.4.0"
+version = "1.4.1"
 description = "Pytest plugin for testing console scripts"
 category = "dev"
 optional = false
-python-versions = ">=3.7"
+python-versions = ">=3.8"
 files = [
-    {file = "pytest-console-scripts-1.4.0.tar.gz", hash = "sha256:6335679ef013fa20402dfd5b07219877d874bd3f0a198b84b23f17897ccbe50a"},
-    {file = "pytest_console_scripts-1.4.0-py3-none-any.whl", hash = "sha256:3646c8850584ec1c416d49500c4ff875325e40ea2d85e7267a83766c5a043271"},
+    {file = "pytest-console-scripts-1.4.1.tar.gz", hash = "sha256:5a826ed84cc0afa202eb9e44381d7d762f7bdda8e0c23f9f79a7f1f44cf4a895"},
+    {file = "pytest_console_scripts-1.4.1-py3-none-any.whl", hash = "sha256:ad860a951a90eca4bd3bd1159b8f5428633ba4ea01abd5c9526b67a95f65437a"},
 ]
 
 [package.dependencies]
@@ -1252,22 +1253,23 @@ test = ["cython", "html5lib", "pytest (>=4.6)", "typed_ast"]
 
 [[package]]
 name = "sphinx-immaterial"
-version = "0.11.0"
+version = "0.11.5"
 description = "Adaptation of mkdocs-material theme for the Sphinx documentation system"
 category = "dev"
 optional = false
-python-versions = ">=3.7"
+python-versions = ">=3.8"
 files = [
-    {file = "sphinx_immaterial-0.11.0-py3-none-any.whl", hash = "sha256:2d4879a81b8f83863851b06cfa5e1bc89537c652c6af9824a1ec3e54cab6f863"},
-    {file = "sphinx_immaterial-0.11.0.tar.gz", hash = "sha256:67416c77b39843923388b7c5fa5aa80381b120cb84e92921ca60a3e671644e9b"},
+    {file = "sphinx_immaterial-0.11.5-py3-none-any.whl", hash = "sha256:f9fe0a3afca7edd530656afa08303bfb7338d03164da173a0e1bc68d0d1adad6"},
+    {file = "sphinx_immaterial-0.11.5.tar.gz", hash = "sha256:fbd697cba07212a359e42bc24e6effcbbfe97e17411d4e874768028bc7bcd407"},
 ]
 
 [package.dependencies]
 appdirs = "*"
 markupsafe = "*"
-pydantic = "*"
+pydantic = ">=2.0"
+pydantic-extra-types = "*"
 requests = "*"
-sphinx = ">=4.0"
+sphinx = ">=4.5"
 typing-extensions = "*"
 
 [package.extras]
@@ -1279,14 +1281,14 @@ keys = ["pymdown-extensions"]
 
 [[package]]
 name = "sphinxcontrib-applehelp"
-version = "1.0.2"
-description = "sphinxcontrib-applehelp is a sphinx extension which outputs Apple help books"
+version = "1.0.4"
+description = "sphinxcontrib-applehelp is a Sphinx extension which outputs Apple help books"
 category = "main"
 optional = false
-python-versions = ">=3.5"
+python-versions = ">=3.8"
 files = [
-    {file = "sphinxcontrib-applehelp-1.0.2.tar.gz", hash = "sha256:a072735ec80e7675e3f432fcae8610ecf509c5f1869d17e2eecff44389cdbc58"},
-    {file = "sphinxcontrib_applehelp-1.0.2-py2.py3-none-any.whl", hash = "sha256:806111e5e962be97c29ec4c1e7fe277bfd19e9652fb1a4392105b43e01af885a"},
+    {file = "sphinxcontrib-applehelp-1.0.4.tar.gz", hash = "sha256:828f867945bbe39817c210a1abfd1bc4895c8b73fcaade56d45357a348a07d7e"},
+    {file = "sphinxcontrib_applehelp-1.0.4-py3-none-any.whl", hash = "sha256:29d341f67fb0f6f586b23ad80e072c8e6ad0b48417db2bde114a4c9746feb228"},
 ]
 
 [package.extras]
@@ -1327,14 +1329,14 @@ test = ["pytest"]
 
 [[package]]
 name = "sphinxcontrib-htmlhelp"
-version = "2.0.0"
+version = "2.0.1"
 description = "sphinxcontrib-htmlhelp is a sphinx extension which renders HTML help files"
 category = "main"
 optional = false
-python-versions = ">=3.6"
+python-versions = ">=3.8"
 files = [
-    {file = "sphinxcontrib-htmlhelp-2.0.0.tar.gz", hash = "sha256:f5f8bb2d0d629f398bf47d0d69c07bc13b65f75a81ad9e2f71a63d4b7a2f6db2"},
-    {file = "sphinxcontrib_htmlhelp-2.0.0-py2.py3-none-any.whl", hash = "sha256:d412243dfb797ae3ec2b59eca0e52dac12e75a241bf0e4eb861e450d06c6ed07"},
+    {file = "sphinxcontrib-htmlhelp-2.0.1.tar.gz", hash = "sha256:0cbdd302815330058422b98a113195c9249825d681e18f11e8b1f78a2f11efff"},
+    {file = "sphinxcontrib_htmlhelp-2.0.1-py3-none-any.whl", hash = "sha256:c38cb46dccf316c79de6e5515e1770414b797162b23cd3d06e67020e1d2a6903"},
 ]
 
 [package.extras]
@@ -1390,18 +1392,17 @@ test = ["pytest"]
 
 [[package]]
 name = "stevedore"
-version = "3.5.2"
+version = "5.1.0"
 description = "Manage dynamic plugins for Python applications"
 category = "dev"
 optional = false
-python-versions = ">=3.6"
+python-versions = ">=3.8"
 files = [
-    {file = "stevedore-3.5.2-py3-none-any.whl", hash = "sha256:fa2630e3d0ad3e22d4914aff2501445815b9a4467a6edc49387c667a38faf5bf"},
-    {file = "stevedore-3.5.2.tar.gz", hash = "sha256:cf99f41fc0d5a4f185ca4d3d42b03be9011b0a1ec1a4ea1a282be1b4b306dcc2"},
+    {file = "stevedore-5.1.0-py3-none-any.whl", hash = "sha256:8cc040628f3cea5d7128f2e76cf486b2251a4e543c7b938f58d9a377f6694a2d"},
+    {file = "stevedore-5.1.0.tar.gz", hash = "sha256:a54534acf9b89bc7ed264807013b505bf07f74dbe4bcfa37d32bd063870b087c"},
 ]
 
 [package.dependencies]
-importlib-metadata = {version = ">=1.7.0", markers = "python_version < \"3.8\""}
 pbr = ">=2.0.0,<2.1.0 || >2.1.0"
 
 [[package]]
@@ -1473,7 +1474,6 @@ files = [
 [package.dependencies]
 distlib = ">=0.3.7,<1"
 filelock = ">=3.12.2,<4"
-importlib-metadata = {version = ">=6.6", markers = "python_version < \"3.8\""}
 platformdirs = ">=3.9.1,<4"
 
 [package.extras]
@@ -1494,21 +1494,21 @@ files = [
 
 [[package]]
 name = "zipp"
-version = "3.15.0"
+version = "3.16.2"
 description = "Backport of pathlib-compatible object wrapper for zip files"
 category = "main"
 optional = false
-python-versions = ">=3.7"
+python-versions = ">=3.8"
 files = [
-    {file = "zipp-3.15.0-py3-none-any.whl", hash = "sha256:48904fc76a60e542af151aded95726c1a5c34ed43ab4134b597665c86d7ad556"},
-    {file = "zipp-3.15.0.tar.gz", hash = "sha256:112929ad649da941c23de50f356a2b5570c954b65150642bccdd66bf194d224b"},
+    {file = "zipp-3.16.2-py3-none-any.whl", hash = "sha256:679e51dd4403591b2d6838a48de3d283f3d188412a9782faadf845f298736ba0"},
+    {file = "zipp-3.16.2.tar.gz", hash = "sha256:ebc15946aa78bd63458992fc81ec3b6f7b1e92d51c35e6de1c3804e73b799147"},
 ]
 
 [package.extras]
-docs = ["furo", "jaraco.packaging (>=9)", "jaraco.tidelift (>=1.4)", "rst.linker (>=1.9)", "sphinx (>=3.5)", "sphinx-lint"]
-testing = ["big-O", "flake8 (<5)", "jaraco.functools", "jaraco.itertools", "more-itertools", "pytest (>=6)", "pytest-black (>=0.3.7)", "pytest-checkdocs (>=2.4)", "pytest-cov", "pytest-enabler (>=1.3)", "pytest-flake8", "pytest-mypy (>=0.9.1)"]
+docs = ["furo", "jaraco.packaging (>=9.3)", "jaraco.tidelift (>=1.4)", "rst.linker (>=1.9)", "sphinx (>=3.5)", "sphinx-lint"]
+testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "pytest (>=6)", "pytest-black (>=0.3.7)", "pytest-checkdocs (>=2.4)", "pytest-cov", "pytest-enabler (>=2.2)", "pytest-ignore-flaky", "pytest-mypy (>=0.9.1)", "pytest-ruff"]
 
 [metadata]
 lock-version = "2.0"
-python-versions = "^3.7.0"
-content-hash = "8e1b71c11eb14011ac592352550f3d423ac6cba905e613acf9d28cc3c862062c"
+python-versions = "^3.8.0"
+content-hash = "5e95a67d41aed9a4acb6f6a3d7823098fadd8ec3933dda4fd308bca8e2cf6385"

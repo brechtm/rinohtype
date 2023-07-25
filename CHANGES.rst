@@ -41,6 +41,7 @@ New Features:
 
 Changed:
 
+* Support for Python 3.7 was dropped (end-of-life in Juny 2023)
 * `MyST <https://github.com/executablebooks/MyST-Parser>`_ replaces
   `recommonmark <https://github.com/readthedocs/recommonmark>`_ for Markdown
   support (issues #265 and #370)

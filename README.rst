@@ -118,7 +118,7 @@ Syntax highlighting of code blocks is enabled if Pygments_ is installed, which
 will be installed automatically with Sphinx_. If you want to include images
 other than PDF, PNG or JPEG, you also need to install Pillow_.
 
-.. _end-of-life: https://devguide.python.org/#status-of-python-branches
+.. _end-of-life: https://devguide.python.org/versions/#versions
 .. _docutils: http://docutils.sourceforge.net/index.html
 .. _myst-parser: https://myst-parser.readthedocs.io
 .. _pip: https://pip.pypa.io
