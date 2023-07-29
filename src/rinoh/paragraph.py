@@ -469,9 +469,6 @@ class Space(SpecialCharacter):
         super().__init__(span, chars_to_glyphs)
         self.glyphs_span.append_space()
 
-    def hyphenate(self, container):
-        return iter([])
-
     def __getitem__(self, index):
         raise SpaceException
 
