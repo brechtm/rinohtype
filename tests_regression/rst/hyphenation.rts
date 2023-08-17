@@ -13,3 +13,9 @@ margin_left = 1cm
 margin_right = 1cm
 hyphenate = true
 hyphen_chars = 2
+
+[narrow : Paragraph(has_class='narrow')]
+border = 1pt, #555
+space_above = 1cm
+margin_right = 7cm
+padding = 2pt
