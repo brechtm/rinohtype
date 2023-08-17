@@ -824,12 +824,15 @@ class ParagraphBase(Flowable, Label):
                 break
             try:
                 if not line.append_word(word):
-                    for first, second in word.hyphenate(container):
-                        if line.append_word(first):
+                    for first, second, is_last in word.hyphenate(container):
+                        if line.append_word(first, is_last):
                             state.prepend_word(second)  # prepend second part
                             break
                     else:
-                        state.restore()
+                        if not line:
+                            line.append_word(word, True)
+                        else:
+                            state.restore()
                     line = typeset_line(line)
                     if first_line_only:
                         break
@@ -927,8 +930,8 @@ def create_hyphenate(span, container):
         If hyphenation is not possible or simply not enabled, a single tuple is
         yielded of which the first element is the word itself, and the second
         element is `None`."""
-        for first, second in hyphenator.iterate(word):
-            yield first + '-', second
+        for first, second, is_last in hyphenator.iterate(word):
+            yield first + '-', second, is_last
     return hyphenate
 
 
@@ -1005,12 +1008,12 @@ class Word(LinePart, list):
         hyphenate = create_hyphenate(first_glyphs_span.span, container)
         words = str(self).split()
         for i, word in enumerate(words):
-            for first, second in hyphenate(word):
+            for first, second, is_last in hyphenate(word):
                 f = chain(words[:i], [first])
                 s = chain([second], words[i+1:])
                 first_gs = GlyphsSpan(span, c2g, c2g(' '.join(f)))
                 second_gs = GlyphsSpan(span, c2g, c2g(' '.join(s)))
-                yield Word([first_gs]), Word([second_gs])
+                yield Word([first_gs]), Word([second_gs]), is_last
 
 
 class Line(list):
@@ -1070,7 +1073,7 @@ class Line(list):
             span.warn('Tab did not fall into any of the tab stops.',
                       self.container)
 
-    def append_word(self, word_or_inline):
+    def append_word(self, word_or_inline, force=False):
         try:
             first_glyphs_span = word_or_inline[0]
         except SpaceException:
@@ -1099,7 +1102,7 @@ class Line(list):
                 self._current_tab = None
             self.cursor -= item_width
         if self.cursor + width > self.width:
-            if self:
+            if self or not force:
                 return False
             elif self.width > 0:
                 first_glyphs_span.span.warn('item too long to fit on line',

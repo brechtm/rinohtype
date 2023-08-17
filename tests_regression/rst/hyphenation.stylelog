@@ -49,3 +49,12 @@
           MixedStyledText('Alice was beginning to get very ...')
             MixedStyledText('Alice was beginning to get very ...')
               SingleStyledText('Alice was beginning to get very ...')
+      Paragraph('Conversations and conversations.')   hyphenation.rst:13   <paragraph>
+           > (0,0,0,1,2) narrow [hyphenation.rts] > DEFAULT
+             (0,0,0,0,2) body [hyphenation.rts] > DEFAULT
+          MixedStyledText('Conversations and conversations.')
+            MixedStyledText('Conversations and conversations.')
+              SingleStyledText('Conversations and conversations.')
+          MixedStyledText('Conversations and conversations.')
+            MixedStyledText('Conversations and conversations.')
+              SingleStyledText('Conversations and conversations.')

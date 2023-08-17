@@ -59,6 +59,7 @@ Changed:
 
 Fixed:
 
+* Hyphenation of the first word on a line (#188, #416)
 * AttributeError: 'ZeroWidthSpace' object has no attribute 'hyphenate' (#415,
   PR #417 by Jack Whitham)
 * Fix a Python 3.12 DeprecationWarning regarding utcfromtimestamp()

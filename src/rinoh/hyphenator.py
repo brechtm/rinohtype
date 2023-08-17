@@ -181,16 +181,16 @@ class Hyphenator(object):
         """
         Iterate over all hyphenation possibilities, the longest first.
         """
-        for p in reversed(self.positions(word)):
+        for i, p in reversed(list(enumerate(self.positions(word)))):
             if p.data:
                 # get the nonstandard hyphenation data
                 change, index, cut = p.data
                 if word.isupper():
                     change = change.upper()
                 c1, c2 = change.split('=')
-                yield word[:p+index] + c1, c2 + word[p+index+cut:]
+                yield word[:p+index] + c1, c2 + word[p+index+cut:], i == 0
             else:
-                yield word[:p], word[p:]
+                yield word[:p], word[p:], i == 0
 
     def wrap(self, word, width, hyphen='-'):
         """
