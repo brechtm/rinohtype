@@ -59,6 +59,8 @@ Changed:
 
 Fixed:
 
+* AttributeError: 'ZeroWidthSpace' object has no attribute 'hyphenate' (#415,
+  PR #417 by Jack Whitham)
 * Fix a Python 3.12 DeprecationWarning regarding utcfromtimestamp()
 * Sphinx frontend: support the desc_sig_space document node (#414)
 * Hyphenated word split across pages merges with the next word (#388)
