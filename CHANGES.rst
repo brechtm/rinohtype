@@ -41,7 +41,9 @@ New Features:
 
 Changed:
 
-* Support for Python 3.7 was dropped (end-of-life in Juny 2023)
+* "words" containing spaces (such as paths and URLs) can now be split before
+  each forward slash for line wrapping (#188, #416)
+* Support for Python 3.7 was dropped (end-of-life in June 2023)
 * `MyST <https://github.com/executablebooks/MyST-Parser>`_ replaces
   `recommonmark <https://github.com/readthedocs/recommonmark>`_ for Markdown
   support (issues #265 and #370)

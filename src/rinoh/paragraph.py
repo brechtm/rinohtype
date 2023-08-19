@@ -507,10 +507,21 @@ class ZeroWidthSpace(SpecialCharacter):
         return self.glyphs_span
 
 
-WHITESPACE = {' ': Space,
-              '\t': Tab,
-              '\n': NewLine,
-              '\N{ZERO WIDTH SPACE}': ZeroWidthSpace}
+class ForwardSlash(SpecialCharacter):
+    char = '/'
+
+    def __getitem__(self, index):
+        assert index == 0
+        return self.glyphs_span
+
+
+WHITESPACE = {
+    ' ': Space,
+    '\t': Tab,
+    '\n': NewLine,
+    '\N{ZERO WIDTH SPACE}': ZeroWidthSpace,
+    '/': ForwardSlash,
+}
 
 
 
@@ -594,7 +605,12 @@ class ParagraphState(FlowableState):
                     group_index += 1
                 for special, chars in groups:
                     group_index += 1
-                    if special:
+                    if special is ForwardSlash:
+                        self.group_index = group_index - 1
+                        if word:
+                            container = yield word
+                        word = Word()
+                    elif special:
                         word_string = str(word).strip()
                         last_word = (word_string.rsplit(maxsplit=1)[-1]
                                      if word_string else '')

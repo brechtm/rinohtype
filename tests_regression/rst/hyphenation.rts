@@ -14,8 +14,17 @@ margin_right = 1cm
 hyphenate = true
 hyphen_chars = 2
 
+[monospaced]
+font_size = 9pt
+
 [narrow : Paragraph(has_class='narrow')]
 border = 1pt, #555
-space_above = 1cm
-margin_right = 7cm
+space_above = 1mm
+margin_left = 1.3cm
+margin_right = 5.5cm
 padding = 2pt
+text_align = left
+
+[nohyph : Paragraph(has_class='nohyph')]
+base = narrow
+hyphenate = false

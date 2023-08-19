@@ -8,32 +8,94 @@
 #### ChainedContainer('column1')
   StaticGroupedFlowables()
     DocumentTree()   hyphenation.rst   <document>
-      Paragraph('spacer')   hyphenation.rst:3   <paragraph>
-           > (0,0,0,1,2) spacer [hyphenation.rts] > DEFAULT
-             (0,0,0,0,2) body [hyphenation.rts] > DEFAULT
-          MixedStyledText('spacer')
-            MixedStyledText('spacer')
-              SingleStyledText('spacer')
-      Paragraph('Alice was beginning to get very ...')   hyphenation.rst:6   <paragraph>
+      Paragraph('No hyphenation:')   hyphenation.rst:1   <paragraph>
            > (0,0,0,0,2) body [hyphenation.rts] > DEFAULT
-          MixedStyledText('Alice was beginning to get very ...')
-            MixedStyledText('Alice was beginning to get very ...')
-              SingleStyledText('Alice was beginning to get very ...')
-          MixedStyledText('Alice was beginning to get very ...')
-            MixedStyledText('Alice was beginning to get very ...')
-              SingleStyledText('Alice was beginning to get very ...')
-          MixedStyledText('Alice was beginning to get very ...')
-            MixedStyledText('Alice was beginning to get very ...')
-              SingleStyledText('Alice was beginning to get very ...')
-          MixedStyledText('Alice was beginning to get very ...')
-            MixedStyledText('Alice was beginning to get very ...')
-              SingleStyledText('Alice was beginning to get very ...')
-          MixedStyledText('Alice was beginning to get very ...')
-            MixedStyledText('Alice was beginning to get very ...')
-              SingleStyledText('Alice was beginning to get very ...')
-          MixedStyledText('Alice was beginning to get very ...')
-            MixedStyledText('Alice was beginning to get very ...')
-              SingleStyledText('Alice was beginning to get very ...')
+          MixedStyledText('No hyphenation:')
+            MixedStyledText('No hyphenation:')
+              SingleStyledText('No hyphenation:')
+      Paragraph('Conversations and conversations.')   hyphenation.rst:5   <paragraph>
+           > (0,0,0,1,2) nohyph [hyphenation.rts] > narrow
+             (0,0,0,0,2) body [hyphenation.rts] > DEFAULT
+          MixedStyledText('Conversations and conversations.')
+            MixedStyledText('Conversations and conversations.')
+              SingleStyledText('Conversations and conversations.')
+          MixedStyledText('Conversations and conversations.')
+            MixedStyledText('Conversations and conversations.')
+              SingleStyledText('Conversations and conversations.')
+      Paragraph('Hyphenation of first word:')   hyphenation.rst:8   <paragraph>
+           > (0,0,0,0,2) body [hyphenation.rts] > DEFAULT
+          MixedStyledText('Hyphenation of first word:')
+            MixedStyledText('Hyphenation of first word:')
+              SingleStyledText('Hyphenation of first word:')
+      Paragraph('Conversations and conversations.')   hyphenation.rst:12   <paragraph>
+           > (0,0,0,1,2) narrow [hyphenation.rts] > DEFAULT
+             (0,0,0,0,2) body [hyphenation.rts] > DEFAULT
+          MixedStyledText('Conversations and conversations.')
+            MixedStyledText('Conversations and conversations.')
+              SingleStyledText('Conversations and conversations.')
+          MixedStyledText('Conversations and conversations.')
+            MixedStyledText('Conversations and conversations.')
+              SingleStyledText('Conversations and conversations.')
+      Paragraph('A long path:')   hyphenation.rst:15   <paragraph>
+           > (0,0,0,0,2) body [hyphenation.rts] > DEFAULT
+          MixedStyledText('A long path:')
+            MixedStyledText('A long path:')
+              SingleStyledText('A long path:')
+      Paragraph('/usr/local/share/man/man1')   hyphenation.rst:19   <paragraph>
+           > (0,0,0,1,2) narrow [hyphenation.rts] > DEFAULT
+             (0,0,0,0,2) body [hyphenation.rts] > DEFAULT
+          MixedStyledText('/usr/local/share/man/man1')
+            MixedStyledText('/usr/local/share/man/man1')
+              MixedStyledText('/usr/local/share/man/man1', style='monospaced')   <literal>
+                   > (0,0,1,0,1) monospaced [hyphenation.rts] > DEFAULT
+                SingleStyledText('/usr/local/share/man/man1')
+          MixedStyledText('/usr/local/share/man/man1')
+            MixedStyledText('/usr/local/share/man/man1')
+              MixedStyledText('/usr/local/share/man/man1', style='monospaced')   <literal>
+                   > (0,0,1,0,1) monospaced [hyphenation.rts] > DEFAULT
+                SingleStyledText('/usr/local/share/man/man1')
+          MixedStyledText('/usr/local/share/man/man1')
+            MixedStyledText('/usr/local/share/man/man1')
+              MixedStyledText('/usr/local/share/man/man1', style='monospaced')   <literal>
+                   > (0,0,1,0,1) monospaced [hyphenation.rts] > DEFAULT
+                SingleStyledText('/usr/local/share/man/man1')
+          MixedStyledText('/usr/local/share/man/man1')
+            MixedStyledText('/usr/local/share/man/man1')
+              MixedStyledText('/usr/local/share/man/man1', style='monospaced')   <literal>
+                   > (0,0,1,0,1) monospaced [hyphenation.rts] > DEFAULT
+                SingleStyledText('/usr/local/share/man/man1')
+      Paragraph('A long URL:')   hyphenation.rst:21   <paragraph>
+           > (0,0,0,0,2) body [hyphenation.rts] > DEFAULT
+          MixedStyledText('A long URL:')
+            MixedStyledText('A long URL:')
+              SingleStyledText('A long URL:')
+      Paragraph('https://www.python.org/community...')   hyphenation.rst:25   <paragraph>
+           > (0,0,0,1,2) narrow [hyphenation.rts] > DEFAULT
+             (0,0,0,0,2) body [hyphenation.rts] > DEFAULT
+          MixedStyledText('https://www.python.org/community...')
+            MixedStyledText('https://www.python.org/community...')
+              MixedStyledText('https://www.python.org/community...', style='monospaced')   <literal>
+                   > (0,0,1,0,1) monospaced [hyphenation.rts] > DEFAULT
+                SingleStyledText('https://www.python.org/community...')
+          MixedStyledText('https://www.python.org/community...')
+            MixedStyledText('https://www.python.org/community...')
+              MixedStyledText('https://www.python.org/community...', style='monospaced')   <literal>
+                   > (0,0,1,0,1) monospaced [hyphenation.rts] > DEFAULT
+                SingleStyledText('https://www.python.org/community...')
+      Paragraph('Line break at forward slash:')   hyphenation.rst:28   <paragraph>
+           > (0,0,0,0,2) body [hyphenation.rts] > DEFAULT
+          MixedStyledText('Line break at forward slash:')
+            MixedStyledText('Line break at forward slash:')
+              SingleStyledText('Line break at forward slash:')
+      Paragraph('Kontrast/Rausch-Verhältnis')   hyphenation.rst:34   <paragraph>
+           > (0,0,0,1,2) narrow [hyphenation.rts] > DEFAULT
+             (0,0,0,0,2) body [hyphenation.rts] > DEFAULT
+          MixedStyledText('Kontrast/Rausch-Verhältnis')
+            MixedStyledText('Kontrast/Rausch-Verhältnis')
+              SingleStyledText('Kontrast/Rausch-Verhältnis')
+          MixedStyledText('Kontrast/Rausch-Verhältnis')
+            MixedStyledText('Kontrast/Rausch-Verhältnis')
+              SingleStyledText('Kontrast/Rausch-Verhältnis')
 ---------------------------------- page 2 ----------------------------------
 #### FlowablesContainer('background')
   StaticGroupedFlowables()
@@ -44,17 +106,45 @@
 #### ChainedContainer('column1')
   (continued) StaticGroupedFlowables()
     (continued) DocumentTree()   hyphenation.rst   <document>
-      (continued) Paragraph('Alice was beginning to get very ...')   hyphenation.rst:6   <paragraph>
+      PageBreak(style=FlowableStyle)   hyphenation.rst:37   <raw>
+      Paragraph('Hyphenation across pages')   hyphenation.rst:44   <paragraph>
+           > (0,0,0,1,2) spacer [hyphenation.rts] > DEFAULT
+             (0,0,0,0,2) body [hyphenation.rts] > DEFAULT
+          MixedStyledText('Hyphenation across pages')
+            MixedStyledText('Hyphenation across pages')
+              SingleStyledText('Hyphenation across pages')
+      Paragraph('Alice was beginning to get very ...')   hyphenation.rst:47   <paragraph>
            > (0,0,0,0,2) body [hyphenation.rts] > DEFAULT
           MixedStyledText('Alice was beginning to get very ...')
             MixedStyledText('Alice was beginning to get very ...')
               SingleStyledText('Alice was beginning to get very ...')
-      Paragraph('Conversations and conversations.')   hyphenation.rst:13   <paragraph>
-           > (0,0,0,1,2) narrow [hyphenation.rts] > DEFAULT
-             (0,0,0,0,2) body [hyphenation.rts] > DEFAULT
-          MixedStyledText('Conversations and conversations.')
-            MixedStyledText('Conversations and conversations.')
-              SingleStyledText('Conversations and conversations.')
-          MixedStyledText('Conversations and conversations.')
-            MixedStyledText('Conversations and conversations.')
-              SingleStyledText('Conversations and conversations.')
+          MixedStyledText('Alice was beginning to get very ...')
+            MixedStyledText('Alice was beginning to get very ...')
+              SingleStyledText('Alice was beginning to get very ...')
+          MixedStyledText('Alice was beginning to get very ...')
+            MixedStyledText('Alice was beginning to get very ...')
+              SingleStyledText('Alice was beginning to get very ...')
+          MixedStyledText('Alice was beginning to get very ...')
+            MixedStyledText('Alice was beginning to get very ...')
+              SingleStyledText('Alice was beginning to get very ...')
+          MixedStyledText('Alice was beginning to get very ...')
+            MixedStyledText('Alice was beginning to get very ...')
+              SingleStyledText('Alice was beginning to get very ...')
+          MixedStyledText('Alice was beginning to get very ...')
+            MixedStyledText('Alice was beginning to get very ...')
+              SingleStyledText('Alice was beginning to get very ...')
+---------------------------------- page 3 ----------------------------------
+#### FlowablesContainer('background')
+  StaticGroupedFlowables()
+#### FootnoteContainer('footnotes')
+  StaticGroupedFlowables()
+#### DownExpandingContainer('floats')
+  StaticGroupedFlowables()
+#### ChainedContainer('column1')
+  (continued) StaticGroupedFlowables()
+    (continued) DocumentTree()   hyphenation.rst   <document>
+      (continued) Paragraph('Alice was beginning to get very ...')   hyphenation.rst:47   <paragraph>
+           > (0,0,0,0,2) body [hyphenation.rts] > DEFAULT
+          MixedStyledText('Alice was beginning to get very ...')
+            MixedStyledText('Alice was beginning to get very ...')
+              SingleStyledText('Alice was beginning to get very ...')
