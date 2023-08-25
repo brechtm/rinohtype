@@ -58,9 +58,8 @@ def get_versions(
         python_version = parse_single_constraint(python)
         for requirement in requirements:
             python_versions = parse_single_constraint(requirement.python_versions)
-            if python_versions.allows(python_version) and requirement.constraint.allows(
-                version
-            ):
+            if (python_versions.allows(python_version)
+                    and requirement.constraint.allows(version)):
                 return True
         return False
 

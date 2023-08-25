@@ -30,18 +30,22 @@ def parametrize_dist():
     return nox.parametrize('dist', ['sdist', 'wheel'], ids=['sdist', 'wheel'])
 
 
-def parametrize(dependency, granularity='minor'):
-    return nox.parametrize(dependency, get_versions(dependency, granularity))
+def parametrize(dependency, granularity='minor', python=CURRENT_PYTHON):
+    versions = get_versions(dependency, granularity, python)
+    if python != CURRENT_PYTHON:
+        for version in get_versions(dependency, granularity, CURRENT_PYTHON):
+            versions.remove(version)
+    return nox.parametrize(dependency, versions)
 
 
 # sessions
 
-@nox_poetry.session()
+@nox_poetry.session
 def check(session):
     session.run('poetry', 'check', external=True)
 
 
-@nox_poetry.session()
+@nox_poetry.session
 def check_docs(session):
     _install(session, dependencies=['doc8', 'sphinx-immaterial',
                                     'sphinxcontrib-autoprogram'])
@@ -50,7 +54,7 @@ def check_docs(session):
     session.run('python', 'doc/build.py', 'doctest')
 
 
-@nox_poetry.session()
+@nox_poetry.session
 def build_docs(session):
     _install(session, dependencies=['Sphinx', 'sphinx-immaterial',
                                     'sphinxcontrib-autoprogram'])
@@ -70,9 +74,15 @@ def unit(session, dist):
     _unit(session, dist=dist)
 
 
-@nox_poetry.session(python='3.9')   # Sphinx >3.5 fail on 3.10
+@nox_poetry.session
 @parametrize('sphinx')
 def unit_sphinx(session, sphinx):
+    _unit(session, sphinx=sphinx, ignore_deprecation_warnings=True)
+
+
+@nox_poetry.session(python='3.9')
+@parametrize('sphinx', python='3.9')
+def unit_sphinx_py39(session, sphinx):
     _unit(session, sphinx=sphinx, ignore_deprecation_warnings=True)
 
 
@@ -82,15 +92,21 @@ def regression(session, dist):
     _regression(session, dist=dist)
 
 
-@nox_poetry.session()
+@nox_poetry.session
 @parametrize('docutils')
 def regression_docutils(session, docutils):
     _regression(session, docutils=docutils, ignore_deprecation_warnings=True)
 
 
-@nox_poetry.session(python='3.9')   # Sphinx >3.5 fail on 3.10
+@nox_poetry.session
 @parametrize('sphinx')
 def regression_sphinx(session, sphinx):
+    _regression(session, sphinx=sphinx, ignore_deprecation_warnings=True)
+
+
+@nox_poetry.session(python='3.9')
+@parametrize('sphinx', python='3.9')
+def regression_sphinx_py39(session, sphinx):
     _regression(session, sphinx=sphinx, ignore_deprecation_warnings=True)
 
 
