@@ -136,7 +136,8 @@ jobs:
         cov: [1]
         name: [""]
         include:
-          - { os: Ubuntu, python-version: 3.9, noxenv: unit_sphinx, cov: 0, name: " (Sphinx)" }
+          - { os: Ubuntu, python-version: 3.11, noxenv: unit_sphinx, cov: 0, name: " (Sphinx)" }
+          - { os: Ubuntu, python-version: 3.9, noxenv: unit_sphinx_py39, cov: 0, name: " (Sphinx)" }
     runs-on: ${{ matrix.os }}-latest
     env:
       NOXENV: ${{ matrix.noxenv }}
@@ -186,7 +187,8 @@ jobs:
           - { os: Ubuntu, python-version: 3.12.0-alpha - 3.12, noxenv: regression, cov: 1 }
           - { os: Ubuntu, python-version: pypy-3.9, noxenv: regression, cov: 1 }
           - { os: Ubuntu, python-version: 3.11, noxenv: regression_docutils, cov: 0, name: " (docutils)" }
-          - { os: Ubuntu, python-version: 3.9, noxenv: regression_sphinx, cov: 0, name: " (Sphinx)" }
+          - { os: Ubuntu, python-version: 3.11, noxenv: regression_sphinx, cov: 0, name: " (Sphinx)" }
+          - { os: Ubuntu, python-version: 3.9, noxenv: regression_sphinx_py39, cov: 0, name: " (Sphinx)" }
     runs-on: ${{ matrix.os }}-latest
     env:
       NOXENV: ${{ matrix.noxenv }}
