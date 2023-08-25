@@ -819,7 +819,7 @@
 <p><code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.frontend.sphinx</span></code> is a Sphinx extension module. It provides a Sphinx
 builder with the name <em>rinoh</em>. The builder recognizes the following <code class="docutils literal notranslate"><span class="pre">conf.py</span></code>
 options. Of these, only <a class="reference internal" href="#confval-rinoh_documents" title="rinoh_documents (Sphinx builder configuration value) — Determines which PDF documents to build. Its format is a list of dictionaries, one for each document to be generated. The supported keys for these dictionaries are listed below. Two of them are required:"><code class="xref std std-confval docutils literal notranslate"><span class="pre">rinoh_documents</span></code></a> (or
-<a class="reference external" href="https://www.sphinx-doc.org/en/master/usage/configuration.html#confval-latex_documents" title="(in Sphinx v7.2.2)"><code class="docutils literal notranslate"><span class="pre">latex_documents</span></code></a>) is required.</p>
+<a class="reference external" href="https://www.sphinx-doc.org/en/master/usage/configuration.html#confval-latex_documents" title="(in Sphinx v7.2.3)"><code class="docutils literal notranslate"><span class="pre">latex_documents</span></code></a>) is required.</p>
 <dl class="std confval objdesc">
 <dt class="sig sig-object highlight std" id="confval-rinoh_documents">
 <span class="sig-name descname"><span class="pre">rinoh_documents</span></span><a class="headerlink" href="#confval-rinoh_documents" title="Permalink to this definition">¶</a></dt>
@@ -841,13 +841,13 @@ configuration). The values for text content can be plain text or
 <dt>logo (no default)</dt><dd><p>Path (absolute or relative to the location of the <code class="docutils literal notranslate"><span class="pre">conf.py</span></code> file) to
 an image file, typically included on the title page.</p>
 </dd>
-<dt>title (default: “<a class="reference external" href="https://www.sphinx-doc.org/en/master/usage/configuration.html#confval-project" title="(in Sphinx v7.2.2)"><code class="docutils literal notranslate"><span class="pre">project</span></code></a> documentation”)</dt><dd><p>The title of the document.</p>
+<dt>title (default: “<a class="reference external" href="https://www.sphinx-doc.org/en/master/usage/configuration.html#confval-project" title="(in Sphinx v7.2.3)"><code class="docutils literal notranslate"><span class="pre">project</span></code></a> documentation”)</dt><dd><p>The title of the document.</p>
 </dd>
-<dt>subtitle (default: “Release <a class="reference external" href="https://www.sphinx-doc.org/en/master/usage/configuration.html#confval-release" title="(in Sphinx v7.2.2)"><code class="docutils literal notranslate"><span class="pre">release</span></code></a>”)</dt><dd><p>Subtitle of the document.</p>
+<dt>subtitle (default: “Release <a class="reference external" href="https://www.sphinx-doc.org/en/master/usage/configuration.html#confval-release" title="(in Sphinx v7.2.3)"><code class="docutils literal notranslate"><span class="pre">release</span></code></a>”)</dt><dd><p>Subtitle of the document.</p>
 </dd>
-<dt>author (default: “<a class="reference external" href="https://www.sphinx-doc.org/en/master/usage/configuration.html#confval-author" title="(in Sphinx v7.2.2)"><code class="docutils literal notranslate"><span class="pre">author</span></code></a>”)</dt><dd><p>The document’s author.</p>
+<dt>author (default: “<a class="reference external" href="https://www.sphinx-doc.org/en/master/usage/configuration.html#confval-author" title="(in Sphinx v7.2.3)"><code class="docutils literal notranslate"><span class="pre">author</span></code></a>”)</dt><dd><p>The document’s author.</p>
 </dd>
-<dt>date (default: determined from <a class="reference external" href="https://www.sphinx-doc.org/en/master/usage/configuration.html#confval-today" title="(in Sphinx v7.2.2)"><code class="docutils literal notranslate"><span class="pre">today</span></code></a> and <a class="reference external" href="https://www.sphinx-doc.org/en/master/usage/configuration.html#confval-today_fmt" title="(in Sphinx v7.2.2)"><code class="docutils literal notranslate"><span class="pre">today_fmt</span></code></a>)</dt><dd><p>The document (build) date.</p>
+<dt>date (default: determined from <a class="reference external" href="https://www.sphinx-doc.org/en/master/usage/configuration.html#confval-today" title="(in Sphinx v7.2.3)"><code class="docutils literal notranslate"><span class="pre">today</span></code></a> and <a class="reference external" href="https://www.sphinx-doc.org/en/master/usage/configuration.html#confval-today_fmt" title="(in Sphinx v7.2.3)"><code class="docutils literal notranslate"><span class="pre">today_fmt</span></code></a>)</dt><dd><p>The document (build) date.</p>
 </dd>
 </dl>
 <p>The remaining keys control what is included in the document and the
@@ -858,8 +858,8 @@ included in the output, only the documents referenced by it via TOC
 trees.</p>
 </dd>
 <dt>domain_indices (default: <code class="docutils literal notranslate"><span class="pre">True</span></code>)</dt><dd><p>If true, generate domain-specific indices in addition to the general
-index. It is equivalent to the <a class="reference external" href="https://www.sphinx-doc.org/en/master/usage/configuration.html#confval-html_domain_indices" title="(in Sphinx v7.2.2)"><code class="docutils literal notranslate"><span class="pre">html_domain_indices</span></code></a>
-and <a class="reference external" href="https://www.sphinx-doc.org/en/master/usage/configuration.html#confval-latex_domain_indices" title="(in Sphinx v7.2.2)"><code class="docutils literal notranslate"><span class="pre">latex_domain_indices</span></code></a> configuration variables.</p>
+index. It is equivalent to the <a class="reference external" href="https://www.sphinx-doc.org/en/master/usage/configuration.html#confval-html_domain_indices" title="(in Sphinx v7.2.3)"><code class="docutils literal notranslate"><span class="pre">html_domain_indices</span></code></a>
+and <a class="reference external" href="https://www.sphinx-doc.org/en/master/usage/configuration.html#confval-latex_domain_indices" title="(in Sphinx v7.2.3)"><code class="docutils literal notranslate"><span class="pre">latex_domain_indices</span></code></a> configuration variables.</p>
 </dd>
 <dt>template (default: <a class="reference internal" href="book.html#rinoh.templates.book.Book" title="rinoh.templates.book.Book (Python class) — The stylesheet to use for styling document elements (inherited from DocumentTemplate)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Book</span></code></a>)</dt><dd><p>Determines the template used to render the document. It takes:</p>
 <ul class="simple">
@@ -897,7 +897,7 @@ target names should match those set in <a class="reference internal" href="#conf
 </code></pre></div>
 </div>
 <p>The same can be achieved from the command line using the by using the
-string form with <a class="reference external" href="https://www.sphinx-doc.org/en/master/man/sphinx-build.html#cmdoption-sphinx-build-D" title="(in Sphinx v7.2.2)"><code class="docutils literal notranslate"><span class="pre">sphinx-build</span> <span class="pre">-D</span></code></a>:</p>
+string form with <a class="reference external" href="https://www.sphinx-doc.org/en/master/man/sphinx-build.html#cmdoption-sphinx-build-D" title="(in Sphinx v7.2.3)"><code class="docutils literal notranslate"><span class="pre">sphinx-build</span> <span class="pre">-D</span></code></a>:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><code><span class="n">spinx</span><span class="o">-</span><span class="n">build</span> <span class="o">-</span><span class="n">b</span> <span class="n">rinoh</span> <span class="o">-</span><span class="n">D</span> <span class="n">rinoh_targets</span><span class="o">=</span><span class="s2">&quot;manual&quot;</span> <span class="n">source</span> <span class="n">build</span>
 </code></pre></div>
 </div>
