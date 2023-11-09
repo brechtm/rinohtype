@@ -690,7 +690,10 @@ class Table(DocutilsBodyNode):
             head = tgroup.thead.get_table_section()
         except AttributeError:
             head = None
-        body = tgroup.tbody.get_table_section()
+        try:
+            body = tgroup.tbody.get_table_section()
+        except AttributeError:
+            body = None
         align = self.get('align')
         width_string = self.get('width')
         table = rt.Table(body, head=head,
