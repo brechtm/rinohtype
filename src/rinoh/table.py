@@ -134,14 +134,16 @@ class Table(Flowable):
         if head:
             head.parent = self
         self.body = body
-        body.parent = self
+        if body:
+            body.parent = self
         self.column_widths = column_widths
 
     def prepare(self, flowable_target):
         super().prepare(flowable_target)
         if self.head:
             self.head.prepare(flowable_target)
-        self.body.prepare(flowable_target)
+        if self.body:
+            self.body.prepare(flowable_target)
 
     def initial_state(self, container):
         return TableState(self)
@@ -173,13 +175,14 @@ class Table(Flowable):
                 if render_rows(self.head) != len(self.head):
                     raise EndOfContainer(state)
             # body rows
-            next_row_index = render_rows(self.body, state.body_row_index)
-            rows_left = len(self.body) - next_row_index
-            if rows_left > 0:
-                split_minimum_rows = get_style('split_minimum_rows')
-                if min(next_row_index, rows_left) >= split_minimum_rows:
-                    state.body_row_index = next_row_index
-                raise EndOfContainer(state)
+            if self.body:
+                next_row_index = render_rows(self.body, state.body_row_index)
+                rows_left = len(self.body) - next_row_index
+                if rows_left > 0:
+                    split_minimum_rows = get_style('split_minimum_rows')
+                    if min(next_row_index, rows_left) >= split_minimum_rows:
+                        state.body_row_index = next_row_index
+                    raise EndOfContainer(state)
         return sum(state.column_widths), 0, 0
 
     def _size_columns(self, container):
@@ -190,7 +193,11 @@ class Table(Flowable):
         - cell contents
 
         """
-        num_cols = self.body.num_columns
+        if self.body is not None:
+            num_cols = self.body.num_columns
+        else:
+            # Table is a head-only table
+            num_cols = self.head.num_columns
         width = self._width(container)
         if width == FlowableWidth.FILL:
             width = 100 * PERCENT
@@ -307,7 +314,7 @@ class Table(Flowable):
 
         # find the maximum content width for all non-column-spanning cells for
         #   each non-fixed-width column
-        for row in chain(self.head or [], self.body):
+        for row in chain(self.head or [], self.body or []):
             for cell in (cell for cell in row if cell.colspan == 1):
                 col = int(cell.column_index)
                 if col not in fixed_width_cols:
@@ -315,7 +322,7 @@ class Table(Flowable):
 
         # divide the extra space needed for column-spanning cells equally over
         #   the spanned columns (skipping fixed-width columns)
-        for row in chain(self.head or [], self.body):
+        for row in chain(self.head or [], self.body or []):
             for cell in (cell for cell in row if cell.colspan > 1):
                 c = int(cell.column_index)
                 c_end = c + cell.colspan
