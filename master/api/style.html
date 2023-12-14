@@ -32,7 +32,7 @@
         <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
       
     
-        <link rel="stylesheet" type="text/css" href="../_static/sphinx_immaterial_theme.9dcb20399d0097661.min.css" />
+        <link rel="stylesheet" type="text/css" href="../_static/sphinx_immaterial_theme.961ebdc0ecf60126a.min.css" />
         <link rel="stylesheet" type="text/css" href="../_static/tweaks.css" />
     <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -1519,7 +1519,7 @@
 <dl class="field-list simple">
 <dt class="field-odd" id="rinoh.style.Styled-parameters">Parameters<span class="colon">:</span><a class="headerlink" href="#rinoh.style.Styled-parameters" title="Permalink to this headline">¶</a></dt>
 <dd class="field-odd"><dl class="simple api-field highlight">
-<dt id="rinoh.style.Styled.__init__.style"><span class="sig-name descname">style</span><span class="p"> : </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)">str</a>, <a class="reference internal" href="#rinoh.style.Style" title="rinoh.style.Style (Python class) — Dictionary storing style attributes.">Style</a></span></span><a class="headerlink" href="#rinoh.style.Styled.__init__.style" title="Permalink to this definition">¶</a></dt><dd><p>the style to associate with this element. If
+<dt id="rinoh.style.Styled.__init__.style"><span class="sig-name descname">style</span><span class="p"> : </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)">str</a>, <a class="reference internal" href="#rinoh.style.Style" title="rinoh.style.Style (Python class) — Dictionary storing style attributes.">Style</a></span></span><a class="headerlink" href="#rinoh.style.Styled.__init__.style" title="Permalink to this definition">¶</a></dt><dd><p>the style to associate with this element. If
 <cite>style</cite> is a string, the corresponding style is lookup up in the
 document’s style sheet by means of selectors.</p>
 </dd>
@@ -1585,18 +1585,18 @@ style by name.</p>
 <dl class="field-list simple">
 <dt class="field-odd" id="rinoh.style.StyleSheet-parameters">Parameters<span class="colon">:</span><a class="headerlink" href="#rinoh.style.StyleSheet-parameters" title="Permalink to this headline">¶</a></dt>
 <dd class="field-odd"><dl class="simple api-field highlight">
-<dt id="rinoh.style.StyleSheet.__init__.name"><span class="sig-name descname">name</span><span class="p"> : </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)">str</a></span></span><a class="headerlink" href="#rinoh.style.StyleSheet.__init__.name" title="Permalink to this definition">¶</a></dt><dd><p>a label for this style sheet</p>
+<dt id="rinoh.style.StyleSheet.__init__.name"><span class="sig-name descname">name</span><span class="p"> : </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)">str</a></span></span><a class="headerlink" href="#rinoh.style.StyleSheet.__init__.name" title="Permalink to this definition">¶</a></dt><dd><p>a label for this style sheet</p>
 </dd>
 <dt id="rinoh.style.StyleSheet.__init__.matcher"><span class="sig-name descname">matcher</span><span class="p"> : </span><span class="desctype"><span class="desctype"><a class="reference internal" href="#rinoh.style.StyledMatcher" title="rinoh.style.StyledMatcher (Python class) — Dictionary mapping labels to selectors.">StyledMatcher</a></span></span><a class="headerlink" href="#rinoh.style.StyleSheet.__init__.matcher" title="Permalink to this definition">¶</a></dt><dd><p>the matcher providing the selectors the styles
 contained in this style sheet map to. If no matcher is given and
 <cite>base</cite> is specified, the <cite>base</cite>‘s matcher is used. If <cite>base</cite> is
 not set, the default matcher is used.</p>
 </dd>
-<dt id="rinoh.style.StyleSheet.__init__.base"><span class="sig-name descname">base</span><span class="p"> : </span><span class="desctype"><span class="desctype"><a class="reference internal" href="#rinoh.style.StyleSheet" title="rinoh.style.StyleSheet (Python class) — Dictionary storing a collection of related styles by name.">StyleSheet</a> or <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)">str</a></span></span><a class="headerlink" href="#rinoh.style.StyleSheet.__init__.base" title="Permalink to this definition">¶</a></dt><dd><p>the style sheet to extend</p>
+<dt id="rinoh.style.StyleSheet.__init__.base"><span class="sig-name descname">base</span><span class="p"> : </span><span class="desctype"><span class="desctype"><a class="reference internal" href="#rinoh.style.StyleSheet" title="rinoh.style.StyleSheet (Python class) — Dictionary storing a collection of related styles by name.">StyleSheet</a> or <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)">str</a></span></span><a class="headerlink" href="#rinoh.style.StyleSheet.__init__.base" title="Permalink to this definition">¶</a></dt><dd><p>the style sheet to extend</p>
 </dd>
-<dt id="rinoh.style.StyleSheet.__init__.description"><span class="sig-name descname">description</span><span class="p"> : </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)">str</a></span></span><a class="headerlink" href="#rinoh.style.StyleSheet.__init__.description" title="Permalink to this definition">¶</a></dt><dd><p>a short string describing this style sheet</p>
+<dt id="rinoh.style.StyleSheet.__init__.description"><span class="sig-name descname">description</span><span class="p"> : </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)">str</a></span></span><a class="headerlink" href="#rinoh.style.StyleSheet.__init__.description" title="Permalink to this definition">¶</a></dt><dd><p>a short string describing this style sheet</p>
 </dd>
-<dt id="rinoh.style.StyleSheet.__init__.pygments_style"><span class="sig-name descname">pygments_style</span><span class="p"> : </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)">str</a></span></span><a class="headerlink" href="#rinoh.style.StyleSheet.__init__.pygments_style" title="Permalink to this definition">¶</a></dt><dd><p>the Pygments style to use for styling code blocks</p>
+<dt id="rinoh.style.StyleSheet.__init__.pygments_style"><span class="sig-name descname">pygments_style</span><span class="p"> : </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)">str</a></span></span><a class="headerlink" href="#rinoh.style.StyleSheet.__init__.pygments_style" title="Permalink to this definition">¶</a></dt><dd><p>the Pygments style to use for styling code blocks</p>
 </dd>
 </dl>
 </dd>
@@ -1608,7 +1608,7 @@ not set, the default matcher is used.</p>
 <dl class="field-list simple">
 <dt class="field-odd" id="rinoh.style.StyleSheet.get_selector-parameters">Parameters<span class="colon">:</span><a class="headerlink" href="#rinoh.style.StyleSheet.get_selector-parameters" title="Permalink to this headline">¶</a></dt>
 <dd class="field-odd"><dl class="simple api-field highlight">
-<dt id="rinoh.style.StyleSheet.get_selector.name"><span class="sig-name descname">name</span><span class="p"> : </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)">str</a></span></span><a class="headerlink" href="#rinoh.style.StyleSheet.get_selector.name" title="Permalink to this definition">¶</a></dt><dd><p>a style name</p>
+<dt id="rinoh.style.StyleSheet.get_selector.name"><span class="sig-name descname">name</span><span class="p"> : </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)">str</a></span></span><a class="headerlink" href="#rinoh.style.StyleSheet.get_selector.name" title="Permalink to this definition">¶</a></dt><dd><p>a style name</p>
 </dd>
 </dl>
 </dd>
@@ -1616,7 +1616,7 @@ not set, the default matcher is used.</p>
 <dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">Selector</span></code> – the selector mapped to the style <cite>name</cite></p>
 </dd>
 <dt class="field-odd" id="rinoh.style.StyleSheet.get_selector-raises">Raises<span class="colon">:</span><a class="headerlink" href="#rinoh.style.StyleSheet.get_selector-raises" title="Permalink to this headline">¶</a></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#KeyError" title="(in Python v3.11)"><strong>KeyError</strong></a> – if the style <cite>name</cite> was not found in this or a base
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#KeyError" title="(in Python v3.12)"><strong>KeyError</strong></a> – if the style <cite>name</cite> was not found in this or a base
     style sheet</p>
 </dd>
 </dl>
@@ -1631,7 +1631,7 @@ not set, the default matcher is used.</p>
 <dl class="field-list simple">
 <dt class="field-odd" id="rinoh.style.StyleSheetFile-parameters">Parameters<span class="colon">:</span><a class="headerlink" href="#rinoh.style.StyleSheetFile-parameters" title="Permalink to this headline">¶</a></dt>
 <dd class="field-odd"><dl class="simple api-field highlight">
-<dt id="rinoh.style.StyleSheetFile.__init__.filename"><span class="sig-name descname">filename</span><span class="p"> : </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)">str</a></span></span><a class="headerlink" href="#rinoh.style.StyleSheetFile.__init__.filename" title="Permalink to this definition">¶</a></dt><dd><p>the path to the style sheet file</p>
+<dt id="rinoh.style.StyleSheetFile.__init__.filename"><span class="sig-name descname">filename</span><span class="p"> : </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)">str</a></span></span><a class="headerlink" href="#rinoh.style.StyleSheetFile.__init__.filename" title="Permalink to this definition">¶</a></dt><dd><p>the path to the style sheet file</p>
 </dd>
 </dl>
 </dd>
@@ -1647,7 +1647,7 @@ style sheet file.</p>
 <dt class="sig sig-object highlight py" id="rinoh.style.StyledMatcher">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rinoh.style.</span></span><span class="sig-name descname"><span class="pre">StyledMatcher</span></span><span class="sig-paren">(</span><span class="sig-param-decl"><em class="sig-param"><span class="n"><span class="pre">mapping_or_iterable</span></span><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="kc">None</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em></span><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.style.StyledMatcher" title="Permalink to this definition">¶</a></dt>
 <dd><p>Dictionary mapping labels to selectors.</p>
-<p>This matcher can be initialized in the same way as a <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.11)"><code class="docutils literal notranslate"><span class="pre">dict</span></code></a>
+<p>This matcher can be initialized in the same way as a <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><code class="docutils literal notranslate"><span class="pre">dict</span></code></a>
 by passing a mapping, an interable and/or keyword arguments.</p>
 <dl class="py method objdesc">
 <dt class="sig sig-object highlight py" id="rinoh.style.StyledMatcher.update">
