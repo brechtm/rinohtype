@@ -193,11 +193,7 @@ class Table(Flowable):
         - cell contents
 
         """
-        if self.body is not None:
-            num_cols = self.body.num_columns
-        else:
-            # Table is a head-only table
-            num_cols = self.head.num_columns
+        num_cols = (self.body or self.head).num_columns
         width = self._width(container)
         if width == FlowableWidth.FILL:
             width = 100 * PERCENT

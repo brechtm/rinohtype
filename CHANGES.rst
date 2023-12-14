@@ -61,6 +61,7 @@ Changed:
 
 Fixed:
 
+* Rendering of tables with no body (#420, PR #422 by th0mr)
 * Hyphenation of the first word on a line (#188, #416)
 * AttributeError: 'ZeroWidthSpace' object has no attribute 'hyphenate' (#415,
   PR #417 by Jack Whitham)

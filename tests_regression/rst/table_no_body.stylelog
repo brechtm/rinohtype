@@ -1,0 +1,127 @@
+---------------------------------- page 1 ----------------------------------
+#### FlowablesContainer('background')
+  StaticGroupedFlowables()
+#### FootnoteContainer('footnotes')
+  StaticGroupedFlowables()
+#### DownExpandingContainer('floats')
+  StaticGroupedFlowables()
+#### ChainedContainer('column1')
+  StaticGroupedFlowables()
+    DocumentTree()   table_no_body.rst   <document>
+      TableWithCaption()   table_no_body.rst   <table>
+           x (0,0,0,0,2) table with caption
+        Caption('Table 1. Table with header but w...')
+             > (0,0,0,0,4) table caption [Sphinx] > caption
+            SingleStyledText('Table')
+            SingleStyledText(' ')
+            MixedStyledText('1. ', style='label')
+              SingleStyledText('')
+              SingleStyledText('1')
+              SingleStyledText('. ')
+            MixedStyledText('Table with header but without bo...')
+              MixedStyledText('Table with header but without bo...')
+                SingleStyledText('Table with header but without bo...')
+        Table()
+             > (0,0,0,0,2) table [Sphinx] > DEFAULT
+          TableHead()
+            TableRow()
+                TableCellBackground()
+                     x (0,0,0,0,10) table head cell background
+                TableCellBorder('top')
+                     > (0,0,0,2,8) table top border [Sphinx] > DEFAULT
+                       (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+                TableCellBorder('right')
+                     x (0,0,0,1,8) table head cell right border
+                     > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+                TableCellBorder('bottom')
+                     > (0,0,0,2,8) table head bottom border [Sphinx] > table top border
+                       (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+                TableCellBorder('left')
+                     x (0,0,0,2,8) table head left border
+                     x (0,0,0,2,4) table left border
+                     x (0,0,0,1,8) table head cell left border
+                     > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
+              TableCell()   <entry>
+                   x (0,0,0,0,8) table head cell
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Paragraph('What')   table_no_body.rst:1   <paragraph>
+                     > (0,0,0,0,10) table head cell paragraph [Sphinx] > table body cell paragraph
+                       (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                       (0,0,0,0,2) body [Sphinx] > default
+                    MixedStyledText('What')
+                      MixedStyledText('What')
+                        SingleStyledText('What')
+                TableCellBackground()
+                     x (0,0,0,0,10) table head cell background
+                TableCellBorder('top')
+                     > (0,0,0,2,8) table top border [Sphinx] > DEFAULT
+                       (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+                TableCellBorder('right')
+                     x (0,0,0,1,8) table head cell right border
+                     > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+                TableCellBorder('bottom')
+                     > (0,0,0,2,8) table head bottom border [Sphinx] > table top border
+                       (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+                TableCellBorder('left')
+                     x (0,0,0,1,8) table head cell left border
+                     > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
+              TableCell()   <entry>
+                   x (0,0,0,0,8) table head cell
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Paragraph('A')   table_no_body.rst:1   <paragraph>
+                     > (0,0,0,0,10) table head cell paragraph [Sphinx] > table body cell paragraph
+                       (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                       (0,0,0,0,2) body [Sphinx] > default
+                    MixedStyledText('A')
+                      MixedStyledText('A')
+                        SingleStyledText('A')
+                TableCellBackground()
+                     x (0,0,0,0,10) table head cell background
+                TableCellBorder('top')
+                     > (0,0,0,2,8) table top border [Sphinx] > DEFAULT
+                       (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+                TableCellBorder('right')
+                     x (0,0,0,1,8) table head cell right border
+                     > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+                TableCellBorder('bottom')
+                     > (0,0,0,2,8) table head bottom border [Sphinx] > table top border
+                       (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+                TableCellBorder('left')
+                     x (0,0,0,1,8) table head cell left border
+                     > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
+              TableCell()   <entry>
+                   x (0,0,0,0,8) table head cell
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Paragraph('Fun')   table_no_body.rst:1   <paragraph>
+                     > (0,0,0,0,10) table head cell paragraph [Sphinx] > table body cell paragraph
+                       (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                       (0,0,0,0,2) body [Sphinx] > default
+                    MixedStyledText('Fun')
+                      MixedStyledText('Fun')
+                        SingleStyledText('Fun')
+                TableCellBackground()
+                     x (0,0,0,0,10) table head cell background
+                TableCellBorder('top')
+                     > (0,0,0,2,8) table top border [Sphinx] > DEFAULT
+                       (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+                TableCellBorder('right')
+                     x (0,0,0,2,8) table head right border
+                     x (0,0,0,2,4) table right border
+                     x (0,0,0,1,8) table head cell right border
+                     > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+                TableCellBorder('bottom')
+                     > (0,0,0,2,8) table head bottom border [Sphinx] > table top border
+                       (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+                TableCellBorder('left')
+                     x (0,0,0,1,8) table head cell left border
+                     > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
+              TableCell()   <entry>
+                   x (0,0,0,0,8) table head cell
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Paragraph('Issue')   table_no_body.rst:1   <paragraph>
+                     > (0,0,0,0,10) table head cell paragraph [Sphinx] > table body cell paragraph
+                       (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                       (0,0,0,0,2) body [Sphinx] > default
+                    MixedStyledText('Issue')
+                      MixedStyledText('Issue')
+                        SingleStyledText('Issue')
