@@ -6,7 +6,7 @@
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
 
-import hashlib, time
+import hashlib, time, sys
 
 from binascii import hexlify
 from codecs import BOM_UTF16_BE
@@ -566,7 +566,8 @@ class Document(dict):
         trailer['Size'] = Integer(self.max_identifier + 1)
         trailer['Root'] = self.catalog
         trailer['Info'] = self.info
-        md5sum = hashlib.md5()
+        # If using Python 3.9 or later, set usedforsecurity to False
+        md5sum = hashlib.md5() if sys.version_info < (3, 9) else hashlib.md5(usedforsecurity=False)
         md5sum.update(str(self.timestamp).encode())
         md5sum.update(str(file.tell()).encode())
         for value in self.info.values():
