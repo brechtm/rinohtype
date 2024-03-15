@@ -269,7 +269,7 @@ except NameError:
         """
         Convert bytearray to bytes.
 
-        Recal that `row` will actually be an ``array``.
+        Recall that `row` will actually be an ``array``.
         """
         return row.tostring()
 
@@ -901,11 +901,11 @@ class Writer(object):
 
         if 'resolution' not in kwargs and 'physical' in kwargs:
             kwargs['resolution'] = kwargs.pop('physical')
-            warnings.warn('please use resolution instead of physilcal',
+            warnings.warn('please use resolution instead of physical',
                           DeprecationWarning)
 
         if not isinteger(bitdepth) or bitdepth < 1 or 16 < bitdepth:
-            raise ValueError("bitdepth (%r) must be a postive integer <= 16" %
+            raise ValueError("bitdepth (%r) must be a positive integer <= 16" %
               bitdepth)
 
         self.pixbitdepth = bitdepth
@@ -981,7 +981,7 @@ class Writer(object):
         """
         Add ICC Profile.
 
-        Prefered way is tuple (`profile_name`, `profile_bytes`), but only
+        Preferred way is tuple (`profile_name`, `profile_bytes`), but only
         bytes with name as separate argument is also supported.
         """
         if isinstance(profile, (basestring, bytes)):
@@ -1057,7 +1057,7 @@ class Writer(object):
         """
         Add physical pixel dimensions
 
-        `resolution` supposed two be tuple of two parameterts: pixels per unit
+        `resolution` supposed two be tuple of two parameters: pixels per unit
         and unit type; unit type may be omitted
         pixels per unit could be simple integer or tuple of (ppu_x, ppu_y)
         Also possible to use all three parameters im row
@@ -1470,7 +1470,7 @@ class Writer(object):
             if len(data) > self.chunk_limit:
                 yield bytearray_to_bytes(data)
                 # Because of our very witty definition of ``extend``,
-                # above, we must re-use the same ``data`` object.  Hence
+                # above, we must reuse the same ``data`` object.  Hence
                 # we use ``del`` to empty this one, rather than create a
                 # fresh one (which would be my natural FP instinct).
                 del data[:]
@@ -1737,7 +1737,7 @@ class Filter(BaseFilter):
 
         `filter_type` may be integer to apply basic filter or
         adaptive strategy with dict
-        (`name` is reqired field, others may tune strategy)
+        (`name` is required field, others may tune strategy)
         """
         # Recall that filtering algorithms are applied to bytes,
         # not to pixels, regardless of the bit depth or colour type
@@ -1761,7 +1761,7 @@ class Filter(BaseFilter):
 
 def register_extra_filter(selector, name):
     """
-    Register adaptive filter selection strategy for futher usage.
+    Register adaptive filter selection strategy for further usage.
 
     `selector` - callable like ``def(line, cfg, filter_obj)``
 
@@ -2612,7 +2612,7 @@ class Reader(object):
 
     def idatdecomp(self, lenient=False, max_length=0):
         """Iterator that yields decompressed ``IDAT`` strings."""
-        # Currently, with no max_length paramter to decompress, this
+        # Currently, with no max_length parameter to decompress, this
         # routine will do one yield per IDAT chunk.  So not very
         # incremental.
         d = zlib.decompressobj()

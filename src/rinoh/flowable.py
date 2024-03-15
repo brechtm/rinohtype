@@ -497,7 +497,7 @@ class GroupedFlowables(Flowable):
     """Groups a list of flowables and renders them one below the other.
 
     Makes sure that a flowable for which `keep_with_next` is enabled is not
-    seperated from the flowable that follows it.
+    separated from the flowable that follows it.
 
     Subclasses should implement :meth:`flowables`.
 

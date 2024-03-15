@@ -215,7 +215,7 @@ command-line :program:`rinoh` tool by passing it to the
 :ref:`Sphinx_builder`, you can specify the template in the
 :confval:`rinoh_documents` option in ``conf.py``.
 
-To render a document using this template configuration programatically, load
+To render a document using this template configuration programmatically, load
 the template file using :class:`.TemplateConfigurationFile`:
 
 .. include:: testcode.rst
