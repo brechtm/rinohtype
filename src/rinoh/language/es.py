@@ -9,6 +9,7 @@
 from .cls import Language
 from ..structure import SectionTitles, AdmonitionTitles
 
+
 ES = Language('es', 'Spanish')
 
 SectionTitles(

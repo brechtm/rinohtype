@@ -5,7 +5,7 @@ Document Templates
 
 When it is not possible to achieve a particular document style using one of the
 existing templates and a custom template configuration, you can create a new
-template. A new template is programmed in Python and therefor it is required
+template. A new template is programmed in Python and therefore it is required
 that you are familiar with Python, or at least with general object-oriented
 programming.
 

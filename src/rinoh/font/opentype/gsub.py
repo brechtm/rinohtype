@@ -32,7 +32,7 @@ class SingleSubTable(MultiFormatTable):
             return self['Substitute'][index]
 
 
-# Multiple subtitution (subtable format 2)
+# Multiple substitution (subtable format 2)
 class Sequence(OpenTypeTable):
     entries = [('GlyphCount', uint16),
                ('Substitute', context_array(glyph_id, 'GlyphCount'))]
@@ -52,7 +52,7 @@ class MultipleSubTable(OpenTypeTable):
         raise NotImplementedError
 
 
-# Alternate subtitution (subtable format 3)
+# Alternate substitution (subtable format 3)
 class AlternateSubTable(OpenTypeTable):
     pass
 

@@ -468,7 +468,7 @@ class UpExpandingContainer(_FlowablesContainer, ExpandingContainerBase):
 
 
 class UpDownExpandingContainer(_FlowablesContainer, ExpandingContainerBase):
-    """A container that is anchored in the middle and symetrically expands
+    """A container that is anchored in the middle and symmetrically expands
     upwards and downwards."""
 
     def __init__(self, name, type, parent, left=None, middle=None, width=None,
