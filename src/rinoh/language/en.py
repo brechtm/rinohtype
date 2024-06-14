@@ -7,10 +7,16 @@
 
 
 from .cls import Language
+from ..image import FloatLabels
 from ..structure import SectionTitles, AdmonitionTitles
 
 
 EN = Language('en', 'English')
+
+FloatLabels(
+    figure='Figure',
+    table='Table',
+) in EN
 
 SectionTitles(
     contents='Table of Contents',

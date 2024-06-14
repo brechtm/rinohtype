@@ -7,10 +7,16 @@
 
 
 from .cls import Language
+from ..image import FloatLabels
 from ..structure import SectionTitles, AdmonitionTitles
 
 
 CS = Language('cs', 'Česky')
+
+FloatLabels(
+    figure='Obrázek',
+    table='Tabulka',
+) in CS
 
 SectionTitles(
     contents='Obsah',

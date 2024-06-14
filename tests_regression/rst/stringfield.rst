@@ -8,6 +8,20 @@ First Chapter
 
 A paragraph.
 
+.. table:: Truth table for "not"
+   :widths: auto
+
+   =====  =====
+     A    not A
+   =====  =====
+   False  True
+   True   False
+   =====  =====
+
+.. figure:: ../images/title.png
+
+   Figure caption
+
 
 Second Chapter
 --------------

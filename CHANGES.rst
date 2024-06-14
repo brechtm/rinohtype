@@ -61,6 +61,7 @@ Changed:
 
 Fixed:
 
+* Caption labels ("Figure" ad "Table") were not localized
 * Rendering of tables with no body (#420, PR #422 by th0mr)
 * Hyphenation of the first word on a line (#188, #416)
 * AttributeError: 'ZeroWidthSpace' object has no attribute 'hyphenate' (#415,
@@ -78,7 +79,7 @@ Fixed:
 
   - Some fonts on Google Fonts have the 'otf' extension (instead of 'ttf');
     also collect these.
-  - Look recursively for font files in the a Google Fonts directory (e.g. Asap
+  - Look recursively for font files in a Google Fonts directory (e.g. Asap
     fonts are now stored in a deeper directory).
 
 

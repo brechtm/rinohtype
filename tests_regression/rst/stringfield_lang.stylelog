@@ -1,7 +1,7 @@
 ---------------------------------- page 1 ----------------------------------
-#### FootnoteContainer('footnotes')
+#### FlowablesContainer('background')
   StaticGroupedFlowables()
-#### DownExpandingContainer('floats')
+#### FootnoteContainer('footnotes')
   StaticGroupedFlowables()
 #### FlowablesContainer('chapter title')
   Paragraph('Hoofdstuk 1', style='body matter chapter label')
@@ -34,6 +34,182 @@
             MixedStyledText('Een paragraaf.')
               MixedStyledText('Een paragraaf.')
                 SingleStyledText('Een paragraaf.')
+        TableWithCaption()   stringfield_lang.rst   <table>
+             x (0,0,0,0,2) table with caption
+          Caption('Tabel 1.1. Waarheidstabel voor "...')
+               > (0,0,0,0,4) table caption [Sphinx] > caption
+              StringField('Tabel')
+                SingleStyledText('Tabel')
+              SingleStyledText(' ')
+              MixedStyledText('1.1. ', style='label')
+                SingleStyledText('')
+                SingleStyledText('1.1')
+                SingleStyledText('. ')
+              MixedStyledText('Waarheidstabel voor "not"')
+                MixedStyledText('Waarheidstabel voor "not"')
+                  SingleStyledText('Waarheidstabel voor "not"')
+          Table()
+               > (0,0,0,0,2) table [Sphinx] > DEFAULT
+            TableHead()
+              TableRow()
+                  TableCellBackground()
+                       x (0,0,0,0,10) table head cell background
+                  TableCellBorder('top')
+                       > (0,0,0,2,8) table top border [Sphinx] > DEFAULT
+                         (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+                  TableCellBorder('right')
+                       x (0,0,0,1,8) table head cell right border
+                       > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+                  TableCellBorder('bottom')
+                       > (0,0,0,2,8) table head bottom border [Sphinx] > table top border
+                         (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+                  TableCellBorder('left')
+                       x (0,0,0,2,8) table head left border
+                       x (0,0,0,2,4) table left border
+                       x (0,0,0,1,8) table head cell left border
+                       > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
+                TableCell()   <entry>
+                     x (0,0,0,0,8) table head cell
+                     > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                  Paragraph('A')   stringfield_lang.rst:12   <paragraph>
+                       > (0,0,0,0,10) table head cell paragraph [Sphinx] > table body cell paragraph
+                         (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                         (0,0,0,0,2) body [Sphinx] > default
+                      MixedStyledText('A')
+                        MixedStyledText('A')
+                          SingleStyledText('A')
+                  TableCellBackground()
+                       x (0,0,0,0,10) table head cell background
+                  TableCellBorder('top')
+                       > (0,0,0,2,8) table top border [Sphinx] > DEFAULT
+                         (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+                  TableCellBorder('right')
+                       x (0,0,0,2,8) table head right border
+                       x (0,0,0,2,4) table right border
+                       x (0,0,0,1,8) table head cell right border
+                       > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+                  TableCellBorder('bottom')
+                       > (0,0,0,2,8) table head bottom border [Sphinx] > table top border
+                         (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+                  TableCellBorder('left')
+                       x (0,0,0,1,8) table head cell left border
+                       > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
+                TableCell()   <entry>
+                     x (0,0,0,0,8) table head cell
+                     > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                  Paragraph('not A')   stringfield_lang.rst:12   <paragraph>
+                       > (0,0,0,0,10) table head cell paragraph [Sphinx] > table body cell paragraph
+                         (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                         (0,0,0,0,2) body [Sphinx] > default
+                      MixedStyledText('not A')
+                        MixedStyledText('not A')
+                          SingleStyledText('not A')
+            TableBody()
+              TableRow()
+                  TableCellBackground()
+                       x (0,0,0,2,8) table body cell background on odd row
+                  TableCellBorder('top')
+                       > (0,0,0,2,8) table body top border [Sphinx] > table head bottom border
+                         (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+                  TableCellBorder('right')
+                       > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+                  TableCellBorder('bottom')
+                       > (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+                  TableCellBorder('left')
+                       x (0,0,0,2,8) table body left border
+                       x (0,0,0,2,4) table left border
+                       > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
+                TableCell()   <entry>
+                     > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                  Paragraph('False')   stringfield_lang.rst:14   <paragraph>
+                       > (0,0,0,1,8) table first column paragraph [Sphinx] > table body cell paragraph
+                         (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                         (0,0,0,0,2) body [Sphinx] > default
+                      MixedStyledText('False')
+                        MixedStyledText('False')
+                          SingleStyledText('False')
+                  TableCellBackground()
+                       x (0,0,0,2,8) table body cell background on odd row
+                  TableCellBorder('top')
+                       > (0,0,0,2,8) table body top border [Sphinx] > table head bottom border
+                         (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+                  TableCellBorder('right')
+                       x (0,0,0,2,8) table body right border
+                       x (0,0,0,2,4) table right border
+                       > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+                  TableCellBorder('bottom')
+                       > (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+                  TableCellBorder('left')
+                       > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
+                TableCell()   <entry>
+                     > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                  Paragraph('True')   stringfield_lang.rst:14   <paragraph>
+                       > (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                         (0,0,0,0,2) body [Sphinx] > default
+                      MixedStyledText('True')
+                        MixedStyledText('True')
+                          SingleStyledText('True')
+              TableRow()
+                  TableCellBackground()
+                       x (0,0,0,2,8) table body cell background on even row
+                  TableCellBorder('top')
+                       > (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+                  TableCellBorder('right')
+                       > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+                  TableCellBorder('bottom')
+                       > (0,0,0,2,8) table bottom border [Sphinx] > table top border
+                         (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+                  TableCellBorder('left')
+                       x (0,0,0,2,8) table body left border
+                       x (0,0,0,2,4) table left border
+                       > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
+                TableCell()   <entry>
+                     > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                  Paragraph('True')   stringfield_lang.rst:15   <paragraph>
+                       > (0,0,0,1,8) table first column paragraph [Sphinx] > table body cell paragraph
+                         (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                         (0,0,0,0,2) body [Sphinx] > default
+                      MixedStyledText('True')
+                        MixedStyledText('True')
+                          SingleStyledText('True')
+                  TableCellBackground()
+                       x (0,0,0,2,8) table body cell background on even row
+                  TableCellBorder('top')
+                       > (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+                  TableCellBorder('right')
+                       x (0,0,0,2,8) table body right border
+                       x (0,0,0,2,4) table right border
+                       > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+                  TableCellBorder('bottom')
+                       > (0,0,0,2,8) table bottom border [Sphinx] > table top border
+                         (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+                  TableCellBorder('left')
+                       > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
+                TableCell()   <entry>
+                     > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                  Paragraph('False')   stringfield_lang.rst:15   <paragraph>
+                       > (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                         (0,0,0,0,2) body [Sphinx] > default
+                      MixedStyledText('False')
+                        MixedStyledText('False')
+                          SingleStyledText('False')
+        Figure()   stringfield_lang.rst   <figure>
+             > (0,0,0,0,2) figure [Sphinx] > DEFAULT
+          Image('../images/title.png')   <image>
+               > (0,0,0,0,4) figure image [Sphinx] > image
+                 (0,0,0,0,2) image [Sphinx] > DEFAULT
+          Caption('Figuur 1.1. Onderschrift')   stringfield_lang.rst:20   <caption>
+               > (0,0,0,0,4) figure caption [Sphinx] > caption
+              StringField('Figuur')
+                SingleStyledText('Figuur')
+              SingleStyledText(' ')
+              MixedStyledText('1.1. ', style='label')
+                SingleStyledText('')
+                SingleStyledText('1.1')
+                SingleStyledText('. ')
+              MixedStyledText('Onderschrift')
+                MixedStyledText('Onderschrift')
+                  SingleStyledText('Onderschrift')
 #### DownExpandingContainer('footer')
   StaticGroupedFlowables()
     Footer('		1')
@@ -45,6 +221,8 @@
             Field('1')
               SingleStyledText('1')
 ---------------------------------- page 2 ----------------------------------
+#### FlowablesContainer('background')
+  StaticGroupedFlowables()
 #### FootnoteContainer('footnotes')
   StaticGroupedFlowables()
 #### DownExpandingContainer('floats')
@@ -78,9 +256,9 @@
                 MixedStyledText('Eerste hoofdstuk')
                   SingleStyledText('Eerste hoofdstuk')
 ---------------------------------- page 3 ----------------------------------
-#### FootnoteContainer('footnotes')
+#### FlowablesContainer('background')
   StaticGroupedFlowables()
-#### DownExpandingContainer('floats')
+#### FootnoteContainer('footnotes')
   StaticGroupedFlowables()
 #### FlowablesContainer('chapter title')
   Paragraph('Hoofdstuk 2', style='body matter chapter label')
@@ -105,24 +283,26 @@
 #### ChainedContainer('column1')
   (continued) StaticGroupedFlowables()
     (continued) DocumentTree()   stringfield_lang.rst   <document>
-      Section(id='tweede-hoofdstuk')   stringfield_lang.rst:10   <section>
+      Section(id='tweede-hoofdstuk')   stringfield_lang.rst:25   <section>
            > (0,0,0,1,4) content chapter [Sphinx] > chapter
              (0,0,0,1,2) chapter [Sphinx] > DEFAULT
         Admonition()   stringfield_lang.rst   <warning>
              > (0,0,0,1,2) warning admonition [Sphinx] > boxed builtin admonition
                (0,0,0,0,2) admonition [Sphinx] > DEFAULT
-          Paragraph('Waarschuwing Veeg je voeten.')
-               > (0,0,0,0,2) body [Sphinx] > default
-              MixedStyledText('Waarschuwing Veeg je voeten.')
-                MixedStyledText('Waarschuwing Veeg je voeten.')
+          AdmonitionTitleParagraph('WaarschuwingVeeg je voeten.')   stringfield_lang.rst:27   <paragraph>
+               x (1,0,0,1,4) warning admonition title paragraph
+               x (1,0,0,0,4) admonition title paragraph
+               > (0,0,0,0,1) body [Sphinx] > default
+              MixedStyledText('WaarschuwingVeeg je voeten.')
+                MixedStyledText('WaarschuwingVeeg je voeten.')
                   MixedStyledText('Waarschuwing', style='inline title')
                        x (0,0,1,1,3) warning admonition inline title
                        > (0,0,1,0,3) admonition inline title [Sphinx] > admonition title
                     SingleStyledText('Waarschuwing')
-                  SingleStyledText(' ')
                   MixedStyledText('Veeg je voeten.')
-                    SingleStyledText('Veeg je voeten.')
-        Paragraph('Een paragraaf in het tweede hoof...')   stringfield_lang.rst:14   <paragraph>
+                    MixedStyledText('Veeg je voeten.')
+                      SingleStyledText('Veeg je voeten.')
+        Paragraph('Een paragraaf in het tweede hoof...')   stringfield_lang.rst:29   <paragraph>
              > (0,0,0,0,2) body [Sphinx] > default
             MixedStyledText('Een paragraaf in het tweede hoof...')
               MixedStyledText('Een paragraaf in het tweede hoof...')

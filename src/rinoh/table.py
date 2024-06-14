@@ -422,7 +422,7 @@ class TableWithCaptionStyle(FloatStyle, GroupedFlowablesStyle):
 
 class TableWithCaption(Float, StaticGroupedFlowables):
     style_class = TableWithCaptionStyle
-    category = 'Table'
+    category = 'table'
 
 
 class TableSection(Styled, list):
@@ -649,7 +649,7 @@ class TableCellBackground(Rectangle):
 
 
 class ListOfTables(ListOf):
-    category = 'Table'
+    category = 'table'
 
 
 class ListOfTablesSection(ListOfSection):
