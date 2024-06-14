@@ -84,7 +84,7 @@ decoding_table = (
     '\ufffe'    #  0x13 -> (DEVICE CONTROL THREE)
     '\ufffe'    #  0x14 -> (DEVICE CONTROL FOUR)
     '\ufffe'    #  0x15 -> (NEGATIVE ACKNOWLEDGE)
-    '\ufffe'    #  0x16 -> (SYNCRONOUS IDLE)
+    '\ufffe'    #  0x16 -> (SYNCHRONOUS IDLE)
     '\ufffe'    #  0x17 -> (END OF TRANSMISSION BLOCK)
     '\u02d8'    #  0x18 -> BREVE
     '\u02c7'    #  0x19 -> CARON

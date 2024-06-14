@@ -492,7 +492,7 @@ class FreeObjectEntry(XRefEntry):
         self.generation = generation
 
     def get_object(self, document):
-        raise Exception('Cannot retieve a free object with id {}'
+        raise Exception('Cannot retrieve a free object with id {}'
                         .format(self.identifier))
 
 

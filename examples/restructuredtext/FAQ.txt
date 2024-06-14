@@ -189,7 +189,7 @@ taken with capitalization, to avoid confusion with "REST__", an
 acronym for "Representational State Transfer".
 
 The abbreviations "reSTX" and "rSTX"/"rstx" should **not** be used;
-they overemphasize reStructuredText's precedessor, Zope's
+they overemphasize reStructuredText's predecessor, Zope's
 StructuredText.
 
 __ http://en.wikipedia.org/wiki/Representational_State_Transfer
@@ -300,7 +300,7 @@ charents naturally; instead of writing "&mdash;" you'd have to write
 "&amp;mdash;".
 
 For the common case of long dashes, you might also want to insert the
-following substitution definitons into your document (both of them are
+following substitution definitions into your document (both of them are
 using the "unicode_" directive)::
 
     .. |--| unicode:: U+2013   .. en dash
@@ -517,7 +517,7 @@ Could the requirement for blank lines around lists be relaxed?
 
 Short answer: no.
 
-In reStructuredText, it would be impossible to unambigously mark up
+In reStructuredText, it would be impossible to unambiguously mark up
 and parse lists without blank lines before and after.  Deeply nested
 lists may look ugly with so many blank lines, but it's a price we pay
 for unambiguous markup.  Some other plaintext markup systems do not
@@ -766,7 +766,7 @@ or geresh_) will suffice.
 
 Moreover, it's possible to translate_ all reStructuredText keywords.
 This was not yet done for any RTL language, but when it is, it will be
-possible to write an RTL document with vitually no English.  This will
+possible to write an RTL document with virtually no English.  This will
 allow reasonable use of editors limited to a single base direction for
 the whole document (like Notepad, Vim and text boxes in Firefox).
 
@@ -780,11 +780,11 @@ transparent implicit solution for HTML:
 * Grab http://cben-hacks.sourceforge.net/bidi/hibidi.py and
   http://cben-hacks.sourceforge.net/bidi/rst2html_hibidi.py.
   Put them both in the same directory and make them executable.
-  
+
 * Use ``rst2html_hibidi.py`` instead of ``rst2html.py``.
 
 * It infers dir attributes in the HTML from the text.  It does it
-  hierachically, giving much better results than usual.  You can still
+  hierarchically, giving much better results than usual.  You can still
   use LRM/RLM and LRE/RLE/PDF control codes to help it.
 
   * If you want the gory details: See the full theory_, and note the
@@ -819,7 +819,7 @@ classes in the HTML:
 
 * Select this new stylesheet with ``--stylesheet=<file>`` or the
   stylesheet_ setting.
-  
+
 * Now if you need to override the direction of some element (from a
   paragraph to a whole section), write::
 
@@ -1095,7 +1095,7 @@ spaces.  When encoded with UTF-8 and viewed with ordinary ASCII tools,
 these characters will appear to be multi-character garbage.
 
 You may have an decoding problem in your browser (or editor, etc.).
-The encoding of the output is set to "utf-8", but your browswer isn't
+The encoding of the output is set to "utf-8", but your browser isn't
 recognizing that.  You can either try to fix your browser (enable
 "UTF-8 character set", sometimes called "Unicode"), or choose a
 different encoding for the HTML output.  You can also try
@@ -1231,11 +1231,11 @@ the reStructuredText markup.
 .. Here's a code css to make a table colourful::
 
    /* Table: */
-   
+
    th {
        background-color: #ede;
    }
-   
+
    /* alternating colors in table rows */
    table.docutils tr:nth-child(even) {
        background-color: #F3F3FF;
@@ -1243,9 +1243,9 @@ the reStructuredText markup.
    table.docutils tr:nth-child(odd) {
        background-color: #FFFFEE;
    }
-   
+
    table.docutils tr {
        border-style: solid none solid none;
        border-width: 1px 0 1px 0;
        border-color: #AAAAAA;
-   }  
+   }
