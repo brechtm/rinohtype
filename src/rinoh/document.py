@@ -231,7 +231,8 @@ class Document(object):
         document_tree (DocumentTree): a tree of the document's contents
         stylesheet (StyleSheet): style sheet used to style document elements
         language (Language): the language to use for standard strings
-        strings (Strings): overrides localized strings provided by `language`
+        strings (Strings): user-defined string variables and can override
+          localized strings provided by `language`
         backend: the backend used for rendering the document
 
     """
@@ -380,21 +381,27 @@ to the terms of the GNU Affero General Public License version 3.''')
             cache = (self.part_page_counts, self.page_references)
             pickle.dump(cache, file)
 
-    def set_string(self, strings_class, key, value):
-        self._strings[strings_class][key] = value
+    def set_string(self, key, value, user=False):
+        if user:
+            self._strings.set_user_string(key, value)
+        else:
+            self._strings.set_builtin_string(key, value)
 
-    def get_string(self, strings_class, key):
-        if (strings_class in self._strings
-                and key in self._strings[strings_class]):
-            return self._strings[strings_class][key]
+    def get_string(self, key, user=False):
+        if user:
+            result = self._strings.user.get(key, None)
+            if result is None:
+                warn('The "{}" user string is not defined.')
+            return result or ''
+        if key in self._strings.builtin:
+            return self._strings.builtin[key]
         try:
-            return self.language.strings[strings_class][key]
+            return self.language.strings[key]
         except KeyError:
-            warn('The {} "{}" string is not defined for {} ({}). Using the '
-                 'English string instead.'.format(strings_class.__name__, key,
-                                                  self.language.name,
-                                                  self.language.code))
-            return EN.strings[strings_class][key]
+            warn('The "{}" string is not defined for {} ({}). Using the English'
+                 ' string instead.'
+                 .format(key, self.language.name, self.language.code))
+            return EN.strings[key]
 
     def add_sideways_float(self, float):
         self.sideways_floats.append(float)

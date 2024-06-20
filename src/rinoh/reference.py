@@ -16,7 +16,7 @@ from .flowable import (Flowable, LabeledFlowable, DummyFlowable,
 from .layout import ContainerOverflow
 from .number import NumberStyle, Label, format_number
 from .paragraph import Paragraph, ParagraphStyle, ParagraphBase
-from .strings import StringCollection, StringField
+from .strings import StringField
 from .style import HasClass, HasClasses, Styled
 from .text import (StyledText, TextStyle, SingleStyledText,
                    MixedStyledTextBase, MixedStyledText, ErrorText)
@@ -224,7 +224,7 @@ class NoteStyle(LabeledFlowableStyle):
 
 
 class Note(LabeledFlowable):
-    category = 'Note'
+    category = 'note'
     style_class = NoteStyle
 
     def __init__(self, flowable, id=None, style=None, parent=None):
@@ -369,11 +369,7 @@ class SECTION_TITLE(SectionFieldType):
     reference_type = 'title'
 
 
-from . import structure    # fills StringCollection.subclasses
-
-RE_STRINGFIELD = ('|'.join(r'{}\.(?:[a-z_][a-z0-9_]*)'
-                           .format(collection_name)
-                           for collection_name in StringCollection.subclasses))
+RE_STRINGFIELD = r'[@$](?:[a-z_][a-z0-9_]*)'
 
 
 class Field(MixedStyledTextBase):

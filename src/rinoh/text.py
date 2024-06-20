@@ -249,8 +249,7 @@ class StyledText(InlineStyled, AcceptNoneAttributeType):
             try:
                 return ControlCharacter.all[string]()
             except KeyError:
-                return SingleStyledText(string.format(**NAME2CHAR),
-                                        style=style)
+                return SingleStyledText(string.format(**NAME2CHAR), style=style)
 
         return Field.substitute(text, substitute_controlchars_htmlentities,
                                 style=style)

@@ -36,7 +36,7 @@ from .reference import (Field, SECTION_NUMBER, SECTION_TITLE,
                         PAGE_NUMBER, NUMBER_OF_PAGES)
 from .resource import Resource
 from .text import StyledText, Tab
-from .strings import StringCollection, Strings
+from .strings import Strings
 from .structure import Header, Footer, HorizontalRule, NewChapterException
 from .style import StyleSheet, Specificity, DocumentLocationType
 from .stylesheets import sphinx
@@ -617,12 +617,10 @@ class TemplateConfigurationFile(RuleSetFile, TemplateConfiguration):
     main_section = 'TEMPLATE_CONFIGURATION'
 
     def process_section(self, section_name, classifier, items):
-        if section_name in StringCollection.subclasses:
-            collection_cls = StringCollection.subclasses[section_name]
+        if section_name == 'STRINGS':
             strings = self.setdefault('strings', Strings())
-            collection_items = {name: StyledText.from_string(value)
-                                for name, value in items}
-            strings[collection_cls] = collection_cls(**collection_items)
+            for identifier, value in items:
+                strings[identifier] = StyledText.from_string(value)
         else:
             template_class = self.get_entry_class(section_name)
             self[section_name] = template_class(**dict(items))

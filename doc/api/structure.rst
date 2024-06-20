@@ -17,10 +17,6 @@ Sections
     :members:
 
 
-.. autoclass:: SectionTitles
-    :members:
-
-
 Lists
 ~~~~~
 

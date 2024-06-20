@@ -41,6 +41,11 @@ New Features:
 
 Changed:
 
+* handling of localized strings and user-defined strings has been reworked
+  * built-in (localized) strings are now indicated by a ``@`` prefix, while
+    user-defined strings have the ``$`` prefix
+  * built-in strings can be overridden, and user-defined strings can be set in
+    a template configuration file in the ``[STRINGS]`` section (with prefix!)
 * "words" containing spaces (such as paths and URLs) can now be split before
   each forward slash for line wrapping (#188, #416)
 * Support for Python 3.7 was dropped (end-of-life in June 2023)
@@ -61,7 +66,7 @@ Changed:
 
 Fixed:
 
-* Caption labels ("Figure" ad "Table") were not localized
+* Caption labels ("Figure", "Table", "Listing") were not localized
 * Rendering of tables with no body (#420, PR #422 by th0mr)
 * Hyphenation of the first word on a line (#188, #416)
 * AttributeError: 'ZeroWidthSpace' object has no attribute 'hyphenate' (#415,

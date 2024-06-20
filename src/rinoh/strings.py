@@ -13,112 +13,36 @@ from .text import StyledText, SingleStyledText, MixedStyledTextBase
 from .util import NamedDescriptor, WithNamedDescriptors
 
 
-__all__ = ['String', 'StringCollection', 'Strings', 'StringField']
+__all__ = ['Strings', 'StringField']
 
 
-class String(NamedDescriptor):
-    """Descriptor used to describe a configurable string
-
-    Args:
-        description (str): a short description for this string
-
-    """
-
-    def __init__(self, description):
-        self.description = description
-        self.name = None
-
-    def __get__(self, strings, type=None):
-        try:
-            return strings.get(self.name)
-        except AttributeError:
-            return self
-
-    def __set__(self, strings, value):
-        if not StyledText.check_type(value):
-            raise TypeError('String attributes only accept styled text'
-                            .format(self.name))
-        strings[self.name] = value
-
-
-class StringCollectionMeta(WithNamedDescriptors):
-    def __new__(metacls, classname, bases, cls_dict):
-        cls = super().__new__(metacls, classname, bases, cls_dict)
-        try:
-            StringCollection.subclasses[classname] = cls
-        except NameError:
-            pass  # cls is StringCollection
-        else:
-            strings = []
-            attrs = []
-            for name, string in cls_dict.items():
-                if not isinstance(string, String):
-                    continue
-                strings.append(string)
-                attrs.append('{} (:class:`.{}`): {}'
-                             .format(name, type(string).__name__,
-                                     string.description))
-            cls._strings = strings
-            cls.__doc__ += ('\n        '
-                            .join(chain(['\n\n    Attributes:'], attrs)))
-        return cls
-
-
-class StringCollection(dict, metaclass=StringCollectionMeta):
-    """A collection of related configurable strings"""
-
-    subclasses = {}
-
-    def __init__(self, **strings):
-        for name, value in strings.items():
-            string_descriptor = getattr(type(self), name, None)
-            if not isinstance(string_descriptor, String):
-                raise AttributeError("'{}' is not an accepted string for {}"
-                                     .format(name, type(self).__name__))
-            setattr(self, name, value)
-
-    def __getitem__(self, name):
-        return getattr(self, name)
-
-
-class UserStrings(dict, metaclass=StringCollectionMeta):
-    """Collection of user-specified strings
-
-    Unlike other string collections, these are not limited to a predefined set.
-
-    """
-
-    def __init__(self, **strings):
-        for name, value in strings.items():
-            if not StyledText.check_type(value):
-                raise TypeError('String attributes only accept styled text'
-                                .format(self.name))
-            self[name] = value
-
-
-class Strings(AcceptNoneAttributeType, dict):
+class Strings(AcceptNoneAttributeType):
     """Stores several :class:`StringCollection`\\ s"""
 
-    def __init__(self, *string_collections):
-        for string_collection in string_collections:
-            self[type(string_collection)] = string_collection
+    def __init__(self):
+        self.builtin = {}
+        self.user = {}
 
-    def __setitem__(self, string_collection_class, string_collection):
-        if string_collection_class in self:
-            raise ValueError("{} is already registered with this {} instance"
-                             .format(string_collection_class.__name__,
-                                     type(self).__name__))
-        super().__setitem__(string_collection_class, string_collection)
+    def __setitem__(self, identifier, value):
+        symbol = identifier[0]
+        if symbol not in '@$':
+            raise ValueError("A string identifier need to start with @, for "
+                             "builtin strings, or $ for user-defined strings")
+        key = identifier[1:]
+        if symbol == '@':
+            self.set_builtin_string(key, value)
+        else:
+            self.set_user_string(key, value)
 
-    def __missing__(self, string_collection_class):
-        instance = string_collection_class()
-        self[string_collection_class] = instance
-        return instance
+    def set_builtin_string(self, key, value):
+        self.builtin[key] = value
+
+    def set_user_string(self, key, value):
+        self.user[key] = value
 
     @classmethod
     def doc_format(cls):
-        return ('strings need to be entered in INI sections named after the '
-                ':class:`.StringCollection` subclasses')
+        return "strings need to be entered in INI in a section named 'STRINGS'"
 
 
 class StringField(MixedStyledTextBase):
@@ -129,37 +53,34 @@ class StringField(MixedStyledTextBase):
     :class:`.TemplateConfiguration`.
 
     """
-    def __init__(self, strings_class, key,
-                 style=None, parent=None, source=None):
+    def __init__(self, key, style=None, parent=None, source=None, user=False):
         super().__init__(style=style, parent=parent, source=source)
-        self.strings_class = strings_class
         self.key = key
+        self.user = user
 
     def __eq__(self, other):
         return type(self) == type(other) and self.__dict__ == other.__dict__
 
     def __str__(self):
-        result = "'{{{}.{}}}'".format(self.strings_class.__name__, self.key)
+        result = "'{{{}{}}}'".format('$' if self.user else '@', self.key)
         if self.style is not None:
             result += ' ({})'.format(self.style)
         return result
 
     def __repr__(self):
-        return ("{}({}, '{}', style={})"
-                .format(type(self).__name__, self.strings_class.__name__,
-                        self.key, self.style))
+        return ("{}({!r}, style={})"
+                .format(type(self).__name__, self.key, self.style))
 
     @classmethod
     def parse_string(cls, string, style=None):
-        collection, key = string.split('.')
-        return cls(StringCollection.subclasses[collection], key, style=style)
+        return cls(string[1:], style=style, user=string[0] == '$')
 
     def copy(self, parent=None):
-        return type(self)(self.strings_class, self.key, style=self.style,
-                          parent=parent, source=self.source)
+        return type(self)(self.key, style=self.style, parent=parent,
+                          source=self.source, user=self.user)
 
     def children(self, container):
-        text = container.document.get_string(self.strings_class, self.key)
+        text = container.document.get_string(self.key, self.user)
         if isinstance(text, StyledText):
             text.parent = self
             yield text

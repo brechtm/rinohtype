@@ -22,8 +22,7 @@ from .paragraph import (ParagraphBase, StaticParagraph, Paragraph,
 from .reference import (ReferenceField, ReferencingParagraph,
                         ReferencingParagraphStyle)
 from .text import StyledText, SingleStyledText, MixedStyledText, Tab
-from .style import PARENT_STYLE
-from .strings import StringCollection, String, StringField
+from .strings import StringField
 from .util import NotImplementedAttribute, itemcount
 
 __all__ = ['Section', 'Heading',
@@ -34,16 +33,6 @@ __all__ = ['Section', 'Heading',
            'TableOfContentsEntry', 'Admonition', 'AdmonitionStyle',
            'AdmonitionTitleParagraph',
            'HorizontalRule', 'HorizontalRuleStyle', 'OutOfLineFlowables']
-
-
-class SectionTitles(StringCollection):
-    """Collection of localized titles for common sections"""
-
-    contents = String('Title for the table of contents section')
-    list_of_figures = String('Title for the list of figures section')
-    list_of_tables = String('Title for the list of tables section')
-    chapter = String('Label for top-level sections')
-    index = String('Title for the index section')
 
 
 class SectionStyle(GroupedFlowablesStyle):
@@ -61,7 +50,7 @@ class SectionBase(GroupedFlowables):
 
     @property
     def category(self):
-        return 'Chapter' if self.level == 1 else 'Section'
+        return 'chapter' if self.level == 1 else 'section'
 
     @property
     def level(self):
@@ -219,7 +208,7 @@ class TableOfContentsStyle(GroupedFlowablesStyle, ParagraphStyle):
 
 class TableOfContentsSection(Section):
     def __init__(self):
-        section_title = StringField(SectionTitles, 'contents')
+        section_title = StringField('contents')
         super().__init__([Heading(section_title, style='unnumbered'),
                           TableOfContents()],
                          style='table of contents')
@@ -295,7 +284,7 @@ class ListOfSection(Section):
 
     def __init__(self):
         key = 'list_of_{}s'.format(self.list_class.category.lower())
-        section_title = StringField(SectionTitles, key)
+        section_title = StringField(key)
         self.list_of = self.list_class()
         super().__init__([Heading(section_title, style='unnumbered'),
                           self.list_of],
@@ -384,21 +373,6 @@ class AdmonitionStyle(GroupedFlowablesStyle):
                                          "with the body text, if possible")
 
 
-class AdmonitionTitles(StringCollection):
-    """Collection of localized titles for common admonitions"""
-
-    attention = String('Title for attention admonitions')
-    caution = String('Title for caution admonitions')
-    danger = String('Title for danger admonitions')
-    error = String('Title for error admonitions')
-    hint = String('Title for hint admonitions')
-    important = String('Title for important admonitions')
-    note = String('Title for note admonitions')
-    tip = String('Title for tip admonitions')
-    warning = String('Title for warning admonitions')
-    seealso = String('Title for see-also admonitions')
-
-
 class Admonition(StaticGroupedFlowables):
     style_class = AdmonitionStyle
 
@@ -413,8 +387,7 @@ class Admonition(StaticGroupedFlowables):
         return self.custom_title.to_string(None) if self.custom_title else None
 
     def title(self, document):
-        return (self.custom_title
-                or document.get_string(AdmonitionTitles, self.admonition_type))
+        return self.custom_title or document.get_string(self.admonition_type)
 
     def flowables(self, container):
         title = self.title(container.document)

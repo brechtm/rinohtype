@@ -26,10 +26,6 @@ __all__ = ['Language', 'EN', 'FR', 'IT', 'NL', 'DE', 'PL', 'CS', 'ES']
 for code, language_ref in Language.languages.items():
     language = language_ref()
     lines = ['Localized strings for {}'.format(language.name)]
-    for string_collection in language.strings.values():
-        lines.append("\n.. rubric:: {}\n"
-                     .format(type(string_collection).__name__))
-        for string in string_collection._strings:
-            lines.append(":{}: {}".format(string.name,
-                                          string_collection[string.name]))
+    for name, localized_string in language.strings.items():
+        lines.append(":{}: {}".format(name, localized_string))
     language.__doc__ = '\n'.join(lines)

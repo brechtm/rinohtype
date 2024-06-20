@@ -28,7 +28,6 @@ from .draw import ShapeStyle, Rectangle, Line, LineStyle, Stroke
 from .layout import (InlineDownExpandingContainer, VirtualContainer,
                      MaybeContainer, ContainerOverflow, EndOfContainer,
                      PageBreakException, ReflowRequired)
-from .strings import UserStrings
 from .style import Styled, Style
 from .text import StyledText
 from .util import clamp, ReadAliasAttribute
@@ -431,7 +430,7 @@ class SetUserStringFlowable(DummyFlowable):
 
     def build_document(self, flowable_target):
         doc = flowable_target.document
-        doc.set_string(UserStrings, self.label, self.content)
+        doc.set_string(self.label, self.content, user=True)
 
 
 class SetOutOfLineFlowables(DummyFlowable):

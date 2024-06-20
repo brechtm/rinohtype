@@ -50,9 +50,3 @@ for name in CORE_MODULES:
 
 register_template = resource._DISTRIBUTION.register_template
 register_typeface = resource._DISTRIBUTION.register_typeface
-
-# list all StringCollection subclasses in its docstring
-_ = ['* :class:`.{}`'.format(subclass_name)
-     for subclass_name in sorted(strings.StringCollection.subclasses)]
-strings.StringCollection.__doc__ += ('\n\n    :Subclasses: '
-                                     + '\n                 '.join(_))

@@ -7,26 +7,21 @@
 
 
 from .cls import Language
-from ..image import FloatLabels
-from ..structure import SectionTitles, AdmonitionTitles
 
 
-NL = Language('nl', 'Nederlands')
-
-FloatLabels(
+NL = Language('nl', 'Nederlands',
+    paragraph='Paragraaf',
+    section='Sectie',
+    chapter='Hoofdstuk',
     figure='Figuur',
     table='Tabel',
-) in NL
-
-SectionTitles(
+    listing='Lijst',
     contents='Inhoudsopgave',
     list_of_figures='Lijst van Figuren',
     list_of_tables='Lijst van Tabellen',
-    chapter='Hoofdstuk',
     index='Index',
-) in NL
 
-AdmonitionTitles(
+    # admonitions
     attention='Opgelet!',
     caution='Pas op!',
     danger='!GEVAAR!',
@@ -37,4 +32,4 @@ AdmonitionTitles(
     tip='Tip',
     warning='Waarschuwing',
     seealso='Zie ook',
-) in NL
+)

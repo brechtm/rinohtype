@@ -7,26 +7,21 @@
 
 
 from .cls import Language
-from ..image import FloatLabels
-from ..structure import SectionTitles, AdmonitionTitles
 
 
-EN = Language('en', 'English')
-
-FloatLabels(
+EN = Language('en', 'English',
+    paragraph='Paragraph',
+    section='Section',
+    chapter='Chapter',
     figure='Figure',
     table='Table',
-) in EN
-
-SectionTitles(
+    listing='Listing',
     contents='Table of Contents',
     list_of_figures='List of Figures',
     list_of_tables='List of Tables',
-    chapter='Chapter',
     index='Index',
-) in EN
 
-AdmonitionTitles(
+    # admonitions
     attention='Attention!',
     caution='Caution!',
     danger='!DANGER!',
@@ -37,6 +32,6 @@ AdmonitionTitles(
     tip='Tip',
     warning='Warning',
     seealso='See also',
-) in EN
+)
 
 EN.no_break_after = "a an the".split()

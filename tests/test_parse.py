@@ -23,8 +23,7 @@ from rinoh.paragraph import (Paragraph, TextAlign, TabAlign,
                              ProportionalSpacing, FixedSpacing, Leading)
 from rinoh.reference import (ReferenceField, ReferenceText, Field, PAGE_NUMBER,
                              NUMBER_OF_PAGES, SECTION_TITLE, SECTION_NUMBER)
-from rinoh.strings import StringField, UserStrings
-from rinoh.structure import SectionTitles, AdmonitionTitles
+from rinoh.strings import StringField
 from rinoh.style import (SelectorByName, parse_selector, parse_selector_args,
                          parse_class_selector, parse_keyword, parse_string,
                          parse_number, StyleParseError, CharIterator)
@@ -374,15 +373,15 @@ def test_styledtext_from_string_field():
                                                 Field(PAGE_NUMBER)],
                                                style='style1'),
                                SingleStyledText('moh', style='style2')])
-    assert StyledText.from_string("'{SectionTitles.chapter}abc' (style)") \
-           == MixedStyledText([StringField(SectionTitles, 'chapter'),
+    assert StyledText.from_string("'{@chapter}abc' (style)") \
+           == MixedStyledText([StringField('chapter'),
                                SingleStyledText('abc')], style='style')
-    assert StyledText.from_string("'1{AdmonitionTitles.warning}2' (style)") \
+    assert StyledText.from_string("'1{@warning}2' (style)") \
            == MixedStyledText([SingleStyledText('1'),
-                               StringField(AdmonitionTitles, 'warning'),
+                               StringField('warning'),
                                SingleStyledText('2')], style='style')
-    assert StyledText.from_string("'{UserStrings.my_string}abc' (style)") \
-           == MixedStyledText([StringField(UserStrings, 'my_string'),
+    assert StyledText.from_string("'{$my_string}abc' (style)") \
+           == MixedStyledText([StringField('my_string', user=True),
                                SingleStyledText('abc')], style='style')
 
 

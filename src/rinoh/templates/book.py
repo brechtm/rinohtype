@@ -14,7 +14,7 @@ from ..paragraph import Paragraph
 from ..reference import (Field, PAGE_NUMBER, DOCUMENT_TITLE, DOCUMENT_SUBTITLE,
                          SECTION_NUMBER, SECTION_TITLE)
 from ..strings import StringField
-from ..structure import TableOfContentsSection, SectionTitles
+from ..structure import TableOfContentsSection
 from ..stylesheets import sphinx
 from ..table import ListOfTablesSection
 from ..template import (TitlePageTemplate, BodyPageTemplate, DocumentTemplate,
@@ -27,7 +27,7 @@ FRONT_MATTER_TITLE = [Paragraph(Field(SECTION_TITLE(1)),
                                 style='front matter section title')]
 
 
-BODY_TITLE = [Paragraph(StringField(SectionTitles, 'chapter') + ' '
+BODY_TITLE = [Paragraph(StringField('chapter') + ' '
                         + Field(SECTION_NUMBER(1), style='number'),
                         style='body matter chapter label'),
               Paragraph(Field(SECTION_TITLE(1)),
@@ -117,7 +117,7 @@ class Book(DocumentTemplate):
                          header_text=(Field(DOCUMENT_TITLE) + ', '
                                   + Field(DOCUMENT_SUBTITLE)),
                          footer_text=(Field(PAGE_NUMBER) + Tab() + Tab() +
-                                  StringField(SectionTitles, 'chapter')
+                                  StringField('chapter')
                                   + ' ' + Field(SECTION_NUMBER(1))
                                   + '.  ' + Field(SECTION_TITLE(1))),
                          sideways='left')

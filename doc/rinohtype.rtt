@@ -11,8 +11,8 @@ parts =
 stylesheet = rinohtype.rts
 
 
-[SectionTitles]
-contents='Contents'
+[STRINGS]
+@contents='Contents'
 
 
 [VARIABLES]

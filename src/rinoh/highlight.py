@@ -59,7 +59,7 @@ class CodeBlockWithCaptionStyle(FloatStyle, GroupedFlowablesStyle):
 
 class CodeBlockWithCaption(Float, StaticGroupedFlowables):
     style_class = CodeBlockWithCaptionStyle
-    category = 'Listing'
+    category = 'listing'
 
 
 def highlight_block(language, text, lexer_getter):

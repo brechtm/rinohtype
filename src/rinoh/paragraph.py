@@ -31,6 +31,7 @@ from .hyphenator import Hyphenator
 from .inline import InlineFlowableException
 from .layout import EndOfContainer, ContainerOverflow
 from .number import NumberStyle, Label, format_number
+from .strings import StringField
 from .text import (TextStyle, StyledText, SingleStyledText, MixedStyledText,
                    ESCAPE, LANGUAGE_DEFAULT)
 from .util import all_subclasses, ReadAliasAttribute, consumer
@@ -671,7 +672,7 @@ class ParagraphBase(Flowable, Label):
 
     """
 
-    category = 'Paragraph'
+    category = 'paragraph'
     style_class = ParagraphStyle
     significant_whitespace = False
 
@@ -708,8 +709,8 @@ class ParagraphBase(Flowable, Label):
             label = self.prepare_label(number, section, flowable_target)
         else:
             return
-        category = self.referenceable.category
-        reference = MixedStyledText([category, ' ', label])
+        category_label = StringField(self.referenceable.category)
+        reference = MixedStyledText([category_label, ' ', label])
         for id in self.referenceable.get_ids(document):
             document.set_reference(id, 'number', label)
             document.set_reference(id, 'reference', reference)

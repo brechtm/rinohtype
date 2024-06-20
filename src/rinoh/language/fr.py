@@ -7,26 +7,18 @@
 
 
 from .cls import Language
-from ..image import FloatLabels
-from ..structure import SectionTitles, AdmonitionTitles
 
 
-FR = Language('fr', 'Français')
-
-FloatLabels(
+FR = Language('fr', 'Français',
     figure='Figure',
     table='Tableau',
-) in FR
-
-SectionTitles(
     contents='Table des Matières',
     list_of_figures='Liste des Figures',
     list_of_tables='Liste des Tableaux',
     chapter='Chapitre',
     index='Index',
-) in FR
 
-AdmonitionTitles(
+    # admonitions
     attention='Attention!',
     caution='Prudence!',
     danger='!DANGER!',
@@ -37,4 +29,4 @@ AdmonitionTitles(
     tip='Astuce',
     warning='Avertissement',
     seealso='Voir aussi',
-) in FR
+)

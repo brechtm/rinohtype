@@ -23,7 +23,7 @@ from .inline import InlineFlowable
 from .layout import ContainerOverflow, EndOfContainer
 from .number import NumberFormat
 from .paragraph import StaticParagraph, Paragraph, ParagraphStyle
-from .strings import StringCollection, String, StringField
+from .strings import StringField
 from .structure import ListOf, ListOfSection
 from .text import MixedStyledText, SingleStyledText, TextStyle, ErrorText
 from .util import posix_path, ReadAliasAttribute, PeekIterator
@@ -398,7 +398,7 @@ class Caption(StaticParagraph):
     def text(self, container):
         try:
             number = self.number(container)
-            category_label = StringField(FloatLabels, self.referenceable.category)
+            category_label = StringField(self.referenceable.category)
             label = [category_label, ' ', number]
         except KeyError:
             label = []
@@ -420,10 +420,3 @@ class ListOfFigures(ListOf):
 
 class ListOfFiguresSection(ListOfSection):
     list_class = ListOfFigures
-
-
-class FloatLabels(StringCollection):
-    """Collection of localized titles for common sections"""
-
-    figure = String('Caption label for figures')
-    table = String('Caption label for tables')

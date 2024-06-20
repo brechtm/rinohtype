@@ -7,26 +7,18 @@
 
 
 from .cls import Language
-from ..image import FloatLabels
-from ..structure import SectionTitles, AdmonitionTitles
 
 
-CS = Language('cs', 'Česky')
-
-FloatLabels(
+CS = Language('cs', 'Česky',
     figure='Obrázek',
     table='Tabulka',
-) in CS
-
-SectionTitles(
     contents='Obsah',
     list_of_figures='Seznam obrázků',
     list_of_tables='Seznam tabulek',
     chapter='Kapitola',
     index='Rejstřík',
-) in CS
 
-AdmonitionTitles(
+    # admonitions
     attention='Pozor!',
     caution='Pozor!',
     danger='!NEBEZPEČÍ!',
@@ -37,7 +29,7 @@ AdmonitionTitles(
     tip='Tip',
     warning='Varování',
     seealso='Viz také',
-) in CS
+)
 
 
 CS.no_break_after = ("do od u z ze za k ke o na v ve nad pod za po s se "

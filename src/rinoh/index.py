@@ -11,7 +11,7 @@ from .flowable import GroupedFlowables, GroupedFlowablesStyle, DummyFlowable
 from .paragraph import Paragraph
 from .reference import Reference
 from .strings import StringField
-from .structure import Section, Heading, SectionTitles
+from .structure import Section, Heading
 from .style import Styled
 from .text import MixedStyledText, StyledText
 from .util import intersperse
@@ -23,7 +23,7 @@ __all__ = ['IndexSection', 'Index', 'IndexStyle', 'IndexLabel', 'IndexTerm',
 
 class IndexSection(Section):
     def __init__(self, title=None, flowables=None, style=None):
-        section_title = title or StringField(SectionTitles, 'index')
+        section_title = title or StringField('index')
         contents = [Heading(section_title, style='unnumbered')]
         if flowables:
             contents += list(flowables)
@@ -127,7 +127,7 @@ class InlineIndexTarget(IndexTargetBase, StyledText):
 
 
 class IndexTarget(IndexTargetBase, DummyFlowable):
-    category = 'Index'
+    category = 'index'
 
     def __init__(self, index_terms, parent=None):
         super().__init__(index_terms, parent=parent)

@@ -10,12 +10,10 @@ parts =
 stylesheet = sphinx_base14
 language = fr
 
-[SectionTitles]
-contents = 'Contents'
-
-[AdmonitionTitles]
-caution = 'Careful!'
-warning = 'Please be warned'
+[STRINGS]
+@contents = 'Contents'
+@caution = 'Careful!'
+@warning = 'Please be warned'
 
 [VARIABLES]
 paper_size = A5
