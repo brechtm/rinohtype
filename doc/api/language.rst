@@ -25,6 +25,8 @@ The following languages are supported:
 
 .. autodata:: FR
 
+.. autodata:: HU
+
 .. autodata:: IT
 
 .. autodata:: NL
