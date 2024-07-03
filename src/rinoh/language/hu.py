@@ -7,20 +7,16 @@
 
 
 from .cls import Language
-from ..structure import SectionTitles, AdmonitionTitles
 
 
-HU = Language('hu', 'Hungarian')
-
-SectionTitles(
+HU = Language('hu', 'Hungarian',
     contents='Tartalomjegyzék',
     list_of_figures='Ábrák Listája',
     list_of_tables='Asztalok Listája',
     chapter='Fejezet',
     index='Index',
-) in HU
 
-AdmonitionTitles(
+    # admonitions
     attention='Figyelem!',
     caution='Vigyázat!!',
     danger='!VESZÉLY!',
@@ -31,4 +27,4 @@ AdmonitionTitles(
     tip='Tipp',
     warning='Figyelmeztetés',
     seealso='Lásd még',
-) in HU
+)
