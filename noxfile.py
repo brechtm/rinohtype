@@ -116,11 +116,13 @@ def _install(session, docutils=None, sphinx=None, dist='wheel',
              dependencies=[]):
     session.poetry.installroot(distribution_format=dist)
     if dependencies:
-        session.install(*dependencies)
+        session.install(*(d for d in dependencies
+                          if not (sphinx and d.lower() == 'sphinx')))
+    deps = []
     if docutils:
-        session.run("pip", "install", f"docutils=={docutils}")
+        deps.append(f"docutils=={docutils}")
     if sphinx:
-        deps = [f"sphinx=={sphinx}"]
+        deps.append(f"sphinx=={sphinx}")
         major, _ = sphinx.split('.', maxsplit=1)
         if int(major) < 4:
             # https://github.com/sphinx-doc/sphinx/issues/10291
@@ -135,6 +137,7 @@ def _install(session, docutils=None, sphinx=None, dist='wheel',
             deps.append("sphinxcontrib-htmlhelp==2.0.1")
             deps.append("sphinxcontrib-serializinghtml==1.1.5")
             deps.append("sphinxcontrib-qthelp==1.0.3")
+    if deps:
         session.run("pip", "install", *deps)
 
 
@@ -152,8 +155,8 @@ def _unit(session, docutils=None, sphinx=None, dist='wheel',
 def _regression(session, docutils=None, sphinx=None, dist='wheel',
                 ignore_deprecation_warnings=False):
     _install(session, docutils=docutils, sphinx=sphinx, dist=dist,
-             dependencies=[*DEPENDENCIES, 'pytest-assume',
-                           'pytest-console-scripts'])
+             dependencies=[*DEPENDENCIES, 'defusedxml', # for Sphinx>=7.3
+                           'pytest-assume', 'pytest-console-scripts'])
     mark_expr = ['-m', 'with_sphinx'] if sphinx else ['-m', 'not longrunning']
     if dist == 'sdist':
         session.env['WITH_COVERAGE'] = '0'
