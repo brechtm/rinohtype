@@ -69,6 +69,7 @@ Changed:
 
 Fixed:
 
+* Embedding of PDF images produces by Graphviz 10+
 * Google Fonts downloading (https://github.com/google/fonts/issues/7481)
 * Caption labels ("Figure", "Table", "Listing") were not localized
 * Rendering of tables with no body (#420, PR #422 by th0mr)

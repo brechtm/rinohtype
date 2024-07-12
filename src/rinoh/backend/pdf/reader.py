@@ -186,7 +186,9 @@ class PDFObjectReader(object):
             else:
                 stream_filter = None
             stream = cos.Stream(stream_filter)
-            stream.update(dictionary)
+            # copy dict contents: .update() would dereference Reference values!
+            for key, value in dictionary.items():
+                stream[key] = value
             stream._data.write(self.file.read(length))
             self.eat_whitespace()
             assert self.next_token() == b'endstream'
@@ -388,7 +390,7 @@ class PDFReader(PDFObjectReader, cos.Document):
         if 'Index' in xref_stream:
             index = iter(int(value) for value in xref_stream['Index'])
         else:
-            index = (0, size)
+            index = iter((0, size))
         xref_stream.seek(0)
         while True:
             try:
