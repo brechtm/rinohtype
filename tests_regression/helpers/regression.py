@@ -10,6 +10,7 @@ import re
 
 from itertools import chain, zip_longest
 from pathlib import Path
+from warnings import catch_warnings
 
 from sphinx.application import Sphinx
 from sphinx.util.docutils import docutils_namespace
@@ -133,7 +134,7 @@ def render_doctree(doctree, out_dir, out_filename, reference_path,
         document = MinimalTemplate(doctree)
     output_dir = out_dir / out_filename
     output_dir.mkdir(parents=True, exist_ok=True)
-    with pytest.warns(None) as recorded_warnings:
+    with catch_warnings(record=True) as recorded_warnings:
         document.render(output_dir / out_filename)
     if 'warnings' in document.metadata:
         warnings_node = document.metadata['warnings'].source.node
