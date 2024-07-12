@@ -8,16 +8,17 @@
 #### ChainedContainer('column1')
   StaticGroupedFlowables()
     DocumentTree()   index.rst   <document>
-      Image('/private/var/folders/3k/f4b645zs4fl7xjnw7nzc43m40000gn/T/pytest-of-brechtm/pytest-85/graphviz/_build/rinoh/graphviz-4df2f99e83d4f5fbac159d69dfa787b3095a1429.pdf', id='bar-baz')   index.rst   <graphviz>
+      Image('/private/var/folders/t3/n6h1s2ss58n5l5llnt6c4zbh0000gn/T/pytest-of-brechtm/pytest-27/graphviz/_build/rinoh/graphviz-4df2f99e83d4f5fbac159d69dfa787b3095a1429.pdf', id='bar-baz')   index.rst   <graphviz>
            > (0,0,0,0,2) image [Sphinx] > DEFAULT
       Figure(id='id1')   index.rst   <figure>
            > (0,0,0,0,2) figure [Sphinx graphviz] > DEFAULT
-        Image('/private/var/folders/3k/f4b645zs4fl7xjnw7nzc43m40000gn/T/pytest-of-brechtm/pytest-85/graphviz/_build/rinoh/graphviz-ed6d45d9c44a3b261c080ffebc5e8850973a97ec.pdf')   <graphviz>
+        Image('/private/var/folders/t3/n6h1s2ss58n5l5llnt6c4zbh0000gn/T/pytest-of-brechtm/pytest-27/graphviz/_build/rinoh/graphviz-ed6d45d9c44a3b261c080ffebc5e8850973a97ec.pdf')   <graphviz>
              > (0,0,0,0,4) figure image [Sphinx] > image
                (0,0,0,0,2) image [Sphinx] > DEFAULT
         Caption('Figure 1. This figure is rendere...')   index.rst:13   <caption>
              > (0,0,0,0,4) figure caption [Sphinx] > caption
-            SingleStyledText('Figure')
+            StringField('Figure')
+              SingleStyledText('Figure')
             SingleStyledText(' ')
             MixedStyledText('1. ', style='label')
               SingleStyledText('')
@@ -26,7 +27,7 @@
             MixedStyledText('This figure is rendered incorrec...')
               MixedStyledText('This figure is rendered incorrec...')
                 SingleStyledText('This figure is rendered incorrec...')
-      Image('/private/var/folders/3k/f4b645zs4fl7xjnw7nzc43m40000gn/T/pytest-of-brechtm/pytest-85/graphviz/_build/rinoh/graphviz-ed6d45d9c44a3b261c080ffebc5e8850973a97ec.pdf')   index.rst   <graphviz>
+      Image('/private/var/folders/t3/n6h1s2ss58n5l5llnt6c4zbh0000gn/T/pytest-of-brechtm/pytest-27/graphviz/_build/rinoh/graphviz-ed6d45d9c44a3b261c080ffebc5e8850973a97ec.pdf')   index.rst   <graphviz>
            > (0,0,0,0,2) image [Sphinx] > DEFAULT
 #### UpExpandingContainer('header')
   StaticGroupedFlowables()
