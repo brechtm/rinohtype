@@ -5,6 +5,7 @@
 # Use of this source code is subject to the terms of the GNU Affero General
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
+import json
 import sys
 
 from pathlib import Path
@@ -23,7 +24,7 @@ from rinoh.font.opentype import OpenTypeFont
 __all__ = ['google_fonts']
 
 
-DOWNLOAD_URL = 'https://fonts.google.com/download?family={}'
+LIST_URL = 'https://fonts.google.com/download/list?family={}'
 
 APPDIRS = AppDirs("rinohtype", "opqode")
 STORAGE_PATH = Path(APPDIRS.user_data_dir) / 'google_fonts'
@@ -77,29 +78,31 @@ def find_static_font_files(path):
 
 
 def try_install_family(name, family_path):
-    download_url = DOWNLOAD_URL.format(quote(name))
-    download_path = download_file(name, download_url)
-    if download_path:
-        print(" unpacking...", end='')
-        family_path.mkdir(parents=True, exist_ok=True)
-        unpack_archive(str(download_path), str(family_path))
-        print(" done!")
-        return True
-    print("-> not found: please check the typeface name (case-sensitive!)")
+    list_url = LIST_URL.format(quote(name))
+    try:
+        family = json.loads(bytearray(urlopen(list_url).read())[5:])
+    except HTTPError as e:
+        if e.code == 400:
+            print("-> not found: please check the typeface name (case-sensitive!)")
+            return False
+        raise NotImplementedError
+    family_path.mkdir(parents=True, exist_ok=True)
+    for entry in family['manifest']['files']:
+        destination_path = family_path / entry['filename']
+        destination_path.write_text(entry['contents'])
+    for entry in family['manifest']['fileRefs']:
+        file_path = entry['filename']
+        download_path = family_path / file_path
+        download_path.parent.mkdir(parents=True, exist_ok=True)
+        print(f"-> downloading {file_path}")
+        download_file(file_path, entry['url'], family_path)
+    return True
 
 
-download_dir = None
-
-
-def download_file(name, url):
-    global download_dir
-    if not download_dir:
-        download_dir = TemporaryDirectory(prefix='rinohtype_')
+def download_file(filename, url, destination):
     try:
         with urlopen(url) as response:
-            print("-> success: downloading...".format(name), end='')
-            filename = response.headers.get_filename()
-            download_path = Path(download_dir.name) / filename
+            download_path = Path(destination) / filename
             with download_path.open('wb') as f:
                 while True:
                     buffer = response.read(8192)
