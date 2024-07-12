@@ -46,9 +46,6 @@ Adminitions
 .. autoclass:: Admonition
     :members:
 
-.. autoclass:: AdmonitionTitles
-    :members:
-
 
 Horizontal Rule
 ~~~~~~~~~~~~~~~
