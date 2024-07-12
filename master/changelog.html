@@ -32,7 +32,7 @@
         <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
       
     
-        <link rel="stylesheet" type="text/css" href="_static/sphinx_immaterial_theme.961ebdc0ecf60126a.min.css" />
+        <link rel="stylesheet" type="text/css" href="_static/sphinx_immaterial_theme.00322fdd924c915f5.min.css" />
         <link rel="stylesheet" type="text/css" href="_static/tweaks.css" />
     <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -921,6 +921,7 @@ can be produced by rinohtype.</p></li>
 </ul>
 <p>New Features:</p>
 <ul>
+<li><p>Add support for Hungarian language (PR #425 by Pablo Alexis Domínguez Grau)</p></li>
 <li><p>Print alt text instead of error message when failing to render rst :image:
 directive (PR #410 by Timm638)</p></li>
 <li><dl class="simple">
@@ -943,6 +944,14 @@ style generic admonitions. For example, this style definition applies to
 </ul>
 <p>Changed:</p>
 <ul class="simple">
+<li><p>handling of localized strings and user-defined strings has been reworked</p>
+<ul>
+<li><p>built-in (localized) strings are now indicated by a <code class="docutils literal notranslate"><span class="pre">&#64;</span></code> prefix, while
+user-defined strings have the <code class="docutils literal notranslate"><span class="pre">$</span></code> prefix</p></li>
+<li><p>built-in strings can be overridden, and user-defined strings can be set in
+a template configuration file in the <code class="docutils literal notranslate"><span class="pre">[STRINGS]</span></code> section (with prefix!)</p></li>
+</ul>
+</li>
 <li><p>“words” containing spaces (such as paths and URLs) can now be split before
 each forward slash for line wrapping (#188, #416)</p></li>
 <li><p>Support for Python 3.7 was dropped (end-of-life in June 2023)</p></li>
@@ -965,6 +974,9 @@ definitions are:</p>
 </ul>
 <p>Fixed:</p>
 <ul class="simple">
+<li><p>Embedding of PDF images produces by Graphviz 10+</p></li>
+<li><p>Google Fonts downloading (<a class="reference external" href="https://github.com/google/fonts/issues/7481">https://github.com/google/fonts/issues/7481</a>)</p></li>
+<li><p>Caption labels (“Figure”, “Table”, “Listing”) were not localized</p></li>
 <li><p>Rendering of tables with no body (#420, PR #422 by th0mr)</p></li>
 <li><p>Hyphenation of the first word on a line (#188, #416)</p></li>
 <li><p>AttributeError: ‘ZeroWidthSpace’ object has no attribute ‘hyphenate’ (#415,
@@ -982,7 +994,7 @@ PR #417 by Jack Whitham)</p></li>
 <ul>
 <li><p>Some fonts on Google Fonts have the ‘otf’ extension (instead of ‘ttf’);
 also collect these.</p></li>
-<li><p>Look recursively for font files in the a Google Fonts directory (e.g. Asap
+<li><p>Look recursively for font files in a Google Fonts directory (e.g. Asap
 fonts are now stored in a deeper directory).</p></li>
 </ul>
 </li>
@@ -1589,7 +1601,7 @@ rinohtype variable is not set</p></li>
       <div class="md-copyright">
   
     <div class="md-footer-copyright__highlight">
-        &#169; Copyright 2023, Brecht Machiels and contributors.
+        &#169; Copyright 2024, Brecht Machiels and contributors.
         
     </div>
   
@@ -1614,7 +1626,7 @@ rinohtype variable is not set</p></li>
     <script id="__config" type="application/json">{"base": ".", "features": ["navigation.expand", "navigation.sections", "navigation.instant"], "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "version": {"provider": "mike", "staticVersions": null, "versionPath": "../im_versions.json"}}</script>
     
       
-        <script src="_static/sphinx_immaterial_theme.1b5b7a2d5891aec19.min.js"></script>
+        <script src="_static/sphinx_immaterial_theme.f9d9eeeb247ace16c.min.js"></script>
     
   </body>
 </html>

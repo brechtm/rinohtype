@@ -167,11 +167,10 @@ distinction is only visible when using multiple columns for the page contents
 
 The standard document strings configured by the
 :attr:`~.DocumentTemplate.language` option described above can be overridden by
-user-defined strings in the :class:`~.SectionTitles` and
-:class:`~.AdmonitionTitles` sections of the configuration file. For example,
-the default title for the table of contents section (*Table of Contents*) is
-replaced with *Contents*. The configuration also sets custom titles for the
-caution and warning admonitions.
+user-defined strings in the ``STRINGS`` section of the configuration file. For
+example, the default title for the table of contents section (*Table of
+Contents*) is replaced with *Contents*. The configuration also sets custom
+titles for the caution and warning admonitions.
 
 The others sections in the configuration file are the ``VARIABLES`` section,
 followed by document part and page template sections. Similar to style sheets,

@@ -17,10 +17,6 @@ Sections
     :members:
 
 
-.. autoclass:: SectionTitles
-    :members:
-
-
 Lists
 ~~~~~
 
@@ -48,9 +44,6 @@ Adminitions
 ~~~~~~~~~~~
 
 .. autoclass:: Admonition
-    :members:
-
-.. autoclass:: AdmonitionTitles
     :members:
 
 
