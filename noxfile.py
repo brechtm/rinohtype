@@ -115,12 +115,13 @@ def regression_sphinx_py39(session, sphinx):
 def _install(session, docutils=None, sphinx=None, dist='wheel',
              dependencies=[]):
     session.poetry.installroot(distribution_format=dist)
-    if dependencies:
-        session.install(*(d for d in dependencies
-                          if not (sphinx and d.lower() == 'sphinx')))
     deps = []
     if docutils:
         deps.append(f"docutils=={docutils}")
+        major, minor, *_ = docutils.split('.')
+        if (int(major), int(minor)) < (0, 18):
+            assert sphinx is None
+            sphinx = '5.3.0'
     if sphinx:
         deps.append(f"sphinx=={sphinx}")
         major, _ = sphinx.split('.', maxsplit=1)
@@ -137,6 +138,9 @@ def _install(session, docutils=None, sphinx=None, dist='wheel',
             deps.append("sphinxcontrib-htmlhelp==2.0.1")
             deps.append("sphinxcontrib-serializinghtml==1.1.5")
             deps.append("sphinxcontrib-qthelp==1.0.3")
+    if dependencies:
+        session.install(*(d for d in dependencies
+                          if not (sphinx and d.lower() == 'sphinx')))
     if deps:
         session.run("pip", "install", *deps)
 
