@@ -124,7 +124,15 @@ def _install(session, docutils=None, sphinx=None, dist='wheel',
         major, _ = sphinx.split('.', maxsplit=1)
         if int(major) < 4:
             # https://github.com/sphinx-doc/sphinx/issues/10291
-            session.run("pip", "install", f"jinja2<3.1")
+            session.run("pip", "install", "jinja2<3.1")
+        if int(major) < 5:
+            # https://github.com/sphinx-doc/sphinx/issues/11890
+            session.run("pip", "install", "alabaster==0.7.13")
+            session.run("pip", "install", "sphinxcontrib-applehelp==1.0.4")
+            session.run("pip", "install", "sphinxcontrib-devhelp==1.0.2")
+            session.run("pip", "install", "sphinxcontrib-htmlhelp==2.0.1")
+            session.run("pip", "install", "sphinxcontrib-serializinghtml==1.1.5")
+            session.run("pip", "install", "sphinxcontrib-qthelp==1.0.3")
 
 
 def _unit(session, docutils=None, sphinx=None, dist='wheel',
