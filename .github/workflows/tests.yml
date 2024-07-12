@@ -15,7 +15,7 @@ on:
         default: false
 
 env:
-  current_python: '3.11'
+  current_python: '3.12'
   poetry_version: '1.3.2'
   nox_cmd: 'nox --verbose --error-on-missing-interpreters --session'
 jobs:
@@ -131,12 +131,12 @@ jobs:
       fail-fast: false
       matrix:
         os: [Ubuntu, MacOS, Windows]
-        python-version: [3.8, 3.9, '3.10', 3.11, 3.12.0-alpha - 3.12, pypy-3.9]
+        python-version: [3.8, 3.9, '3.10', 3.11, 3.12, 3.13.0-alpha - 3.13, pypy-3.9]
         noxenv: [unit]
         cov: [1]
         name: [""]
         include:
-          - { os: Ubuntu, python-version: 3.11, noxenv: unit_sphinx, cov: 0, name: " (Sphinx)" }
+          - { os: Ubuntu, python-version: 3.12, noxenv: unit_sphinx, cov: 0, name: " (Sphinx)" }
           - { os: Ubuntu, python-version: 3.9, noxenv: unit_sphinx_py39, cov: 0, name: " (Sphinx)" }
     runs-on: ${{ matrix.os }}-latest
     env:
@@ -176,7 +176,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [Ubuntu, MacOS, Windows]
-        python-version: ['3.11']
+        python-version: ['3.12']
         noxenv: [regression]
         cov: [1]
         name: [""]
@@ -184,10 +184,11 @@ jobs:
           - { os: Ubuntu, python-version: 3.8, noxenv: regression, cov: 1 }
           - { os: Ubuntu, python-version: '3.10', noxenv: regression, cov: 1 }
           - { os: Ubuntu, python-version: 3.11, noxenv: regression, cov: 1 }
-          - { os: Ubuntu, python-version: 3.12.0-alpha - 3.12, noxenv: regression, cov: 1 }
+          - { os: Ubuntu, python-version: 3.12, noxenv: regression, cov: 1 }
+          - { os: Ubuntu, python-version: 3.13.0-alpha - 3.13, noxenv: regression, cov: 1 }
           - { os: Ubuntu, python-version: pypy-3.9, noxenv: regression, cov: 1 }
-          - { os: Ubuntu, python-version: 3.11, noxenv: regression_docutils, cov: 0, name: " (docutils)" }
-          - { os: Ubuntu, python-version: 3.11, noxenv: regression_sphinx, cov: 0, name: " (Sphinx)" }
+          - { os: Ubuntu, python-version: 3.12, noxenv: regression_docutils, cov: 0, name: " (docutils)" }
+          - { os: Ubuntu, python-version: 3.12, noxenv: regression_sphinx, cov: 0, name: " (Sphinx)" }
           - { os: Ubuntu, python-version: 3.9, noxenv: regression_sphinx_py39, cov: 0, name: " (Sphinx)" }
     runs-on: ${{ matrix.os }}-latest
     env:
