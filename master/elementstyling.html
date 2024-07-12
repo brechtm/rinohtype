@@ -32,8 +32,8 @@
         <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
       
     
-        <link rel="stylesheet" type="text/css" href="_static/sphinx_immaterial_theme.00322fdd924c915f5.min.css" />
-        <link rel="stylesheet" type="text/css" href="_static/tweaks.css" />
+        <link rel="stylesheet" type="text/css" href="_static/sphinx_immaterial_theme.e0b5691b38cca82da.min.css?v=b1736040" />
+        <link rel="stylesheet" type="text/css" href="_static/tweaks.css?v=ac567af0" />
     <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -815,7 +815,7 @@
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25Z"/></svg>
   </a>
 
-<h1 id="element-styling"><span id="styling"></span>Element Styling<a class="headerlink" href="#element-styling" title="Permalink to this heading">¶</a></h1>
+<h1 id="element-styling"><span id="styling"></span>Element Styling<a class="headerlink" href="#element-styling" title="Link to this heading">¶</a></h1>
 <p>This section describes how styles defined in a style sheet are applied to
 document elements. Understanding how this works will help you when designing
 a custom style sheet.</p>
@@ -834,7 +834,7 @@ duplication.</p>
 programming knowledge. A future update will move Python-specific details
 to another section, making things more accessible for non-programmers.</p>
 </div>
-<h2 id="document-tree">Document Tree<a class="headerlink" href="#document-tree" title="Permalink to this heading">¶</a></h2>
+<h2 id="document-tree">Document Tree<a class="headerlink" href="#document-tree" title="Link to this heading">¶</a></h2>
 <p>A <a class="reference internal" href="api/flowable.html#rinoh.flowable.Flowable" title="rinoh.flowable.Flowable (Python class) — A document element that can be &quot;flowed&quot; into a container on the page."><code class="xref py py-class docutils literal notranslate"><span class="pre">Flowable</span></code></a> is a document element that is placed on a page. It is
 usually a part of a document tree. Flowables at one level in a document tree
 are rendered one below the other.</p>
@@ -890,7 +890,7 @@ applied style sheet. Read more about how this works in the next section.</p>
 <a class="reference internal" href="api/image.html#rinoh.image.InlineImage" title="rinoh.image.InlineImage (Python class) — alias of InlineImageArgs"><code class="xref py py-class docutils literal notranslate"><span class="pre">InlineImage</span></code></a>.</p>
 <p>The common superclass for flowable and inline elements is <a class="reference internal" href="api/style.html#rinoh.style.Styled" title="rinoh.style.Styled (Python class) — A document element who's style can be configured."><code class="xref py py-class docutils literal notranslate"><span class="pre">Styled</span></code></a>,
 which indicates that these elements can be styled using the style sheets.</p>
-<h2 id="selectors">Selectors<a class="headerlink" href="#selectors" title="Permalink to this heading">¶</a></h2>
+<h2 id="selectors">Selectors<a class="headerlink" href="#selectors" title="Link to this heading">¶</a></h2>
 <p>Selectors in rinohtype select elements of a particular type. The <em>class</em> of a
 document element serves as a selector for all instances of the class (and its
 subclasses). The <a class="reference internal" href="api/paragraph.html#rinoh.paragraph.Paragraph" title="rinoh.paragraph.Paragraph (Python class)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Paragraph</span></code></a> class is a selector that matches all
@@ -985,7 +985,7 @@ the <code class="xref py py-class docutils literal notranslate"><span class="pre
 <span class="o">---</span><span class="n">CodeBlock</span>                              <span class="c1"># specificity (-3, 0, 0, 0, 2)</span>
 </code></pre></div>
 </div>
-<h2 id="matchers"><span id="id2"></span>Matchers<a class="headerlink" href="#matchers" title="Permalink to this heading">¶</a></h2>
+<h2 id="matchers"><span id="id2"></span>Matchers<a class="headerlink" href="#matchers" title="Link to this heading">¶</a></h2>
 <p>At the most basic level, a <a class="reference internal" href="api/style.html#rinoh.style.StyledMatcher" title="rinoh.style.StyledMatcher (Python class) — Dictionary mapping labels to selectors."><code class="xref py py-class docutils literal notranslate"><span class="pre">StyledMatcher</span></code></a> is a dictionary that maps
 labels to selectors:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><code><span class="n">matcher</span> <span class="o">=</span> <span class="n">StyledMatcher</span><span class="p">()</span>
@@ -1003,7 +1003,7 @@ elements in documents:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">rinoh.stylesheets</span> <span class="kn">import</span> <span class="n">matcher</span>
 </code></pre></div>
 </div>
-<h2 id="style-sheets">Style Sheets<a class="headerlink" href="#style-sheets" title="Permalink to this heading">¶</a></h2>
+<h2 id="style-sheets">Style Sheets<a class="headerlink" href="#style-sheets" title="Link to this heading">¶</a></h2>
 <p>A <a class="reference internal" href="api/style.html#rinoh.style.StyleSheet" title="rinoh.style.StyleSheet (Python class) — Dictionary storing a collection of related styles by name."><code class="xref py py-class docutils literal notranslate"><span class="pre">StyleSheet</span></code></a> takes a <a class="reference internal" href="api/style.html#rinoh.style.StyledMatcher" title="rinoh.style.StyledMatcher (Python class) — Dictionary mapping labels to selectors."><code class="xref py py-class docutils literal notranslate"><span class="pre">StyledMatcher</span></code></a> to provide element
 labels to assign style properties to:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><code><span class="n">styles</span> <span class="o">=</span> <span class="n">StyleSheet</span><span class="p">(</span><span class="s1">&#39;IEEE&#39;</span><span class="p">,</span> <span class="n">matcher</span><span class="o">=</span><span class="n">matcher</span><span class="p">)</span>
@@ -1049,7 +1049,7 @@ attribute. The style for enumerated lists is defined like this, for example:</p>
 and <em>label_suffix</em> are set to produce list items labels of the style <em>1)</em>,
 <em>2)</em>, …. Other entries control margins and spacing. See <a class="reference internal" href="style/rinoh.structure.ListStyle.html#rinoh.structure.ListStyle" title="rinoh.structure.ListStyle (Python class) — Style class for List"><code class="xref py py-class docutils literal notranslate"><span class="pre">ListStyle</span></code></a>
 for the full list of accepted style attributes.</p>
-<h3 id="base-styles">Base Styles<a class="headerlink" href="#base-styles" title="Permalink to this heading">¶</a></h3>
+<h3 id="base-styles">Base Styles<a class="headerlink" href="#base-styles" title="Link to this heading">¶</a></h3>
 <p>It is possible to define styles which are not linked to a selector. These can
 be useful to collect common attributes in a base style for a set of style
 definitions. For example, the Sphinx style sheet defines the <em>header_footer</em>
@@ -1079,7 +1079,7 @@ style to serve as a base for the <em>header</em> and <em>footer</em> styles:</p>
 needs to be specified manually. This is done by adding the name of the relevant
 <a class="reference internal" href="api/style.html#rinoh.style.Styled" title="rinoh.style.Styled (Python class) — A document element who's style can be configured."><code class="xref py py-class docutils literal notranslate"><span class="pre">Styled</span></code></a> subclass to the section name, using a colon (<code class="docutils literal notranslate"><span class="pre">:</span></code>) to
 separate it from the style name, optionally surrounded by spaces.</p>
-<h3 id="custom-selectors">Custom Selectors<a class="headerlink" href="#custom-selectors" title="Permalink to this heading">¶</a></h3>
+<h3 id="custom-selectors">Custom Selectors<a class="headerlink" href="#custom-selectors" title="Link to this heading">¶</a></h3>
 <p>It is also possible to define new selectors directly in a style sheet file.
 This allows making tweaks to an existing style sheet without having to create a
 new <a class="reference internal" href="api/style.html#rinoh.style.StyledMatcher" title="rinoh.style.StyledMatcher (Python class) — Dictionary mapping labels to selectors."><code class="xref py py-class docutils literal notranslate"><span class="pre">StyledMatcher</span></code></a>. However, this should be used sparingly. If a great
@@ -1116,7 +1116,7 @@ in a context selector by enclosing its name in single or double quotes.</p>
 <span class="na">text_align</span><span class="o">=</span><span class="s">right</span>
 </code></pre></div>
 </div>
-<h3 id="variables">Variables<a class="headerlink" href="#variables" title="Permalink to this heading">¶</a></h3>
+<h3 id="variables">Variables<a class="headerlink" href="#variables" title="Link to this heading">¶</a></h3>
 <p>Variables can be used for values that are used in multiple style definitions.
 This example declares a number of typefaces to allow easily replacing the
 fonts in a style sheet:</p>
@@ -1146,7 +1146,7 @@ in style definitions as follows:</p>
 </div>
 <p>Another stylesheet can inherit (see below) from this one and easily replace
 fonts in the document by overriding the variables.</p>
-<h3 id="style-attribute-resolution"><span id="attribute-resolution"></span>Style Attribute Resolution<a class="headerlink" href="#style-attribute-resolution" title="Permalink to this heading">¶</a></h3>
+<h3 id="style-attribute-resolution"><span id="attribute-resolution"></span>Style Attribute Resolution<a class="headerlink" href="#style-attribute-resolution" title="Link to this heading">¶</a></h3>
 <p>The element styling system makes a distinction between text (inline) elements
 and flowables with respect to how attribute values are resolved.</p>
 <p><strong>Text elements</strong> by default inherit the properties from their parent. Take for
@@ -1200,7 +1200,7 @@ of the parent type, so it cannot be used for all styles.</p>
 definition lookup hierarchy, its default value is returned. The default values
 for all style properties are defined in the class definition for each of the
 <a class="reference internal" href="api/style.html#rinoh.style.Style" title="rinoh.style.Style (Python class) — Dictionary storing style attributes."><code class="xref py py-class docutils literal notranslate"><span class="pre">Style</span></code></a> subclasses.</p>
-<h2 id="style-logs">Style Logs<a class="headerlink" href="#style-logs" title="Permalink to this heading">¶</a></h2>
+<h2 id="style-logs">Style Logs<a class="headerlink" href="#style-logs" title="Link to this heading">¶</a></h2>
 <p>When rendering a document, rinohtype will create a <span class="target" id="index-0"></span>style log. It is
 written to disk using the same base name as the output file, but with a
 <cite>.stylelog</cite> extension. The information logged in the style log is invaluable
@@ -1351,7 +1351,7 @@ to <code class="docutils literal notranslate"><span class="pre">lst[0::2]</span>
   
     Created using
     <a href="https://www.sphinx-doc.org/" target="_blank" rel="noopener">Sphinx</a>
-    5.3.0.
+    7.3.7.
      and
     <a href="https://github.com/jbms/sphinx-immaterial/" target="_blank" rel="noopener">Sphinx-Immaterial</a>
   
@@ -1370,7 +1370,7 @@ to <code class="docutils literal notranslate"><span class="pre">lst[0::2]</span>
     <script id="__config" type="application/json">{"base": ".", "features": ["navigation.expand", "navigation.sections", "navigation.instant"], "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "version": {"provider": "mike", "staticVersions": null, "versionPath": "../im_versions.json"}}</script>
     
       
-        <script src="_static/sphinx_immaterial_theme.f9d9eeeb247ace16c.min.js"></script>
+        <script src="_static/sphinx_immaterial_theme.f9d9eeeb247ace16c.min.js?v=8ec58cb5"></script>
     
   </body>
 </html>

@@ -32,8 +32,8 @@
         <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
       
     
-        <link rel="stylesheet" type="text/css" href="_static/sphinx_immaterial_theme.00322fdd924c915f5.min.css" />
-        <link rel="stylesheet" type="text/css" href="_static/tweaks.css" />
+        <link rel="stylesheet" type="text/css" href="_static/sphinx_immaterial_theme.e0b5691b38cca82da.min.css?v=b1736040" />
+        <link rel="stylesheet" type="text/css" href="_static/tweaks.css?v=ac567af0" />
     <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -990,16 +990,16 @@
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25Z"/></svg>
   </a>
 
-<span class="target" id="module-rinoh.templates.article"><span id="article-template"></span></span><h1 id="article">Article<a class="headerlink" href="#article" title="Permalink to this heading">¶</a></h1>
+<h1 id="article"><span id="module-rinoh.templates.article"></span><span id="article-template"></span>Article<a class="headerlink" href="#article" title="Link to this heading">¶</a></h1>
 <p>The article template consists of a title page, an optional table of contents
 and the body text. By default, it uses a single numbering style for all pages
 and the same template for even and odd pages.</p>
 <dl class="py class objdesc">
 <dt class="sig sig-object highlight sig-wrap py" id="rinoh.templates.article.Article">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rinoh.templates.article.</span></span><span class="sig-name descname"><span class="pre">Article</span></span><span class="sig-paren">(</span><span class="sig-param-decl"><em class="sig-param"><span class="n"><span class="pre">document_tree</span></span></em>, </span><span class="sig-param-decl"><em class="sig-param"><span class="n"><span class="pre">configuration</span></span><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="kc">None</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><span class="n"><span class="pre">backend</span></span><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="kc">None</span></code></em></span><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.templates.article.Article" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rinoh.templates.article.</span></span><span class="sig-name descname"><span class="pre">Article</span></span><span class="sig-paren">(</span><span class="sig-param-decl"><em class="sig-param"><span class="n"><span class="pre">document_tree</span></span></em>, </span><span class="sig-param-decl"><em class="sig-param"><span class="n"><span class="pre">configuration</span></span><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="kc">None</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><span class="n"><span class="pre">backend</span></span><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="kc">None</span></code></em></span><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.templates.article.Article" title="Link to this definition">¶</a></dt>
 <dd><dl class="py attribute objdesc">
 <dt class="sig sig-object highlight py" id="rinoh.templates.article.Article.stylesheet">
-<span class="sig-name descname"><span class="pre">stylesheet</span></span><a class="headerlink" href="#rinoh.templates.article.Article.stylesheet" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">stylesheet</span></span><a class="headerlink" href="#rinoh.templates.article.Article.stylesheet" title="Link to this definition">¶</a></dt>
 <dd><p>The stylesheet to use for styling document elements (inherited from <a class="reference internal" href="api/template.html#rinoh.template.DocumentTemplate.stylesheet" title="rinoh.template.DocumentTemplate.stylesheet (Python attribute) — The stylesheet to use for styling document elements"><code class="xref py py-attr docutils literal notranslate"><span class="pre">DocumentTemplate</span></code></a>)</p>
 <p><em>Accepts</em> <a class="reference internal" href="api/style.html#rinoh.style.StyleSheet" title="rinoh.style.StyleSheet (Python class) — Dictionary storing a collection of related styles by name."><code class="xref py py-class docutils literal notranslate"><span class="pre">StyleSheet</span></code></a>: the name of an <a class="reference internal" href="stylesheets.html#included-style-sheets"><span class="std std-ref">installed style sheet</span></a> or the filename of a stylesheet file (with the <code class="docutils literal notranslate"><span class="pre">.rts</span></code> extension)</p>
 <p><em>Default</em>: <code class="docutils literal notranslate"><span class="pre">sphinx_article</span></code> (= <a class="reference internal" href="stylesheets.html#rinoh.stylesheets.sphinx_article" title="rinoh.stylesheets.sphinx_article (Python data) — The Sphinx stylesheet adjusted for the article template"><code class="xref py py-data docutils literal notranslate"><span class="pre">rinoh.stylesheets.sphinx_article</span></code></a>) (overrides <a class="reference internal" href="api/template.html#rinoh.template.DocumentTemplate.stylesheet" title="rinoh.template.DocumentTemplate.stylesheet (Python attribute) — The stylesheet to use for styling document elements"><code class="xref py py-attr docutils literal notranslate"><span class="pre">DocumentTemplate</span></code></a> default)</p>
@@ -1007,7 +1007,7 @@ and the same template for even and odd pages.</p>
 
 <dl class="py attribute objdesc">
 <dt class="sig sig-object highlight py" id="rinoh.templates.article.Article.abstract_location">
-<span class="sig-name descname"><span class="pre">abstract_location</span></span><a class="headerlink" href="#rinoh.templates.article.Article.abstract_location" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">abstract_location</span></span><a class="headerlink" href="#rinoh.templates.article.Article.abstract_location" title="Link to this definition">¶</a></dt>
 <dd><p>Where to place the abstract</p>
 <p><em>Accepts</em> <a class="reference internal" href="#rinoh.templates.article.AbstractLocation" title="rinoh.templates.article.AbstractLocation (Python class) — Where to place the article's abstract"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractLocation</span></code></a>: <code class="docutils literal notranslate"><span class="pre">title</span></code>, <code class="docutils literal notranslate"><span class="pre">body</span></code></p>
 <p><em>Default</em>: <code class="docutils literal notranslate"><span class="pre">title</span></code></p>
@@ -1015,7 +1015,7 @@ and the same template for even and odd pages.</p>
 
 <dl class="py attribute objdesc">
 <dt class="sig sig-object highlight py" id="rinoh.templates.article.Article.parts">
-<span class="sig-name descname"><span class="pre">parts</span></span><a class="headerlink" href="#rinoh.templates.article.Article.parts" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">parts</span></span><a class="headerlink" href="#rinoh.templates.article.Article.parts" title="Link to this definition">¶</a></dt>
 <dd><p>The parts making up this document (inherited from <a class="reference internal" href="api/template.html#rinoh.template.DocumentTemplate.parts" title="rinoh.template.DocumentTemplate.parts (Python attribute) — The parts making up this document"><code class="xref py py-attr docutils literal notranslate"><span class="pre">DocumentTemplate</span></code></a>)</p>
 <p><em>Accepts</em> <a class="reference internal" href="api/template.html#rinoh.template.PartsList" title="rinoh.template.PartsList (Python class) — Stores the names of the document part templates making up a document"><code class="xref py py-class docutils literal notranslate"><span class="pre">PartsList</span></code></a>: a space-separated list of document part template names</p>
 <p><em>Default</em>: <a class="reference internal" href="#rinoh.templates.article.Article.contents" title="rinoh.templates.article.Article.contents (Python attribute) — base: None"><code class="xref py py-attr docutils literal notranslate"><span class="pre">contents</span></code></a> (overrides <a class="reference internal" href="api/template.html#rinoh.template.DocumentTemplate.parts" title="rinoh.template.DocumentTemplate.parts (Python attribute) — The parts making up this document"><code class="xref py py-attr docutils literal notranslate"><span class="pre">DocumentTemplate</span></code></a> default)</p>
@@ -1023,7 +1023,7 @@ and the same template for even and odd pages.</p>
 
 <dl class="py attribute objdesc">
 <dt class="sig sig-object highlight py" id="rinoh.templates.article.Article.language">
-<span class="sig-name descname"><span class="pre">language</span></span><a class="headerlink" href="#rinoh.templates.article.Article.language" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">language</span></span><a class="headerlink" href="#rinoh.templates.article.Article.language" title="Link to this definition">¶</a></dt>
 <dd><p>The main language of the document (inherited from <a class="reference internal" href="api/template.html#rinoh.template.DocumentTemplate.language" title="rinoh.template.DocumentTemplate.language (Python attribute) — The main language of the document"><code class="xref py py-attr docutils literal notranslate"><span class="pre">DocumentTemplate</span></code></a>)</p>
 <p><em>Accepts</em> <a class="reference internal" href="api/language.html#rinoh.language.Language" title="rinoh.language.Language (Python class) — Collects localized strings for a particular language"><code class="xref py py-class docutils literal notranslate"><span class="pre">Language</span></code></a>: the code of one of the <a class="reference internal" href="api/language.html#supported-languages"><span class="std std-ref">supported languages</span></a></p>
 <p><em>Default</em>: <a class="reference internal" href="api/language.html#rinoh.language.EN" title="rinoh.language.EN (Python data) — Localized strings for English :paragraph: Paragraph :section: Section :chapter: Chapter :figure: Figure :table: Table :listing: Listing :contents: Table of Contents :list_of_figures: List of Figures :list_of_tables: List of Tables :index: Index :attention: Attention! :caution: Caution! :danger: !DANGER! :error: Error :hint: Hint :important: Important :note: Note :tip: Tip :warning: Warning :seealso: See also"><code class="xref py py-data docutils literal notranslate"><span class="pre">EN</span></code></a> (English)</p>
@@ -1031,7 +1031,7 @@ and the same template for even and odd pages.</p>
 
 <dl class="py attribute objdesc">
 <dt class="sig sig-object highlight py" id="rinoh.templates.article.Article.strings">
-<span class="sig-name descname"><span class="pre">strings</span></span><a class="headerlink" href="#rinoh.templates.article.Article.strings" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">strings</span></span><a class="headerlink" href="#rinoh.templates.article.Article.strings" title="Link to this definition">¶</a></dt>
 <dd><p>Strings to override standard element names (inherited from <a class="reference internal" href="api/template.html#rinoh.template.DocumentTemplate.strings" title="rinoh.template.DocumentTemplate.strings (Python attribute) — Strings to override standard element names"><code class="xref py py-attr docutils literal notranslate"><span class="pre">DocumentTemplate</span></code></a>)</p>
 <p><em>Accepts</em> <a class="reference internal" href="api/strings.html#rinoh.strings.Strings" title="rinoh.strings.Strings (Python class) — Stores several StringCollections"><code class="xref py py-class docutils literal notranslate"><span class="pre">Strings</span></code></a>: strings need to be entered in INI in a section named ‘STRINGS’</p>
 <p><em>Default</em>: <code class="docutils literal notranslate"><span class="pre">none</span></code></p>
@@ -1039,7 +1039,7 @@ and the same template for even and odd pages.</p>
 
 <dl class="py attribute objdesc">
 <dt class="sig sig-object highlight py" id="rinoh.templates.article.Article.contents">
-<span class="sig-name descname"><span class="pre">contents</span></span><a class="headerlink" href="#rinoh.templates.article.Article.contents" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">contents</span></span><a class="headerlink" href="#rinoh.templates.article.Article.contents" title="Link to this definition">¶</a></dt>
 <dd><p>base: <code class="docutils literal notranslate"><span class="pre">None</span></code></p>
 <p>Overrides these defaults:</p>
 <blockquote>
@@ -1056,7 +1056,7 @@ and the same template for even and odd pages.</p>
 
 <dl class="py attribute objdesc">
 <dt class="sig sig-object highlight py" id="rinoh.templates.article.Article.page">
-<span class="sig-name descname"><span class="pre">page</span></span><a class="headerlink" href="#rinoh.templates.article.Article.page" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">page</span></span><a class="headerlink" href="#rinoh.templates.article.Article.page" title="Link to this definition">¶</a></dt>
 <dd><p>base: <code class="docutils literal notranslate"><span class="pre">None</span></code></p>
 <p>Overrides these defaults:</p>
 <blockquote>
@@ -1078,7 +1078,7 @@ and the same template for even and odd pages.</p>
 
 <dl class="py attribute objdesc">
 <dt class="sig sig-object highlight py" id="rinoh.templates.article.Article.contents_page">
-<span class="sig-name descname"><span class="pre">contents_page</span></span><a class="headerlink" href="#rinoh.templates.article.Article.contents_page" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">contents_page</span></span><a class="headerlink" href="#rinoh.templates.article.Article.contents_page" title="Link to this definition">¶</a></dt>
 <dd><p>base: <a class="reference internal" href="#rinoh.templates.article.Article.page" title="rinoh.templates.article.Article.page (Python attribute) — base: None"><code class="xref py py-attr docutils literal notranslate"><span class="pre">page</span></code></a></p>
 <dl class="field-list simple">
 <dt class="field-odd" id="rinoh.templates.article.Article.contents_page-type">Type<span class="colon">:</span><a class="headerlink" href="#rinoh.templates.article.Article.contents_page-type" title="Permalink to this headline">¶</a></dt>
@@ -1089,13 +1089,13 @@ and the same template for even and odd pages.</p>
 
 <dl class="py attribute objdesc">
 <dt class="sig sig-object highlight py" id="rinoh.templates.article.Article.Configuration">
-<span class="sig-name descname"><span class="pre">Configuration</span></span><a class="headerlink" href="#rinoh.templates.article.Article.Configuration" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">Configuration</span></span><a class="headerlink" href="#rinoh.templates.article.Article.Configuration" title="Link to this definition">¶</a></dt>
 <dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">ArticleConfiguration</span></code></p>
 </dd></dl>
 
 <dl class="py attribute objdesc">
 <dt class="sig sig-object highlight py" id="rinoh.templates.article.Article.ConfigurationFile">
-<span class="sig-name descname"><span class="pre">ConfigurationFile</span></span><a class="headerlink" href="#rinoh.templates.article.Article.ConfigurationFile" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">ConfigurationFile</span></span><a class="headerlink" href="#rinoh.templates.article.Article.ConfigurationFile" title="Link to this definition">¶</a></dt>
 <dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">ArticleConfigurationFile</span></code></p>
 </dd></dl>
 
@@ -1103,7 +1103,7 @@ and the same template for even and odd pages.</p>
 
 <dl class="py class objdesc">
 <dt class="sig sig-object highlight py" id="rinoh.templates.article.AbstractLocation">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rinoh.templates.article.</span></span><span class="sig-name descname"><span class="pre">AbstractLocation</span></span><a class="headerlink" href="#rinoh.templates.article.AbstractLocation" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rinoh.templates.article.</span></span><span class="sig-name descname"><span class="pre">AbstractLocation</span></span><a class="headerlink" href="#rinoh.templates.article.AbstractLocation" title="Link to this definition">¶</a></dt>
 <dd><p>Where to place the article’s abstract</p>
 <p>Accepts: <code class="docutils literal notranslate"><span class="pre">title</span></code>, <code class="docutils literal notranslate"><span class="pre">body</span></code></p>
 </dd></dl>
@@ -1175,7 +1175,7 @@ and the same template for even and odd pages.</p>
   
     Created using
     <a href="https://www.sphinx-doc.org/" target="_blank" rel="noopener">Sphinx</a>
-    5.3.0.
+    7.3.7.
      and
     <a href="https://github.com/jbms/sphinx-immaterial/" target="_blank" rel="noopener">Sphinx-Immaterial</a>
   
@@ -1194,7 +1194,7 @@ and the same template for even and odd pages.</p>
     <script id="__config" type="application/json">{"base": ".", "features": ["navigation.expand", "navigation.sections", "navigation.instant"], "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "version": {"provider": "mike", "staticVersions": null, "versionPath": "../im_versions.json"}}</script>
     
       
-        <script src="_static/sphinx_immaterial_theme.f9d9eeeb247ace16c.min.js"></script>
+        <script src="_static/sphinx_immaterial_theme.f9d9eeeb247ace16c.min.js?v=8ec58cb5"></script>
     
   </body>
 </html>

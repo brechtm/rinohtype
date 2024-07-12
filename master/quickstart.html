@@ -32,8 +32,8 @@
         <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
       
     
-        <link rel="stylesheet" type="text/css" href="_static/sphinx_immaterial_theme.00322fdd924c915f5.min.css" />
-        <link rel="stylesheet" type="text/css" href="_static/tweaks.css" />
+        <link rel="stylesheet" type="text/css" href="_static/sphinx_immaterial_theme.e0b5691b38cca82da.min.css?v=b1736040" />
+        <link rel="stylesheet" type="text/css" href="_static/tweaks.css?v=ac567af0" />
     <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -719,12 +719,12 @@
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25Z"/></svg>
   </a>
 
-<h1 id="quickstart"><span id="id1"></span>Quickstart<a class="headerlink" href="#quickstart" title="Permalink to this heading">¶</a></h1>
+<h1 id="quickstart"><span id="id1"></span>Quickstart<a class="headerlink" href="#quickstart" title="Link to this heading">¶</a></h1>
 <p>This section gets you started quickly, discussing each of the three modes of
 operation introduced in <a class="reference internal" href="intro.html#introduction"><span class="std std-ref">Introduction</span></a>. If you want to customize the style
 of the PDF document, please refer to <a class="reference internal" href="basicstyling.html#basic-styling"><span class="std std-ref">Basic Document Styling</span></a> which introduces
 style sheets and document templates.</p>
-<h2 id="command-line-renderer">Command-Line Renderer<a class="headerlink" href="#command-line-renderer" title="Permalink to this heading">¶</a></h2>
+<h2 id="command-line-renderer">Command-Line Renderer<a class="headerlink" href="#command-line-renderer" title="Link to this heading">¶</a></h2>
 <p>Installing rinohtype places the <strong class="program">rinoh</strong> script in the <span class="target" id="index-0"></span><code class="xref std std-envvar docutils literal notranslate"><span class="pre">PATH</span></code>.
 This can be used to render structured documents such as <a class="reference external" href="http://docutils.sourceforge.net/docs/user/rst/demo.txt">demo.txt</a>
 (<a class="reference external" href="http://docutils.sourceforge.net/rst.html">reStructuredText</a>):</p>
@@ -742,7 +742,7 @@ numbers are correct. After a document has been rendered, rinohtype will save
 the page reference data to a <cite>.rtc</cite> file. Provided the document (or the
 template or style sheet) doesn’t change a lot, this can prevent the need to
 perform a second rendering pass.</p>
-<h2 id="sphinx-builder"><span id="sphinx-quickstart"></span>Sphinx Builder<a class="headerlink" href="#sphinx-builder" title="Permalink to this heading">¶</a></h2>
+<h2 id="sphinx-builder"><span id="sphinx-quickstart"></span>Sphinx Builder<a class="headerlink" href="#sphinx-builder" title="Link to this heading">¶</a></h2>
 <p>If your Sphinx project is already configured for the LaTeX builder, rinohtype
 will happily interpret <a class="reference external" href="https://www.sphinx-doc.org/en/master/usage/configuration.html#confval-latex_documents" title="(in Sphinx v7.4.0)"><code class="docutils literal notranslate"><span class="pre">latex_documents</span></code></a>. Otherwise, you need
 to set the <a class="reference internal" href="sphinx.html#confval-rinoh_documents" title="rinoh_documents (Sphinx builder configuration value) — Determines which PDF documents to build. Its format is a list of dictionaries, one for each document to be generated. The supported keys for these dictionaries are listed below. Two of them are required:"><code class="xref std std-confval docutils literal notranslate"><span class="pre">rinoh_documents</span></code></a> configuration option:</p>
@@ -759,7 +759,7 @@ the <a class="reference external" href="https://www.sphinx-doc.org/en/master/man
 </div>
 <p>Note that, just like the <strong class="program">rinoh</strong> command line tool, the Sphinx builder
 requires two <a class="reference internal" href="#rendering-passes"><span class="std std-ref">rendering passes</span></a>.</p>
-<h2 id="high-level-pdf-library"><span id="library-quickstart"></span>High-level PDF Library<a class="headerlink" href="#high-level-pdf-library" title="Permalink to this heading">¶</a></h2>
+<h2 id="high-level-pdf-library"><span id="library-quickstart"></span>High-level PDF Library<a class="headerlink" href="#high-level-pdf-library" title="Link to this heading">¶</a></h2>
 <div class="note admonition">
 <p class="admonition-title">Note</p>
 <p>The focus of rinohtype development is currently on the
@@ -883,7 +883,7 @@ well suited for short, custom documents however.</p>
   
     Created using
     <a href="https://www.sphinx-doc.org/" target="_blank" rel="noopener">Sphinx</a>
-    5.3.0.
+    7.3.7.
      and
     <a href="https://github.com/jbms/sphinx-immaterial/" target="_blank" rel="noopener">Sphinx-Immaterial</a>
   
@@ -902,7 +902,7 @@ well suited for short, custom documents however.</p>
     <script id="__config" type="application/json">{"base": ".", "features": ["navigation.expand", "navigation.sections", "navigation.instant"], "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "version": {"provider": "mike", "staticVersions": null, "versionPath": "../im_versions.json"}}</script>
     
       
-        <script src="_static/sphinx_immaterial_theme.f9d9eeeb247ace16c.min.js"></script>
+        <script src="_static/sphinx_immaterial_theme.f9d9eeeb247ace16c.min.js?v=8ec58cb5"></script>
     
   </body>
 </html>

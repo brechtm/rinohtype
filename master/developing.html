@@ -32,8 +32,8 @@
         <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
       
     
-        <link rel="stylesheet" type="text/css" href="_static/sphinx_immaterial_theme.00322fdd924c915f5.min.css" />
-        <link rel="stylesheet" type="text/css" href="_static/tweaks.css" />
+        <link rel="stylesheet" type="text/css" href="_static/sphinx_immaterial_theme.e0b5691b38cca82da.min.css?v=b1736040" />
+        <link rel="stylesheet" type="text/css" href="_static/tweaks.css?v=ac567af0" />
     <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -733,7 +733,7 @@
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25Z"/></svg>
   </a>
 
-<h1 id="developing"><span id="id1"></span>Developing<a class="headerlink" href="#developing" title="Permalink to this heading">¶</a></h1>
+<h1 id="developing"><span id="id1"></span>Developing<a class="headerlink" href="#developing" title="Link to this heading">¶</a></h1>
 <p>This project makes use of <a class="reference external" href="https://nox.thea.codes">Nox</a> to manage running tests and other tasks. The
 tests can be divided into three categories: checks, unit tests and regression
 (integration) tests. <code class="docutils literal notranslate"><span class="pre">noxfile.py</span></code> defines “sessions” that configure these
@@ -774,7 +774,7 @@ all sessions.</p>
 Windows requires some <a class="reference external" href="https://stackoverflow.com/a/59761201/438249">additional configuration</a> to be able to support
 these.</p>
 </div>
-<h2 id="nox-sessions">Nox Sessions<a class="headerlink" href="#nox-sessions" title="Permalink to this heading">¶</a></h2>
+<h2 id="nox-sessions">Nox Sessions<a class="headerlink" href="#nox-sessions" title="Link to this heading">¶</a></h2>
 <p>The following sessions execute unit tests and regression tests:</p>
 <dl class="simple">
 <dt><code class="docutils literal notranslate"><span class="pre">unit</span></code></dt><dd><p>Runs the unit tests.</p>
@@ -823,7 +823,7 @@ Windows.</p>
 </dd>
 </dl>
 <p>Customization settings for <a class="reference external" href="https://github.com/PyCQA/doc8">doc8</a> and <a class="reference external" href="https://www.pytest.org">pytest</a> are stored in <code class="docutils literal notranslate"><span class="pre">setup.cfg</span></code>.</p>
-<h2 id="testing-against-multiple-python-interpreter-versions">Testing against multiple Python interpreter versions<a class="headerlink" href="#testing-against-multiple-python-interpreter-versions" title="Permalink to this heading">¶</a></h2>
+<h2 id="testing-against-multiple-python-interpreter-versions">Testing against multiple Python interpreter versions<a class="headerlink" href="#testing-against-multiple-python-interpreter-versions" title="Link to this heading">¶</a></h2>
 <p>Nox facilitates running tests on multiple Python interpreter versions. You can
 combine the <code class="docutils literal notranslate"><span class="pre">unit</span></code> and <code class="docutils literal notranslate"><span class="pre">regression</span></code> sessions with a Python <a class="reference external" href="https://nox.thea.codes/en/stable/tutorial.html#testing-against-different-and-multiple-pythons">version
 number</a> to execute it on a specific Python interpreter version. For example,
@@ -849,13 +849,13 @@ repository checkout directory. The file lists specific the versions of CPython
 rinohtype aims to support plus recent PyPy3 versions (ideally, we should
 closely track the latest releases). The <code class="docutils literal notranslate"><span class="pre">pyenv_setup.py</span></code> script can install
 these for you (skipping any that are already installed).</p>
-<h2 id="continuous-integration">Continuous integration<a class="headerlink" href="#continuous-integration" title="Permalink to this heading">¶</a></h2>
+<h2 id="continuous-integration">Continuous integration<a class="headerlink" href="#continuous-integration" title="Link to this heading">¶</a></h2>
 <p><a class="reference external" href="https://github.com/brechtm/rinohtype/actions">GitHub Actions</a> automatically executes the Nox sessions when new commits
 are pushed to the repository. The Nox sessions are run on Linux, macOS and
 Windows, and run the tests against an array of Python, docutils and Sphinx
 versions to make sure that we don’t break any corner cases. See
 <code class="docutils literal notranslate"><span class="pre">.github/workflows</span></code> for details.</p>
-<h2 id="making-a-release">Making a release<a class="headerlink" href="#making-a-release" title="Permalink to this heading">¶</a></h2>
+<h2 id="making-a-release">Making a release<a class="headerlink" href="#making-a-release" title="Link to this heading">¶</a></h2>
 <p>This is a list of steps to follow when making a new release of rinohtype.
 Publishing the new release to <a class="reference external" href="https://pypi.org/">PyPI</a> and uploading the documentation to GitHub
 Pages is handled by the GitHub Actions workflow.</p>
@@ -975,7 +975,7 @@ changelog. Use previous releases as a template.</p>
   
     Created using
     <a href="https://www.sphinx-doc.org/" target="_blank" rel="noopener">Sphinx</a>
-    5.3.0.
+    7.3.7.
      and
     <a href="https://github.com/jbms/sphinx-immaterial/" target="_blank" rel="noopener">Sphinx-Immaterial</a>
   
@@ -994,7 +994,7 @@ changelog. Use previous releases as a template.</p>
     <script id="__config" type="application/json">{"base": ".", "features": ["navigation.expand", "navigation.sections", "navigation.instant"], "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "version": {"provider": "mike", "staticVersions": null, "versionPath": "../im_versions.json"}}</script>
     
       
-        <script src="_static/sphinx_immaterial_theme.f9d9eeeb247ace16c.min.js"></script>
+        <script src="_static/sphinx_immaterial_theme.f9d9eeeb247ace16c.min.js?v=8ec58cb5"></script>
     
   </body>
 </html>

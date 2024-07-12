@@ -32,8 +32,8 @@
         <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
       
     
-        <link rel="stylesheet" type="text/css" href="_static/sphinx_immaterial_theme.00322fdd924c915f5.min.css" />
-        <link rel="stylesheet" type="text/css" href="_static/tweaks.css" />
+        <link rel="stylesheet" type="text/css" href="_static/sphinx_immaterial_theme.e0b5691b38cca82da.min.css?v=b1736040" />
+        <link rel="stylesheet" type="text/css" href="_static/tweaks.css?v=ac567af0" />
     <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -785,12 +785,12 @@
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25Z"/></svg>
   </a>
 
-<h1 id="basic-document-styling"><span id="basic-styling"></span>Basic Document Styling<a class="headerlink" href="#basic-document-styling" title="Permalink to this heading">¶</a></h1>
+<h1 id="basic-document-styling"><span id="basic-styling"></span>Basic Document Styling<a class="headerlink" href="#basic-document-styling" title="Link to this heading">¶</a></h1>
 <p>rinohtype allows for fine-grained control over the style of its output. Most
 aspects of a document’s style can be controlled by style sheet files and
 template configuration files which are being introduced in this chapter. These
 files are plain text files that are easy to create, read and modify.</p>
-<h2 id="style-sheets"><span id="basics-stylesheets"></span>Style Sheets<a class="headerlink" href="#style-sheets" title="Permalink to this heading">¶</a></h2>
+<h2 id="style-sheets"><span id="basics-stylesheets"></span>Style Sheets<a class="headerlink" href="#style-sheets" title="Link to this heading">¶</a></h2>
 <p>A style sheet defines the look of each element in a document. For each type of
 document element, the style sheet assign values to the style properties
 available for that element. Style sheets are stored in plain text files using
@@ -871,7 +871,7 @@ your needs.</p>
 <p>The following two subsections illustrate how to extend an existing style sheet
 and how to create a new, independent style sheet. For more in-depth information
 on style sheets, please refer to <a class="reference internal" href="elementstyling.html#styling"><span class="std std-ref">Element Styling</span></a>.</p>
-<h3 id="extending-an-existing-style-sheet">Extending an Existing Style Sheet<a class="headerlink" href="#extending-an-existing-style-sheet" title="Permalink to this heading">¶</a></h3>
+<h3 id="extending-an-existing-style-sheet">Extending an Existing Style Sheet<a class="headerlink" href="#extending-an-existing-style-sheet" title="Link to this heading">¶</a></h3>
 <p>Starting from an existing style sheet, it is easy to make small changes to the
 style of individual document elements. The following style sheet file is based
 on the Sphinx stylesheet included with rinohtype.</p>
@@ -907,7 +907,7 @@ to the style class’s documentation).</p>
 used in the <a class="reference internal" href="#base-style-sheet">base style sheet</a> in all style definitions where a monospaced
 font is desired. Redefining the variable in the derived style sheet affects
 all of these style definitions.</p>
-<h3 id="starting-from-scratch">Starting from Scratch<a class="headerlink" href="#starting-from-scratch" title="Permalink to this heading">¶</a></h3>
+<h3 id="starting-from-scratch">Starting from Scratch<a class="headerlink" href="#starting-from-scratch" title="Link to this heading">¶</a></h3>
 <p>If you don’t specify a base style sheet in the <code class="docutils literal notranslate"><span class="pre">[STYLESHEET]</span></code> section, you
 create an independent style sheet. You should do this if you want to create
 a document style that is not based on an existing style sheet. If the style
@@ -921,12 +921,12 @@ attributes along with the default values as comments. This generated style
 sheet can serve as a good starting point for developing a custom style
 sheet from scratch.</p>
 </div>
-<h2 id="document-templates"><span id="basics-templates"></span>Document Templates<a class="headerlink" href="#document-templates" title="Permalink to this heading">¶</a></h2>
+<h2 id="document-templates"><span id="basics-templates"></span>Document Templates<a class="headerlink" href="#document-templates" title="Link to this heading">¶</a></h2>
 <p>As with style sheets, you can choose to make use of a template provided by
 rinohtype and optionally customize it or you can create a custom template from
 scratch. This section discusses how you can configure an existing template. See
 <a class="reference internal" href="templates.html#templates"><span class="std std-ref">Document Templates</span></a> on how to create a custom template.</p>
-<h3 id="configuring-a-template"><span id="configure-templates"></span>Configuring a Template<a class="headerlink" href="#configuring-a-template" title="Permalink to this heading">¶</a></h3>
+<h3 id="configuring-a-template"><span id="configure-templates"></span>Configuring a Template<a class="headerlink" href="#configuring-a-template" title="Link to this heading">¶</a></h3>
 <p>rinohtype provides a number of <a class="reference internal" href="stdtemplates.html#standard-templates"><span class="std std-ref">Standard Document Templates</span></a>. These can be
 customized by means of a template configuration file; a plain text file in the
 INI<a class="footnote-reference brackets" href="#ini" id="id3" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> format with the <code class="docutils literal notranslate"><span class="pre">.rtt</span></code> extension. Here is an example
@@ -1017,7 +1017,7 @@ general page template defined in the configuration.</p>
 <p>The example configuration only adjusts the top margin for the
 <a class="reference internal" href="api/template.html#rinoh.template.TitlePageTemplate" title="rinoh.template.TitlePageTemplate (Python class) — Extra text to include on the title page below the title"><code class="xref py py-class docutils literal notranslate"><span class="pre">TitlePageTemplate</span></code></a>, but many more aspects of the page templates are
 configurable. Refer to <a class="reference internal" href="stdtemplates.html#standard-templates"><span class="std std-ref">Standard Document Templates</span></a> for details.</p>
-<h3 id="using-a-template-configuration-file">Using a Template Configuration File<a class="headerlink" href="#using-a-template-configuration-file" title="Permalink to this heading">¶</a></h3>
+<h3 id="using-a-template-configuration-file">Using a Template Configuration File<a class="headerlink" href="#using-a-template-configuration-file" title="Link to this heading">¶</a></h3>
 <p>A template configuration file can be specified when rendering using the
 command-line <strong class="program">rinoh</strong> tool by passing it to the
 <a class="reference internal" href="rinoh.html#cmdoption-rinoh-t"><code class="xref std std-option docutils literal notranslate"><span class="pre">--template</span></code></a> command-line option. When using the
@@ -1125,7 +1125,7 @@ by the templates and the document part and page templates.</p>
   
     Created using
     <a href="https://www.sphinx-doc.org/" target="_blank" rel="noopener">Sphinx</a>
-    5.3.0.
+    7.3.7.
      and
     <a href="https://github.com/jbms/sphinx-immaterial/" target="_blank" rel="noopener">Sphinx-Immaterial</a>
   
@@ -1144,7 +1144,7 @@ by the templates and the document part and page templates.</p>
     <script id="__config" type="application/json">{"base": ".", "features": ["navigation.expand", "navigation.sections", "navigation.instant"], "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "version": {"provider": "mike", "staticVersions": null, "versionPath": "../im_versions.json"}}</script>
     
       
-        <script src="_static/sphinx_immaterial_theme.f9d9eeeb247ace16c.min.js"></script>
+        <script src="_static/sphinx_immaterial_theme.f9d9eeeb247ace16c.min.js?v=8ec58cb5"></script>
     
   </body>
 </html>

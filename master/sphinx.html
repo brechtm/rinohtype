@@ -32,8 +32,8 @@
         <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
       
     
-        <link rel="stylesheet" type="text/css" href="_static/sphinx_immaterial_theme.00322fdd924c915f5.min.css" />
-        <link rel="stylesheet" type="text/css" href="_static/tweaks.css" />
+        <link rel="stylesheet" type="text/css" href="_static/sphinx_immaterial_theme.e0b5691b38cca82da.min.css?v=b1736040" />
+        <link rel="stylesheet" type="text/css" href="_static/tweaks.css?v=ac567af0" />
     <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -815,14 +815,14 @@
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25Z"/></svg>
   </a>
 
-<h1 id="sphinx-builder"><span id="id1"></span>Sphinx Builder<a class="headerlink" href="#sphinx-builder" title="Permalink to this heading">¶</a></h1>
+<h1 id="sphinx-builder"><span id="id1"></span>Sphinx Builder<a class="headerlink" href="#sphinx-builder" title="Link to this heading">¶</a></h1>
 <p><code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.frontend.sphinx</span></code> is a Sphinx extension module. It provides a Sphinx
 builder with the name <em>rinoh</em>. The builder recognizes the following <code class="docutils literal notranslate"><span class="pre">conf.py</span></code>
 options. Of these, only <a class="reference internal" href="#confval-rinoh_documents" title="rinoh_documents (Sphinx builder configuration value) — Determines which PDF documents to build. Its format is a list of dictionaries, one for each document to be generated. The supported keys for these dictionaries are listed below. Two of them are required:"><code class="xref std std-confval docutils literal notranslate"><span class="pre">rinoh_documents</span></code></a> (or
 <a class="reference external" href="https://www.sphinx-doc.org/en/master/usage/configuration.html#confval-latex_documents" title="(in Sphinx v7.4.0)"><code class="docutils literal notranslate"><span class="pre">latex_documents</span></code></a>) is required.</p>
 <dl class="std confval objdesc">
 <dt class="sig sig-object highlight std" id="confval-rinoh_documents">
-<span class="sig-name descname"><span class="pre">rinoh_documents</span></span><a class="headerlink" href="#confval-rinoh_documents" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">rinoh_documents</span></span><a class="headerlink" href="#confval-rinoh_documents" title="Link to this definition">¶</a></dt>
 <dd><p>Determines which PDF documents to build. Its format is a list of
 dictionaries, one for each document to be generated. The supported keys
 for these dictionaries are listed below. Two of them are required:</p>
@@ -887,7 +887,7 @@ These items will be available as document metadata and can be used in a
 
 <dl class="std confval objdesc">
 <dt class="sig sig-object highlight std" id="confval-rinoh_targets">
-<span class="sig-name descname"><span class="pre">rinoh_targets</span></span><a class="headerlink" href="#confval-rinoh_targets" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">rinoh_targets</span></span><a class="headerlink" href="#confval-rinoh_targets" title="Link to this definition">¶</a></dt>
 <dd><p>Limits rendering to the specified set of targets. This variable accepts
 either a list of strings or a string containing comma-separated values. The
 target names should match those set in <a class="reference internal" href="#confval-rinoh_documents" title="rinoh_documents (Sphinx builder configuration value) — Determines which PDF documents to build. Its format is a list of dictionaries, one for each document to be generated. The supported keys for these dictionaries are listed below. Two of them are required:"><code class="xref std std-confval docutils literal notranslate"><span class="pre">rinoh_documents</span></code></a>.</p>
@@ -903,19 +903,19 @@ string form with <a class="reference external" href="https://www.sphinx-doc.org/
 </div>
 </dd></dl>
 
-<h2 id="legacy-configuration-variables">Legacy Configuration Variables<a class="headerlink" href="#legacy-configuration-variables" title="Permalink to this heading">¶</a></h2>
+<h2 id="legacy-configuration-variables">Legacy Configuration Variables<a class="headerlink" href="#legacy-configuration-variables" title="Link to this heading">¶</a></h2>
 <p>The configuration variables below are no longer supported. Instead, their
 functionality can now be configured per document in <a class="reference internal" href="#confval-rinoh_documents" title="rinoh_documents (Sphinx builder configuration value) — Determines which PDF documents to build. Its format is a list of dictionaries, one for each document to be generated. The supported keys for these dictionaries are listed below. Two of them are required:"><code class="xref std std-confval docutils literal notranslate"><span class="pre">rinoh_documents</span></code></a>.</p>
 <dl class="std confval objdesc">
 <dt class="sig sig-object highlight std" id="confval-rinoh_template">
-<span class="sig-name descname"><span class="pre">rinoh_template</span></span><a class="headerlink" href="#confval-rinoh_template" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">rinoh_template</span></span><a class="headerlink" href="#confval-rinoh_template" title="Link to this definition">¶</a></dt>
 <dd><p>This configuration variable is <strong>no longer supported</strong> since the
 document template can be specified in <a class="reference internal" href="#confval-rinoh_documents" title="rinoh_documents (Sphinx builder configuration value) — Determines which PDF documents to build. Its format is a list of dictionaries, one for each document to be generated. The supported keys for these dictionaries are listed below. Two of them are required:"><code class="xref std std-confval docutils literal notranslate"><span class="pre">rinoh_documents</span></code></a> entries.</p>
 </dd></dl>
 
 <dl class="std confval objdesc">
 <dt class="sig sig-object highlight std" id="confval-rinoh_stylesheet">
-<span class="sig-name descname"><span class="pre">rinoh_stylesheet</span></span><a class="headerlink" href="#confval-rinoh_stylesheet" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">rinoh_stylesheet</span></span><a class="headerlink" href="#confval-rinoh_stylesheet" title="Link to this definition">¶</a></dt>
 <dd><p>This configuration variable is <strong>no longer supported</strong> since it is not
 obvious which style sheet will be used when the template configuration also
 specifies a style sheet. Please specify the style sheet to use in your
@@ -930,7 +930,7 @@ specifies a style sheet. Please specify the style sheet to use in your
 
 <dl class="std confval objdesc">
 <dt class="sig sig-object highlight std" id="confval-rinoh_paper_size">
-<span class="sig-name descname"><span class="pre">rinoh_paper_size</span></span><a class="headerlink" href="#confval-rinoh_paper_size" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">rinoh_paper_size</span></span><a class="headerlink" href="#confval-rinoh_paper_size" title="Link to this definition">¶</a></dt>
 <dd><p>This configuration variable is <strong>no longer supported</strong> since it was not
 obvious which paper size was being used when the template configuration
 (<a class="reference internal" href="#confval-rinoh_template" title="rinoh_template (Sphinx builder configuration value) — This configuration variable is no longer supported since the document template can be specified in rinoh_documents entries."><code class="xref std std-confval docutils literal notranslate"><span class="pre">rinoh_template</span></code></a>) also specified a paper size. Please specify
@@ -947,21 +947,21 @@ the paper_size to use in your <a class="reference internal" href="basicstyling.h
 
 <dl class="std confval objdesc">
 <dt class="sig sig-object highlight std" id="confval-rinoh_logo">
-<span class="sig-name descname"><span class="pre">rinoh_logo</span></span><a class="headerlink" href="#confval-rinoh_logo" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">rinoh_logo</span></span><a class="headerlink" href="#confval-rinoh_logo" title="Link to this definition">¶</a></dt>
 <dd><p>This configuration variable is <strong>no longer supported</strong> since the logo can
 be specified in the <a class="reference internal" href="#confval-rinoh_documents" title="rinoh_documents (Sphinx builder configuration value) — Determines which PDF documents to build. Its format is a list of dictionaries, one for each document to be generated. The supported keys for these dictionaries are listed below. Two of them are required:"><code class="xref std std-confval docutils literal notranslate"><span class="pre">rinoh_documents</span></code></a> entries.</p>
 </dd></dl>
 
 <dl class="std confval objdesc">
 <dt class="sig sig-object highlight std" id="confval-rinoh_domain_indices">
-<span class="sig-name descname"><span class="pre">rinoh_domain_indices</span></span><a class="headerlink" href="#confval-rinoh_domain_indices" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">rinoh_domain_indices</span></span><a class="headerlink" href="#confval-rinoh_domain_indices" title="Link to this definition">¶</a></dt>
 <dd><p>This configuration variable is <strong>no longer supported</strong> since the
 domain_indices can be specified in the <a class="reference internal" href="#confval-rinoh_documents" title="rinoh_documents (Sphinx builder configuration value) — Determines which PDF documents to build. Its format is a list of dictionaries, one for each document to be generated. The supported keys for these dictionaries are listed below. Two of them are required:"><code class="xref std std-confval docutils literal notranslate"><span class="pre">rinoh_documents</span></code></a> entries.</p>
 </dd></dl>
 
 <dl class="std confval objdesc">
 <dt class="sig sig-object highlight std" id="confval-rinoh_metadata">
-<span class="sig-name descname"><span class="pre">rinoh_metadata</span></span><a class="headerlink" href="#confval-rinoh_metadata" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">rinoh_metadata</span></span><a class="headerlink" href="#confval-rinoh_metadata" title="Link to this definition">¶</a></dt>
 <dd><p>This configuration variable is <strong>no longer supported</strong>. Metadata entries
 can now be added to <a class="reference internal" href="#confval-rinoh_documents" title="rinoh_documents (Sphinx builder configuration value) — Determines which PDF documents to build. Its format is a list of dictionaries, one for each document to be generated. The supported keys for these dictionaries are listed below. Two of them are required:"><code class="xref std std-confval docutils literal notranslate"><span class="pre">rinoh_documents</span></code></a> entries.</p>
 </dd></dl>
@@ -1033,7 +1033,7 @@ can now be added to <a class="reference internal" href="#confval-rinoh_documents
   
     Created using
     <a href="https://www.sphinx-doc.org/" target="_blank" rel="noopener">Sphinx</a>
-    5.3.0.
+    7.3.7.
      and
     <a href="https://github.com/jbms/sphinx-immaterial/" target="_blank" rel="noopener">Sphinx-Immaterial</a>
   
@@ -1052,7 +1052,7 @@ can now be added to <a class="reference internal" href="#confval-rinoh_documents
     <script id="__config" type="application/json">{"base": ".", "features": ["navigation.expand", "navigation.sections", "navigation.instant"], "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "version": {"provider": "mike", "staticVersions": null, "versionPath": "../im_versions.json"}}</script>
     
       
-        <script src="_static/sphinx_immaterial_theme.f9d9eeeb247ace16c.min.js"></script>
+        <script src="_static/sphinx_immaterial_theme.f9d9eeeb247ace16c.min.js?v=8ec58cb5"></script>
     
   </body>
 </html>
