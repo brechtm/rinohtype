@@ -120,19 +120,22 @@ def _install(session, docutils=None, sphinx=None, dist='wheel',
     if docutils:
         session.run("pip", "install", f"docutils=={docutils}")
     if sphinx:
-        session.run("pip", "install", f"sphinx=={sphinx}")
+        deps = [f"sphinx=={sphinx}"]
         major, _ = sphinx.split('.', maxsplit=1)
         if int(major) < 4:
             # https://github.com/sphinx-doc/sphinx/issues/10291
-            session.run("pip", "install", "jinja2<3.1")
+            deps.append("jinja2<3.1")
+        elif int(major) < 6:
+            deps.append("myst-parser==0.18.1")
         if int(major) < 5:
             # https://github.com/sphinx-doc/sphinx/issues/11890
-            session.run("pip", "install", "alabaster==0.7.13")
-            session.run("pip", "install", "sphinxcontrib-applehelp==1.0.4")
-            session.run("pip", "install", "sphinxcontrib-devhelp==1.0.2")
-            session.run("pip", "install", "sphinxcontrib-htmlhelp==2.0.1")
-            session.run("pip", "install", "sphinxcontrib-serializinghtml==1.1.5")
-            session.run("pip", "install", "sphinxcontrib-qthelp==1.0.3")
+            deps.append("alabaster==0.7.13")
+            deps.append("sphinxcontrib-applehelp==1.0.4")
+            deps.append("sphinxcontrib-devhelp==1.0.2")
+            deps.append("sphinxcontrib-htmlhelp==2.0.1")
+            deps.append("sphinxcontrib-serializinghtml==1.1.5")
+            deps.append("sphinxcontrib-qthelp==1.0.3")
+        session.run("pip", "install", *deps)
 
 
 def _unit(session, docutils=None, sphinx=None, dist='wheel',

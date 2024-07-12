@@ -39,7 +39,7 @@ def get_versions(
     package = Factory().create_poetry(Path(__file__).parent).package
     requirements = [
         requirement
-        for requirement in package.requires
+        for requirement in package.all_requires
         if requirement.name == dependency
     ]
     if not requirements:
