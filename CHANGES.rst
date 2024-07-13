@@ -14,8 +14,8 @@ Release History
     .. __: https://semver.org/
 
 
-Release 0.5.5 (in development)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Release 0.5.5 (2024-07-13)
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Documentation changes:
 
