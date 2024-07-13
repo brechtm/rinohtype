@@ -1,0 +1,1150 @@
+
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      <link rel="icon" href="_static/rinohtype_logo_abbrev.svg">
+    
+    
+      
+        <title>Basic Document Styling - rinohtype</title>
+      
+    
+    
+      
+        
+        
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+        <link rel="stylesheet" type="text/css" href="_static/sphinx_immaterial_theme.e0b5691b38cca82da.min.css?v=b1736040" />
+        <link rel="stylesheet" type="text/css" href="_static/tweaks.css?v=ac567af0" />
+    <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="red" data-md-color-accent="light-blue">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#style-sheets" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <div data-md-component="outdated" hidden>
+        
+      </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="index.html" title="rinohtype" class="md-header__button md-logo" aria-label="rinohtype" data-md-component="logo">
+      <img src="_static/logo_white.svg" alt="logo">
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            rinohtype
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Basic Document Styling
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      <form class="md-header__option" data-md-component="palette">
+        
+          
+          
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="red" data-md-color-accent="light-blue"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+          
+            <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 1 7 7c0 2.38-1.19 4.47-3 5.74V17a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-2.26C6.19 13.47 5 11.38 5 9a7 7 0 0 1 7-7M9 21v-1h6v1a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1m3-17a5 5 0 0 0-5 5c0 2.05 1.23 3.81 3 4.58V16h4v-2.42c1.77-.77 3-2.53 3-4.58a5 5 0 0 0-5-5Z"/></svg>
+            </label>
+          
+        
+          
+          
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="red" data-md-color-accent="orange"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
+          
+            <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 0-7 7c0 2.38 1.19 4.47 3 5.74V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 0 0-7-7M9 21a1 1 0 0 0 1 1h4a1 1 0 0 0 1-1v-1H9v1Z"/></svg>
+            </label>
+          
+        
+      </form>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/brechtm/rinohtype" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    rinohtype
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="index.html" title="rinohtype" class="md-nav__button md-logo" aria-label="rinohtype" data-md-component="logo">
+      <img src="_static/logo_white.svg" alt="logo">
+    </a>
+    rinohtype
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/brechtm/rinohtype" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    rinohtype
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_1" type="checkbox" id="__nav_1" checked>
+      
+      
+      
+        <label class="md-nav__link" for="__nav_1">
+          <span class="md-ellipsis">User Manual</span> [<a class="pdf-link" href="manual.pdf">PDF</a>]
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="User Manual" data-md-level="1">
+        <label class="md-nav__title" for="__nav_1">
+          <span class="md-nav__icon md-icon"></span>
+          <span class="md-ellipsis">User Manual</span> [<a class="pdf-link" href="manual.pdf">PDF</a>]
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="intro.html" class="md-nav__link">
+        <span class="md-ellipsis">Introduction</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="showcase.html" class="md-nav__link">
+        <span class="md-ellipsis">Showcase</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="install.html" class="md-nav__link">
+        <span class="md-ellipsis">Installation</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quickstart.html" class="md-nav__link">
+        <span class="md-ellipsis">Quickstart</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          <span class="md-ellipsis">Basic Document Styling</span>
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="#" class="md-nav__link md-nav__link--active">
+        <span class="md-ellipsis">Basic Document Styling</span>
+      </a>
+      
+        
+
+  
+
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      <span class="md-ellipsis">Basic Document Styling</span>
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#style-sheets" class="md-nav__link">
+    <span class="md-ellipsis">Style Sheets</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Style Sheets">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#extending-an-existing-style-sheet" class="md-nav__link">
+    <span class="md-ellipsis">Extending an Existing Style Sheet</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#starting-from-scratch" class="md-nav__link">
+    <span class="md-ellipsis">Starting from Scratch</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#document-templates" class="md-nav__link">
+    <span class="md-ellipsis">Document Templates</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Document Templates">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#configuring-a-template" class="md-nav__link">
+    <span class="md-ellipsis">Configuring a Template</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#using-a-template-configuration-file" class="md-nav__link">
+    <span class="md-ellipsis">Using a Template Configuration File</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="elementstyling.html" class="md-nav__link">
+        <span class="md-ellipsis">Element Styling</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="templates.html" class="md-nav__link">
+        <span class="md-ellipsis">Document Templates</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="faq.html" class="md-nav__link">
+        <span class="md-ellipsis">Frequently Asked Questions</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="contributing.html" class="md-nav__link">
+        <span class="md-ellipsis">Contributing</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="developing.html" class="md-nav__link">
+        <span class="md-ellipsis">Developing</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="changelog.html" class="md-nav__link">
+        <span class="md-ellipsis">Release History</span>
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" checked>
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2">
+          <span class="md-ellipsis">Reference Guide</span> [<a class="pdf-link" href="reference.pdf">PDF</a>]
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Reference Guide" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          <span class="md-ellipsis">Reference Guide</span> [<a class="pdf-link" href="reference.pdf">PDF</a>]
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="rinoh.html" class="md-nav__link">
+        <span class="md-ellipsis">rinoh</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="sphinx.html" class="md-nav__link">
+        <span class="md-ellipsis">Sphinx Builder</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="stylesheets.html" class="md-nav__link">
+        <span class="md-ellipsis">Style Sheets</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="stdtemplates.html" class="md-nav__link">
+        <span class="md-ellipsis">Standard Document Templates</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="api/api.html" class="md-nav__link">
+        <span class="md-ellipsis">API Documentation</span>
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" checked>
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3">
+          <span class="md-ellipsis">Indices</span>
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Indices" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          <span class="md-ellipsis">Indices</span>
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="genindex.html" class="md-nav__link">
+        <span class="md-ellipsis">Index</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="py-modindex.html" class="md-nav__link">
+        <span class="md-ellipsis">Module Index</span>
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+  
+
+<nav class="md-nav md-nav--secondary">
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      <span class="md-ellipsis">Basic Document Styling</span>
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#style-sheets" class="md-nav__link">
+    <span class="md-ellipsis">Style Sheets</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Style Sheets">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#extending-an-existing-style-sheet" class="md-nav__link">
+    <span class="md-ellipsis">Extending an Existing Style Sheet</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#starting-from-scratch" class="md-nav__link">
+    <span class="md-ellipsis">Starting from Scratch</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#document-templates" class="md-nav__link">
+    <span class="md-ellipsis">Document Templates</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Document Templates">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#configuring-a-template" class="md-nav__link">
+    <span class="md-ellipsis">Configuring a Template</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#using-a-template-configuration-file" class="md-nav__link">
+    <span class="md-ellipsis">Using a Template Configuration File</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset" role="main">
+                  
+
+
+  <a href="https://github.com/brechtm/rinohtype/edit/master/doc/basicstyling.rst" title="Edit this page" class="md-content__button md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25Z"/></svg>
+  </a>
+
+<h1 id="basic-document-styling"><span id="basic-styling"></span>Basic Document Styling<a class="headerlink" href="#basic-document-styling" title="Link to this heading">¶</a></h1>
+<p>rinohtype allows for fine-grained control over the style of its output. Most
+aspects of a document’s style can be controlled by style sheet files and
+template configuration files which are being introduced in this chapter. These
+files are plain text files that are easy to create, read and modify.</p>
+<h2 id="style-sheets"><span id="basics-stylesheets"></span>Style Sheets<a class="headerlink" href="#style-sheets" title="Link to this heading">¶</a></h2>
+<p>A style sheet defines the look of each element in a document. For each type of
+document element, the style sheet assign values to the style properties
+available for that element. Style sheets are stored in plain text files using
+the Windows INI<a class="footnote-reference brackets" href="#ini" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> format with the <code class="docutils literal notranslate"><span class="pre">.rts</span></code> extension. Below is an
+excerpt from the <a class="reference internal" href="sphinx_stylesheet.html"><span class="doc">Sphinx style sheet</span></a> included with rinohtype.</p>
+<div class="highlight-ini notranslate" id="base-style-sheet"><div class="highlight"><pre><span></span><code><span class="k">[STYLESHEET]</span>
+<span class="na">name</span><span class="o">=</span><span class="s">Sphinx</span>
+<span class="na">description</span><span class="o">=</span><span class="s">Mostly a copy of the LaTeX style included with Sphinx</span>
+<span class="na">pygments_style</span><span class="o">=</span><span class="s">friendly</span>
+
+<span class="k">[VARIABLES]</span>
+<span class="na">mono_typeface</span><span class="o">=</span><span class="s">TeX Gyre Cursor</span>
+<span class="na">serif_typeface</span><span class="o">=</span><span class="s">TeX Gyre Pagella</span>
+<span class="na">sans_typeface</span><span class="o">=</span><span class="s">Tex Gyre Heros</span>
+<span class="na">fallback_typeface</span><span class="o">=</span><span class="s">DejaVu Serif</span>
+<span class="na">thin_black_stroke</span><span class="o">=</span><span class="s">0.5pt,</span><span class="c1">#000</span>
+<span class="na">blue</span><span class="o">=</span><span class="c1">#20435c</span>
+
+<span class="k">[default:Paragraph]</span>
+<span class="na">typeface</span><span class="o">=</span><span class="s">$(serif_typeface)</span>
+<span class="na">font_weight</span><span class="o">=</span><span class="s">REGULAR</span>
+<span class="na">font_size</span><span class="o">=</span><span class="s">10pt</span>
+<span class="na">line_spacing</span><span class="o">=</span><span class="s">fixed(12pt, leading(0))</span>
+<span class="na">indent_first</span><span class="o">=</span><span class="s">0</span>
+<span class="na">space_above</span><span class="o">=</span><span class="s">0</span>
+<span class="na">space_below</span><span class="o">=</span><span class="s">0</span>
+<span class="na">text_align</span><span class="o">=</span><span class="s">JUSTIFY</span>
+<span class="na">kerning</span><span class="o">=</span><span class="s">True</span>
+<span class="na">ligatures</span><span class="o">=</span><span class="s">True</span>
+<span class="na">hyphen_lang</span><span class="o">=</span><span class="s">en_US</span>
+<span class="na">hyphen_chars</span><span class="o">=</span><span class="s">4</span>
+
+<span class="k">[fallback]</span>
+<span class="na">typeface</span><span class="o">=</span><span class="s">$(fallback_typeface)</span>
+
+<span class="k">[body]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">default</span>
+<span class="na">space_above</span><span class="o">=</span><span class="s">5pt</span>
+<span class="na">space_below</span><span class="o">=</span><span class="s">0</span>
+<span class="na">text_align</span><span class="o">=</span><span class="s">justify</span>
+
+<span class="k">[emphasis]</span>
+<span class="na">font_slant</span><span class="o">=</span><span class="s">italic</span>
+
+<span class="k">[strong]</span>
+<span class="na">font_weight</span><span class="o">=</span><span class="s">BOLD</span>
+
+<span class="k">[literal emphasis]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">emphasis</span>
+<span class="na">typeface</span><span class="o">=</span><span class="s">$(mono_typeface)</span>
+<span class="na">hyphenate</span><span class="o">=</span><span class="s">False</span>
+<span class="na">ligatures</span><span class="o">=</span><span class="s">False</span>
+
+<span class="k">[literal strong]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">strong</span>
+<span class="na">typeface</span><span class="o">=</span><span class="s">$(mono_typeface)</span>
+<span class="na">hyphenate</span><span class="o">=</span><span class="s">False</span>
+<span class="na">ligatures</span><span class="o">=</span><span class="s">False</span>
+
+<span class="k">[inline math]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">monospaced</span>
+
+<span class="k">[quote]</span>
+<span class="na">font_slant</span><span class="o">=</span><span class="s">italic</span>
+</code></pre></div>
+</div>
+<p>Except for <code class="docutils literal notranslate"><span class="pre">[STYLESHEET]</span></code> and <code class="docutils literal notranslate"><span class="pre">[VARIABLES]</span></code>, each configuration section
+in a style sheet determines the style of a particular type of document element.
+The <code class="docutils literal notranslate"><span class="pre">emphasis</span></code> style, for example, determines the look of emphasized text,
+which is displayed in an italic font. This is similar to how HTML’s cascading
+style sheets work. In rinohtype however, document elements are identified by
+means of a descriptive label (such as <em>emphasis</em>) instead of a cryptic
+selector. rinohtype also makes use of selectors, but these are collected in a
+<a class="reference internal" href="elementstyling.html#matchers"><span class="std std-ref">matcher</span></a> which maps them to descriptive names to be used by
+many style sheets. Unless you are using rinohtype as a PDF library to create
+custom documents, the <a class="reference internal" href="stylesheets.html#default-matcher"><span class="std std-ref">default matcher</span></a> should cover
+your needs.</p>
+<p>The following two subsections illustrate how to extend an existing style sheet
+and how to create a new, independent style sheet. For more in-depth information
+on style sheets, please refer to <a class="reference internal" href="elementstyling.html#styling"><span class="std std-ref">Element Styling</span></a>.</p>
+<h3 id="extending-an-existing-style-sheet">Extending an Existing Style Sheet<a class="headerlink" href="#extending-an-existing-style-sheet" title="Link to this heading">¶</a></h3>
+<p>Starting from an existing style sheet, it is easy to make small changes to the
+style of individual document elements. The following style sheet file is based
+on the Sphinx stylesheet included with rinohtype.</p>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><code><span class="k">[STYLESHEET]</span>
+<span class="na">name</span><span class="o">=</span><span class="s">My Style Sheet</span>
+<span class="na">description</span><span class="o">=</span><span class="s">Small tweaks made to the Sphinx style sheet</span>
+<span class="na">base</span><span class="o">=</span><span class="s">sphinx</span>
+
+<span class="k">[VARIABLES]</span>
+<span class="na">mono_typeface</span><span class="o">=</span><span class="s">Courier</span>
+
+<span class="k">[emphasis]</span>
+<span class="na">font_color</span><span class="o">=</span><span class="c1">#00a</span>
+
+<span class="k">[strong]</span>
+<span class="na">base</span><span class="o">=</span><span class="s">DEFAULT_STYLE</span>
+<span class="na">font_color</span><span class="o">=</span><span class="c1">#a00</span>
+</code></pre></div>
+</div>
+<p>By default, styles defined in a style sheet <em>extend</em> the corresponding style
+from the base style sheet. In this example, emphasized text will be set in an
+italic font (as configured in the <a class="reference internal" href="#base-style-sheet">base style sheet</a>) and colored blue
+(<code class="docutils literal notranslate"><span class="pre">#00a</span></code>).</p>
+<p>It is also possible to completely override a style definition. This can be done
+by setting the <code class="docutils literal notranslate"><span class="pre">base</span></code> of a style definition to <code class="docutils literal notranslate"><span class="pre">DEFAULT_STYLE</span></code> as
+illustrated by the <cite>strong</cite> style. This causes strongly emphasised text to be
+displayed in red (#a00) but <strong>not</strong> in a bold font as was defined in the <a class="reference internal" href="#base-style-sheet">base
+style sheet</a> (the default for <code class="docutils literal notranslate"><span class="pre">font_weight</span></code> is <cite>Medium</cite>; see
+<a class="reference internal" href="style/rinoh.text.TextStyle.html#rinoh.text.TextStyle" title="rinoh.text.TextStyle (Python class) — Style class for Text"><code class="xref py py-class docutils literal notranslate"><span class="pre">TextStyle</span></code></a>). Refer to <a class="reference internal" href="stylesheets.html#default-matcher"><span class="std std-ref">Default Matcher</span></a> to find out
+which style attributes are accepted by each style (by following the hyperlink
+to the style class’s documentation).</p>
+<p>The style sheet also redefines the <code class="docutils literal notranslate"><span class="pre">mono_typeface</span></code> variable. This variable is
+used in the <a class="reference internal" href="#base-style-sheet">base style sheet</a> in all style definitions where a monospaced
+font is desired. Redefining the variable in the derived style sheet affects
+all of these style definitions.</p>
+<h3 id="starting-from-scratch">Starting from Scratch<a class="headerlink" href="#starting-from-scratch" title="Link to this heading">¶</a></h3>
+<p>If you don’t specify a base style sheet in the <code class="docutils literal notranslate"><span class="pre">[STYLESHEET]</span></code> section, you
+create an independent style sheet. You should do this if you want to create
+a document style that is not based on an existing style sheet. If the style
+definition for a particular document element is not included in the style
+sheet, the default values for its style properties are used.</p>
+<div class="note admonition">
+<p class="admonition-title">Note</p>
+<p>In the future, rinohtype will be able to generate an empty INI style
+sheet, listing all styles defined in the matcher with the supported style
+attributes along with the default values as comments. This generated style
+sheet can serve as a good starting point for developing a custom style
+sheet from scratch.</p>
+</div>
+<h2 id="document-templates"><span id="basics-templates"></span>Document Templates<a class="headerlink" href="#document-templates" title="Link to this heading">¶</a></h2>
+<p>As with style sheets, you can choose to make use of a template provided by
+rinohtype and optionally customize it or you can create a custom template from
+scratch. This section discusses how you can configure an existing template. See
+<a class="reference internal" href="templates.html#templates"><span class="std std-ref">Document Templates</span></a> on how to create a custom template.</p>
+<h3 id="configuring-a-template"><span id="configure-templates"></span>Configuring a Template<a class="headerlink" href="#configuring-a-template" title="Link to this heading">¶</a></h3>
+<p>rinohtype provides a number of <a class="reference internal" href="stdtemplates.html#standard-templates"><span class="std std-ref">Standard Document Templates</span></a>. These can be
+customized by means of a template configuration file; a plain text file in the
+INI<a class="footnote-reference brackets" href="#ini" id="id3" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> format with the <code class="docutils literal notranslate"><span class="pre">.rtt</span></code> extension. Here is an example
+configuration for the Book template:</p>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><code><span class="k">[TEMPLATE_CONFIGURATION]</span>
+<span class="na">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">my book configuration</span>
+<span class="na">template</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">book</span>
+
+<span class="na">parts</span><span class="w"> </span><span class="o">=</span>
+<span class="w">    </span><span class="na">title</span>
+<span class="w">    </span><span class="c1">;front_matter</span>
+<span class="w">    </span><span class="na">contents</span>
+<span class="w">    </span><span class="c1">;back_matter</span>
+<span class="na">stylesheet</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">sphinx_base14</span>
+<span class="na">language</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">fr</span>
+
+<span class="k">[STRINGS]</span>
+<span class="na">@contents</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#39;Contents&#39;</span>
+<span class="na">@caution</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#39;Careful!&#39;</span>
+<span class="na">@warning</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#39;Please be warned&#39;</span>
+
+<span class="k">[VARIABLES]</span>
+<span class="na">paper_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">A5</span>
+
+<span class="k">[front_matter]</span>
+<span class="na">page_number_format</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">lowercase roman</span>
+<span class="na">end_at_page</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">left</span>
+
+<span class="k">[contents]</span>
+<span class="na">page_number_format</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">number</span>
+
+<span class="k">[title_page]</span>
+<span class="na">top_margin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">2cm</span>
+</code></pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">TEMPLATE_CONFIGURATION</span></code> sections collects global template options. Set
+<em>name</em> to provide a short label for your template configuration. <em>template</em>
+identifies the <a class="reference internal" href="stdtemplates.html#standard-templates"><span class="std std-ref">document template</span></a> to configure.</p>
+<p>All document templates consist of a number of document parts. The
+<a class="reference internal" href="article.html#rinoh.templates.article.Article" title="rinoh.templates.article.Article (Python class) — The stylesheet to use for styling document elements (inherited from DocumentTemplate)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Article</span></code></a> template defines only a single part
+(<a class="reference internal" href="article.html#rinoh.templates.article.Article.contents" title="rinoh.templates.article.Article.contents (Python attribute) — base: None"><code class="xref py py-attr docutils literal notranslate"><span class="pre">contents</span></code></a>) where the <a class="reference internal" href="book.html#rinoh.templates.book.Book" title="rinoh.templates.book.Book (Python class) — The stylesheet to use for styling document elements (inherited from DocumentTemplate)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Book</span></code></a> template defines four.
+The order of the parts can be changed, and individual parts can optionally be
+hidden by overriding the <a class="reference internal" href="api/template.html#rinoh.template.DocumentTemplate.parts" title="rinoh.template.DocumentTemplate.parts (Python attribute) — The parts making up this document"><code class="xref py py-attr docutils literal notranslate"><span class="pre">parts</span></code></a> configuration option.
+The configuration above hides the front and back matter parts (commented out
+using a semicolon), for example. Note that empty document parts will not be
+included in the document. For example, when there are no index entries and the
+index is thus empty, the back matter part is omitted.</p>
+<p>The template configuration also specifies which style sheet is used for styling
+document elements. The <a class="reference internal" href="api/template.html#rinoh.template.DocumentTemplate.stylesheet" title="rinoh.template.DocumentTemplate.stylesheet (Python attribute) — The stylesheet to use for styling document elements"><code class="xref py py-attr docutils literal notranslate"><span class="pre">stylesheet</span></code></a> option takes the
+name of an installed style sheet (see <a class="reference internal" href="rinoh.html#cmdoption-rinoh-list-stylesheets"><code class="xref std std-option docutils literal notranslate"><span class="pre">rinoh</span> <span class="pre">--list-stylesheets</span></code></a>) or
+the filename of a stylesheet file (<code class="docutils literal notranslate"><span class="pre">.rts</span></code>).</p>
+<p>The <a class="reference internal" href="api/template.html#rinoh.template.DocumentTemplate.language" title="rinoh.template.DocumentTemplate.language (Python attribute) — The main language of the document"><code class="xref py py-attr docutils literal notranslate"><span class="pre">language</span></code></a> option sets the default language for
+the document, which determines which language is used for standard document
+strings such as section and admonition titles.</p>
+<p>The <a class="reference internal" href="article.html#rinoh.templates.article.Article" title="rinoh.templates.article.Article (Python class) — The stylesheet to use for styling document elements (inherited from DocumentTemplate)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Article</span></code></a> template defines an additional template option,
+<a class="reference internal" href="article.html#rinoh.templates.article.Article.abstract_location" title="rinoh.templates.article.Article.abstract_location (Python attribute) — Where to place the abstract"><code class="xref py py-attr docutils literal notranslate"><span class="pre">abstract_location</span></code></a> which determines where the (optional)
+article abstract is placed; in the title box or as part of the body text. This
+distinction is only visible when using multiple columns for the page contents
+(see <a class="reference internal" href="api/template.html#rinoh.template.BodyPageTemplateBase.columns" title="rinoh.template.BodyPageTemplateBase.columns (Python attribute) — The number of columns for the body text"><code class="xref py py-attr docutils literal notranslate"><span class="pre">columns</span></code></a>).</p>
+<p>The standard document strings configured by the
+<a class="reference internal" href="api/template.html#rinoh.template.DocumentTemplate.language" title="rinoh.template.DocumentTemplate.language (Python attribute) — The main language of the document"><code class="xref py py-attr docutils literal notranslate"><span class="pre">language</span></code></a> option described above can be overridden by
+user-defined strings in the <code class="docutils literal notranslate"><span class="pre">STRINGS</span></code> section of the configuration file. For
+example, the default title for the table of contents section (<em>Table of
+Contents</em>) is replaced with <em>Contents</em>. The configuration also sets custom
+titles for the caution and warning admonitions.</p>
+<p>The others sections in the configuration file are the <code class="docutils literal notranslate"><span class="pre">VARIABLES</span></code> section,
+followed by document part and page template sections. Similar to style sheets,
+the variables can be referenced in the template configuration sections. Here,
+the <code class="docutils literal notranslate"><span class="pre">paper_size</span></code> variable is set, which is being referenced by by all page
+templates in <a class="reference internal" href="article.html#rinoh.templates.article.Article" title="rinoh.templates.article.Article (Python class) — The stylesheet to use for styling document elements (inherited from DocumentTemplate)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Article</span></code></a> indirectly through the <a class="reference internal" href="article.html#rinoh.templates.article.Article.page" title="rinoh.templates.article.Article.page (Python attribute) — base: None"><code class="xref py py-attr docutils literal notranslate"><span class="pre">page</span></code></a>
+base page template.</p>
+<p>For document part templates, <a class="reference internal" href="api/template.html#rinoh.template.DocumentPartTemplate.page_number_format" title="rinoh.template.DocumentPartTemplate.page_number_format (Python attribute) — The format for page numbers in this document part."><code class="xref py py-attr docutils literal notranslate"><span class="pre">page_number_format</span></code></a>
+determines how page numbers are formatted. To prevent restarting the page
+numbering for a document part, set this to <code class="docutils literal notranslate"><span class="pre">continue</span></code> to use the same page
+numbering format at the preceding document part and continue with the next
+number.</p>
+<p>The <a class="reference internal" href="api/template.html#rinoh.template.DocumentPartTemplate.end_at_page" title="rinoh.template.DocumentPartTemplate.end_at_page (Python attribute) — The type of page to end this document part on"><code class="xref py py-attr docutils literal notranslate"><span class="pre">DocumentPartTemplate.end_at_page</span></code></a> option controls at which page
+the document part ends. This is set to <code class="docutils literal notranslate"><span class="pre">left</span></code> for the title part in the
+example configuration to make the contents part start on a right page.</p>
+<p>Each document part finds page templates by name. They will first look for
+specific left/right page templates by appending <code class="docutils literal notranslate"><span class="pre">_left_page</span></code> or
+<code class="docutils literal notranslate"><span class="pre">_right_page</span></code> to the document part name. If these page templates have not
+been defined in the template, it will look for the more general
+<code class="docutils literal notranslate"><span class="pre">&lt;document</span> <span class="pre">part</span> <span class="pre">name&gt;_page</span></code> template. Note that, if left and right page
+templates have been defined by the template (such as the book template), the
+configuration will need to override these, as they will have priority over the
+general page template defined in the configuration.</p>
+<p>The example configuration only adjusts the top margin for the
+<a class="reference internal" href="api/template.html#rinoh.template.TitlePageTemplate" title="rinoh.template.TitlePageTemplate (Python class) — Extra text to include on the title page below the title"><code class="xref py py-class docutils literal notranslate"><span class="pre">TitlePageTemplate</span></code></a>, but many more aspects of the page templates are
+configurable. Refer to <a class="reference internal" href="stdtemplates.html#standard-templates"><span class="std std-ref">Standard Document Templates</span></a> for details.</p>
+<h3 id="using-a-template-configuration-file">Using a Template Configuration File<a class="headerlink" href="#using-a-template-configuration-file" title="Link to this heading">¶</a></h3>
+<p>A template configuration file can be specified when rendering using the
+command-line <strong class="program">rinoh</strong> tool by passing it to the
+<a class="reference internal" href="rinoh.html#cmdoption-rinoh-t"><code class="xref std std-option docutils literal notranslate"><span class="pre">--template</span></code></a> command-line option. When using the
+<a class="reference internal" href="sphinx.html#sphinx-builder"><span class="std std-ref">Sphinx Builder</span></a>, you can specify the template in the
+<a class="reference internal" href="sphinx.html#confval-rinoh_documents" title="rinoh_documents (Sphinx builder configuration value) — Determines which PDF documents to build. Its format is a list of dictionaries, one for each document to be generated. The supported keys for these dictionaries are listed below. Two of them are required:"><code class="xref std std-confval docutils literal notranslate"><span class="pre">rinoh_documents</span></code></a> option in <code class="docutils literal notranslate"><span class="pre">conf.py</span></code>.</p>
+<p>To render a document using this template configuration programatically, load
+the template file using <code class="xref py py-class docutils literal notranslate"><span class="pre">TemplateConfigurationFile</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+
+<span class="kn">from</span> <span class="nn">rinoh.frontend.rst</span> <span class="kn">import</span> <span class="n">ReStructuredTextReader</span>
+<span class="kn">from</span> <span class="nn">rinoh.template</span> <span class="kn">import</span> <span class="n">TemplateConfigurationFile</span>
+
+<span class="c1"># the parser builds a rinohtype document tree</span>
+<span class="n">parser</span> <span class="o">=</span> <span class="n">ReStructuredTextReader</span><span class="p">()</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;my_document.rst&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+    <span class="n">document_tree</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+
+<span class="c1"># load the article template configuration file</span>
+<span class="n">script_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
+<span class="n">config</span> <span class="o">=</span> <span class="n">TemplateConfigurationFile</span><span class="p">(</span><span class="n">script_path</span> <span class="o">/</span> <span class="s1">&#39;my_book.rtt&#39;</span><span class="p">)</span>
+
+<span class="c1"># render the document to &#39;my_document.pdf&#39;</span>
+<span class="n">document</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">document</span><span class="p">(</span><span class="n">document_tree</span><span class="p">)</span>
+<span class="n">document</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="s1">&#39;my_document&#39;</span><span class="p">)</span>
+</code></pre></div>
+</div>
+<p>The <a class="reference internal" href="api/template.html#rinoh.template.TemplateConfiguration.document" title="rinoh.template.TemplateConfiguration.document (Python method) — Create a DocumentTemplate object based on the given document tree and this template configuration"><code class="xref py py-meth docutils literal notranslate"><span class="pre">TemplateConfiguration.document()</span></code></a> method creates a document
+instance with the template configuration applied. So if you want to render your
+document using a different template configuration, it suffices to load the new
+configuration file.</p>
+<p>Refer to the <a class="reference internal" href="stdtemplates.html#standard-templates"><span class="std std-ref">Standard Document Templates</span></a> to discover all of the options accepted
+by the templates and the document part and page templates.</p>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="ini" role="note">
+<span class="label"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></span>
+<span class="backrefs">(<a role="doc-backlink" href="#id1">1</a>,<a role="doc-backlink" href="#id3">2</a>)</span>
+<p>see <em>Supported INI File Structure</em> in <a class="reference external" href="https://docs.python.org/3/library/configparser.html#module-configparser" title="(in Python v3.12)"><code class="docutils literal notranslate"><span class="pre">configparser</span></code></a></p>
+</aside>
+</aside>
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+    <nav class="md-footer__inner md-grid" aria-label="Footer" >
+      
+        
+        <a href="quickstart.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: Quickstart" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              Quickstart
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="elementstyling.html" class="md-footer__link md-footer__link--next" aria-label="Next: Element Styling" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              Element Styling
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  
+  
+  <div class="md-footer-meta md-typeset">
+    
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-footer-copyright__highlight">
+        &#169; Copyright 2024, Brecht Machiels and contributors.
+        
+    </div>
+  
+    Created using
+    <a href="https://www.sphinx-doc.org/" target="_blank" rel="noopener">Sphinx</a>
+    7.3.7.
+     and
+    <a href="https://github.com/jbms/sphinx-immaterial/" target="_blank" rel="noopener">Sphinx-Immaterial</a>
+  
+</div>
+      
+    </div>
+    
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": ".", "features": ["navigation.expand", "navigation.sections", "navigation.instant"], "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "version": {"provider": "mike", "staticVersions": null, "versionPath": "../im_versions.json"}}</script>
+    
+      
+        <script src="_static/sphinx_immaterial_theme.f9d9eeeb247ace16c.min.js?v=8ec58cb5"></script>
+    
+  </body>
+</html>

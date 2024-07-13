@@ -1,0 +1,1537 @@
+
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      <link rel="icon" href="../_static/rinohtype_logo_abbrev.svg">
+    
+    
+      
+        <title>Language (rinoh.language) - rinohtype</title>
+      
+    
+    
+      
+        
+        
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+        <link rel="stylesheet" type="text/css" href="../_static/sphinx_immaterial_theme.e0b5691b38cca82da.min.css?v=b1736040" />
+        <link rel="stylesheet" type="text/css" href="../_static/tweaks.css?v=ac567af0" />
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="red" data-md-color-accent="light-blue">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#rinoh.language.Language" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <div data-md-component="outdated" hidden>
+        
+      </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../index.html" title="rinohtype" class="md-header__button md-logo" aria-label="rinohtype" data-md-component="logo">
+      <img src="../_static/logo_white.svg" alt="logo">
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            rinohtype
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Language (rinoh.language)
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      <form class="md-header__option" data-md-component="palette">
+        
+          
+          
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="red" data-md-color-accent="light-blue"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+          
+            <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 1 7 7c0 2.38-1.19 4.47-3 5.74V17a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-2.26C6.19 13.47 5 11.38 5 9a7 7 0 0 1 7-7M9 21v-1h6v1a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1m3-17a5 5 0 0 0-5 5c0 2.05 1.23 3.81 3 4.58V16h4v-2.42c1.77-.77 3-2.53 3-4.58a5 5 0 0 0-5-5Z"/></svg>
+            </label>
+          
+        
+          
+          
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="red" data-md-color-accent="orange"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
+          
+            <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 0-7 7c0 2.38 1.19 4.47 3 5.74V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 0 0-7-7M9 21a1 1 0 0 0 1 1h4a1 1 0 0 0 1-1v-1H9v1Z"/></svg>
+            </label>
+          
+        
+      </form>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/brechtm/rinohtype" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    rinohtype
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../index.html" title="rinohtype" class="md-nav__button md-logo" aria-label="rinohtype" data-md-component="logo">
+      <img src="../_static/logo_white.svg" alt="logo">
+    </a>
+    rinohtype
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/brechtm/rinohtype" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    rinohtype
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_1" type="checkbox" id="__nav_1" checked>
+      
+      
+      
+        <label class="md-nav__link" for="__nav_1">
+          <span class="md-ellipsis">User Manual</span> [<a class="pdf-link" href="../manual.pdf">PDF</a>]
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="User Manual" data-md-level="1">
+        <label class="md-nav__title" for="__nav_1">
+          <span class="md-nav__icon md-icon"></span>
+          <span class="md-ellipsis">User Manual</span> [<a class="pdf-link" href="../manual.pdf">PDF</a>]
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../intro.html" class="md-nav__link">
+        <span class="md-ellipsis">Introduction</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../showcase.html" class="md-nav__link">
+        <span class="md-ellipsis">Showcase</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../install.html" class="md-nav__link">
+        <span class="md-ellipsis">Installation</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../quickstart.html" class="md-nav__link">
+        <span class="md-ellipsis">Quickstart</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../basicstyling.html" class="md-nav__link">
+        <span class="md-ellipsis">Basic Document Styling</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../elementstyling.html" class="md-nav__link">
+        <span class="md-ellipsis">Element Styling</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../templates.html" class="md-nav__link">
+        <span class="md-ellipsis">Document Templates</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../faq.html" class="md-nav__link">
+        <span class="md-ellipsis">Frequently Asked Questions</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contributing.html" class="md-nav__link">
+        <span class="md-ellipsis">Contributing</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../developing.html" class="md-nav__link">
+        <span class="md-ellipsis">Developing</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../changelog.html" class="md-nav__link">
+        <span class="md-ellipsis">Release History</span>
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" checked>
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2">
+          <span class="md-ellipsis">Reference Guide</span> [<a class="pdf-link" href="../reference.pdf">PDF</a>]
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Reference Guide" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          <span class="md-ellipsis">Reference Guide</span> [<a class="pdf-link" href="../reference.pdf">PDF</a>]
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../rinoh.html" class="md-nav__link">
+        <span class="md-ellipsis">rinoh</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sphinx.html" class="md-nav__link">
+        <span class="md-ellipsis">Sphinx Builder</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../stylesheets.html" class="md-nav__link">
+        <span class="md-ellipsis">Style Sheets</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../stdtemplates.html" class="md-nav__link">
+        <span class="md-ellipsis">Standard Document Templates</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2_5" type="checkbox" id="__nav_2_5" checked>
+      
+      
+      
+        
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="api.html"><span class="md-ellipsis">API Documentation</span></a>
+          
+            <label for="__nav_2_5">
+              <span class="md-nav__icon md-icon"></span>
+            </label>
+          
+        </div>
+      
+      <nav class="md-nav" aria-label="API Documentation" data-md-level="2">
+        <label class="md-nav__title" for="__nav_2_5">
+          <span class="md-nav__icon md-icon"></span>
+          <span class="md-ellipsis">API Documentation</span>
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="attribute.html" class="md-nav__link">
+        <span class="md-ellipsis">Attribute <wbr>(rinoh.<wbr>attribute)</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="color.html" class="md-nav__link">
+        <span class="md-ellipsis">Color <wbr>(rinoh.<wbr>color)</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="dimension.html" class="md-nav__link">
+        <span class="md-ellipsis">Dimension <wbr>(rinoh.<wbr>dimension)</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="document.html" class="md-nav__link">
+        <span class="md-ellipsis">Document <wbr>(rinoh.<wbr>document)</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="draw.html" class="md-nav__link">
+        <span class="md-ellipsis">Drawing Primitives <wbr>(rinoh.<wbr>draw)</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="flowable.html" class="md-nav__link">
+        <span class="md-ellipsis">Flowable <wbr>(rinoh.<wbr>flowable)</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="font.html" class="md-nav__link">
+        <span class="md-ellipsis">Fonts and Typefaces <wbr>(rinoh.<wbr>font)</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="image.html" class="md-nav__link">
+        <span class="md-ellipsis">Images and Figures <wbr>(rinoh.<wbr>image)</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="index.html" class="md-nav__link">
+        <span class="md-ellipsis">Index <wbr>(rinoh.<wbr>index)</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          <span class="md-ellipsis">Language <wbr>(rinoh.<wbr>language)</span>
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="#" class="md-nav__link md-nav__link--active">
+        <span class="md-ellipsis">Language <wbr>(rinoh.<wbr>language)</span>
+      </a>
+      
+        
+
+  
+
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      <span class="md-ellipsis">Language <wbr>(rinoh.<wbr>language)</span>
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#rinoh.language.Language" class="md-nav__link">
+    <span aria-label="Python class" class="objinfo-icon objinfo-icon__data" title="Python class">C</span><span title="rinoh.language.Language (Python class) — Collects localized strings for a particular language" class="md-ellipsis">rinoh.<wbr>language.<wbr>Language</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="rinoh.language.Language">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#rinoh.language.Language-parameters" class="md-nav__link">
+    <span class="md-ellipsis">Parameters</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Parameters">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#rinoh.language.Language.__init__.code" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="rinoh.language.Language.__init__.code (Python parameter) — short code identifying the language" class="md-ellipsis">code</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rinoh.language.Language.__init__.name" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="rinoh.language.Language.__init__.name (Python parameter) — native name of the language" class="md-ellipsis">name</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rinoh.language.Language.languages" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="rinoh.language.Language.languages (Python attribute) — Dictionary mapping codes to Languages" class="md-ellipsis">languages</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rinoh.language.CS" class="md-nav__link">
+    <span aria-label="Python data" class="objinfo-icon objinfo-icon__alias" title="Python data">V</span><span title="rinoh.language.CS (Python data) — Localized strings for Česky :figure: Obrázek :table: Tabulka :contents: Obsah :list_of_figures: Seznam obrázků :list_of_tables: Seznam tabulek :chapter: Kapitola :index: Rejstřík :attention: Pozor! :caution: Pozor! :danger: !NEBEZPEČÍ! :error: Chyba :hint: Poznámka :important: Důležité :note: Poznámka :tip: Tip :warning: Varování :seealso: Viz také" class="md-ellipsis">rinoh.<wbr>language.<wbr>CS</span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rinoh.language.EN" class="md-nav__link">
+    <span aria-label="Python data" class="objinfo-icon objinfo-icon__alias" title="Python data">V</span><span title="rinoh.language.EN (Python data) — Localized strings for English :paragraph: Paragraph :section: Section :chapter: Chapter :figure: Figure :table: Table :listing: Listing :contents: Table of Contents :list_of_figures: List of Figures :list_of_tables: List of Tables :index: Index :attention: Attention! :caution: Caution! :danger: !DANGER! :error: Error :hint: Hint :important: Important :note: Note :tip: Tip :warning: Warning :seealso: See also" class="md-ellipsis">rinoh.<wbr>language.<wbr>EN</span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rinoh.language.ES" class="md-nav__link">
+    <span aria-label="Python data" class="objinfo-icon objinfo-icon__alias" title="Python data">V</span><span title="rinoh.language.ES (Python data) — Localized strings for Spanish :figure: Figura :table: Tabla :contents: Contenidos :list_of_figures: Índice de figuras :list_of_tables: Índice de tablas :chapter: Capítulo :index: Índice :attention: ¡Atención! :caution: ¡Cuidado! :danger: ¡PELIGRO! :error: Error :hint: Pista :important: Importante :note: Nota :tip: Consejo :warning: Precaución :seealso: Vea también" class="md-ellipsis">rinoh.<wbr>language.<wbr>ES</span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rinoh.language.FR" class="md-nav__link">
+    <span aria-label="Python data" class="objinfo-icon objinfo-icon__alias" title="Python data">V</span><span title="rinoh.language.FR (Python data) — Localized strings for Français :figure: Figure :table: Tableau :contents: Table des Matières :list_of_figures: Liste des Figures :list_of_tables: Liste des Tableaux :chapter: Chapitre :index: Index :attention: Attention! :caution: Prudence! :danger: !DANGER! :error: Erreur :hint: Conseil :important: Important :note: Note :tip: Astuce :warning: Avertissement :seealso: Voir aussi" class="md-ellipsis">rinoh.<wbr>language.<wbr>FR</span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rinoh.language.HU" class="md-nav__link">
+    <span aria-label="Python data" class="objinfo-icon objinfo-icon__alias" title="Python data">V</span><span title="rinoh.language.HU (Python data) — Localized strings for Hungarian :contents: Tartalomjegyzék :list_of_figures: Ábrák Listája :list_of_tables: Asztalok Listája :chapter: Fejezet :index: Index :attention: Figyelem! :caution: Vigyázat!! :danger: !VESZÉLY! :error: Hiba :hint: Tanács :important: Fontos :note: Megjegyzés :tip: Tipp :warning: Figyelmeztetés :seealso: Lásd még" class="md-ellipsis">rinoh.<wbr>language.<wbr>HU</span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rinoh.language.IT" class="md-nav__link">
+    <span aria-label="Python data" class="objinfo-icon objinfo-icon__alias" title="Python data">V</span><span title="rinoh.language.IT (Python data) — Localized strings for Italiano :figure: Figura :table: Tabelle :contents: Contenuti :list_of_figures: Elenco delle Figure :list_of_tables: Elenco delle Tabelle :chapter: Capitolo :index: Indice :attention: Attenzione! :caution: Prudenza! :danger: !PERICOLO! :error: Errore :hint: Consiglio :important: Importante :note: Nota :tip: Suggerimento :warning: Avvertimento :seealso: Vedi anche" class="md-ellipsis">rinoh.<wbr>language.<wbr>IT</span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rinoh.language.NL" class="md-nav__link">
+    <span aria-label="Python data" class="objinfo-icon objinfo-icon__alias" title="Python data">V</span><span title="rinoh.language.NL (Python data) — Localized strings for Nederlands :paragraph: Paragraaf :section: Sectie :chapter: Hoofdstuk :figure: Figuur :table: Tabel :listing: Lijst :contents: Inhoudsopgave :list_of_figures: Lijst van Figuren :list_of_tables: Lijst van Tabellen :index: Index :attention: Opgelet! :caution: Pas op! :danger: !GEVAAR! :error: Fout :hint: Hint :important: Belangrijk :note: Noot :tip: Tip :warning: Waarschuwing :seealso: Zie ook" class="md-ellipsis">rinoh.<wbr>language.<wbr>NL</span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rinoh.language.PL" class="md-nav__link">
+    <span aria-label="Python data" class="objinfo-icon objinfo-icon__alias" title="Python data">V</span><span title="rinoh.language.PL (Python data) — Localized strings for Polski :figure: Ilustracja :table: Tabela :contents: Spis Treści :list_of_figures: Spis Ilustracji :list_of_tables: Spis Tabel :chapter: Rozdział :index: Skorowidz :attention: Uwaga! :caution: Ostrożnie! :danger: !NIEBEZPIECZEŃSTWO! :error: Błąd :hint: Wskazówka :important: Ważne :note: Notatka :tip: Porada :warning: Ostrzeżenie :seealso: Zobacz również" class="md-ellipsis">rinoh.<wbr>language.<wbr>PL</span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="number.html" class="md-nav__link">
+        <span class="md-ellipsis">Number <wbr>(rinoh.<wbr>number)</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="paper.html" class="md-nav__link">
+        <span class="md-ellipsis">Paper sizes <wbr>(rinoh.<wbr>paper)</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="paragraph.html" class="md-nav__link">
+        <span class="md-ellipsis">Paragraph <wbr>(rinoh.<wbr>paragraph)</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="reference.html" class="md-nav__link">
+        <span class="md-ellipsis">Cross-<wbr>References and Fields <wbr>(rinoh.<wbr>reference)</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="structure.html" class="md-nav__link">
+        <span class="md-ellipsis">Structure <wbr>(rinoh.<wbr>structure)</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="strings.html" class="md-nav__link">
+        <span class="md-ellipsis">Strings <wbr>(rinoh.<wbr>strings)</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="style.html" class="md-nav__link">
+        <span class="md-ellipsis">Style <wbr>(rinoh.<wbr>style)</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="table.html" class="md-nav__link">
+        <span class="md-ellipsis">Tables <wbr>(rinoh.<wbr>table)</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="template.html" class="md-nav__link">
+        <span class="md-ellipsis">Templates <wbr>(rinoh.<wbr>template)</span>
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" checked>
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3">
+          <span class="md-ellipsis">Indices</span>
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Indices" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          <span class="md-ellipsis">Indices</span>
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../genindex.html" class="md-nav__link">
+        <span class="md-ellipsis">Index</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../py-modindex.html" class="md-nav__link">
+        <span class="md-ellipsis">Module Index</span>
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+  
+
+<nav class="md-nav md-nav--secondary">
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      <span class="md-ellipsis">Language <wbr>(rinoh.<wbr>language)</span>
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#rinoh.language.Language" class="md-nav__link">
+    <span aria-label="Python class" class="objinfo-icon objinfo-icon__data" title="Python class">C</span><span title="rinoh.language.Language (Python class) — Collects localized strings for a particular language" class="md-ellipsis">rinoh.<wbr>language.<wbr>Language</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="rinoh.language.Language">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#rinoh.language.Language-parameters" class="md-nav__link">
+    <span class="md-ellipsis">Parameters</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Parameters">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#rinoh.language.Language.__init__.code" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="rinoh.language.Language.__init__.code (Python parameter) — short code identifying the language" class="md-ellipsis">code</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rinoh.language.Language.__init__.name" class="md-nav__link">
+    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="rinoh.language.Language.__init__.name (Python parameter) — native name of the language" class="md-ellipsis">name</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rinoh.language.Language.languages" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="rinoh.language.Language.languages (Python attribute) — Dictionary mapping codes to Languages" class="md-ellipsis">languages</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rinoh.language.CS" class="md-nav__link">
+    <span aria-label="Python data" class="objinfo-icon objinfo-icon__alias" title="Python data">V</span><span title="rinoh.language.CS (Python data) — Localized strings for Česky :figure: Obrázek :table: Tabulka :contents: Obsah :list_of_figures: Seznam obrázků :list_of_tables: Seznam tabulek :chapter: Kapitola :index: Rejstřík :attention: Pozor! :caution: Pozor! :danger: !NEBEZPEČÍ! :error: Chyba :hint: Poznámka :important: Důležité :note: Poznámka :tip: Tip :warning: Varování :seealso: Viz také" class="md-ellipsis">rinoh.<wbr>language.<wbr>CS</span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rinoh.language.EN" class="md-nav__link">
+    <span aria-label="Python data" class="objinfo-icon objinfo-icon__alias" title="Python data">V</span><span title="rinoh.language.EN (Python data) — Localized strings for English :paragraph: Paragraph :section: Section :chapter: Chapter :figure: Figure :table: Table :listing: Listing :contents: Table of Contents :list_of_figures: List of Figures :list_of_tables: List of Tables :index: Index :attention: Attention! :caution: Caution! :danger: !DANGER! :error: Error :hint: Hint :important: Important :note: Note :tip: Tip :warning: Warning :seealso: See also" class="md-ellipsis">rinoh.<wbr>language.<wbr>EN</span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rinoh.language.ES" class="md-nav__link">
+    <span aria-label="Python data" class="objinfo-icon objinfo-icon__alias" title="Python data">V</span><span title="rinoh.language.ES (Python data) — Localized strings for Spanish :figure: Figura :table: Tabla :contents: Contenidos :list_of_figures: Índice de figuras :list_of_tables: Índice de tablas :chapter: Capítulo :index: Índice :attention: ¡Atención! :caution: ¡Cuidado! :danger: ¡PELIGRO! :error: Error :hint: Pista :important: Importante :note: Nota :tip: Consejo :warning: Precaución :seealso: Vea también" class="md-ellipsis">rinoh.<wbr>language.<wbr>ES</span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rinoh.language.FR" class="md-nav__link">
+    <span aria-label="Python data" class="objinfo-icon objinfo-icon__alias" title="Python data">V</span><span title="rinoh.language.FR (Python data) — Localized strings for Français :figure: Figure :table: Tableau :contents: Table des Matières :list_of_figures: Liste des Figures :list_of_tables: Liste des Tableaux :chapter: Chapitre :index: Index :attention: Attention! :caution: Prudence! :danger: !DANGER! :error: Erreur :hint: Conseil :important: Important :note: Note :tip: Astuce :warning: Avertissement :seealso: Voir aussi" class="md-ellipsis">rinoh.<wbr>language.<wbr>FR</span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rinoh.language.HU" class="md-nav__link">
+    <span aria-label="Python data" class="objinfo-icon objinfo-icon__alias" title="Python data">V</span><span title="rinoh.language.HU (Python data) — Localized strings for Hungarian :contents: Tartalomjegyzék :list_of_figures: Ábrák Listája :list_of_tables: Asztalok Listája :chapter: Fejezet :index: Index :attention: Figyelem! :caution: Vigyázat!! :danger: !VESZÉLY! :error: Hiba :hint: Tanács :important: Fontos :note: Megjegyzés :tip: Tipp :warning: Figyelmeztetés :seealso: Lásd még" class="md-ellipsis">rinoh.<wbr>language.<wbr>HU</span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rinoh.language.IT" class="md-nav__link">
+    <span aria-label="Python data" class="objinfo-icon objinfo-icon__alias" title="Python data">V</span><span title="rinoh.language.IT (Python data) — Localized strings for Italiano :figure: Figura :table: Tabelle :contents: Contenuti :list_of_figures: Elenco delle Figure :list_of_tables: Elenco delle Tabelle :chapter: Capitolo :index: Indice :attention: Attenzione! :caution: Prudenza! :danger: !PERICOLO! :error: Errore :hint: Consiglio :important: Importante :note: Nota :tip: Suggerimento :warning: Avvertimento :seealso: Vedi anche" class="md-ellipsis">rinoh.<wbr>language.<wbr>IT</span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rinoh.language.NL" class="md-nav__link">
+    <span aria-label="Python data" class="objinfo-icon objinfo-icon__alias" title="Python data">V</span><span title="rinoh.language.NL (Python data) — Localized strings for Nederlands :paragraph: Paragraaf :section: Sectie :chapter: Hoofdstuk :figure: Figuur :table: Tabel :listing: Lijst :contents: Inhoudsopgave :list_of_figures: Lijst van Figuren :list_of_tables: Lijst van Tabellen :index: Index :attention: Opgelet! :caution: Pas op! :danger: !GEVAAR! :error: Fout :hint: Hint :important: Belangrijk :note: Noot :tip: Tip :warning: Waarschuwing :seealso: Zie ook" class="md-ellipsis">rinoh.<wbr>language.<wbr>NL</span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rinoh.language.PL" class="md-nav__link">
+    <span aria-label="Python data" class="objinfo-icon objinfo-icon__alias" title="Python data">V</span><span title="rinoh.language.PL (Python data) — Localized strings for Polski :figure: Ilustracja :table: Tabela :contents: Spis Treści :list_of_figures: Spis Ilustracji :list_of_tables: Spis Tabel :chapter: Rozdział :index: Skorowidz :attention: Uwaga! :caution: Ostrożnie! :danger: !NIEBEZPIECZEŃSTWO! :error: Błąd :hint: Wskazówka :important: Ważne :note: Notatka :tip: Porada :warning: Ostrzeżenie :seealso: Zobacz również" class="md-ellipsis">rinoh.<wbr>language.<wbr>PL</span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset" role="main">
+                  
+
+
+  <a href="https://github.com/brechtm/rinohtype/edit/master/doc/api/language.rst" title="Edit this page" class="md-content__button md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25Z"/></svg>
+  </a>
+
+<h1 id="language-rinoh-language"><span id="language"></span><span id="module-rinoh.language"></span>Language (<a class="reference internal" href="#module-rinoh.language" title="rinoh.language (Python module)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.language</span></code></a>)<a class="headerlink" href="#language-rinoh-language" title="Link to this heading">¶</a></h1>
+<dl class="py class objdesc">
+<dt class="sig sig-object highlight py" id="rinoh.language.Language">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rinoh.language.</span></span><span class="sig-name descname"><span class="pre">Language</span></span><span class="sig-paren">(</span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#rinoh.language.Language.__init__.code" title="rinoh.language.Language.__init__.code (Python parameter) — short code identifying the language"><span class="n"><span class="pre">code</span></span></a></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#rinoh.language.Language.__init__.name" title="rinoh.language.Language.__init__.name (Python parameter) — native name of the language"><span class="n"><span class="pre">name</span></span></a></em>, </span><span class="sig-param-decl"><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">localized_strings</span></span></em></span><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.language.Language" title="Link to this definition">¶</a></dt>
+<dd><p>Collects localized strings for a particular language</p>
+<dl class="field-list simple">
+<dt class="field-odd" id="rinoh.language.Language-parameters">Parameters<span class="colon">:</span><a class="headerlink" href="#rinoh.language.Language-parameters" title="Permalink to this headline">¶</a></dt>
+<dd class="field-odd"><dl class="simple api-field highlight">
+<dt id="rinoh.language.Language.__init__.code"><span class="sig-name descname">code</span><span class="p"> : </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)">str</a></span></span><a class="headerlink" href="#rinoh.language.Language.__init__.code" title="Permalink to this definition">¶</a></dt><dd><p>short code identifying the language</p>
+</dd>
+<dt id="rinoh.language.Language.__init__.name"><span class="sig-name descname">name</span><span class="p"> : </span><span class="desctype"><span class="desctype"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)">str</a></span></span><a class="headerlink" href="#rinoh.language.Language.__init__.name" title="Permalink to this definition">¶</a></dt><dd><p>native name of the language</p>
+</dd>
+<dt><span class="sig-name descname">paragraph</span></dt><dd><p>label for referencing paragraphs</p>
+</dd>
+<dt><span class="sig-name descname">section</span></dt><dd><p>label for referencing sections</p>
+</dd>
+<dt><span class="sig-name descname">chapter</span></dt><dd><p>label for top-level sections</p>
+</dd>
+<dt><span class="sig-name descname">figure</span></dt><dd><p>caption label for figures</p>
+</dd>
+<dt><span class="sig-name descname">table</span></dt><dd><p>caption label for tables</p>
+</dd>
+<dt><span class="sig-name descname">listing</span></dt><dd><p>caption label for (source code) listings</p>
+</dd>
+<dt><span class="sig-name descname">contents</span></dt><dd><p>title for the table of contents section</p>
+</dd>
+<dt><span class="sig-name descname">list_of_figures</span></dt><dd><p>title for the list of figures section</p>
+</dd>
+<dt><span class="sig-name descname">list_of_tables</span></dt><dd><p>title for the list of tables section</p>
+</dd>
+<dt><span class="sig-name descname">index</span></dt><dd><p>title for the index section</p>
+</dd>
+<dt><span class="sig-name descname">attention</span></dt><dd><p>title for attention admonitions</p>
+</dd>
+<dt><span class="sig-name descname">caution</span></dt><dd><p>title for caution admonitions</p>
+</dd>
+<dt><span class="sig-name descname">danger</span></dt><dd><p>title for danger admonitions</p>
+</dd>
+<dt><span class="sig-name descname">error</span></dt><dd><p>title for error admonitions</p>
+</dd>
+<dt><span class="sig-name descname">hint</span></dt><dd><p>title for hint admonitions</p>
+</dd>
+<dt><span class="sig-name descname">important</span></dt><dd><p>title for important admonitions</p>
+</dd>
+<dt><span class="sig-name descname">note</span></dt><dd><p>title for note admonitions</p>
+</dd>
+<dt><span class="sig-name descname">tip</span></dt><dd><p>title for tip admonitions</p>
+</dd>
+<dt><span class="sig-name descname">warning</span></dt><dd><p>title for warning admonitions</p>
+</dd>
+<dt><span class="sig-name descname">seealso</span></dt><dd><p>title for see-also admonitions</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl class="py attribute objdesc">
+<dt class="sig sig-object highlight py" id="rinoh.language.Language.languages">
+<span class="sig-name descname"><span class="pre">languages</span></span><a class="headerlink" href="#rinoh.language.Language.languages" title="Link to this definition">¶</a></dt>
+<dd><p>Dictionary mapping codes to <a class="reference internal" href="#rinoh.language.Language" title="rinoh.language.Language (Python class) — Collects localized strings for a particular language"><code class="xref py py-class docutils literal notranslate"><span class="pre">Language</span></code></a>s</p>
+</dd></dl>
+
+</dd></dl>
+
+<p id="supported-languages">The following languages are supported:</p>
+<dl class="py data objdesc">
+<dt class="sig sig-object highlight py" id="rinoh.language.CS">
+<span class="sig-prename descclassname"><span class="pre">rinoh.language.</span></span><span class="sig-name descname"><span class="pre">CS</span></span><span class="p"> <span class="pre">=</span> </span><code class="code python docutils literal highlight highlight-python"><span class="n">Language</span><span class="p">(</span><span class="s1">&#39;cs&#39;</span><span class="p">,</span> <span class="s1">&#39;Česky&#39;</span><span class="p">)</span></code><a class="headerlink" href="#rinoh.language.CS" title="Link to this definition">¶</a></dt>
+<dd><p>Localized strings for Česky
+:figure: Obrázek
+:table: Tabulka
+:contents: Obsah
+:list_of_figures: Seznam obrázků
+:list_of_tables: Seznam tabulek
+:chapter: Kapitola
+:index: Rejstřík
+:attention: Pozor!
+:caution: Pozor!
+:danger: !NEBEZPEČÍ!
+:error: Chyba
+:hint: Poznámka
+:important: Důležité
+:note: Poznámka
+:tip: Tip
+:warning: Varování
+:seealso: Viz také</p>
+</dd></dl>
+
+<dl class="py data objdesc">
+<dt class="sig sig-object highlight py" id="rinoh.language.EN">
+<span class="sig-prename descclassname"><span class="pre">rinoh.language.</span></span><span class="sig-name descname"><span class="pre">EN</span></span><span class="p"> <span class="pre">=</span> </span><code class="code python docutils literal highlight highlight-python"><span class="n">Language</span><span class="p">(</span><span class="s1">&#39;en&#39;</span><span class="p">,</span> <span class="s1">&#39;English&#39;</span><span class="p">)</span></code><a class="headerlink" href="#rinoh.language.EN" title="Link to this definition">¶</a></dt>
+<dd><p>Localized strings for English
+:paragraph: Paragraph
+:section: Section
+:chapter: Chapter
+:figure: Figure
+:table: Table
+:listing: Listing
+:contents: Table of Contents
+:list_of_figures: List of Figures
+:list_of_tables: List of Tables
+:index: Index
+:attention: Attention!
+:caution: Caution!
+:danger: !DANGER!
+:error: Error
+:hint: Hint
+:important: Important
+:note: Note
+:tip: Tip
+:warning: Warning
+:seealso: See also</p>
+</dd></dl>
+
+<dl class="py data objdesc">
+<dt class="sig sig-object highlight py" id="rinoh.language.ES">
+<span class="sig-prename descclassname"><span class="pre">rinoh.language.</span></span><span class="sig-name descname"><span class="pre">ES</span></span><span class="p"> <span class="pre">=</span> </span><code class="code python docutils literal highlight highlight-python"><span class="n">Language</span><span class="p">(</span><span class="s1">&#39;es&#39;</span><span class="p">,</span> <span class="s1">&#39;Spanish&#39;</span><span class="p">)</span></code><a class="headerlink" href="#rinoh.language.ES" title="Link to this definition">¶</a></dt>
+<dd><p>Localized strings for Spanish
+:figure: Figura
+:table: Tabla
+:contents: Contenidos
+:list_of_figures: Índice de figuras
+:list_of_tables: Índice de tablas
+:chapter: Capítulo
+:index: Índice
+:attention: ¡Atención!
+:caution: ¡Cuidado!
+:danger: ¡PELIGRO!
+:error: Error
+:hint: Pista
+:important: Importante
+:note: Nota
+:tip: Consejo
+:warning: Precaución
+:seealso: Vea también</p>
+</dd></dl>
+
+<dl class="py data objdesc">
+<dt class="sig sig-object highlight py" id="rinoh.language.FR">
+<span class="sig-prename descclassname"><span class="pre">rinoh.language.</span></span><span class="sig-name descname"><span class="pre">FR</span></span><span class="p"> <span class="pre">=</span> </span><code class="code python docutils literal highlight highlight-python"><span class="n">Language</span><span class="p">(</span><span class="s1">&#39;fr&#39;</span><span class="p">,</span> <span class="s1">&#39;Français&#39;</span><span class="p">)</span></code><a class="headerlink" href="#rinoh.language.FR" title="Link to this definition">¶</a></dt>
+<dd><p>Localized strings for Français
+:figure: Figure
+:table: Tableau
+:contents: Table des Matières
+:list_of_figures: Liste des Figures
+:list_of_tables: Liste des Tableaux
+:chapter: Chapitre
+:index: Index
+:attention: Attention!
+:caution: Prudence!
+:danger: !DANGER!
+:error: Erreur
+:hint: Conseil
+:important: Important
+:note: Note
+:tip: Astuce
+:warning: Avertissement
+:seealso: Voir aussi</p>
+</dd></dl>
+
+<dl class="py data objdesc">
+<dt class="sig sig-object highlight py" id="rinoh.language.HU">
+<span class="sig-prename descclassname"><span class="pre">rinoh.language.</span></span><span class="sig-name descname"><span class="pre">HU</span></span><span class="p"> <span class="pre">=</span> </span><code class="code python docutils literal highlight highlight-python"><span class="n">Language</span><span class="p">(</span><span class="s1">&#39;hu&#39;</span><span class="p">,</span> <span class="s1">&#39;Hungarian&#39;</span><span class="p">)</span></code><a class="headerlink" href="#rinoh.language.HU" title="Link to this definition">¶</a></dt>
+<dd><p>Localized strings for Hungarian
+:contents: Tartalomjegyzék
+:list_of_figures: Ábrák Listája
+:list_of_tables: Asztalok Listája
+:chapter: Fejezet
+:index: Index
+:attention: Figyelem!
+:caution: Vigyázat!!
+:danger: !VESZÉLY!
+:error: Hiba
+:hint: Tanács
+:important: Fontos
+:note: Megjegyzés
+:tip: Tipp
+:warning: Figyelmeztetés
+:seealso: Lásd még</p>
+</dd></dl>
+
+<dl class="py data objdesc">
+<dt class="sig sig-object highlight py" id="rinoh.language.IT">
+<span class="sig-prename descclassname"><span class="pre">rinoh.language.</span></span><span class="sig-name descname"><span class="pre">IT</span></span><span class="p"> <span class="pre">=</span> </span><code class="code python docutils literal highlight highlight-python"><span class="n">Language</span><span class="p">(</span><span class="s1">&#39;it&#39;</span><span class="p">,</span> <span class="s1">&#39;Italiano&#39;</span><span class="p">)</span></code><a class="headerlink" href="#rinoh.language.IT" title="Link to this definition">¶</a></dt>
+<dd><p>Localized strings for Italiano
+:figure: Figura
+:table: Tabelle
+:contents: Contenuti
+:list_of_figures: Elenco delle Figure
+:list_of_tables: Elenco delle Tabelle
+:chapter: Capitolo
+:index: Indice
+:attention: Attenzione!
+:caution: Prudenza!
+:danger: !PERICOLO!
+:error: Errore
+:hint: Consiglio
+:important: Importante
+:note: Nota
+:tip: Suggerimento
+:warning: Avvertimento
+:seealso: Vedi anche</p>
+</dd></dl>
+
+<dl class="py data objdesc">
+<dt class="sig sig-object highlight py" id="rinoh.language.NL">
+<span class="sig-prename descclassname"><span class="pre">rinoh.language.</span></span><span class="sig-name descname"><span class="pre">NL</span></span><span class="p"> <span class="pre">=</span> </span><code class="code python docutils literal highlight highlight-python"><span class="n">Language</span><span class="p">(</span><span class="s1">&#39;nl&#39;</span><span class="p">,</span> <span class="s1">&#39;Nederlands&#39;</span><span class="p">)</span></code><a class="headerlink" href="#rinoh.language.NL" title="Link to this definition">¶</a></dt>
+<dd><p>Localized strings for Nederlands
+:paragraph: Paragraaf
+:section: Sectie
+:chapter: Hoofdstuk
+:figure: Figuur
+:table: Tabel
+:listing: Lijst
+:contents: Inhoudsopgave
+:list_of_figures: Lijst van Figuren
+:list_of_tables: Lijst van Tabellen
+:index: Index
+:attention: Opgelet!
+:caution: Pas op!
+:danger: !GEVAAR!
+:error: Fout
+:hint: Hint
+:important: Belangrijk
+:note: Noot
+:tip: Tip
+:warning: Waarschuwing
+:seealso: Zie ook</p>
+</dd></dl>
+
+<dl class="py data objdesc">
+<dt class="sig sig-object highlight py" id="rinoh.language.PL">
+<span class="sig-prename descclassname"><span class="pre">rinoh.language.</span></span><span class="sig-name descname"><span class="pre">PL</span></span><span class="p"> <span class="pre">=</span> </span><code class="code python docutils literal highlight highlight-python"><span class="n">Language</span><span class="p">(</span><span class="s1">&#39;pl&#39;</span><span class="p">,</span> <span class="s1">&#39;Polski&#39;</span><span class="p">)</span></code><a class="headerlink" href="#rinoh.language.PL" title="Link to this definition">¶</a></dt>
+<dd><p>Localized strings for Polski
+:figure: Ilustracja
+:table: Tabela
+:contents: Spis Treści
+:list_of_figures: Spis Ilustracji
+:list_of_tables: Spis Tabel
+:chapter: Rozdział
+:index: Skorowidz
+:attention: Uwaga!
+:caution: Ostrożnie!
+:danger: !NIEBEZPIECZEŃSTWO!
+:error: Błąd
+:hint: Wskazówka
+:important: Ważne
+:note: Notatka
+:tip: Porada
+:warning: Ostrzeżenie
+:seealso: Zobacz również</p>
+</dd></dl>
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+    <nav class="md-footer__inner md-grid" aria-label="Footer" >
+      
+        
+        <a href="index.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: Index (rinoh.index)" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              Index (rinoh.index)
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="number.html" class="md-footer__link md-footer__link--next" aria-label="Next: Number (rinoh.number)" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              Number (rinoh.number)
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  
+  
+  <div class="md-footer-meta md-typeset">
+    
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-footer-copyright__highlight">
+        &#169; Copyright 2024, Brecht Machiels and contributors.
+        
+    </div>
+  
+    Created using
+    <a href="https://www.sphinx-doc.org/" target="_blank" rel="noopener">Sphinx</a>
+    7.3.7.
+     and
+    <a href="https://github.com/jbms/sphinx-immaterial/" target="_blank" rel="noopener">Sphinx-Immaterial</a>
+  
+</div>
+      
+    </div>
+    
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.expand", "navigation.sections", "navigation.instant"], "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "version": {"provider": "mike", "staticVersions": null, "versionPath": "../im_versions.json"}}</script>
+    
+      
+        <script src="../_static/sphinx_immaterial_theme.f9d9eeeb247ace16c.min.js?v=8ec58cb5"></script>
+    
+  </body>
+</html>

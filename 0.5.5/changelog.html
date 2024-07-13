@@ -1,0 +1,1632 @@
+
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      <link rel="icon" href="_static/rinohtype_logo_abbrev.svg">
+    
+    
+      
+        <title>Release History - rinohtype</title>
+      
+    
+    
+      
+        
+        
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+        <link rel="stylesheet" type="text/css" href="_static/sphinx_immaterial_theme.e0b5691b38cca82da.min.css?v=b1736040" />
+        <link rel="stylesheet" type="text/css" href="_static/tweaks.css?v=ac567af0" />
+    <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="red" data-md-color-accent="light-blue">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#release-0-5-5-2024-07-13" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <div data-md-component="outdated" hidden>
+        
+      </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="index.html" title="rinohtype" class="md-header__button md-logo" aria-label="rinohtype" data-md-component="logo">
+      <img src="_static/logo_white.svg" alt="logo">
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            rinohtype
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Release History
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      <form class="md-header__option" data-md-component="palette">
+        
+          
+          
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="red" data-md-color-accent="light-blue"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+          
+            <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 1 7 7c0 2.38-1.19 4.47-3 5.74V17a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-2.26C6.19 13.47 5 11.38 5 9a7 7 0 0 1 7-7M9 21v-1h6v1a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1m3-17a5 5 0 0 0-5 5c0 2.05 1.23 3.81 3 4.58V16h4v-2.42c1.77-.77 3-2.53 3-4.58a5 5 0 0 0-5-5Z"/></svg>
+            </label>
+          
+        
+          
+          
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="red" data-md-color-accent="orange"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
+          
+            <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 0-7 7c0 2.38 1.19 4.47 3 5.74V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 0 0-7-7M9 21a1 1 0 0 0 1 1h4a1 1 0 0 0 1-1v-1H9v1Z"/></svg>
+            </label>
+          
+        
+      </form>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/brechtm/rinohtype" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    rinohtype
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="index.html" title="rinohtype" class="md-nav__button md-logo" aria-label="rinohtype" data-md-component="logo">
+      <img src="_static/logo_white.svg" alt="logo">
+    </a>
+    rinohtype
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/brechtm/rinohtype" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    rinohtype
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_1" type="checkbox" id="__nav_1" checked>
+      
+      
+      
+        <label class="md-nav__link" for="__nav_1">
+          <span class="md-ellipsis">User Manual</span> [<a class="pdf-link" href="manual.pdf">PDF</a>]
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="User Manual" data-md-level="1">
+        <label class="md-nav__title" for="__nav_1">
+          <span class="md-nav__icon md-icon"></span>
+          <span class="md-ellipsis">User Manual</span> [<a class="pdf-link" href="manual.pdf">PDF</a>]
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="intro.html" class="md-nav__link">
+        <span class="md-ellipsis">Introduction</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="showcase.html" class="md-nav__link">
+        <span class="md-ellipsis">Showcase</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="install.html" class="md-nav__link">
+        <span class="md-ellipsis">Installation</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quickstart.html" class="md-nav__link">
+        <span class="md-ellipsis">Quickstart</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="basicstyling.html" class="md-nav__link">
+        <span class="md-ellipsis">Basic Document Styling</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="elementstyling.html" class="md-nav__link">
+        <span class="md-ellipsis">Element Styling</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="templates.html" class="md-nav__link">
+        <span class="md-ellipsis">Document Templates</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="faq.html" class="md-nav__link">
+        <span class="md-ellipsis">Frequently Asked Questions</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="contributing.html" class="md-nav__link">
+        <span class="md-ellipsis">Contributing</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="developing.html" class="md-nav__link">
+        <span class="md-ellipsis">Developing</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          <span class="md-ellipsis">Release History</span>
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="#" class="md-nav__link md-nav__link--active">
+        <span class="md-ellipsis">Release History</span>
+      </a>
+      
+        
+
+  
+
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      <span class="md-ellipsis">Release History</span>
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#release-0-5-5-2024-07-13" class="md-nav__link">
+    <span class="md-ellipsis">Release 0.<wbr>5.<wbr>5 <wbr>(2024-<wbr>07-<wbr>13)</span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#release-0-5-4-2022-06-17" class="md-nav__link">
+    <span class="md-ellipsis">Release 0.<wbr>5.<wbr>4 <wbr>(2022-<wbr>06-<wbr>17)</span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#release-0-5-3-2021-06-16" class="md-nav__link">
+    <span class="md-ellipsis">Release 0.<wbr>5.<wbr>3 <wbr>(2021-<wbr>06-<wbr>16)</span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#release-0-5-2-2021-02-24" class="md-nav__link">
+    <span class="md-ellipsis">Release 0.<wbr>5.<wbr>2 <wbr>(2021-<wbr>02-<wbr>24)</span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#release-0-5-1-2021-02-19" class="md-nav__link">
+    <span class="md-ellipsis">Release 0.<wbr>5.<wbr>1 <wbr>(2021-<wbr>02-<wbr>19)</span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#release-0-5-0-2021-02-03" class="md-nav__link">
+    <span class="md-ellipsis">Release 0.<wbr>5.<wbr>0 <wbr>(2021-<wbr>02-<wbr>03)</span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#release-0-4-2-2020-07-28" class="md-nav__link">
+    <span class="md-ellipsis">Release 0.<wbr>4.<wbr>2 <wbr>(2020-<wbr>07-<wbr>28)</span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#release-0-4-1-2020-07-01" class="md-nav__link">
+    <span class="md-ellipsis">Release 0.<wbr>4.<wbr>1 <wbr>(2020-<wbr>07-<wbr>01)</span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#release-0-4-0-2020-03-05" class="md-nav__link">
+    <span class="md-ellipsis">Release 0.<wbr>4.<wbr>0 <wbr>(2020-<wbr>03-<wbr>05)</span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#release-0-3-1-2016-12-19" class="md-nav__link">
+    <span class="md-ellipsis">Release 0.<wbr>3.<wbr>1 <wbr>(2016-<wbr>12-<wbr>19)</span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#release-0-3-0-2016-11-23" class="md-nav__link">
+    <span class="md-ellipsis">Release 0.<wbr>3.<wbr>0 <wbr>(2016-<wbr>11-<wbr>23)</span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#release-0-2-1-2016-08-18" class="md-nav__link">
+    <span class="md-ellipsis">Release 0.<wbr>2.<wbr>1 <wbr>(2016-<wbr>08-<wbr>18)</span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#release-0-2-0-2016-08-10" class="md-nav__link">
+    <span class="md-ellipsis">Release 0.<wbr>2.<wbr>0 <wbr>(2016-<wbr>08-<wbr>10)</span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#release-0-1-3-2015-08-04" class="md-nav__link">
+    <span class="md-ellipsis">Release 0.<wbr>1.<wbr>3 <wbr>(2015-<wbr>08-<wbr>04)</span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#release-0-1-2-2015-07-31" class="md-nav__link">
+    <span class="md-ellipsis">Release 0.<wbr>1.<wbr>2 <wbr>(2015-<wbr>07-<wbr>31)</span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#release-0-1-1-2015-04-12" class="md-nav__link">
+    <span class="md-ellipsis">Release 0.<wbr>1.<wbr>1 <wbr>(2015-<wbr>04-<wbr>12)</span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" checked>
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2">
+          <span class="md-ellipsis">Reference Guide</span> [<a class="pdf-link" href="reference.pdf">PDF</a>]
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Reference Guide" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          <span class="md-ellipsis">Reference Guide</span> [<a class="pdf-link" href="reference.pdf">PDF</a>]
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="rinoh.html" class="md-nav__link">
+        <span class="md-ellipsis">rinoh</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="sphinx.html" class="md-nav__link">
+        <span class="md-ellipsis">Sphinx Builder</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="stylesheets.html" class="md-nav__link">
+        <span class="md-ellipsis">Style Sheets</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="stdtemplates.html" class="md-nav__link">
+        <span class="md-ellipsis">Standard Document Templates</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="api/api.html" class="md-nav__link">
+        <span class="md-ellipsis">API Documentation</span>
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" checked>
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3">
+          <span class="md-ellipsis">Indices</span>
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Indices" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          <span class="md-ellipsis">Indices</span>
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="genindex.html" class="md-nav__link">
+        <span class="md-ellipsis">Index</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="py-modindex.html" class="md-nav__link">
+        <span class="md-ellipsis">Module Index</span>
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+  
+
+<nav class="md-nav md-nav--secondary">
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      <span class="md-ellipsis">Release History</span>
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#release-0-5-5-2024-07-13" class="md-nav__link">
+    <span class="md-ellipsis">Release 0.<wbr>5.<wbr>5 <wbr>(2024-<wbr>07-<wbr>13)</span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#release-0-5-4-2022-06-17" class="md-nav__link">
+    <span class="md-ellipsis">Release 0.<wbr>5.<wbr>4 <wbr>(2022-<wbr>06-<wbr>17)</span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#release-0-5-3-2021-06-16" class="md-nav__link">
+    <span class="md-ellipsis">Release 0.<wbr>5.<wbr>3 <wbr>(2021-<wbr>06-<wbr>16)</span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#release-0-5-2-2021-02-24" class="md-nav__link">
+    <span class="md-ellipsis">Release 0.<wbr>5.<wbr>2 <wbr>(2021-<wbr>02-<wbr>24)</span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#release-0-5-1-2021-02-19" class="md-nav__link">
+    <span class="md-ellipsis">Release 0.<wbr>5.<wbr>1 <wbr>(2021-<wbr>02-<wbr>19)</span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#release-0-5-0-2021-02-03" class="md-nav__link">
+    <span class="md-ellipsis">Release 0.<wbr>5.<wbr>0 <wbr>(2021-<wbr>02-<wbr>03)</span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#release-0-4-2-2020-07-28" class="md-nav__link">
+    <span class="md-ellipsis">Release 0.<wbr>4.<wbr>2 <wbr>(2020-<wbr>07-<wbr>28)</span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#release-0-4-1-2020-07-01" class="md-nav__link">
+    <span class="md-ellipsis">Release 0.<wbr>4.<wbr>1 <wbr>(2020-<wbr>07-<wbr>01)</span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#release-0-4-0-2020-03-05" class="md-nav__link">
+    <span class="md-ellipsis">Release 0.<wbr>4.<wbr>0 <wbr>(2020-<wbr>03-<wbr>05)</span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#release-0-3-1-2016-12-19" class="md-nav__link">
+    <span class="md-ellipsis">Release 0.<wbr>3.<wbr>1 <wbr>(2016-<wbr>12-<wbr>19)</span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#release-0-3-0-2016-11-23" class="md-nav__link">
+    <span class="md-ellipsis">Release 0.<wbr>3.<wbr>0 <wbr>(2016-<wbr>11-<wbr>23)</span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#release-0-2-1-2016-08-18" class="md-nav__link">
+    <span class="md-ellipsis">Release 0.<wbr>2.<wbr>1 <wbr>(2016-<wbr>08-<wbr>18)</span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#release-0-2-0-2016-08-10" class="md-nav__link">
+    <span class="md-ellipsis">Release 0.<wbr>2.<wbr>0 <wbr>(2016-<wbr>08-<wbr>10)</span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#release-0-1-3-2015-08-04" class="md-nav__link">
+    <span class="md-ellipsis">Release 0.<wbr>1.<wbr>3 <wbr>(2015-<wbr>08-<wbr>04)</span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#release-0-1-2-2015-07-31" class="md-nav__link">
+    <span class="md-ellipsis">Release 0.<wbr>1.<wbr>2 <wbr>(2015-<wbr>07-<wbr>31)</span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#release-0-1-1-2015-04-12" class="md-nav__link">
+    <span class="md-ellipsis">Release 0.<wbr>1.<wbr>1 <wbr>(2015-<wbr>04-<wbr>12)</span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset" role="main">
+                  
+
+
+  <a href="https://github.com/brechtm/rinohtype/edit/master/doc/changelog.rst" title="Edit this page" class="md-content__button md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25Z"/></svg>
+  </a>
+
+<h1 id="release-history"><span id="changelog"></span>Release History<a class="headerlink" href="#release-history" title="Link to this heading">¶</a></h1>
+<div class="note admonition">
+<p class="admonition-title">Note</p>
+<p>rinohtype uses <a class="reference external" href="https://semver.org/">Semantic Versioning</a> for its releases. In summary,
+this means that each release gets a version number MAJOR.MINOR.PATCH. The
+MAJOR version number is increased when backwards-incompatible API changes
+are made. However, until we exit beta and reach version 1.0.0, anything may
+change at any time.</p>
+<p>With this in mind, to ease upgrading from a previous version, I try to
+explicitly list backward-incompatible changes in the <em>Changed</em> section for
+each release. Be sure to check these when upgrading.</p>
+</div>
+<h2 id="release-0-5-5-2024-07-13">Release 0.5.5 (2024-07-13)<a class="headerlink" href="#release-0-5-5-2024-07-13" title="Link to this heading">¶</a></h2>
+<p>Documentation changes:</p>
+<ul class="simple">
+<li><p>A showcase section was added to the manual to show examples of documents that
+can be produced by rinohtype.</p></li>
+</ul>
+<p>New Features:</p>
+<ul>
+<li><p>Add support for Hungarian language (PR #425 by Pablo Alexis Domínguez Grau)</p></li>
+<li><p>Print alt text instead of error message when failing to render rst :image:
+directive (PR #410 by Timm638)</p></li>
+<li><dl class="simple">
+<dt>Support for Spanish section and admonition titles (PR #400 by María Andrea</dt><dd><p>Vignau)</p>
+</dd>
+</dl>
+</li>
+<li><p>Enumerated list item labels now also respect the <em>number_separator</em> style
+property, enabling hierarchical list item labels (discussion #350).</p></li>
+<li><p>Admonitions now have a ‘custom_title_text’ property that can be used to
+style generic admonitions. For example, this style definition applies to
+<code class="docutils literal notranslate"><span class="pre">..</span> <span class="pre">admonition::</span> <span class="pre">Fun</span> <span class="pre">Fact</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><code><span class="p">[</span><span class="n">fun</span> <span class="n">fact</span> <span class="n">admonition</span> <span class="p">:</span> <span class="n">Admonition</span><span class="p">(</span><span class="n">custom_title_text</span><span class="o">=</span><span class="s1">&#39;Fun Fact&#39;</span><span class="p">)]</span>
+<span class="n">base</span> <span class="o">=</span> <span class="n">admonition</span>
+<span class="n">border_top</span> <span class="o">=</span> <span class="n">none</span>
+<span class="n">border_bottom</span> <span class="o">=</span> <span class="n">none</span>
+</code></pre></div>
+</div>
+</li>
+</ul>
+<p>Changed:</p>
+<ul class="simple">
+<li><p>handling of localized strings and user-defined strings has been reworked</p>
+<ul>
+<li><p>built-in (localized) strings are now indicated by a <code class="docutils literal notranslate"><span class="pre">&#64;</span></code> prefix, while
+user-defined strings have the <code class="docutils literal notranslate"><span class="pre">$</span></code> prefix</p></li>
+<li><p>built-in strings can be overridden, and user-defined strings can be set in
+a template configuration file in the <code class="docutils literal notranslate"><span class="pre">[STRINGS]</span></code> section (with prefix!)</p></li>
+</ul>
+</li>
+<li><p>“words” containing spaces (such as paths and URLs) can now be split before
+each forward slash for line wrapping (#188, #416)</p></li>
+<li><p>Support for Python 3.7 was dropped (end-of-life in June 2023)</p></li>
+<li><p><a class="reference external" href="https://github.com/executablebooks/MyST-Parser">MyST</a> replaces
+<a class="reference external" href="https://github.com/readthedocs/recommonmark">recommonmark</a> for Markdown
+support (issues #265 and #370)</p></li>
+<li><p>The Article template has been overhauled. The title page and front matter
+parts have been removed and their contents are moved to the first content
+page. This makes the Article template more useful, since it was too similar
+to the Book template before.</p></li>
+<li><p>Template options whose purpose can also be fulfilled by setting the <em>hide</em>
+style property to <code class="docutils literal notranslate"><span class="pre">true</span></code> have been removed. The corresponding style
+definitions are:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">TitlePageTemplate.show_date</span></code>: <em>title page date</em></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TitlePageTemplate.show_author</span></code>: <em>title page author</em></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Article.table_of_contents</span></code>: <em>table of contents section</em></p></li>
+</ul>
+</li>
+</ul>
+<p>Fixed:</p>
+<ul class="simple">
+<li><p>Embedding of PDF images produces by Graphviz 10+</p></li>
+<li><p>Google Fonts downloading (<a class="reference external" href="https://github.com/google/fonts/issues/7481">https://github.com/google/fonts/issues/7481</a>)</p></li>
+<li><p>Caption labels (“Figure”, “Table”, “Listing”) were not localized</p></li>
+<li><p>Rendering of tables with no body (#420, PR #422 by th0mr)</p></li>
+<li><p>Hyphenation of the first word on a line (#188, #416)</p></li>
+<li><p>AttributeError: ‘ZeroWidthSpace’ object has no attribute ‘hyphenate’ (#415,
+PR #417 by Jack Whitham)</p></li>
+<li><p>Fix a Python 3.12 DeprecationWarning regarding utcfromtimestamp()</p></li>
+<li><p>Sphinx frontend: support the desc_sig_space document node (#414)</p></li>
+<li><p>Hyphenated word split across pages merges with the next word (#388)</p></li>
+<li><p>Compatibility with importlib-metadata 6.0.0 (#389)</p></li>
+<li><p>Document part templates were not retrieved recursively (#379 comment)</p></li>
+<li><p>Listing the installed fonts in a PDF: <code class="docutils literal notranslate"><span class="pre">rinoh</span> <span class="pre">--list-fonts</span> <span class="pre">&lt;filename&gt;</span></code></p></li>
+<li><p>Crash on rendering a heading with an index entry annotation (#369)</p></li>
+<li><p>Crash on encountering a fully-spanned table row (#369)</p></li>
+<li><p>Crash on rendering a figure caption with the default style (#368)</p></li>
+<li><p>Google Fonts fixes</p>
+<ul>
+<li><p>Some fonts on Google Fonts have the ‘otf’ extension (instead of ‘ttf’);
+also collect these.</p></li>
+<li><p>Look recursively for font files in a Google Fonts directory (e.g. Asap
+fonts are now stored in a deeper directory).</p></li>
+</ul>
+</li>
+</ul>
+<h2 id="release-0-5-4-2022-06-17">Release 0.5.4 (2022-06-17)<a class="headerlink" href="#release-0-5-4-2022-06-17" title="Link to this heading">¶</a></h2>
+<p>A <a class="reference external" href="https://github.com/brechtm/rinohtype/discussions">discussion board</a> has been set up where you can connect with other
+rinohtype users and the developers!</p>
+<p>New Features:</p>
+<ul class="simple">
+<li><p>Support for sideways figures and tables; these are placed on a separate page,
+rotated 90 degrees. This is useful for figures/tables that do not fit within
+the page width. See the <em>float</em> style attribute.</p></li>
+<li><p>The GroupedFlowables <em>same_page</em> style property forces all of a
+GroupedFlowables’ content to be placed on the same page (if possible).</p></li>
+<li><p>Support for OpenType fonts with non-BMP Unicode characters (PR #308 by James
+Robinson)</p></li>
+<li><p>Heading labels (numbers) can be styled separately by means of the ‘heading
+level <em>X</em> label’ selectors for each heading level <em>X</em>.</p></li>
+<li><p>Sphinx Graphviz extension (<code class="docutils literal notranslate"><span class="pre">sphinx.ext.graphviz</span></code>) support (PR #300 by
+Daniel Rapp)</p></li>
+<li><p>The StyledText <em>no_break_after</em> style property accepts a list of words after
+which no line break is allowed. The default is to use a list of words
+specific to the language configured for the template (articles, prepositions,
+conjunctions - only provided for English and Czech for now).</p></li>
+<li><p>Footnotes and citations can now optionally be rendered where they are located
+in the source document instead of as footnotes. This is controlled by the
+<em>location</em> style property for notes. (issue #269, PR #271 by Alex Fargus)</p></li>
+<li><p>The <em>before</em> and <em>after</em> style properties are now supported on paragraphs too</p></li>
+<li><p>The separator string between an inline admonition title and the admonition
+text is now specified in the style sheet (<em>after</em> property of the <em>admonition
+inline title</em> style), so it can be overridden (default: space character).</p></li>
+<li><p>Warn about targets in <code class="docutils literal notranslate"><span class="pre">rinoh_targets</span></code> that are not defined in
+<code class="docutils literal notranslate"><span class="pre">rinoh_documents</span></code>.</p></li>
+<li><p>UpDownExpandingContainer: a container that symmetrically expands both upwards
+and downwards.</p></li>
+<li><p>Admonition: selectors for the first paragraph where the admonition title was
+prepended to (e.g. <em>note title paragraph</em>).</p></li>
+<li><p>Support interlaced PNG images (#274). Note that this can slow down rendering
+significantly for many/large interlaced images.</p></li>
+<li><p>rinoh now accepts the <code class="docutils literal notranslate"><span class="pre">--versions</span></code> argument, useful for bug reports</p></li>
+</ul>
+<p>Changed:</p>
+<ul class="simple">
+<li><p>Support for Python 3.6 was dropped (end-of-life in December 2021)</p></li>
+<li><p>Provide a more informative exception message when Pillow cannot be imported.</p></li>
+</ul>
+<p>Fixed:</p>
+<ul class="simple">
+<li><p>Fix cross-referencing of citations defined in the master Sphinx document</p></li>
+<li><p>ContainerOverflow when rendering (some) labeled flowables near the bottom of
+the page (issue #315)</p></li>
+<li><p>rinoh crashes with an unhandled exception when the template is not found
+(issue #291)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rinoh</span> <span class="pre">--format</span></code> option is broken (issue #284)</p></li>
+<li><p>Unhandled exception on loading some JPEG images (issue #319)</p></li>
+<li><p>Page breaks for sections following an empty section were not respected.</p></li>
+<li><p>Compatibility with Sphinx 4.4 on Python &lt;3.10 (<code class="docutils literal notranslate"><span class="pre">AttributeError:</span>
+<span class="pre">'DynamicRinohDistribution'</span> <span class="pre">object</span> <span class="pre">has</span> <span class="pre">no</span> <span class="pre">attribute</span> <span class="pre">'_normalized_name'</span></code>)</p></li>
+<li><p>In some cases, footnotes referenced in a table were placed on the page
+preceding the footnote reference.</p></li>
+<li><p>Handle output (PDF, style log and cache) filenames containing a dot in the
+stem (the final dot and characters following it were interpreted as an
+extension and dropped)</p></li>
+<li><p>Compatibility with Sphinx 4.3 (crash on rendering object descriptions)</p></li>
+<li><p>Regression in handling of unsupported docutils nodes</p></li>
+<li><p>Crash due to floating point rounding error (PR #302 by Sam Hartman)</p></li>
+<li><p>Setting ‘number_format’ to <em>none</em> caused a crash; now it causes the caption
+label to be omitted.</p></li>
+<li><p>Handle citations and corresponding citation references that are not defined
+in the same source file.</p></li>
+<li><p>Fix error message for –stylesheet argument with relative path (issue #253,
+PR #266 by Alex Fargus)</p></li>
+<li><p>Descenders affect spacing between top border and content (issue #144)</p></li>
+<li><p>The table of contents (outlines) displayed in PDF readers show garbled text
+when section titles contain non-ASCII characters.</p></li>
+<li><p>Page templates with a page-filling background cause an infinite rendering
+loop when placing a footnote.</p></li>
+<li><p>Crash on loading PNGs containing an iTXt chunk (PR #275 by Alex Fargus)</p></li>
+<li><p>Line-wrapped section headings without hyphenation are missing from the page
+header.</p></li>
+<li><p>Sphinx frontend: inline text marked with the :menuselection: role is not
+styled (now mapped to the <em>menu cascade style</em>).</p></li>
+<li><p>Typos in code and documentation (PR #277 by Tim Gates, PR #281 by Filipe
+Tavares)</p></li>
+<li><p>Handle deprecation of importlib SelectableGroups dict interface (Python 3.10
+and importlib_metadata 3.6)</p></li>
+<li><p>Handle deprecation of distutils in Python 3.10 (use the packaging package)</p></li>
+</ul>
+<p>Part of the work included in this release was kindly sponsored by <a class="reference external" href="https://www.lekis.cz/">Lekis</a> and <a class="reference external" href="https://www.railnova.eu/">Railnova</a>.</p>
+<h2 id="release-0-5-3-2021-06-16">Release 0.5.3 (2021-06-16)<a class="headerlink" href="#release-0-5-3-2021-06-16" title="Link to this heading">¶</a></h2>
+<p>New Features:</p>
+<ul class="simple">
+<li><p>Document part templates now accept a <em>page_number_prefix</em> (StyledText). For
+example, set <code class="docutils literal notranslate"><span class="pre">page_number_prefix</span> <span class="pre">=</span> <span class="pre">'{SECTION_NUMBER(1)}-'</span></code> to prefix the
+page number with the chapter number. You’ll want to use this with the new
+page break options (see next item).</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">page_break</span></code> style attribute now also accepts <em>left restart</em>, <em>right
+restart</em> and <em>any restart</em> values to restart page numbering</p></li>
+<li><p>The new <em>continue</em> page number format makes it more explicit when to not
+restart page numbering.</p></li>
+<li><p>Setting the <em>base</em> for a style to <code class="docutils literal notranslate"><span class="pre">NEXT_STYLE</span></code> proceeds to look up style
+attributes in the next matching style if they are undefined.</p></li>
+<li><p>The default matcher now defines the <em>table head cell background</em> style.</p></li>
+<li><p>Support True/OpenType fonts with ‘Symbol’ encoding (e.g. Web/Wingdings)</p></li>
+<li><p>If the <em>RINOH_NO_CACHE</em> environment variable is set, the references cache
+(.rtc file) won’t be loaded nor saved. This is mostly useful for testing.</p></li>
+</ul>
+<p>Changed:</p>
+<ul class="simple">
+<li><p>Smarter automatic sizing of table columns; don’t needlessly pad columns whose
+contents don’t require wrapping.</p></li>
+</ul>
+<p>Fixed:</p>
+<ul class="simple">
+<li><p>Citation definitions are not output when using sphinx (#262, PR #268 by
+Alex Fargus)</p></li>
+<li><p>Setting the <em>base</em> for a style to <code class="docutils literal notranslate"><span class="pre">PARENT_STYLE</span></code> results in a crash.</p></li>
+<li><p>docutils image directive: crash when encountering a width/height containing a
+decimal point (#251 by Karel Frajtak)</p></li>
+<li><p>docutils inline images don’t support width, height and scale options</p></li>
+<li><p>crash on using characters for page numbering (PDF backend)</p></li>
+<li><p>rinoh –install_resources: wrong section numbers when resources need to be
+installed</p></li>
+<li><p>The style of a heading is influenced by the style defined for the page header</p></li>
+<li><p>A heading is still displayed in the page header even if it doesn’t fit on the
+page and thus moved to the next</p></li>
+</ul>
+<p>Part of the work included in this release was kindly sponsored by <a class="reference external" href="https://www.jobyaviation.com">Joby
+Aviation</a>.</p>
+<h2 id="release-0-5-2-2021-02-24">Release 0.5.2 (2021-02-24)<a class="headerlink" href="#release-0-5-2-2021-02-24" title="Link to this heading">¶</a></h2>
+<p>New Features:</p>
+<ul class="simple">
+<li><p>If the <em>RINOH_SINGLE_PASS</em> environment variable is set, rendering will be
+stopped after a single pass. This speeds up iteration when tweaking style
+sheets or templates.</p></li>
+<li><p>Sphinx builder: the <code class="docutils literal notranslate"><span class="pre">rinoh_targets</span></code> configuration variable allows limiting
+the documents to a subset of those listed in <code class="docutils literal notranslate"><span class="pre">rinoh_documents</span></code>.</p></li>
+<li><p>The ‘number_format’ style property can now also accept styled text strings
+which replace the auto-numbered label.</p></li>
+<li><p>Document elements (Styled objects) can more easily be matched based on their
+ID (or ‘name’ in docutils terms) by means of the <em>has_id</em> selector property.</p></li>
+</ul>
+<p>Changed:</p>
+<ul class="simple">
+<li><p>docutils/Sphinx frontend: will default to referencing targets by number if
+possible, even if a custom label is explicitly set. This behaviour can be
+overridden in the style sheet by setting the <em>type</em> property of the
+<em>linked reference</em> style to ‘custom’ (see also issue #244).</p></li>
+</ul>
+<p>Fixed:</p>
+<ul class="simple">
+<li><p>Sphinx style sheet: the object description is always rendered to the right
+of the signature, no matter how wide the signature is.</p></li>
+<li><p>Incorrect/useless warnings that popped up with release 0.5.1.</p></li>
+</ul>
+<p>Part of the work included in this release was kindly sponsored by <a class="reference external" href="https://www.jobyaviation.com">Joby
+Aviation</a>.</p>
+<h2 id="release-0-5-1-2021-02-19">Release 0.5.1 (2021-02-19)<a class="headerlink" href="#release-0-5-1-2021-02-19" title="Link to this heading">¶</a></h2>
+<p>New Features:</p>
+<ul class="simple">
+<li><p>Paragraphs can now be numbered. rinohtype also allows for referencing them by
+number, but docutils/Sphinx doesn’t readily offer the means express that. A
+workaround for this will be included in a future release.</p></li>
+</ul>
+<p>Fixed:</p>
+<ul class="simple">
+<li><p>Fix issues with metadata (title, author) stored in the PDF Info dictionary</p></li>
+<li><p>Fix handling of no-break spaces (they were rendered using the fallback font)</p></li>
+<li><p>When a caption occurs in an unnumbered chapter, an exception aborts rendering
+(even when <code class="docutils literal notranslate"><span class="pre">number_separator</span></code> style attribute is set to <code class="docutils literal notranslate"><span class="pre">None</span></code>)</p></li>
+<li><p>Handling of base template specified as string in a template configuration</p></li>
+<li><p>Table column widths entries now also accept fractions</p></li>
+</ul>
+<p>Part of the work included in this release was kindly sponsored by <a class="reference external" href="https://www.jobyaviation.com">Joby
+Aviation</a>.</p>
+<h2 id="release-0-5-0-2021-02-03">Release 0.5.0 (2021-02-03)<a class="headerlink" href="#release-0-5-0-2021-02-03" title="Link to this heading">¶</a></h2>
+<p>New Features:</p>
+<ul class="simple">
+<li><p>Google Fonts: if a specified typeface is not installed, rinohtype attempts
+to download the corresponding fonts from Google Fonts. Simply supply the font
+name as listed on <a class="reference external" href="https://fonts.google.com">https://fonts.google.com</a> as a value for the <code class="docutils literal notranslate"><span class="pre">typeface</span></code>
+style property.</p></li>
+<li><p>Table: in addition to fixed and relative-width columns, you can indicate
+columns to be automatically sized by specifying a value of ‘auto’ in the
+‘column_widths’ style parameter in your style sheet.</p></li>
+<li><p>docutils frontend: support the <code class="docutils literal notranslate"><span class="pre">:align:</span></code> option to table directives, which
+will override the alignment set for the table in the style sheet.</p></li>
+<li><p>The starting number of enumerated lists in reStructuredText is respected.</p></li>
+<li><p>Table column widths can be specified in the style sheet, which take effect
+when these haven’t been specified in the source document.</p></li>
+<li><p>Document elements now store where they have been defined (document tree,
+style sheet file or template configuration file); when you specify relative
+paths (e.g. for images), they are interpreted relative to the location of
+their source. This should make things more intuitive.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">page_break</span></code> style attribute is no longer reserved for sections; a
+page break can be forced before any flowable.</p></li>
+<li><p>Enumerated list items with a hidden label (‘hide’ style attribute) are no
+longer counted in the numbering.</p></li>
+<li><p>Templates and typefaces can be registered by name at runtime. This makes them
+referencable from template configuration and style sheet files. For example,
+custom templates/typefaces can be imported in a Sphinx project’s <cite>conf.py</cite>
+(to be documented).</p></li>
+<li><p>It’s now possible to add arbitrary reStructuredText content to the front/back
+matter or  elsewhere by adding a <code class="docutils literal notranslate"><span class="pre">..</span> <span class="pre">container::</span></code> with the ‘out-of-line’
+class and a <code class="docutils literal notranslate"><span class="pre">:name:</span></code> to reference it by in the document template
+configuration, e.g. in the list of front matter flowables (to be documented).</p></li>
+<li><p>Selectors in style sheet files (.rts) now support boolean and ‘None’ values.
+For example, you can select StaticGroupedFlowables based on whether they have
+any children or not: e.g <code class="docutils literal notranslate"><span class="pre">TableCell(empty=true)</span></code> selects empty table cells.</p></li>
+<li><p>The document’s title and author are now stored in the PDF metadata.</p></li>
+<li><p>“0” is now accepted as a valid value for Dimension-type attributes in style
+sheets and template configurations.</p></li>
+</ul>
+<p>Changed:</p>
+<ul class="simple">
+<li><p>Rendering speed was more than doubled (caching)! (PR #197 by Alex Fargus)</p></li>
+<li><p>Sphinx frontend: <code class="docutils literal notranslate"><span class="pre">rinoh_documents</span></code> now takes a list of dictionaries, one
+for each PDF document to be built. This allows selecting e.g. the template
+and logo on a per-document level. Support for <code class="docutils literal notranslate"><span class="pre">rinoh_template</span></code>,
+<code class="docutils literal notranslate"><span class="pre">rinoh_stylesheet</span></code>, <code class="docutils literal notranslate"><span class="pre">rinoh_paper_size</span></code>, <code class="docutils literal notranslate"><span class="pre">rinoh_domain_indices</span></code> and
+<code class="docutils literal notranslate"><span class="pre">rinoh_logo</span></code> was removed. Fallback to <code class="docutils literal notranslate"><span class="pre">latex_documents</span></code> is retained.
+(PR #182, #192, #195, #208 and #216 by Alex Fargus)</p></li>
+<li><p>The default stylesheet (‘Sphinx’) now prevents captions from being separated
+from their image/table/code block (across pages).</p></li>
+<li><p>Font weights and widths are now internally represented by integer classes.
+In addition to integer values, string values are still accepted (mapped to
+classes).</p></li>
+<li><p>OpenTypeFont now determines the font weight, slant and width from the file.
+For backward compatibility, it still accepts these as arguments on
+instantiation but warns when they don’t match the values stored in the font.</p></li>
+</ul>
+<p>Fixed:</p>
+<ul class="simple">
+<li><p>Table column width determination was overhauled. Now fixed-width tables are
+supported and automatic-width columns should be handled better.</p></li>
+<li><p>The ‘nested bulleted/enumerated list’ selectors were broken; their
+corresponding styles were never applied</p></li>
+<li><p>Items inside a table cannot be referenced (issue #174)</p></li>
+<li><p>Sphinx frontend: fix handling of relative image paths in .rst files inside
+a directory in the Sphinx project root</p></li>
+<li><p>rinoh: fix –install-resources (broken since PyPI disabled XMLRPC searches)</p></li>
+<li><p>GroupedLabeledFlowables: respect label_min_width and fix a crash with respect
+to space_below handling</p></li>
+<li><p>Duplicate rendering of content in columns; if content was too small to fill
+the first column, it was rendered again in subsequent columns.</p></li>
+<li><p>Crash on encountering a style for which no selector is defined.</p></li>
+</ul>
+<p>Part of the work included in this release was kindly sponsored by <a class="reference external" href="https://www.jobyaviation.com">Joby
+Aviation</a>.</p>
+<h2 id="release-0-4-2-2020-07-28">Release 0.4.2 (2020-07-28)<a class="headerlink" href="#release-0-4-2-2020-07-28" title="Link to this heading">¶</a></h2>
+<p>New Features:</p>
+<ul class="simple">
+<li><p>before/after style attributes for StyledText (issue #158)</p></li>
+<li><p>docutils/Sphinx frontend: don’t abort on encountering math/math_block, output
+the (LaTeX) math markup instead, along with printing a warning.</p></li>
+<li><p>docutils frontend: raw inline text (with <code class="docutils literal notranslate"><span class="pre">:format:</span> <span class="pre">'rinoh'</span></code>) is parsed as
+styled text</p></li>
+</ul>
+<p>Fixed:</p>
+<ul class="simple">
+<li><p>crash when the ‘contents’ topic has multiple IDs (issue #173)</p></li>
+<li><p>loading of the references cache (issue #170)</p></li>
+<li><p>some issues with space_below handling</p></li>
+</ul>
+<h2 id="release-0-4-1-2020-07-01">Release 0.4.1 (2020-07-01)<a class="headerlink" href="#release-0-4-1-2020-07-01" title="Link to this heading">¶</a></h2>
+<p>New Features:</p>
+<ul class="simple">
+<li><p>UserStrings: arbitrary user-defined strings that can be defined in the
+template configuration or as a substitution definition in reStructuredText</p></li>
+<li><p>strings in a StringCollection can now be styled text</p></li>
+<li><p>Sphinx frontend: use the <code class="docutils literal notranslate"><span class="pre">today</span></code> and <code class="docutils literal notranslate"><span class="pre">today_fmt</span></code> configuration variables
+for the date on the title page</p></li>
+<li><p>Sphinx frontend: allow extensions access to the builder object (issue #155)</p></li>
+<li><p>rinoh: <code class="docutils literal notranslate"><span class="pre">--output</span></code> writes the output PDF to a specified location</p></li>
+</ul>
+<p>Fixed:</p>
+<ul class="simple">
+<li><p>Regression in handling images that don’t fit on the current page (issue #153)</p></li>
+<li><p>Fix crash when rendering local table of contents (issue #160)</p></li>
+<li><p>Sphinx frontend: support code-block/literalinclude with caption (issue #128)</p></li>
+<li><p>rinoh: variables set in a template configuration file are sometimes ignored
+(issue #164)</p></li>
+<li><p>Crash when using a font that contains unsupported lookups (issue #141)</p></li>
+</ul>
+<h2 id="release-0-4-0-2020-03-05">Release 0.4.0 (2020-03-05)<a class="headerlink" href="#release-0-4-0-2020-03-05" title="Link to this heading">¶</a></h2>
+<p>New Features:</p>
+<ul class="simple">
+<li><p>automatically generated lists of figures and tables</p></li>
+<li><p>paragraphs now provide default tab stops (proportional to font size) for
+indentation</p></li>
+<li><p>stylesheet (.rts) and template configuration (.rtt) files now support
+specifying inline and background images (#107 and #108); to be documented</p></li>
+<li><p>it is now possible to specify selector priority (+-) in style sheets</p></li>
+<li><p>Sphinx frontend: the rinoh builder can be discovered by entry point
+(no more need to add ‘rinoh.frontend.sphinx’ to the list of extensions)</p></li>
+<li><p>rinoh: set a return code of 1 when one or more referenced images could not be
+found (issue #104)</p></li>
+<li><p>rinoh: introduce the <code class="docutils literal notranslate"><span class="pre">--install-resources</span></code> option to control the automatic
+installation of resources from PyPI</p></li>
+<li><p>German locale (contributed by Michael Kaiser)</p></li>
+<li><p>Polish locale (contributed by Mariusz Jamro)</p></li>
+</ul>
+<p>Changed:</p>
+<ul class="simple">
+<li><p>Python 3.3 &amp; 3.4 are no longer supported since they have reached end-of-life</p></li>
+<li><p>remove the dependency on purepng by embedding its png.py</p></li>
+<li><p>limit the width of images to the available width by default</p></li>
+<li><p>XML frontend: special case mixed content nodes</p></li>
+<li><p>fixes in the design of stylesheet/template code</p></li>
+</ul>
+<p>Fixed:</p>
+<ul class="simple">
+<li><p>various regressions (PR #142 by Norman Lorrain)</p></li>
+<li><p>fix issues with variables defined in a base style sheet/template config</p></li>
+<li><p>various footnote rendering issues</p></li>
+<li><p>border width is also taken into account for flowables that are continued on a
+new page (#127)</p></li>
+<li><p>Sphinx: handle case when source_suffix is a list (PR #110 by Nick Barrett)</p></li>
+<li><p>incompatibility with Sphinx 1.6.1+ (latex_paper_size)</p></li>
+<li><p>docutils: crash when a footnote is defined in an admonition (issue #95)</p></li>
+<li><p>docutils: crash on encountering a raw text role (issue #99)</p></li>
+<li><p>docutils: ‘decoration’ node (header/footer) is not yet supported (issue #112)</p></li>
+<li><p>crash when a table cell contains (only) an image</p></li>
+<li><p>colours of PNG images with gamma (gAMA chunk) set are incorrect (#102)</p></li>
+<li><p>Sphinx: image paths with wildcard extension are not supported (#119)</p></li>
+<li><p>GroupedFlowables: space_below should only be considered at the end</p></li>
+<li><p>adapt to PEP 479 (Change StopIteration handling inside generators), the
+default in Python 3.7 (issue #133)</p></li>
+<li><p>fix compatibility with Python 3.6.7 and 3.7.1 (tokenizer changes)</p></li>
+<li><p>fix crash caused by Python 3.8’s changes to int.__str__</p></li>
+</ul>
+<h2 id="release-0-3-1-2016-12-19">Release 0.3.1 (2016-12-19)<a class="headerlink" href="#release-0-3-1-2016-12-19" title="Link to this heading">¶</a></h2>
+<p>New Features:</p>
+<ul class="simple">
+<li><p>rinoh is now also available as a stand-alone application for both Windows
+(installer) and macOS (app); they include an embedded CPython installation</p></li>
+<li><p>index terms can be StyledText now (in addition to str)</p></li>
+<li><p>the ‘document author’ metadata entry can now be displayed using a Field</p></li>
+<li><p>Sphinx frontend: support the ‘desc_signature_line’ node (new in Sphinx 1.5)</p></li>
+<li><p>rinoh –docs: open the online documentation in the default browser</p></li>
+</ul>
+<p>Changed:</p>
+<ul class="simple">
+<li><p>more closely mimic the Sphinx LaTeX builder’s title page (issue #60)</p></li>
+<li><p>there is no default for PageTemplate.chapter_title_flowables anymore since
+they are specific to the document template</p></li>
+</ul>
+<p>Fixed:</p>
+<ul class="simple">
+<li><p>handle StyledText metadata (such as document title)</p></li>
+<li><p>Sphinx frontend: support the ‘autosummary_toc’ node</p></li>
+<li><p>DummyFlowable now sticks to the flowable following it (keep_with_next), so
+that (1) it does not break this behavior of Heading preceding it, and
+(2) IndexTargets do not get separated from the following flowable</p></li>
+<li><p>bug in LabeledFlowable that broke keep_with_next behavior</p></li>
+<li><p>the descender size of the last flowable in a GroupedFlowables with
+keep_with_next=True was getting lost</p></li>
+<li><p>GroupedFlowables should not mark the page non-empty; this caused empty pages
+before the first chapter if it is preceded by grouped DummyFlowables</p></li>
+</ul>
+<h2 id="release-0-3-0-2016-11-23">Release 0.3.0 (2016-11-23)<a class="headerlink" href="#release-0-3-0-2016-11-23" title="Link to this heading">¶</a></h2>
+<p>New Features:</p>
+<ul class="simple">
+<li><p>support localization of standard document strings (en, fr, it, nl) (#53)</p></li>
+<li><p>localized strings can be overridden in the document template configuration</p></li>
+<li><p>make use of a fallback typeface when a glyph is not available (#55)
+(the ‘fallback’ style in the Sphinx stylesheet sets the fallback typeface)</p></li>
+<li><p>template configuration (INI) files: specify which document parts to include,
+configure document part and page templates, customize localized strings, …</p></li>
+<li><p>support specifying more complex selectors directly in a style sheet file</p></li>
+<li><p>(figure and table) captions support hierarchical numbering (see CaptionStyle)</p></li>
+<li><p>make the frontends independent of the current working directory</p></li>
+<li><p>reStructuredText: support the table :widths: option (upcoming docutils 0.13)</p></li>
+<li><p>Sphinx frontend: provide styles for Sphinx’s inline markup roles</p></li>
+<li><p>rinoh (command line renderer):</p>
+<ul>
+<li><p>support template configuration files</p></li>
+<li><p>support file formats for which a frontend is installed (see –list-formats)</p></li>
+<li><p>accept options to configure the frontend (see –list-options)</p></li>
+<li><p>option to list the installed fonts (on the command line or in a PDF file)</p></li>
+</ul>
+</li>
+<li><p>show the current page number as part of the rendering progress indicator</p></li>
+<li><p>Book template: support for setting a cover page</p></li>
+<li><p>frontends: raise a more descriptive exception when a document tree node is
+not mapped</p></li>
+<li><p>validate the default value passed to an Attribute</p></li>
+<li><p>preliminary support for writing a style sheet to an INI file, listing default
+values for non-specified attributes (#23)</p></li>
+</ul>
+<p>Changed:</p>
+<ul class="simple">
+<li><p>rinoh: the output PDF is now placed in the current directory, not in the same
+directory as the input file</p></li>
+<li><p>Sphinx builder configuration: replace the <code class="docutils literal notranslate"><span class="pre">rinoh_document_template</span></code> and
+<code class="docutils literal notranslate"><span class="pre">rinoh_template_configuration</span></code> options with <code class="docutils literal notranslate"><span class="pre">rinoh_template</span></code></p></li>
+<li><p>if no base is given for a style, style attribute lookup proceeds to look in
+the style of the same name in the base style sheet (#66)</p></li>
+<li><p>DEFAULT_STYLE can be used as a base style to prevent style attribute lookup
+in the style of the same name in the base style sheet</p></li>
+<li><p>rename FieldList to DefinitionList and use it to replace uses (docutils and
+Sphinx frontends) of the old DefinitionList (#54)</p></li>
+<li><p>the new DefinitionList (FieldList) can be styled like the old DefinitionList
+by setting max_label_width to None, 0 or a 0-valued Dimension</p></li>
+<li><p>figures are now non-floating by default (float placement needs more work)</p></li>
+<li><p>hide the index chapter when there are no index entries (#51)</p></li>
+<li><p>style sheets: use the default matcher if none is specified</p></li>
+<li><p>Sphinx style sheet: copy the admonition style from the Sphinx LaTeX builder</p></li>
+<li><p>Sphinx style sheet: keep the admonition title together with the body</p></li>
+<li><p>Sphinx style sheet: color linked references as in the LaTeX output (#62)</p></li>
+<li><p>Sphinx style sheet: disable hyphenation/ligatures for literal strong text</p></li>
+<li><p>no more DocumentSection; a document now consists of parts (containing pages)</p></li>
+<li><p>template configuration:</p>
+<ul>
+<li><p>refer to document part templates by name so that they can be replaced</p></li>
+<li><p>the list of document parts can be changed in the template configuration</p></li>
+<li><p>document parts take the ‘end_at_page’ option (left, right, or any)</p></li>
+<li><p>find (left/right) page templates via the document part name they belong to</p></li>
+<li><p>fall back to &lt;doc_part&gt;_page when the right or left template is not found</p></li>
+<li><p>each template configuration requires a name</p></li>
+</ul>
+</li>
+<li><p>DocumentTree: make the <code class="docutils literal notranslate"><span class="pre">source_file</span></code> argument optional</p></li>
+<li><p>don’t abort when the document section hierarchy is missing levels (#67)</p></li>
+<li><p>use the PDF backend by default (no need to specify it)</p></li>
+<li><p>store the unit with Dimension instances (better printing)</p></li>
+<li><p>rename the <cite>float</cite> module to <cite>image</cite></p></li>
+</ul>
+<p>Fixed:</p>
+<ul class="simple">
+<li><p>improve compatibility with Windows: Windows path names and file encoding</p></li>
+<li><p>crash if a StyledText is passed to HeadingStyle.number_separator</p></li>
+<li><p>GroupedLabeledFlowables label width could be unnecessarily wide</p></li>
+<li><p>fix and improve automatic table column sizing</p></li>
+<li><p>Figures can now be referenced using the ‘reference’ format (“Figure 1.2”)</p></li>
+<li><p>HorizontallyAlignedFlowable: make more robust</p></li>
+<li><p>make document elements referenceable by secondary IDs</p></li>
+<li><p>reStructuredText: only the first classifier for a definition term was shown</p></li>
+<li><p>Sphinx frontend: support the ‘centered’ directive</p></li>
+<li><p>Sphinx frontend: basic support for the ‘hlist’ directive</p></li>
+<li><p>Sphinx frontend: handle :abbr: without explanation</p></li>
+<li><p>Sphinx frontend: support nested inline nodes (guilabel &amp; samp roles)</p></li>
+<li><p>PDF backend: fix writing of Type 1 fonts from a parsed PDF file</p></li>
+<li><p>PDF reader: handle multi-page PDFs (#71)</p></li>
+<li><p>PDF reader: fix parsing of XRef streams</p></li>
+<li><p>PDF reader: fix writing of parsed files</p></li>
+</ul>
+<h2 id="release-0-2-1-2016-08-18">Release 0.2.1 (2016-08-18)<a class="headerlink" href="#release-0-2-1-2016-08-18" title="Link to this heading">¶</a></h2>
+<p>New Features:</p>
+<ul class="simple">
+<li><p>optionally limit the width of large images and make use of this to simulate
+the Sphinx LaTeX builder behavior (#46)</p></li>
+<li><p>reStructuredText/Sphinx: support for images with hyperlinks (#49)</p></li>
+<li><p>record the styled page numbers in the PDF as page labels (#41)</p></li>
+<li><p>unsupported Python versions: prevent installation where possible (sdist)
+or exit on import (wheel)</p></li>
+<li><p>support Python 3.6</p></li>
+</ul>
+<p>Bugfixes:</p>
+<ul class="simple">
+<li><p>make StyleSheet objects picklable so the Sphinx builder’s rinoh_stylesheet
+option can actually be used</p></li>
+<li><p>Fix #47: ClassNotFound exception in Literal_Block.lexer_getter()</p></li>
+<li><p>Fix #45: Images that don’t fit are still placed on the page</p></li>
+<li><p>don’t warn about duplicate style matches that resolve to the same style</p></li>
+</ul>
+<h2 id="release-0-2-0-2016-08-10">Release 0.2.0 (2016-08-10)<a class="headerlink" href="#release-0-2-0-2016-08-10" title="Link to this heading">¶</a></h2>
+<p>Styling:</p>
+<ul class="simple">
+<li><p>generate a style log (show matching styles) to help style sheet development</p></li>
+<li><p>keep_with_next style attribute: prevent splitting two flowables across pages</p></li>
+<li><p>stylesheets can be loaded from files in INI format</p></li>
+<li><p>check the type of attributes passed to styles</p></li>
+<li><p>source code highlighting using Pygments</p></li>
+<li><p>table of contents entries can be styled more freely</p></li>
+<li><p>allow hiding the section numbers of table of contents entries</p></li>
+<li><p>allow for custom chapter titles</p></li>
+<li><p>selectors can now also select based on document part/section</p></li>
+<li><p>various small tweaks to selectors and matchers</p></li>
+<li><p>various fixes relating to style sheets</p></li>
+</ul>
+<p>Templates:</p>
+<ul class="simple">
+<li><p>configurable standard document templates: article and book</p></li>
+<li><p>a proper infrastructure for creating custom document templates</p></li>
+<li><p>support for left/right page templates</p></li>
+<li><p>make the Article template more configurable</p></li>
+<li><p>pages now have background, content and header/footer layers</p></li>
+<li><p>support for generating an index</p></li>
+<li><p>make certain strings configurable (for localization, for example)</p></li>
+</ul>
+<p>Frontends:</p>
+<ul class="simple">
+<li><p>Sphinx: interpret the LaTeX configuration variables if the corresponding
+rinohtype variable is not set</p></li>
+<li><p>Sphinx: roughly match the LaTeX output (document template and style sheet)</p></li>
+<li><p>added a CommonMark frontend based on recommonmark</p></li>
+<li><p>added basic ePUB and DocBook frontends</p></li>
+<li><p>XML frontends: fix whitespace handling</p></li>
+<li><p>frontends now return generators yielding flowables (more flexible)</p></li>
+</ul>
+<p>Command-line Renderer (rinoh):</p>
+<ul class="simple">
+<li><p>allow specifying a template and style sheet</p></li>
+<li><p>automatically install typefaces used in the style sheet from PyPI</p></li>
+</ul>
+<p>Fonts:</p>
+<ul class="simple">
+<li><p>typefaces are discovered/loaded by entry point</p></li>
+<li><p>more complete support for OpenType fonts</p></li>
+<li><p>fix support for the 14 base Type 1 fonts</p></li>
+</ul>
+<p>Images:</p>
+<ul class="simple">
+<li><p>more versatile image sizing: absolute width/height &amp; scaling</p></li>
+<li><p>allow specifying the baseline for inline images</p></li>
+<li><p>several fixes in the JPEG reader</p></li>
+</ul>
+<p>Miscellaneous:</p>
+<ul class="simple">
+<li><p>reorganize the Container class hierarchy</p></li>
+<li><p>fixes in footnote handling</p></li>
+<li><p>drop Python 3.2 support (3.3, 3.4 and 3.5 are supported)</p></li>
+</ul>
+<h2 id="release-0-1-3-2015-08-04">Release 0.1.3 (2015-08-04)<a class="headerlink" href="#release-0-1-3-2015-08-04" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>recover from the slow rendering speed caused by a bugfix in 0.1.2
+(thanks to optimized element matching in the style sheets)</p></li>
+<li><p>other improvements and bugfixes related to style sheets</p></li>
+</ul>
+<h2 id="release-0-1-2-2015-07-31">Release 0.1.2 (2015-07-31)<a class="headerlink" href="#release-0-1-2-2015-07-31" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>much improved Sphinx support (we can now render the Sphinx documentation)</p></li>
+<li><p>more complete support for reStructuredText (docutils) elements</p></li>
+<li><p>various fixes related to footnote placement</p></li>
+<li><p>page break option when starting a new section</p></li>
+<li><p>fixes in handling of document sections and parts</p></li>
+<li><p>improvements to section/figure/table references</p></li>
+<li><p>native support for PNG and JPEG images
+(drops PIL/Pillow requirement, but adds PurePNG 0.1.1 requirement)</p></li>
+<li><p>new ‘sphinx’ stylesheet used by the Sphinx builder (~ Sphinx LaTeX style)</p></li>
+<li><p>restores Python 3.2 compatibility</p></li>
+</ul>
+<h2 id="release-0-1-1-2015-04-12">Release 0.1.1 (2015-04-12)<a class="headerlink" href="#release-0-1-1-2015-04-12" title="Link to this heading">¶</a></h2>
+<p>First preview release</p>
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+    <nav class="md-footer__inner md-grid" aria-label="Footer" >
+      
+        
+        <a href="developing.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: Developing" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              Developing
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="rinoh.html" class="md-footer__link md-footer__link--next" aria-label="Next: rinoh" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              rinoh
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  
+  
+  <div class="md-footer-meta md-typeset">
+    
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-footer-copyright__highlight">
+        &#169; Copyright 2024, Brecht Machiels and contributors.
+        
+    </div>
+  
+    Created using
+    <a href="https://www.sphinx-doc.org/" target="_blank" rel="noopener">Sphinx</a>
+    7.3.7.
+     and
+    <a href="https://github.com/jbms/sphinx-immaterial/" target="_blank" rel="noopener">Sphinx-Immaterial</a>
+  
+</div>
+      
+    </div>
+    
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": ".", "features": ["navigation.expand", "navigation.sections", "navigation.instant"], "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "version": {"provider": "mike", "staticVersions": null, "versionPath": "../im_versions.json"}}</script>
+    
+      
+        <script src="_static/sphinx_immaterial_theme.f9d9eeeb247ace16c.min.js?v=8ec58cb5"></script>
+    
+  </body>
+</html>

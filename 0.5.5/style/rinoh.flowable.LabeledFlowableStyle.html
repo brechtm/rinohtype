@@ -1,0 +1,1807 @@
+
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      <link rel="icon" href="../_static/rinohtype_logo_abbrev.svg">
+    
+    
+      
+        <title>LabeledFlowableStyle - rinohtype</title>
+      
+    
+    
+      
+        
+        
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+        <link rel="stylesheet" type="text/css" href="../_static/sphinx_immaterial_theme.e0b5691b38cca82da.min.css?v=b1736040" />
+        <link rel="stylesheet" type="text/css" href="../_static/tweaks.css?v=ac567af0" />
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="red" data-md-color-accent="light-blue">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#rinoh.flowable.LabeledFlowableStyle" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <div data-md-component="outdated" hidden>
+        
+      </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../index.html" title="rinohtype" class="md-header__button md-logo" aria-label="rinohtype" data-md-component="logo">
+      <img src="../_static/logo_white.svg" alt="logo">
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            rinohtype
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              LabeledFlowableStyle
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      <form class="md-header__option" data-md-component="palette">
+        
+          
+          
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="red" data-md-color-accent="light-blue"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+          
+            <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 1 7 7c0 2.38-1.19 4.47-3 5.74V17a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-2.26C6.19 13.47 5 11.38 5 9a7 7 0 0 1 7-7M9 21v-1h6v1a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1m3-17a5 5 0 0 0-5 5c0 2.05 1.23 3.81 3 4.58V16h4v-2.42c1.77-.77 3-2.53 3-4.58a5 5 0 0 0-5-5Z"/></svg>
+            </label>
+          
+        
+          
+          
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="red" data-md-color-accent="orange"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
+          
+            <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 0-7 7c0 2.38 1.19 4.47 3 5.74V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 0 0-7-7M9 21a1 1 0 0 0 1 1h4a1 1 0 0 0 1-1v-1H9v1Z"/></svg>
+            </label>
+          
+        
+      </form>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/brechtm/rinohtype" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    rinohtype
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../index.html" title="rinohtype" class="md-nav__button md-logo" aria-label="rinohtype" data-md-component="logo">
+      <img src="../_static/logo_white.svg" alt="logo">
+    </a>
+    rinohtype
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/brechtm/rinohtype" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    rinohtype
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_1" type="checkbox" id="__nav_1" checked>
+      
+      
+      
+        <label class="md-nav__link" for="__nav_1">
+          <span class="md-ellipsis">User Manual</span> [<a class="pdf-link" href="../manual.pdf">PDF</a>]
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="User Manual" data-md-level="1">
+        <label class="md-nav__title" for="__nav_1">
+          <span class="md-nav__icon md-icon"></span>
+          <span class="md-ellipsis">User Manual</span> [<a class="pdf-link" href="../manual.pdf">PDF</a>]
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../intro.html" class="md-nav__link">
+        <span class="md-ellipsis">Introduction</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../showcase.html" class="md-nav__link">
+        <span class="md-ellipsis">Showcase</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../install.html" class="md-nav__link">
+        <span class="md-ellipsis">Installation</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../quickstart.html" class="md-nav__link">
+        <span class="md-ellipsis">Quickstart</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../basicstyling.html" class="md-nav__link">
+        <span class="md-ellipsis">Basic Document Styling</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../elementstyling.html" class="md-nav__link">
+        <span class="md-ellipsis">Element Styling</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../templates.html" class="md-nav__link">
+        <span class="md-ellipsis">Document Templates</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../faq.html" class="md-nav__link">
+        <span class="md-ellipsis">Frequently Asked Questions</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contributing.html" class="md-nav__link">
+        <span class="md-ellipsis">Contributing</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../developing.html" class="md-nav__link">
+        <span class="md-ellipsis">Developing</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../changelog.html" class="md-nav__link">
+        <span class="md-ellipsis">Release History</span>
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" checked>
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2">
+          <span class="md-ellipsis">Reference Guide</span> [<a class="pdf-link" href="../reference.pdf">PDF</a>]
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Reference Guide" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          <span class="md-ellipsis">Reference Guide</span> [<a class="pdf-link" href="../reference.pdf">PDF</a>]
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../rinoh.html" class="md-nav__link">
+        <span class="md-ellipsis">rinoh</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sphinx.html" class="md-nav__link">
+        <span class="md-ellipsis">Sphinx Builder</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2_3" type="checkbox" id="__nav_2_3" checked>
+      
+      
+      
+        
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="../stylesheets.html"><span class="md-ellipsis">Style Sheets</span></a>
+          
+            <label for="__nav_2_3">
+              <span class="md-nav__icon md-icon"></span>
+            </label>
+          
+        </div>
+      
+      <nav class="md-nav" aria-label="Style Sheets" data-md-level="2">
+        <label class="md-nav__title" for="__nav_2_3">
+          <span class="md-nav__icon md-icon"></span>
+          <span class="md-ellipsis">Style Sheets</span>
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2_3_1" type="checkbox" id="__nav_2_3_1" checked>
+      
+      
+      
+        
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="../stylesheets.html#element-style-classes"><span class="md-ellipsis">Element Style Classes</span></a>
+          
+            <label for="__nav_2_3_1">
+              <span class="md-nav__icon md-icon"></span>
+            </label>
+          
+        </div>
+      
+      <nav class="md-nav" aria-label="Element Style Classes" data-md-level="3">
+        <label class="md-nav__title" for="__nav_2_3_1">
+          <span class="md-nav__icon md-icon"></span>
+          <span class="md-ellipsis">Element Style Classes</span>
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="rinoh.draw.LineStyle.html" class="md-nav__link">
+        <span class="md-ellipsis">Line<wbr>Style</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="rinoh.draw.ShapeStyle.html" class="md-nav__link">
+        <span class="md-ellipsis">Shape<wbr>Style</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="rinoh.flowable.FlowableStyle.html" class="md-nav__link">
+        <span class="md-ellipsis">Flowable<wbr>Style</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          <span class="md-ellipsis">Labeled<wbr>Flowable<wbr>Style</span>
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="#" class="md-nav__link md-nav__link--active">
+        <span class="md-ellipsis">Labeled<wbr>Flowable<wbr>Style</span>
+      </a>
+      
+        
+
+  
+
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      <span class="md-ellipsis">Labeled<wbr>Flowable<wbr>Style</span>
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#rinoh.flowable.LabeledFlowableStyle" class="md-nav__link">
+    <span aria-label="Python class" class="objinfo-icon objinfo-icon__data" title="Python class">C</span><span title="rinoh.flowable.LabeledFlowableStyle (Python class) — Style class for LabeledFlowable" class="md-ellipsis">rinoh.<wbr>flowable.<wbr>Labeled<wbr>Flowable<wbr>Style</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="rinoh.flowable.LabeledFlowableStyle">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#rinoh.flowable.LabeledFlowableStyle.label_min_width" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="rinoh.flowable.LabeledFlowableStyle.label_min_width (Python attribute) — Minimum label width" class="md-ellipsis">label_<wbr>min_<wbr>width</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rinoh.flowable.LabeledFlowableStyle.label_max_width" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="rinoh.flowable.LabeledFlowableStyle.label_max_width (Python attribute) — Maximum label width" class="md-ellipsis">label_<wbr>max_<wbr>width</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rinoh.flowable.LabeledFlowableStyle.label_spacing" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="rinoh.flowable.LabeledFlowableStyle.label_spacing (Python attribute) — Spacing between a label and the labeled flowable" class="md-ellipsis">label_<wbr>spacing</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rinoh.flowable.LabeledFlowableStyle.align_baselines" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="rinoh.flowable.LabeledFlowableStyle.align_baselines (Python attribute) — Line up the baselines of the label and the labeled flowable" class="md-ellipsis">align_<wbr>baselines</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rinoh.flowable.LabeledFlowableStyle.wrap_label" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="rinoh.flowable.LabeledFlowableStyle.wrap_label (Python attribute) — Wrap the label at label_max_width" class="md-ellipsis">wrap_<wbr>label</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rinoh.flowable.LabeledFlowableStyle.width" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="rinoh.flowable.LabeledFlowableStyle.width (Python attribute) — Width to render the flowable at (inherited from FlowableStyle)" class="md-ellipsis">width</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rinoh.flowable.LabeledFlowableStyle.horizontal_align" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="rinoh.flowable.LabeledFlowableStyle.horizontal_align (Python attribute) — Horizontal alignment of the flowable (inherited from FlowableStyle)" class="md-ellipsis">horizontal_<wbr>align</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rinoh.flowable.LabeledFlowableStyle.space_above" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="rinoh.flowable.LabeledFlowableStyle.space_above (Python attribute) — Vertical space preceding the flowable (inherited from FlowableStyle)" class="md-ellipsis">space_<wbr>above</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rinoh.flowable.LabeledFlowableStyle.space_below" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="rinoh.flowable.LabeledFlowableStyle.space_below (Python attribute) — Vertical space following the flowable (inherited from FlowableStyle)" class="md-ellipsis">space_<wbr>below</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rinoh.flowable.LabeledFlowableStyle.margin_left" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="rinoh.flowable.LabeledFlowableStyle.margin_left (Python attribute) — Left margin (inherited from FlowableStyle)" class="md-ellipsis">margin_<wbr>left</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rinoh.flowable.LabeledFlowableStyle.margin_right" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="rinoh.flowable.LabeledFlowableStyle.margin_right (Python attribute) — Right margin (inherited from FlowableStyle)" class="md-ellipsis">margin_<wbr>right</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rinoh.flowable.LabeledFlowableStyle.padding" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="rinoh.flowable.LabeledFlowableStyle.padding (Python attribute) — Padding (inherited from FlowableStyle)" class="md-ellipsis">padding</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rinoh.flowable.LabeledFlowableStyle.padding_left" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="rinoh.flowable.LabeledFlowableStyle.padding_left (Python attribute) — Left padding (inherited from FlowableStyle)" class="md-ellipsis">padding_<wbr>left</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rinoh.flowable.LabeledFlowableStyle.padding_right" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="rinoh.flowable.LabeledFlowableStyle.padding_right (Python attribute) — Right padding (inherited from FlowableStyle)" class="md-ellipsis">padding_<wbr>right</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rinoh.flowable.LabeledFlowableStyle.padding_top" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="rinoh.flowable.LabeledFlowableStyle.padding_top (Python attribute) — Top padding (inherited from FlowableStyle)" class="md-ellipsis">padding_<wbr>top</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rinoh.flowable.LabeledFlowableStyle.padding_bottom" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="rinoh.flowable.LabeledFlowableStyle.padding_bottom (Python attribute) — Bottom padding (inherited from FlowableStyle)" class="md-ellipsis">padding_<wbr>bottom</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rinoh.flowable.LabeledFlowableStyle.keep_with_next" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="rinoh.flowable.LabeledFlowableStyle.keep_with_next (Python attribute) — Keep this flowable and the next on the same page (inherited from FlowableStyle)" class="md-ellipsis">keep_<wbr>with_<wbr>next</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rinoh.flowable.LabeledFlowableStyle.border" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="rinoh.flowable.LabeledFlowableStyle.border (Python attribute) — Border surrounding the flowable (inherited from FlowableStyle)" class="md-ellipsis">border</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rinoh.flowable.LabeledFlowableStyle.border_left" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="rinoh.flowable.LabeledFlowableStyle.border_left (Python attribute) — Border left of the flowable (inherited from FlowableStyle)" class="md-ellipsis">border_<wbr>left</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rinoh.flowable.LabeledFlowableStyle.border_right" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="rinoh.flowable.LabeledFlowableStyle.border_right (Python attribute) — Border right of the flowable (inherited from FlowableStyle)" class="md-ellipsis">border_<wbr>right</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rinoh.flowable.LabeledFlowableStyle.border_top" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="rinoh.flowable.LabeledFlowableStyle.border_top (Python attribute) — Border above the flowable (inherited from FlowableStyle)" class="md-ellipsis">border_<wbr>top</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rinoh.flowable.LabeledFlowableStyle.border_bottom" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="rinoh.flowable.LabeledFlowableStyle.border_bottom (Python attribute) — Border below the flowable (inherited from FlowableStyle)" class="md-ellipsis">border_<wbr>bottom</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rinoh.flowable.LabeledFlowableStyle.background_color" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="rinoh.flowable.LabeledFlowableStyle.background_color (Python attribute) — Color of the area within the flowable&#39;s borders (inherited from FlowableStyle)" class="md-ellipsis">background_<wbr>color</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rinoh.flowable.LabeledFlowableStyle.page_break" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="rinoh.flowable.LabeledFlowableStyle.page_break (Python attribute) — Type of page break to insert before rendering this flowable (inherited from FlowableStyle)" class="md-ellipsis">page_<wbr>break</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rinoh.flowable.LabeledFlowableStyle.hide" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="rinoh.flowable.LabeledFlowableStyle.hide (Python attribute) — Suppress rendering this element (inherited from Style)" class="md-ellipsis">hide</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="rinoh.flowable.GroupedFlowablesStyle.html" class="md-nav__link">
+        <span class="md-ellipsis">Grouped<wbr>Flowables<wbr>Style</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="rinoh.flowable.FloatStyle.html" class="md-nav__link">
+        <span class="md-ellipsis">Float<wbr>Style</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="rinoh.image.CaptionStyle.html" class="md-nav__link">
+        <span class="md-ellipsis">Caption<wbr>Style</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="rinoh.image.FigureStyle.html" class="md-nav__link">
+        <span class="md-ellipsis">Figure<wbr>Style</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="rinoh.index.IndexStyle.html" class="md-nav__link">
+        <span class="md-ellipsis">Index<wbr>Style</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="rinoh.paragraph.ParagraphStyle.html" class="md-nav__link">
+        <span class="md-ellipsis">Paragraph<wbr>Style</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="rinoh.text.TextStyle.html" class="md-nav__link">
+        <span class="md-ellipsis">Text<wbr>Style</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="rinoh.inline.InlineFlowableStyle.html" class="md-nav__link">
+        <span class="md-ellipsis">Inline<wbr>Flowable<wbr>Style</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="rinoh.reference.ReferencingParagraphStyle.html" class="md-nav__link">
+        <span class="md-ellipsis">Referencing<wbr>Paragraph<wbr>Style</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="rinoh.reference.NoteMarkerStyle.html" class="md-nav__link">
+        <span class="md-ellipsis">Note<wbr>Marker<wbr>Style</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="rinoh.structure.SectionStyle.html" class="md-nav__link">
+        <span class="md-ellipsis">Section<wbr>Style</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="rinoh.structure.HeadingStyle.html" class="md-nav__link">
+        <span class="md-ellipsis">Heading<wbr>Style</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="rinoh.structure.ListStyle.html" class="md-nav__link">
+        <span class="md-ellipsis">List<wbr>Style</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="rinoh.structure.ListItemLabelStyle.html" class="md-nav__link">
+        <span class="md-ellipsis">List<wbr>Item<wbr>Label<wbr>Style</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="rinoh.structure.TableOfContentsStyle.html" class="md-nav__link">
+        <span class="md-ellipsis">Table<wbr>Of<wbr>Contents<wbr>Style</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="rinoh.structure.TableOfContentsEntryStyle.html" class="md-nav__link">
+        <span class="md-ellipsis">Table<wbr>Of<wbr>Contents<wbr>Entry<wbr>Style</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="rinoh.structure.AdmonitionStyle.html" class="md-nav__link">
+        <span class="md-ellipsis">Admonition<wbr>Style</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="rinoh.structure.HorizontalRuleStyle.html" class="md-nav__link">
+        <span class="md-ellipsis">Horizontal<wbr>Rule<wbr>Style</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="rinoh.table.TableStyle.html" class="md-nav__link">
+        <span class="md-ellipsis">Table<wbr>Style</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="rinoh.table.TableCellStyle.html" class="md-nav__link">
+        <span class="md-ellipsis">Table<wbr>Cell<wbr>Style</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="rinoh.table.TableCellBorderStyle.html" class="md-nav__link">
+        <span class="md-ellipsis">Table<wbr>Cell<wbr>Border<wbr>Style</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="rinoh.table.TableCellBackgroundStyle.html" class="md-nav__link">
+        <span class="md-ellipsis">Table<wbr>Cell<wbr>Background<wbr>Style</span>
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../stdtemplates.html" class="md-nav__link">
+        <span class="md-ellipsis">Standard Document Templates</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/api.html" class="md-nav__link">
+        <span class="md-ellipsis">API Documentation</span>
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" checked>
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3">
+          <span class="md-ellipsis">Indices</span>
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Indices" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          <span class="md-ellipsis">Indices</span>
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../genindex.html" class="md-nav__link">
+        <span class="md-ellipsis">Index</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../py-modindex.html" class="md-nav__link">
+        <span class="md-ellipsis">Module Index</span>
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+  
+
+<nav class="md-nav md-nav--secondary">
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      <span class="md-ellipsis">Labeled<wbr>Flowable<wbr>Style</span>
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#rinoh.flowable.LabeledFlowableStyle" class="md-nav__link">
+    <span aria-label="Python class" class="objinfo-icon objinfo-icon__data" title="Python class">C</span><span title="rinoh.flowable.LabeledFlowableStyle (Python class) — Style class for LabeledFlowable" class="md-ellipsis">rinoh.<wbr>flowable.<wbr>Labeled<wbr>Flowable<wbr>Style</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="rinoh.flowable.LabeledFlowableStyle">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#rinoh.flowable.LabeledFlowableStyle.label_min_width" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="rinoh.flowable.LabeledFlowableStyle.label_min_width (Python attribute) — Minimum label width" class="md-ellipsis">label_<wbr>min_<wbr>width</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rinoh.flowable.LabeledFlowableStyle.label_max_width" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="rinoh.flowable.LabeledFlowableStyle.label_max_width (Python attribute) — Maximum label width" class="md-ellipsis">label_<wbr>max_<wbr>width</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rinoh.flowable.LabeledFlowableStyle.label_spacing" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="rinoh.flowable.LabeledFlowableStyle.label_spacing (Python attribute) — Spacing between a label and the labeled flowable" class="md-ellipsis">label_<wbr>spacing</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rinoh.flowable.LabeledFlowableStyle.align_baselines" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="rinoh.flowable.LabeledFlowableStyle.align_baselines (Python attribute) — Line up the baselines of the label and the labeled flowable" class="md-ellipsis">align_<wbr>baselines</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rinoh.flowable.LabeledFlowableStyle.wrap_label" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="rinoh.flowable.LabeledFlowableStyle.wrap_label (Python attribute) — Wrap the label at label_max_width" class="md-ellipsis">wrap_<wbr>label</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rinoh.flowable.LabeledFlowableStyle.width" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="rinoh.flowable.LabeledFlowableStyle.width (Python attribute) — Width to render the flowable at (inherited from FlowableStyle)" class="md-ellipsis">width</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rinoh.flowable.LabeledFlowableStyle.horizontal_align" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="rinoh.flowable.LabeledFlowableStyle.horizontal_align (Python attribute) — Horizontal alignment of the flowable (inherited from FlowableStyle)" class="md-ellipsis">horizontal_<wbr>align</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rinoh.flowable.LabeledFlowableStyle.space_above" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="rinoh.flowable.LabeledFlowableStyle.space_above (Python attribute) — Vertical space preceding the flowable (inherited from FlowableStyle)" class="md-ellipsis">space_<wbr>above</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rinoh.flowable.LabeledFlowableStyle.space_below" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="rinoh.flowable.LabeledFlowableStyle.space_below (Python attribute) — Vertical space following the flowable (inherited from FlowableStyle)" class="md-ellipsis">space_<wbr>below</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rinoh.flowable.LabeledFlowableStyle.margin_left" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="rinoh.flowable.LabeledFlowableStyle.margin_left (Python attribute) — Left margin (inherited from FlowableStyle)" class="md-ellipsis">margin_<wbr>left</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rinoh.flowable.LabeledFlowableStyle.margin_right" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="rinoh.flowable.LabeledFlowableStyle.margin_right (Python attribute) — Right margin (inherited from FlowableStyle)" class="md-ellipsis">margin_<wbr>right</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rinoh.flowable.LabeledFlowableStyle.padding" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="rinoh.flowable.LabeledFlowableStyle.padding (Python attribute) — Padding (inherited from FlowableStyle)" class="md-ellipsis">padding</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rinoh.flowable.LabeledFlowableStyle.padding_left" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="rinoh.flowable.LabeledFlowableStyle.padding_left (Python attribute) — Left padding (inherited from FlowableStyle)" class="md-ellipsis">padding_<wbr>left</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rinoh.flowable.LabeledFlowableStyle.padding_right" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="rinoh.flowable.LabeledFlowableStyle.padding_right (Python attribute) — Right padding (inherited from FlowableStyle)" class="md-ellipsis">padding_<wbr>right</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rinoh.flowable.LabeledFlowableStyle.padding_top" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="rinoh.flowable.LabeledFlowableStyle.padding_top (Python attribute) — Top padding (inherited from FlowableStyle)" class="md-ellipsis">padding_<wbr>top</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rinoh.flowable.LabeledFlowableStyle.padding_bottom" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="rinoh.flowable.LabeledFlowableStyle.padding_bottom (Python attribute) — Bottom padding (inherited from FlowableStyle)" class="md-ellipsis">padding_<wbr>bottom</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rinoh.flowable.LabeledFlowableStyle.keep_with_next" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="rinoh.flowable.LabeledFlowableStyle.keep_with_next (Python attribute) — Keep this flowable and the next on the same page (inherited from FlowableStyle)" class="md-ellipsis">keep_<wbr>with_<wbr>next</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rinoh.flowable.LabeledFlowableStyle.border" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="rinoh.flowable.LabeledFlowableStyle.border (Python attribute) — Border surrounding the flowable (inherited from FlowableStyle)" class="md-ellipsis">border</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rinoh.flowable.LabeledFlowableStyle.border_left" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="rinoh.flowable.LabeledFlowableStyle.border_left (Python attribute) — Border left of the flowable (inherited from FlowableStyle)" class="md-ellipsis">border_<wbr>left</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rinoh.flowable.LabeledFlowableStyle.border_right" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="rinoh.flowable.LabeledFlowableStyle.border_right (Python attribute) — Border right of the flowable (inherited from FlowableStyle)" class="md-ellipsis">border_<wbr>right</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rinoh.flowable.LabeledFlowableStyle.border_top" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="rinoh.flowable.LabeledFlowableStyle.border_top (Python attribute) — Border above the flowable (inherited from FlowableStyle)" class="md-ellipsis">border_<wbr>top</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rinoh.flowable.LabeledFlowableStyle.border_bottom" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="rinoh.flowable.LabeledFlowableStyle.border_bottom (Python attribute) — Border below the flowable (inherited from FlowableStyle)" class="md-ellipsis">border_<wbr>bottom</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rinoh.flowable.LabeledFlowableStyle.background_color" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="rinoh.flowable.LabeledFlowableStyle.background_color (Python attribute) — Color of the area within the flowable&#39;s borders (inherited from FlowableStyle)" class="md-ellipsis">background_<wbr>color</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rinoh.flowable.LabeledFlowableStyle.page_break" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="rinoh.flowable.LabeledFlowableStyle.page_break (Python attribute) — Type of page break to insert before rendering this flowable (inherited from FlowableStyle)" class="md-ellipsis">page_<wbr>break</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rinoh.flowable.LabeledFlowableStyle.hide" class="md-nav__link">
+    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="rinoh.flowable.LabeledFlowableStyle.hide (Python attribute) — Suppress rendering this element (inherited from Style)" class="md-ellipsis">hide</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset" role="main">
+                  
+
+
+  <a href="https://github.com/brechtm/rinohtype/edit/master/doc/style/rinoh.flowable.LabeledFlowableStyle.rst" title="Edit this page" class="md-content__button md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25Z"/></svg>
+  </a>
+
+<h1 id="labeledflowablestyle">LabeledFlowableStyle<a class="headerlink" href="#labeledflowablestyle" title="Link to this heading">¶</a></h1>
+<dl class="py class objdesc">
+<dt class="sig sig-object highlight py" id="rinoh.flowable.LabeledFlowableStyle">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rinoh.flowable.</span></span><span class="sig-name descname"><span class="pre">LabeledFlowableStyle</span></span><span class="sig-paren">(</span><span class="sig-param-decl"><em class="sig-param"><span class="n"><span class="pre">base</span></span><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="kc">None</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">attributes</span></span></em></span><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.flowable.LabeledFlowableStyle" title="Link to this definition">¶</a></dt>
+<dd><p>Style class for <a class="reference internal" href="../api/flowable.html#rinoh.flowable.LabeledFlowable" title="rinoh.flowable.LabeledFlowable (Python class) — A flowable with a label."><code class="xref py py-class docutils literal notranslate"><span class="pre">LabeledFlowable</span></code></a></p>
+<dl class="py attribute objdesc">
+<dt class="sig sig-object highlight py" id="rinoh.flowable.LabeledFlowableStyle.label_min_width">
+<span class="sig-name descname"><span class="pre">label_min_width</span></span><a class="headerlink" href="#rinoh.flowable.LabeledFlowableStyle.label_min_width" title="Link to this definition">¶</a></dt>
+<dd><p>Minimum label width</p>
+<p><em>Accepts</em> <a class="reference internal" href="../api/dimension.html#rinoh.dimension.Dimension" title="rinoh.dimension.Dimension (Python class) — A simple dimension"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dimension</span></code></a>: a numeric value followed by a unit (<code class="docutils literal notranslate"><span class="pre">pt</span></code>, <code class="docutils literal notranslate"><span class="pre">in</span></code>, <code class="docutils literal notranslate"><span class="pre">pc</span></code>, <code class="docutils literal notranslate"><span class="pre">mm</span></code>, <code class="docutils literal notranslate"><span class="pre">cm</span></code>, <code class="docutils literal notranslate"><span class="pre">%</span></code>, <code class="docutils literal notranslate"><span class="pre">/2</span></code>, <code class="docutils literal notranslate"><span class="pre">/4</span></code>)</p>
+<p><em>Default</em>: <code class="docutils literal notranslate"><span class="pre">12pt</span></code></p>
+</dd></dl>
+
+<dl class="py attribute objdesc">
+<dt class="sig sig-object highlight py" id="rinoh.flowable.LabeledFlowableStyle.label_max_width">
+<span class="sig-name descname"><span class="pre">label_max_width</span></span><a class="headerlink" href="#rinoh.flowable.LabeledFlowableStyle.label_max_width" title="Link to this definition">¶</a></dt>
+<dd><p>Maximum label width</p>
+<p><em>Accepts</em> <a class="reference internal" href="../api/dimension.html#rinoh.dimension.Dimension" title="rinoh.dimension.Dimension (Python class) — A simple dimension"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dimension</span></code></a>: a numeric value followed by a unit (<code class="docutils literal notranslate"><span class="pre">pt</span></code>, <code class="docutils literal notranslate"><span class="pre">in</span></code>, <code class="docutils literal notranslate"><span class="pre">pc</span></code>, <code class="docutils literal notranslate"><span class="pre">mm</span></code>, <code class="docutils literal notranslate"><span class="pre">cm</span></code>, <code class="docutils literal notranslate"><span class="pre">%</span></code>, <code class="docutils literal notranslate"><span class="pre">/2</span></code>, <code class="docutils literal notranslate"><span class="pre">/4</span></code>)</p>
+<p><em>Default</em>: <code class="docutils literal notranslate"><span class="pre">80pt</span></code></p>
+</dd></dl>
+
+<dl class="py attribute objdesc">
+<dt class="sig sig-object highlight py" id="rinoh.flowable.LabeledFlowableStyle.label_spacing">
+<span class="sig-name descname"><span class="pre">label_spacing</span></span><a class="headerlink" href="#rinoh.flowable.LabeledFlowableStyle.label_spacing" title="Link to this definition">¶</a></dt>
+<dd><p>Spacing between a label and the labeled flowable</p>
+<p><em>Accepts</em> <a class="reference internal" href="../api/dimension.html#rinoh.dimension.Dimension" title="rinoh.dimension.Dimension (Python class) — A simple dimension"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dimension</span></code></a>: a numeric value followed by a unit (<code class="docutils literal notranslate"><span class="pre">pt</span></code>, <code class="docutils literal notranslate"><span class="pre">in</span></code>, <code class="docutils literal notranslate"><span class="pre">pc</span></code>, <code class="docutils literal notranslate"><span class="pre">mm</span></code>, <code class="docutils literal notranslate"><span class="pre">cm</span></code>, <code class="docutils literal notranslate"><span class="pre">%</span></code>, <code class="docutils literal notranslate"><span class="pre">/2</span></code>, <code class="docutils literal notranslate"><span class="pre">/4</span></code>)</p>
+<p><em>Default</em>: <code class="docutils literal notranslate"><span class="pre">3pt</span></code></p>
+</dd></dl>
+
+<dl class="py attribute objdesc">
+<dt class="sig sig-object highlight py" id="rinoh.flowable.LabeledFlowableStyle.align_baselines">
+<span class="sig-name descname"><span class="pre">align_baselines</span></span><a class="headerlink" href="#rinoh.flowable.LabeledFlowableStyle.align_baselines" title="Link to this definition">¶</a></dt>
+<dd><p>Line up the baselines of the label and the labeled flowable</p>
+<p><em>Accepts</em> <a class="reference internal" href="../api/attribute.html#rinoh.attribute.Bool" title="rinoh.attribute.Bool (Python class) — Expresses a binary choice"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bool</span></code></a>: <code class="docutils literal notranslate"><span class="pre">true</span></code> or <code class="docutils literal notranslate"><span class="pre">false</span></code></p>
+<p><em>Default</em>: <code class="docutils literal notranslate"><span class="pre">true</span></code></p>
+</dd></dl>
+
+<dl class="py attribute objdesc">
+<dt class="sig sig-object highlight py" id="rinoh.flowable.LabeledFlowableStyle.wrap_label">
+<span class="sig-name descname"><span class="pre">wrap_label</span></span><a class="headerlink" href="#rinoh.flowable.LabeledFlowableStyle.wrap_label" title="Link to this definition">¶</a></dt>
+<dd><p>Wrap the label at <cite>label_max_width</cite></p>
+<p><em>Accepts</em> <a class="reference internal" href="../api/attribute.html#rinoh.attribute.Bool" title="rinoh.attribute.Bool (Python class) — Expresses a binary choice"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bool</span></code></a>: <code class="docutils literal notranslate"><span class="pre">true</span></code> or <code class="docutils literal notranslate"><span class="pre">false</span></code></p>
+<p><em>Default</em>: <code class="docutils literal notranslate"><span class="pre">false</span></code></p>
+</dd></dl>
+
+<dl class="py attribute objdesc">
+<dt class="sig sig-object highlight py" id="rinoh.flowable.LabeledFlowableStyle.width">
+<span class="sig-name descname"><span class="pre">width</span></span><a class="headerlink" href="#rinoh.flowable.LabeledFlowableStyle.width" title="Link to this definition">¶</a></dt>
+<dd><p>Width to render the flowable at (inherited from <a class="reference internal" href="rinoh.flowable.FlowableStyle.html#rinoh.flowable.FlowableStyle.width" title="rinoh.flowable.FlowableStyle.width (Python attribute) — Width to render the flowable at"><code class="xref py py-attr docutils literal notranslate"><span class="pre">FlowableStyle</span></code></a>)</p>
+<p><em>Accepts</em> <a class="reference internal" href="../api/flowable.html#rinoh.flowable.FlowableWidth" title="rinoh.flowable.FlowableWidth (Python class) — Controls the width of a flowable"><code class="xref py py-class docutils literal notranslate"><span class="pre">FlowableWidth</span></code></a>: <code class="docutils literal notranslate"><span class="pre">auto</span></code>, <code class="docutils literal notranslate"><span class="pre">fill</span></code> or a numeric value followed by a unit (<code class="docutils literal notranslate"><span class="pre">pt</span></code>, <code class="docutils literal notranslate"><span class="pre">in</span></code>, <code class="docutils literal notranslate"><span class="pre">pc</span></code>, <code class="docutils literal notranslate"><span class="pre">mm</span></code>, <code class="docutils literal notranslate"><span class="pre">cm</span></code>, <code class="docutils literal notranslate"><span class="pre">%</span></code>, <code class="docutils literal notranslate"><span class="pre">/2</span></code>, <code class="docutils literal notranslate"><span class="pre">/4</span></code>)</p>
+<p><em>Default</em>: <code class="docutils literal notranslate"><span class="pre">auto</span></code></p>
+</dd></dl>
+
+<dl class="py attribute objdesc">
+<dt class="sig sig-object highlight py" id="rinoh.flowable.LabeledFlowableStyle.horizontal_align">
+<span class="sig-name descname"><span class="pre">horizontal_align</span></span><a class="headerlink" href="#rinoh.flowable.LabeledFlowableStyle.horizontal_align" title="Link to this definition">¶</a></dt>
+<dd><p>Horizontal alignment of the flowable (inherited from <a class="reference internal" href="rinoh.flowable.FlowableStyle.html#rinoh.flowable.FlowableStyle.horizontal_align" title="rinoh.flowable.FlowableStyle.horizontal_align (Python attribute) — Horizontal alignment of the flowable"><code class="xref py py-attr docutils literal notranslate"><span class="pre">FlowableStyle</span></code></a>)</p>
+<p><em>Accepts</em> <a class="reference internal" href="../api/flowable.html#rinoh.flowable.HorizontalAlignment" title="rinoh.flowable.HorizontalAlignment (Python class) — Controls horizontal placement"><code class="xref py py-class docutils literal notranslate"><span class="pre">HorizontalAlignment</span></code></a>: <code class="docutils literal notranslate"><span class="pre">left</span></code>, <code class="docutils literal notranslate"><span class="pre">right</span></code>, <code class="docutils literal notranslate"><span class="pre">center</span></code></p>
+<p><em>Default</em>: <code class="docutils literal notranslate"><span class="pre">left</span></code></p>
+</dd></dl>
+
+<dl class="py attribute objdesc">
+<dt class="sig sig-object highlight py" id="rinoh.flowable.LabeledFlowableStyle.space_above">
+<span class="sig-name descname"><span class="pre">space_above</span></span><a class="headerlink" href="#rinoh.flowable.LabeledFlowableStyle.space_above" title="Link to this definition">¶</a></dt>
+<dd><p>Vertical space preceding the flowable (inherited from <a class="reference internal" href="rinoh.flowable.FlowableStyle.html#rinoh.flowable.FlowableStyle.space_above" title="rinoh.flowable.FlowableStyle.space_above (Python attribute) — Vertical space preceding the flowable"><code class="xref py py-attr docutils literal notranslate"><span class="pre">FlowableStyle</span></code></a>)</p>
+<p><em>Accepts</em> <a class="reference internal" href="../api/dimension.html#rinoh.dimension.Dimension" title="rinoh.dimension.Dimension (Python class) — A simple dimension"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dimension</span></code></a>: a numeric value followed by a unit (<code class="docutils literal notranslate"><span class="pre">pt</span></code>, <code class="docutils literal notranslate"><span class="pre">in</span></code>, <code class="docutils literal notranslate"><span class="pre">pc</span></code>, <code class="docutils literal notranslate"><span class="pre">mm</span></code>, <code class="docutils literal notranslate"><span class="pre">cm</span></code>, <code class="docutils literal notranslate"><span class="pre">%</span></code>, <code class="docutils literal notranslate"><span class="pre">/2</span></code>, <code class="docutils literal notranslate"><span class="pre">/4</span></code>)</p>
+<p><em>Default</em>: <code class="docutils literal notranslate"><span class="pre">0</span></code></p>
+</dd></dl>
+
+<dl class="py attribute objdesc">
+<dt class="sig sig-object highlight py" id="rinoh.flowable.LabeledFlowableStyle.space_below">
+<span class="sig-name descname"><span class="pre">space_below</span></span><a class="headerlink" href="#rinoh.flowable.LabeledFlowableStyle.space_below" title="Link to this definition">¶</a></dt>
+<dd><p>Vertical space following the flowable (inherited from <a class="reference internal" href="rinoh.flowable.FlowableStyle.html#rinoh.flowable.FlowableStyle.space_below" title="rinoh.flowable.FlowableStyle.space_below (Python attribute) — Vertical space following the flowable"><code class="xref py py-attr docutils literal notranslate"><span class="pre">FlowableStyle</span></code></a>)</p>
+<p><em>Accepts</em> <a class="reference internal" href="../api/dimension.html#rinoh.dimension.Dimension" title="rinoh.dimension.Dimension (Python class) — A simple dimension"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dimension</span></code></a>: a numeric value followed by a unit (<code class="docutils literal notranslate"><span class="pre">pt</span></code>, <code class="docutils literal notranslate"><span class="pre">in</span></code>, <code class="docutils literal notranslate"><span class="pre">pc</span></code>, <code class="docutils literal notranslate"><span class="pre">mm</span></code>, <code class="docutils literal notranslate"><span class="pre">cm</span></code>, <code class="docutils literal notranslate"><span class="pre">%</span></code>, <code class="docutils literal notranslate"><span class="pre">/2</span></code>, <code class="docutils literal notranslate"><span class="pre">/4</span></code>)</p>
+<p><em>Default</em>: <code class="docutils literal notranslate"><span class="pre">0</span></code></p>
+</dd></dl>
+
+<dl class="py attribute objdesc">
+<dt class="sig sig-object highlight py" id="rinoh.flowable.LabeledFlowableStyle.margin_left">
+<span class="sig-name descname"><span class="pre">margin_left</span></span><a class="headerlink" href="#rinoh.flowable.LabeledFlowableStyle.margin_left" title="Link to this definition">¶</a></dt>
+<dd><p>Left margin (inherited from <a class="reference internal" href="rinoh.flowable.FlowableStyle.html#rinoh.flowable.FlowableStyle.margin_left" title="rinoh.flowable.FlowableStyle.margin_left (Python attribute) — Left margin"><code class="xref py py-attr docutils literal notranslate"><span class="pre">FlowableStyle</span></code></a>)</p>
+<p><em>Accepts</em> <a class="reference internal" href="../api/dimension.html#rinoh.dimension.Dimension" title="rinoh.dimension.Dimension (Python class) — A simple dimension"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dimension</span></code></a>: a numeric value followed by a unit (<code class="docutils literal notranslate"><span class="pre">pt</span></code>, <code class="docutils literal notranslate"><span class="pre">in</span></code>, <code class="docutils literal notranslate"><span class="pre">pc</span></code>, <code class="docutils literal notranslate"><span class="pre">mm</span></code>, <code class="docutils literal notranslate"><span class="pre">cm</span></code>, <code class="docutils literal notranslate"><span class="pre">%</span></code>, <code class="docutils literal notranslate"><span class="pre">/2</span></code>, <code class="docutils literal notranslate"><span class="pre">/4</span></code>)</p>
+<p><em>Default</em>: <code class="docutils literal notranslate"><span class="pre">0</span></code></p>
+</dd></dl>
+
+<dl class="py attribute objdesc">
+<dt class="sig sig-object highlight py" id="rinoh.flowable.LabeledFlowableStyle.margin_right">
+<span class="sig-name descname"><span class="pre">margin_right</span></span><a class="headerlink" href="#rinoh.flowable.LabeledFlowableStyle.margin_right" title="Link to this definition">¶</a></dt>
+<dd><p>Right margin (inherited from <a class="reference internal" href="rinoh.flowable.FlowableStyle.html#rinoh.flowable.FlowableStyle.margin_right" title="rinoh.flowable.FlowableStyle.margin_right (Python attribute) — Right margin"><code class="xref py py-attr docutils literal notranslate"><span class="pre">FlowableStyle</span></code></a>)</p>
+<p><em>Accepts</em> <a class="reference internal" href="../api/dimension.html#rinoh.dimension.Dimension" title="rinoh.dimension.Dimension (Python class) — A simple dimension"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dimension</span></code></a>: a numeric value followed by a unit (<code class="docutils literal notranslate"><span class="pre">pt</span></code>, <code class="docutils literal notranslate"><span class="pre">in</span></code>, <code class="docutils literal notranslate"><span class="pre">pc</span></code>, <code class="docutils literal notranslate"><span class="pre">mm</span></code>, <code class="docutils literal notranslate"><span class="pre">cm</span></code>, <code class="docutils literal notranslate"><span class="pre">%</span></code>, <code class="docutils literal notranslate"><span class="pre">/2</span></code>, <code class="docutils literal notranslate"><span class="pre">/4</span></code>)</p>
+<p><em>Default</em>: <code class="docutils literal notranslate"><span class="pre">0</span></code></p>
+</dd></dl>
+
+<dl class="py attribute objdesc">
+<dt class="sig sig-object highlight py" id="rinoh.flowable.LabeledFlowableStyle.padding">
+<span class="sig-name descname"><span class="pre">padding</span></span><a class="headerlink" href="#rinoh.flowable.LabeledFlowableStyle.padding" title="Link to this definition">¶</a></dt>
+<dd><p>Padding (inherited from <a class="reference internal" href="rinoh.flowable.FlowableStyle.html#rinoh.flowable.FlowableStyle.padding" title="rinoh.flowable.FlowableStyle.padding (Python attribute) — Padding"><code class="xref py py-attr docutils literal notranslate"><span class="pre">FlowableStyle</span></code></a>)</p>
+<p><em>Accepts</em> <a class="reference internal" href="../api/dimension.html#rinoh.dimension.Dimension" title="rinoh.dimension.Dimension (Python class) — A simple dimension"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dimension</span></code></a>: a numeric value followed by a unit (<code class="docutils literal notranslate"><span class="pre">pt</span></code>, <code class="docutils literal notranslate"><span class="pre">in</span></code>, <code class="docutils literal notranslate"><span class="pre">pc</span></code>, <code class="docutils literal notranslate"><span class="pre">mm</span></code>, <code class="docutils literal notranslate"><span class="pre">cm</span></code>, <code class="docutils literal notranslate"><span class="pre">%</span></code>, <code class="docutils literal notranslate"><span class="pre">/2</span></code>, <code class="docutils literal notranslate"><span class="pre">/4</span></code>)</p>
+<p><em>Default</em>: <code class="docutils literal notranslate"><span class="pre">0</span></code></p>
+</dd></dl>
+
+<dl class="py attribute objdesc">
+<dt class="sig sig-object highlight py" id="rinoh.flowable.LabeledFlowableStyle.padding_left">
+<span class="sig-name descname"><span class="pre">padding_left</span></span><a class="headerlink" href="#rinoh.flowable.LabeledFlowableStyle.padding_left" title="Link to this definition">¶</a></dt>
+<dd><p>Left padding (inherited from <a class="reference internal" href="rinoh.flowable.FlowableStyle.html#rinoh.flowable.FlowableStyle.padding_left" title="rinoh.flowable.FlowableStyle.padding_left (Python attribute) — Left padding"><code class="xref py py-attr docutils literal notranslate"><span class="pre">FlowableStyle</span></code></a>)</p>
+<p><em>Accepts</em> <a class="reference internal" href="../api/dimension.html#rinoh.dimension.Dimension" title="rinoh.dimension.Dimension (Python class) — A simple dimension"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dimension</span></code></a>: a numeric value followed by a unit (<code class="docutils literal notranslate"><span class="pre">pt</span></code>, <code class="docutils literal notranslate"><span class="pre">in</span></code>, <code class="docutils literal notranslate"><span class="pre">pc</span></code>, <code class="docutils literal notranslate"><span class="pre">mm</span></code>, <code class="docutils literal notranslate"><span class="pre">cm</span></code>, <code class="docutils literal notranslate"><span class="pre">%</span></code>, <code class="docutils literal notranslate"><span class="pre">/2</span></code>, <code class="docutils literal notranslate"><span class="pre">/4</span></code>)</p>
+<p><em>Default</em>: <code class="docutils literal notranslate"><span class="pre">0</span></code></p>
+</dd></dl>
+
+<dl class="py attribute objdesc">
+<dt class="sig sig-object highlight py" id="rinoh.flowable.LabeledFlowableStyle.padding_right">
+<span class="sig-name descname"><span class="pre">padding_right</span></span><a class="headerlink" href="#rinoh.flowable.LabeledFlowableStyle.padding_right" title="Link to this definition">¶</a></dt>
+<dd><p>Right padding (inherited from <a class="reference internal" href="rinoh.flowable.FlowableStyle.html#rinoh.flowable.FlowableStyle.padding_right" title="rinoh.flowable.FlowableStyle.padding_right (Python attribute) — Right padding"><code class="xref py py-attr docutils literal notranslate"><span class="pre">FlowableStyle</span></code></a>)</p>
+<p><em>Accepts</em> <a class="reference internal" href="../api/dimension.html#rinoh.dimension.Dimension" title="rinoh.dimension.Dimension (Python class) — A simple dimension"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dimension</span></code></a>: a numeric value followed by a unit (<code class="docutils literal notranslate"><span class="pre">pt</span></code>, <code class="docutils literal notranslate"><span class="pre">in</span></code>, <code class="docutils literal notranslate"><span class="pre">pc</span></code>, <code class="docutils literal notranslate"><span class="pre">mm</span></code>, <code class="docutils literal notranslate"><span class="pre">cm</span></code>, <code class="docutils literal notranslate"><span class="pre">%</span></code>, <code class="docutils literal notranslate"><span class="pre">/2</span></code>, <code class="docutils literal notranslate"><span class="pre">/4</span></code>)</p>
+<p><em>Default</em>: <code class="docutils literal notranslate"><span class="pre">0</span></code></p>
+</dd></dl>
+
+<dl class="py attribute objdesc">
+<dt class="sig sig-object highlight py" id="rinoh.flowable.LabeledFlowableStyle.padding_top">
+<span class="sig-name descname"><span class="pre">padding_top</span></span><a class="headerlink" href="#rinoh.flowable.LabeledFlowableStyle.padding_top" title="Link to this definition">¶</a></dt>
+<dd><p>Top padding (inherited from <a class="reference internal" href="rinoh.flowable.FlowableStyle.html#rinoh.flowable.FlowableStyle.padding_top" title="rinoh.flowable.FlowableStyle.padding_top (Python attribute) — Top padding"><code class="xref py py-attr docutils literal notranslate"><span class="pre">FlowableStyle</span></code></a>)</p>
+<p><em>Accepts</em> <a class="reference internal" href="../api/dimension.html#rinoh.dimension.Dimension" title="rinoh.dimension.Dimension (Python class) — A simple dimension"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dimension</span></code></a>: a numeric value followed by a unit (<code class="docutils literal notranslate"><span class="pre">pt</span></code>, <code class="docutils literal notranslate"><span class="pre">in</span></code>, <code class="docutils literal notranslate"><span class="pre">pc</span></code>, <code class="docutils literal notranslate"><span class="pre">mm</span></code>, <code class="docutils literal notranslate"><span class="pre">cm</span></code>, <code class="docutils literal notranslate"><span class="pre">%</span></code>, <code class="docutils literal notranslate"><span class="pre">/2</span></code>, <code class="docutils literal notranslate"><span class="pre">/4</span></code>)</p>
+<p><em>Default</em>: <code class="docutils literal notranslate"><span class="pre">0</span></code></p>
+</dd></dl>
+
+<dl class="py attribute objdesc">
+<dt class="sig sig-object highlight py" id="rinoh.flowable.LabeledFlowableStyle.padding_bottom">
+<span class="sig-name descname"><span class="pre">padding_bottom</span></span><a class="headerlink" href="#rinoh.flowable.LabeledFlowableStyle.padding_bottom" title="Link to this definition">¶</a></dt>
+<dd><p>Bottom padding (inherited from <a class="reference internal" href="rinoh.flowable.FlowableStyle.html#rinoh.flowable.FlowableStyle.padding_bottom" title="rinoh.flowable.FlowableStyle.padding_bottom (Python attribute) — Bottom padding"><code class="xref py py-attr docutils literal notranslate"><span class="pre">FlowableStyle</span></code></a>)</p>
+<p><em>Accepts</em> <a class="reference internal" href="../api/dimension.html#rinoh.dimension.Dimension" title="rinoh.dimension.Dimension (Python class) — A simple dimension"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dimension</span></code></a>: a numeric value followed by a unit (<code class="docutils literal notranslate"><span class="pre">pt</span></code>, <code class="docutils literal notranslate"><span class="pre">in</span></code>, <code class="docutils literal notranslate"><span class="pre">pc</span></code>, <code class="docutils literal notranslate"><span class="pre">mm</span></code>, <code class="docutils literal notranslate"><span class="pre">cm</span></code>, <code class="docutils literal notranslate"><span class="pre">%</span></code>, <code class="docutils literal notranslate"><span class="pre">/2</span></code>, <code class="docutils literal notranslate"><span class="pre">/4</span></code>)</p>
+<p><em>Default</em>: <code class="docutils literal notranslate"><span class="pre">0</span></code></p>
+</dd></dl>
+
+<dl class="py attribute objdesc">
+<dt class="sig sig-object highlight py" id="rinoh.flowable.LabeledFlowableStyle.keep_with_next">
+<span class="sig-name descname"><span class="pre">keep_with_next</span></span><a class="headerlink" href="#rinoh.flowable.LabeledFlowableStyle.keep_with_next" title="Link to this definition">¶</a></dt>
+<dd><p>Keep this flowable and the next on the same page (inherited from <a class="reference internal" href="rinoh.flowable.FlowableStyle.html#rinoh.flowable.FlowableStyle.keep_with_next" title="rinoh.flowable.FlowableStyle.keep_with_next (Python attribute) — Keep this flowable and the next on the same page"><code class="xref py py-attr docutils literal notranslate"><span class="pre">FlowableStyle</span></code></a>)</p>
+<p><em>Accepts</em> <a class="reference internal" href="../api/attribute.html#rinoh.attribute.Bool" title="rinoh.attribute.Bool (Python class) — Expresses a binary choice"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bool</span></code></a>: <code class="docutils literal notranslate"><span class="pre">true</span></code> or <code class="docutils literal notranslate"><span class="pre">false</span></code></p>
+<p><em>Default</em>: <code class="docutils literal notranslate"><span class="pre">false</span></code></p>
+</dd></dl>
+
+<dl class="py attribute objdesc">
+<dt class="sig sig-object highlight py" id="rinoh.flowable.LabeledFlowableStyle.border">
+<span class="sig-name descname"><span class="pre">border</span></span><a class="headerlink" href="#rinoh.flowable.LabeledFlowableStyle.border" title="Link to this definition">¶</a></dt>
+<dd><p>Border surrounding the flowable (inherited from <a class="reference internal" href="rinoh.flowable.FlowableStyle.html#rinoh.flowable.FlowableStyle.border" title="rinoh.flowable.FlowableStyle.border (Python attribute) — Border surrounding the flowable"><code class="xref py py-attr docutils literal notranslate"><span class="pre">FlowableStyle</span></code></a>)</p>
+<p><em>Accepts</em> <a class="reference internal" href="../api/draw.html#rinoh.draw.Stroke" title="rinoh.draw.Stroke (Python class) — The display properties of a line"><code class="xref py py-class docutils literal notranslate"><span class="pre">Stroke</span></code></a>: the width (<a class="reference internal" href="../api/dimension.html#rinoh.dimension.Dimension" title="rinoh.dimension.Dimension (Python class) — A simple dimension"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dimension</span></code></a>) and color (<a class="reference internal" href="../api/color.html#rinoh.color.Color" title="rinoh.color.Color (Python class) — Color defined by component values"><code class="xref py py-class docutils literal notranslate"><span class="pre">Color</span></code></a>) of the stroke, separated by a comma (<code class="docutils literal notranslate"><span class="pre">,</span></code>)</p>
+<p><em>Default</em>: <code class="docutils literal notranslate"><span class="pre">none</span></code></p>
+</dd></dl>
+
+<dl class="py attribute objdesc">
+<dt class="sig sig-object highlight py" id="rinoh.flowable.LabeledFlowableStyle.border_left">
+<span class="sig-name descname"><span class="pre">border_left</span></span><a class="headerlink" href="#rinoh.flowable.LabeledFlowableStyle.border_left" title="Link to this definition">¶</a></dt>
+<dd><p>Border left of the flowable (inherited from <a class="reference internal" href="rinoh.flowable.FlowableStyle.html#rinoh.flowable.FlowableStyle.border_left" title="rinoh.flowable.FlowableStyle.border_left (Python attribute) — Border left of the flowable"><code class="xref py py-attr docutils literal notranslate"><span class="pre">FlowableStyle</span></code></a>)</p>
+<p><em>Accepts</em> <a class="reference internal" href="../api/draw.html#rinoh.draw.Stroke" title="rinoh.draw.Stroke (Python class) — The display properties of a line"><code class="xref py py-class docutils literal notranslate"><span class="pre">Stroke</span></code></a>: the width (<a class="reference internal" href="../api/dimension.html#rinoh.dimension.Dimension" title="rinoh.dimension.Dimension (Python class) — A simple dimension"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dimension</span></code></a>) and color (<a class="reference internal" href="../api/color.html#rinoh.color.Color" title="rinoh.color.Color (Python class) — Color defined by component values"><code class="xref py py-class docutils literal notranslate"><span class="pre">Color</span></code></a>) of the stroke, separated by a comma (<code class="docutils literal notranslate"><span class="pre">,</span></code>)</p>
+<p><em>Default</em>: <code class="docutils literal notranslate"><span class="pre">none</span></code></p>
+</dd></dl>
+
+<dl class="py attribute objdesc">
+<dt class="sig sig-object highlight py" id="rinoh.flowable.LabeledFlowableStyle.border_right">
+<span class="sig-name descname"><span class="pre">border_right</span></span><a class="headerlink" href="#rinoh.flowable.LabeledFlowableStyle.border_right" title="Link to this definition">¶</a></dt>
+<dd><p>Border right of the flowable (inherited from <a class="reference internal" href="rinoh.flowable.FlowableStyle.html#rinoh.flowable.FlowableStyle.border_right" title="rinoh.flowable.FlowableStyle.border_right (Python attribute) — Border right of the flowable"><code class="xref py py-attr docutils literal notranslate"><span class="pre">FlowableStyle</span></code></a>)</p>
+<p><em>Accepts</em> <a class="reference internal" href="../api/draw.html#rinoh.draw.Stroke" title="rinoh.draw.Stroke (Python class) — The display properties of a line"><code class="xref py py-class docutils literal notranslate"><span class="pre">Stroke</span></code></a>: the width (<a class="reference internal" href="../api/dimension.html#rinoh.dimension.Dimension" title="rinoh.dimension.Dimension (Python class) — A simple dimension"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dimension</span></code></a>) and color (<a class="reference internal" href="../api/color.html#rinoh.color.Color" title="rinoh.color.Color (Python class) — Color defined by component values"><code class="xref py py-class docutils literal notranslate"><span class="pre">Color</span></code></a>) of the stroke, separated by a comma (<code class="docutils literal notranslate"><span class="pre">,</span></code>)</p>
+<p><em>Default</em>: <code class="docutils literal notranslate"><span class="pre">none</span></code></p>
+</dd></dl>
+
+<dl class="py attribute objdesc">
+<dt class="sig sig-object highlight py" id="rinoh.flowable.LabeledFlowableStyle.border_top">
+<span class="sig-name descname"><span class="pre">border_top</span></span><a class="headerlink" href="#rinoh.flowable.LabeledFlowableStyle.border_top" title="Link to this definition">¶</a></dt>
+<dd><p>Border above the flowable (inherited from <a class="reference internal" href="rinoh.flowable.FlowableStyle.html#rinoh.flowable.FlowableStyle.border_top" title="rinoh.flowable.FlowableStyle.border_top (Python attribute) — Border above the flowable"><code class="xref py py-attr docutils literal notranslate"><span class="pre">FlowableStyle</span></code></a>)</p>
+<p><em>Accepts</em> <a class="reference internal" href="../api/draw.html#rinoh.draw.Stroke" title="rinoh.draw.Stroke (Python class) — The display properties of a line"><code class="xref py py-class docutils literal notranslate"><span class="pre">Stroke</span></code></a>: the width (<a class="reference internal" href="../api/dimension.html#rinoh.dimension.Dimension" title="rinoh.dimension.Dimension (Python class) — A simple dimension"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dimension</span></code></a>) and color (<a class="reference internal" href="../api/color.html#rinoh.color.Color" title="rinoh.color.Color (Python class) — Color defined by component values"><code class="xref py py-class docutils literal notranslate"><span class="pre">Color</span></code></a>) of the stroke, separated by a comma (<code class="docutils literal notranslate"><span class="pre">,</span></code>)</p>
+<p><em>Default</em>: <code class="docutils literal notranslate"><span class="pre">none</span></code></p>
+</dd></dl>
+
+<dl class="py attribute objdesc">
+<dt class="sig sig-object highlight py" id="rinoh.flowable.LabeledFlowableStyle.border_bottom">
+<span class="sig-name descname"><span class="pre">border_bottom</span></span><a class="headerlink" href="#rinoh.flowable.LabeledFlowableStyle.border_bottom" title="Link to this definition">¶</a></dt>
+<dd><p>Border below the flowable (inherited from <a class="reference internal" href="rinoh.flowable.FlowableStyle.html#rinoh.flowable.FlowableStyle.border_bottom" title="rinoh.flowable.FlowableStyle.border_bottom (Python attribute) — Border below the flowable"><code class="xref py py-attr docutils literal notranslate"><span class="pre">FlowableStyle</span></code></a>)</p>
+<p><em>Accepts</em> <a class="reference internal" href="../api/draw.html#rinoh.draw.Stroke" title="rinoh.draw.Stroke (Python class) — The display properties of a line"><code class="xref py py-class docutils literal notranslate"><span class="pre">Stroke</span></code></a>: the width (<a class="reference internal" href="../api/dimension.html#rinoh.dimension.Dimension" title="rinoh.dimension.Dimension (Python class) — A simple dimension"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dimension</span></code></a>) and color (<a class="reference internal" href="../api/color.html#rinoh.color.Color" title="rinoh.color.Color (Python class) — Color defined by component values"><code class="xref py py-class docutils literal notranslate"><span class="pre">Color</span></code></a>) of the stroke, separated by a comma (<code class="docutils literal notranslate"><span class="pre">,</span></code>)</p>
+<p><em>Default</em>: <code class="docutils literal notranslate"><span class="pre">none</span></code></p>
+</dd></dl>
+
+<dl class="py attribute objdesc">
+<dt class="sig sig-object highlight py" id="rinoh.flowable.LabeledFlowableStyle.background_color">
+<span class="sig-name descname"><span class="pre">background_color</span></span><a class="headerlink" href="#rinoh.flowable.LabeledFlowableStyle.background_color" title="Link to this definition">¶</a></dt>
+<dd><p>Color of the area within the flowable’s borders (inherited from <a class="reference internal" href="rinoh.flowable.FlowableStyle.html#rinoh.flowable.FlowableStyle.background_color" title="rinoh.flowable.FlowableStyle.background_color (Python attribute) — Color of the area within the flowable's borders"><code class="xref py py-attr docutils literal notranslate"><span class="pre">FlowableStyle</span></code></a>)</p>
+<p><em>Accepts</em> <a class="reference internal" href="../api/color.html#rinoh.color.Color" title="rinoh.color.Color (Python class) — Color defined by component values"><code class="xref py py-class docutils literal notranslate"><span class="pre">Color</span></code></a>: HEX string with optional alpha component (<code class="docutils literal notranslate"><span class="pre">#RRGGBB</span></code>, <code class="docutils literal notranslate"><span class="pre">#RRGGBBAA</span></code>, <code class="docutils literal notranslate"><span class="pre">#RGB</span></code> or <code class="docutils literal notranslate"><span class="pre">#RGBA</span></code>)</p>
+<p><em>Default</em>: <code class="docutils literal notranslate"><span class="pre">none</span></code></p>
+</dd></dl>
+
+<dl class="py attribute objdesc">
+<dt class="sig sig-object highlight py" id="rinoh.flowable.LabeledFlowableStyle.page_break">
+<span class="sig-name descname"><span class="pre">page_break</span></span><a class="headerlink" href="#rinoh.flowable.LabeledFlowableStyle.page_break" title="Link to this definition">¶</a></dt>
+<dd><p>Type of page break to insert before rendering this flowable (inherited from <a class="reference internal" href="rinoh.flowable.FlowableStyle.html#rinoh.flowable.FlowableStyle.page_break" title="rinoh.flowable.FlowableStyle.page_break (Python attribute) — Type of page break to insert before rendering this flowable"><code class="xref py py-attr docutils literal notranslate"><span class="pre">FlowableStyle</span></code></a>)</p>
+<p><em>Accepts</em> <code class="xref py py-class docutils literal notranslate"><span class="pre">Break</span></code>: <code class="docutils literal notranslate"><span class="pre">none</span></code>, <code class="docutils literal notranslate"><span class="pre">any</span></code>, <code class="docutils literal notranslate"><span class="pre">left</span></code>, <code class="docutils literal notranslate"><span class="pre">right</span></code>, <code class="docutils literal notranslate"><span class="pre">any</span> <span class="pre">restart</span></code>, <code class="docutils literal notranslate"><span class="pre">left</span> <span class="pre">restart</span></code>, <code class="docutils literal notranslate"><span class="pre">right</span> <span class="pre">restart</span></code></p>
+<p><em>Default</em>: <code class="docutils literal notranslate"><span class="pre">None</span></code></p>
+</dd></dl>
+
+<dl class="py attribute objdesc">
+<dt class="sig sig-object highlight py" id="rinoh.flowable.LabeledFlowableStyle.hide">
+<span class="sig-name descname"><span class="pre">hide</span></span><a class="headerlink" href="#rinoh.flowable.LabeledFlowableStyle.hide" title="Link to this definition">¶</a></dt>
+<dd><p>Suppress rendering this element (inherited from <a class="reference internal" href="../api/style.html#rinoh.style.Style.hide" title="rinoh.style.Style.hide (Python attribute) — Suppress rendering this element"><code class="xref py py-attr docutils literal notranslate"><span class="pre">Style</span></code></a>)</p>
+<p><em>Accepts</em> <a class="reference internal" href="../api/attribute.html#rinoh.attribute.Bool" title="rinoh.attribute.Bool (Python class) — Expresses a binary choice"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bool</span></code></a>: <code class="docutils literal notranslate"><span class="pre">true</span></code> or <code class="docutils literal notranslate"><span class="pre">false</span></code></p>
+<p><em>Default</em>: <code class="docutils literal notranslate"><span class="pre">false</span></code></p>
+</dd></dl>
+
+</dd></dl>
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+    <nav class="md-footer__inner md-grid" aria-label="Footer" >
+      
+        
+        <a href="rinoh.flowable.FlowableStyle.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: FlowableStyle" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              FlowableStyle
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="rinoh.flowable.GroupedFlowablesStyle.html" class="md-footer__link md-footer__link--next" aria-label="Next: GroupedFlowablesStyle" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              GroupedFlowablesStyle
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  
+  
+  <div class="md-footer-meta md-typeset">
+    
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-footer-copyright__highlight">
+        &#169; Copyright 2024, Brecht Machiels and contributors.
+        
+    </div>
+  
+    Created using
+    <a href="https://www.sphinx-doc.org/" target="_blank" rel="noopener">Sphinx</a>
+    7.3.7.
+     and
+    <a href="https://github.com/jbms/sphinx-immaterial/" target="_blank" rel="noopener">Sphinx-Immaterial</a>
+  
+</div>
+      
+    </div>
+    
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.expand", "navigation.sections", "navigation.instant"], "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "version": {"provider": "mike", "staticVersions": null, "versionPath": "../im_versions.json"}}</script>
+    
+      
+        <script src="../_static/sphinx_immaterial_theme.f9d9eeeb247ace16c.min.js?v=8ec58cb5"></script>
+    
+  </body>
+</html>

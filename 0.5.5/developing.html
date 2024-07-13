@@ -1,0 +1,1000 @@
+
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      <link rel="icon" href="_static/rinohtype_logo_abbrev.svg">
+    
+    
+      
+        <title>Developing - rinohtype</title>
+      
+    
+    
+      
+        
+        
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+        <link rel="stylesheet" type="text/css" href="_static/sphinx_immaterial_theme.e0b5691b38cca82da.min.css?v=b1736040" />
+        <link rel="stylesheet" type="text/css" href="_static/tweaks.css?v=ac567af0" />
+    <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="red" data-md-color-accent="light-blue">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#nox-sessions" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <div data-md-component="outdated" hidden>
+        
+      </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="index.html" title="rinohtype" class="md-header__button md-logo" aria-label="rinohtype" data-md-component="logo">
+      <img src="_static/logo_white.svg" alt="logo">
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            rinohtype
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Developing
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      <form class="md-header__option" data-md-component="palette">
+        
+          
+          
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="red" data-md-color-accent="light-blue"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+          
+            <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 1 7 7c0 2.38-1.19 4.47-3 5.74V17a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-2.26C6.19 13.47 5 11.38 5 9a7 7 0 0 1 7-7M9 21v-1h6v1a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1m3-17a5 5 0 0 0-5 5c0 2.05 1.23 3.81 3 4.58V16h4v-2.42c1.77-.77 3-2.53 3-4.58a5 5 0 0 0-5-5Z"/></svg>
+            </label>
+          
+        
+          
+          
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="red" data-md-color-accent="orange"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
+          
+            <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 0-7 7c0 2.38 1.19 4.47 3 5.74V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 0 0-7-7M9 21a1 1 0 0 0 1 1h4a1 1 0 0 0 1-1v-1H9v1Z"/></svg>
+            </label>
+          
+        
+      </form>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/brechtm/rinohtype" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    rinohtype
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="index.html" title="rinohtype" class="md-nav__button md-logo" aria-label="rinohtype" data-md-component="logo">
+      <img src="_static/logo_white.svg" alt="logo">
+    </a>
+    rinohtype
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/brechtm/rinohtype" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    rinohtype
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_1" type="checkbox" id="__nav_1" checked>
+      
+      
+      
+        <label class="md-nav__link" for="__nav_1">
+          <span class="md-ellipsis">User Manual</span> [<a class="pdf-link" href="manual.pdf">PDF</a>]
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="User Manual" data-md-level="1">
+        <label class="md-nav__title" for="__nav_1">
+          <span class="md-nav__icon md-icon"></span>
+          <span class="md-ellipsis">User Manual</span> [<a class="pdf-link" href="manual.pdf">PDF</a>]
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="intro.html" class="md-nav__link">
+        <span class="md-ellipsis">Introduction</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="showcase.html" class="md-nav__link">
+        <span class="md-ellipsis">Showcase</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="install.html" class="md-nav__link">
+        <span class="md-ellipsis">Installation</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="quickstart.html" class="md-nav__link">
+        <span class="md-ellipsis">Quickstart</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="basicstyling.html" class="md-nav__link">
+        <span class="md-ellipsis">Basic Document Styling</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="elementstyling.html" class="md-nav__link">
+        <span class="md-ellipsis">Element Styling</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="templates.html" class="md-nav__link">
+        <span class="md-ellipsis">Document Templates</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="faq.html" class="md-nav__link">
+        <span class="md-ellipsis">Frequently Asked Questions</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="contributing.html" class="md-nav__link">
+        <span class="md-ellipsis">Contributing</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          <span class="md-ellipsis">Developing</span>
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="#" class="md-nav__link md-nav__link--active">
+        <span class="md-ellipsis">Developing</span>
+      </a>
+      
+        
+
+  
+
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      <span class="md-ellipsis">Developing</span>
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#nox-sessions" class="md-nav__link">
+    <span class="md-ellipsis">Nox Sessions</span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#testing-against-multiple-python-interpreter-versions" class="md-nav__link">
+    <span class="md-ellipsis">Testing against multiple Python interpreter versions</span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#continuous-integration" class="md-nav__link">
+    <span class="md-ellipsis">Continuous integration</span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#making-a-release" class="md-nav__link">
+    <span class="md-ellipsis">Making a release</span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="changelog.html" class="md-nav__link">
+        <span class="md-ellipsis">Release History</span>
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" checked>
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2">
+          <span class="md-ellipsis">Reference Guide</span> [<a class="pdf-link" href="reference.pdf">PDF</a>]
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Reference Guide" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          <span class="md-ellipsis">Reference Guide</span> [<a class="pdf-link" href="reference.pdf">PDF</a>]
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="rinoh.html" class="md-nav__link">
+        <span class="md-ellipsis">rinoh</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="sphinx.html" class="md-nav__link">
+        <span class="md-ellipsis">Sphinx Builder</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="stylesheets.html" class="md-nav__link">
+        <span class="md-ellipsis">Style Sheets</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="stdtemplates.html" class="md-nav__link">
+        <span class="md-ellipsis">Standard Document Templates</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="api/api.html" class="md-nav__link">
+        <span class="md-ellipsis">API Documentation</span>
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" checked>
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3">
+          <span class="md-ellipsis">Indices</span>
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Indices" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          <span class="md-ellipsis">Indices</span>
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="genindex.html" class="md-nav__link">
+        <span class="md-ellipsis">Index</span>
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="py-modindex.html" class="md-nav__link">
+        <span class="md-ellipsis">Module Index</span>
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+  
+
+<nav class="md-nav md-nav--secondary">
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      <span class="md-ellipsis">Developing</span>
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#nox-sessions" class="md-nav__link">
+    <span class="md-ellipsis">Nox Sessions</span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#testing-against-multiple-python-interpreter-versions" class="md-nav__link">
+    <span class="md-ellipsis">Testing against multiple Python interpreter versions</span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#continuous-integration" class="md-nav__link">
+    <span class="md-ellipsis">Continuous integration</span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#making-a-release" class="md-nav__link">
+    <span class="md-ellipsis">Making a release</span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset" role="main">
+                  
+
+
+  <a href="https://github.com/brechtm/rinohtype/edit/master/doc/developing.rst" title="Edit this page" class="md-content__button md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25Z"/></svg>
+  </a>
+
+<h1 id="developing"><span id="id1"></span>Developing<a class="headerlink" href="#developing" title="Link to this heading">¶</a></h1>
+<p>This project makes use of <a class="reference external" href="https://nox.thea.codes">Nox</a> to manage running tests and other tasks. The
+tests can be divided into three categories: checks, unit tests and regression
+(integration) tests. <code class="docutils literal notranslate"><span class="pre">noxfile.py</span></code> defines “sessions” that configure these
+tasks. These are described in the next section. The unit and regression tests
+make use of <a class="reference external" href="https://www.pytest.org">pytest</a>.</p>
+<p>The repository includes a <a class="reference external" href="https://python-poetry.org/">Poetry</a> <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> file to help you set up a
+virtual environment with Nox and other development dependencies. From the
+repository checkout root directory execute:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><code><span class="n">poetry</span> <span class="n">install</span>
+</code></pre></div>
+</div>
+<div class="note admonition">
+<p class="admonition-title">Note</p>
+<p>Poetry version</p>
+<p>You might encounter issues with Poetry if you are not using the same version
+(especially older versions) as the one used to create the <code class="docutils literal notranslate"><span class="pre">poetry.lock</span></code>
+file. The poetry version recorded near the top of
+<code class="docutils literal notranslate"><span class="pre">.github/workflows/tests.yml</span></code> will be your best bet for avoiding issues,
+but newer versions should work as well.</p>
+</div>
+<p>Poetry will create a virtual environment in <em>.venv</em>, which you can activate
+like this (on Linux/macOS):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><code><span class="n">source</span> <span class="o">.</span><span class="n">venv</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">activate</span>
+</code></pre></div>
+</div>
+<p>Now Nox is available for running the tests. Alternatively, you can run Nox
+through Poetry:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><code><span class="n">poetry</span> <span class="n">run</span> <span class="n">nox</span>
+</code></pre></div>
+</div>
+<p>Starting <code class="docutils literal notranslate"><span class="pre">nox</span></code> without any arguments will run the <em>check</em>, <em>check_docs</em>,
+<em>unit</em> and <em>regression</em> sessions. Refer to the next section for an overview of
+all sessions.</p>
+<div class="note admonition">
+<p class="admonition-title">Note</p>
+<p>Running the tests on Windows</p>
+<p>Some tests rely on symlinked files checked into the repository. Git on
+Windows requires some <a class="reference external" href="https://stackoverflow.com/a/59761201/438249">additional configuration</a> to be able to support
+these.</p>
+</div>
+<h2 id="nox-sessions">Nox Sessions<a class="headerlink" href="#nox-sessions" title="Link to this heading">¶</a></h2>
+<p>The following sessions execute unit tests and regression tests:</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">unit</span></code></dt><dd><p>Runs the unit tests.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">regression</span></code></dt><dd><p>Runs integration/regression tests. Each of these tests render a tiny
+document (often a single page) focusing on a specific feature, which means
+they also execute quickly. Their PDF output is compared to a reference PDF
+that is known to be good. This requires Graphviz, ImageMagick and either
+MuPDF’s <em>mutool</em> or poppler’s <em>pdftoppm</em> to be available from the search
+path.</p>
+</dd>
+</dl>
+<p>These sessions are <a class="reference external" href="https://nox.thea.codes/en/stable/config.html?highlight=run#parametrizing-sessions">parametrized</a> in order to run the tests against both the
+source and wheel distributions, and against all supported Python versions.
+Executing e.g. <code class="docutils literal notranslate"><span class="pre">nox</span> <span class="pre">--session</span> <span class="pre">unit</span></code> will run all of these combinations. Run
+<code class="docutils literal notranslate"><span class="pre">nox</span> <span class="pre">--list</span></code> to display these. You can run a single session like this:
+<code class="docutils literal notranslate"><span class="pre">nox</span> <span class="pre">--session</span> <span class="pre">&quot;&lt;session</span> <span class="pre">name&gt;&quot;</span></code>.</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">unit_sphinx</span></code>, <code class="docutils literal notranslate"><span class="pre">regression_docutils</span></code>, <code class="docutils literal notranslate"><span class="pre">regression_sphinx</span></code></dt><dd><p>These are variations on the <em>unit</em> and <em>regression</em> sessions that run the
+(relevant) tests against several versions of the principal rinohtype
+dependencies, docutils and Sphinx (respecting version constraints specified
+in <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code>).</p>
+</dd>
+</dl>
+<p>Note that for development purposes, it generally suffices to run the default
+set of sessions. <a class="reference internal" href="#continuous-integration">Continuous integration</a> will run all session to catch
+regressions.</p>
+<p>The other environments run checks, build documentation and build “binary”
+distributions for Mac and Windows:</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">check</span></code></dt><dd><p>Performs basic checks; just <code class="docutils literal notranslate"><span class="pre">poetry</span> <span class="pre">check</span></code> at this point.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">check_docs</span></code></dt><dd><p>Perform checks on the documentation source files using <a class="reference external" href="https://github.com/PyCQA/doc8">doc8</a> and
+<a class="reference external" href="https://www.sphinx-doc.org/en/master/usage/extensions/doctest.html">sphinx-doctest</a>. <a class="reference external" href="https://mg.pov.lt/restview/">restview</a> can be useful when fixing syntax errors in
+<code class="docutils literal notranslate"><span class="pre">README.rst</span></code>, <code class="docutils literal notranslate"><span class="pre">CHANGES.rst</span></code>, …</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">build_docs</span></code></dt><dd><p>Build the rinohtype documentation using Sphinx, both in HTML and PDF
+formats.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">macapp</span></code> (not maintained, broken?)</dt><dd><p>Build a stand-alone macOS application bundle using <a class="reference external" href="https://beeware.org/briefcase/">briefcase</a>. This task
+can only be run on macOS.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">wininst</span></code> (not maintained, broken?)</dt><dd><p>Build a stand-alone rinohtype installer for the Windows platform with the
+help of <a class="reference external" href="https://pynsist.readthedocs.io/en/latest/">pynsist</a>. This task also can be run on platforms other than
+Windows.</p>
+</dd>
+</dl>
+<p>Customization settings for <a class="reference external" href="https://github.com/PyCQA/doc8">doc8</a> and <a class="reference external" href="https://www.pytest.org">pytest</a> are stored in <code class="docutils literal notranslate"><span class="pre">setup.cfg</span></code>.</p>
+<h2 id="testing-against-multiple-python-interpreter-versions">Testing against multiple Python interpreter versions<a class="headerlink" href="#testing-against-multiple-python-interpreter-versions" title="Link to this heading">¶</a></h2>
+<p>Nox facilitates running tests on multiple Python interpreter versions. You can
+combine the <code class="docutils literal notranslate"><span class="pre">unit</span></code> and <code class="docutils literal notranslate"><span class="pre">regression</span></code> sessions with a Python <a class="reference external" href="https://nox.thea.codes/en/stable/tutorial.html#testing-against-different-and-multiple-pythons">version
+number</a> to execute it on a specific Python interpreter version. For example,
+to run the unit tests with CPython 3.8:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><code><span class="n">nox</span> <span class="o">-</span><span class="n">e</span> <span class="n">unit</span><span class="o">-</span><span class="mf">3.8</span>
+</code></pre></div>
+</div>
+<p>While it is typically sufficient to test on a single Python version during
+development, it can be useful to run tests on a set of Python versions before
+pushing your commits. Of course, this requires these versions to be available
+on your machine. It is highly recommended you use <a class="reference external" href="https://github.com/pyenv/pyenv">pyenv</a> (or <a class="reference external" href="https://github.com/pyenv-win/pyenv-win">pyenv-win</a>) to
+install and manage these. For example, to install CPython 3.8.1, you can run:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><code><span class="n">pyenv</span> <span class="n">install</span> <span class="mf">3.8.1</span>
+</code></pre></div>
+</div>
+<p>and pyenv will download, build and install this version of CPython for you.
+pyenv will install the different Python versions in an isolated location
+(typically under <code class="docutils literal notranslate"><span class="pre">~/.penv</span></code>), so they will not interfere with your
+system-default Python versions.</p>
+<p>The file <code class="docutils literal notranslate"><span class="pre">.python-version</span></code> in the root of the repository specifies which
+Python versions pyenv should make available whenever we are inside the
+repository checkout directory. The file lists specific the versions of CPython
+rinohtype aims to support plus recent PyPy3 versions (ideally, we should
+closely track the latest releases). The <code class="docutils literal notranslate"><span class="pre">pyenv_setup.py</span></code> script can install
+these for you (skipping any that are already installed).</p>
+<h2 id="continuous-integration">Continuous integration<a class="headerlink" href="#continuous-integration" title="Link to this heading">¶</a></h2>
+<p><a class="reference external" href="https://github.com/brechtm/rinohtype/actions">GitHub Actions</a> automatically executes the Nox sessions when new commits
+are pushed to the repository. The Nox sessions are run on Linux, macOS and
+Windows, and run the tests against an array of Python, docutils and Sphinx
+versions to make sure that we don’t break any corner cases. See
+<code class="docutils literal notranslate"><span class="pre">.github/workflows</span></code> for details.</p>
+<h2 id="making-a-release">Making a release<a class="headerlink" href="#making-a-release" title="Link to this heading">¶</a></h2>
+<p>This is a list of steps to follow when making a new release of rinohtype.
+Publishing the new release to <a class="reference external" href="https://pypi.org/">PyPI</a> and uploading the documentation to GitHub
+Pages is handled by the GitHub Actions workflow.</p>
+<ol class="arabic">
+<li><p>Make sure your checkout is clean.</p></li>
+<li><p>Update dependencies:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><code><span class="n">poetry</span> <span class="n">show</span> <span class="o">--</span><span class="n">outdated</span>
+<span class="n">poetry</span> <span class="n">update</span>
+</code></pre></div>
+</div>
+</li>
+<li><p>Run basic tests and checks locally:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><code><span class="n">nox</span>
+</code></pre></div>
+</div>
+</li>
+<li><p>Push your commits to master on GitHub. Don’t create a tag yet!</p></li>
+<li><p>Check whether all tests on <a class="reference external" href="https://github.com/brechtm/rinohtype/actions">GitHub Actions</a> are green.</p></li>
+<li><p>Set the release date.</p>
+<ul class="simple">
+<li><p>set <code class="docutils literal notranslate"><span class="pre">__release_date__</span></code> in <em>src/rinoh/__init__.py</em> (<code class="docutils literal notranslate"><span class="pre">YYYY-MM-DD</span></code>)</p></li>
+<li><p>add release date to this release’s section in the CHANGELOG (see other
+sections for examples)</p></li>
+<li><p>commit these changes as <em>Release x.y.z</em></p></li>
+</ul>
+</li>
+<li><p>Create a git tag: <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">tag</span> <span class="pre">v$(poetry</span> <span class="pre">version</span> <span class="pre">--short)</span></code></p></li>
+<li><p>Push the new tag: <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">push</span> <span class="pre">origin</span> <span class="pre">v$(poetry</span> <span class="pre">version</span> <span class="pre">--short)</span></code></p></li>
+<li><p>The GitHub workflow will run all Nox sessions and upload the new version
+to PyPI if all checks were successful.</p></li>
+<li><p>Create a <a class="reference external" href="https://github.com/brechtm/rinohtype/releases/new">new release on GitHub</a>. Include the relevant section of the
+changelog. Use previous releases as a template.</p>
+<ul>
+<li><p>Tag version: the release’s tag <em>vx.y.z</em></p></li>
+<li><p>Release title: <em>Release x.y.z (date)</em></p></li>
+<li><p>Add a link to the release on PyPI:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><code><span class="n">Install</span> <span class="kn">from</span> <span class="p">[</span><span class="n">PyPI</span><span class="p">](</span><span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">pypi</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">project</span><span class="o">/</span><span class="n">rinohtype</span><span class="o">/</span><span class="n">x</span><span class="o">.</span><span class="n">y</span><span class="o">.</span><span class="n">z</span><span class="o">/</span><span class="p">)</span>
+</code></pre></div>
+</div>
+</li>
+<li><p>Copy the release notes from the change log</p></li>
+</ul>
+</li>
+<li><p>Bump version number and reset the release date to “in development”.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">poetry</span> <span class="pre">version</span> <span class="pre">patch</span>&#160; <span class="pre">#</span> <span class="pre">or</span> <span class="pre">'minor'</span></code></p></li>
+<li><p>add new section at the top of the changelog</p></li>
+<li><p>set <code class="docutils literal notranslate"><span class="pre">__release_date__</span></code> in <em>src/rinoh/__init__.py</em> to
+<code class="docutils literal notranslate"><span class="pre">'in</span> <span class="pre">development'</span></code></p></li>
+</ul>
+</li>
+</ol>
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+    <nav class="md-footer__inner md-grid" aria-label="Footer" >
+      
+        
+        <a href="contributing.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: Contributing" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              Contributing
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="changelog.html" class="md-footer__link md-footer__link--next" aria-label="Next: Release History" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              Release History
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  
+  
+  <div class="md-footer-meta md-typeset">
+    
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-footer-copyright__highlight">
+        &#169; Copyright 2024, Brecht Machiels and contributors.
+        
+    </div>
+  
+    Created using
+    <a href="https://www.sphinx-doc.org/" target="_blank" rel="noopener">Sphinx</a>
+    7.3.7.
+     and
+    <a href="https://github.com/jbms/sphinx-immaterial/" target="_blank" rel="noopener">Sphinx-Immaterial</a>
+  
+</div>
+      
+    </div>
+    
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": ".", "features": ["navigation.expand", "navigation.sections", "navigation.instant"], "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "version": {"provider": "mike", "staticVersions": null, "versionPath": "../im_versions.json"}}</script>
+    
+      
+        <script src="_static/sphinx_immaterial_theme.f9d9eeeb247ace16c.min.js?v=8ec58cb5"></script>
+    
+  </body>
+</html>
