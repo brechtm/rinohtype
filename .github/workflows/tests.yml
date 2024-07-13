@@ -30,13 +30,13 @@ jobs:
           - NOXENV: check
           - NOXENV: check_docs
           - NOXENV: build_docs
-    env: ${{ matrix.env}}
+    env: ${{ matrix.env }}
     steps:
     - uses: actions/checkout@v3
       with:
         submodules: true
     - name: Get tag
-      uses: olegtarasov/get-tag@v2
+      uses: olegtarasov/get-tag@v2.1
     - name: Install Python ${{ env.current_python }}
       uses: actions/setup-python@v4
       with:
@@ -299,7 +299,7 @@ jobs:
       with:
         submodules: true
     - name: Get tag
-      uses: olegtarasov/get-tag@v2
+      uses: olegtarasov/get-tag@v2.1
     - name: Install Python ${{ env.current_python }}
       uses: actions/setup-python@v4
       with:
