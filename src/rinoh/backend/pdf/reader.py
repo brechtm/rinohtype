@@ -379,7 +379,7 @@ class PDFReader(PDFObjectReader, cos.Document):
         identifier, xref_stream = self.parse_indirect_object(offset)
         self[identifier] = xref_stream
         if 'Prev' in xref_stream:
-            prev = self.parse_indirect_object(xref_stream['Prev'])
+            prev, _ = self.parse_xref_stream(xref_stream['Prev'])
         else:
             prev = None
         xref = XRefTable(self, prev)
