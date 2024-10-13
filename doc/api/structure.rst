@@ -23,6 +23,21 @@ Lists
 .. autoclass:: List
     :members:
 
+.. autoclass:: ListStyle
+    :members:
+
+.. autoclass:: ListItem
+    :members:
+
+.. autoclass:: ListItemStyle
+    :members:
+
+.. autoclass:: ListItemLabel
+    :members:
+
+.. autoclass:: ListItemLabelStyle
+    :members:
+
 .. autoclass:: DefinitionList
     :members:
 
@@ -40,7 +55,17 @@ Table of Contents
     :members:
 
 
-Adminitions
+List of ...
+~~~~~~~~~~~
+
+.. autoclass:: ListOfStyle
+    :members:
+
+.. autoclass:: ListOfEntryStyle
+    :members:
+
+
+Admonitions
 ~~~~~~~~~~~
 
 .. autoclass:: Admonition

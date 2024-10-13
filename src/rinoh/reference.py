@@ -22,10 +22,10 @@ from .text import (StyledText, TextStyle, SingleStyledText,
                    MixedStyledTextBase, MixedStyledText, ErrorText)
 from .util import NotImplementedAttribute
 
-__all__ = ['Reference', 'ReferenceField', 'ReferenceText', 'ReferenceType',
-           'ReferencingParagraph', 'ReferencingParagraphStyle',
-           'Note', 'NoteMarkerBase', 'NoteMarkerByID', 'NoteMarkerWithNote',
-           'NoteMarkerStyle', 'Field',
+__all__ = ['Reference', 'ReferenceStyle', 'ReferenceField', 'ReferenceText',
+           'ReferenceType', 'ReferencingParagraph', 'ReferencingParagraphStyle',
+           'Note', 'NoteStyle', 'NoteMarkerBase', 'NoteMarkerByID',
+           'NoteMarkerWithNote', 'NoteMarkerStyle', 'Field',
            'PAGE_NUMBER', 'NUMBER_OF_PAGES', 'SECTION_NUMBER',
            'SECTION_TITLE', 'DOCUMENT_TITLE', 'DOCUMENT_SUBTITLE']
 

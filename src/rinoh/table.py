@@ -25,7 +25,7 @@ from .style import Styled
 from .util import ReadAliasAttribute, INF
 
 
-__all__ = ['Table', 'TableStyle', 'TableWithCaption',
+__all__ = ['Table', 'TableStyle', 'TableWithCaption', 'TableWithCaptionStyle',
            'TableSection', 'TableHead', 'TableBody', 'TableRow',
            'TableCell', 'TableCellStyle',
            'TableCellBorder', 'TableCellBorderStyle',

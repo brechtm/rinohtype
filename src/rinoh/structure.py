@@ -25,11 +25,11 @@ from .text import StyledText, SingleStyledText, MixedStyledText, Tab
 from .strings import StringField
 from .util import NotImplementedAttribute, itemcount
 
-__all__ = ['Section', 'Heading',
-           'ListStyle', 'List', 'ListItem', 'ListItemLabel', 'DefinitionList',
+__all__ = ['Section', 'Heading', 'ListStyle', 'List', 'ListItem',
+           'ListItemLabel', 'ListItemLabelStyle', 'DefinitionList',
            'Header', 'Footer',
-           'TableOfContentsSection', 'TableOfContentsStyle', 'TableOfContents',
-           'ListOfStyle',
+           'TableOfContentsSection', 'TableOfContents', 'TableOfContentsStyle',
+           'ListOfStyle', 'ListOfEntry', 'ListOfEntryStyle',
            'TableOfContentsEntry', 'Admonition', 'AdmonitionStyle',
            'AdmonitionTitleParagraph',
            'HorizontalRule', 'HorizontalRuleStyle', 'OutOfLineFlowables']
