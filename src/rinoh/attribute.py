@@ -236,6 +236,16 @@ class WithAttributes(WithNamedDescriptors):
                        .format(default, overrides))
         supported_attributes = list(name for name in attributes)
         documented = set(supported_attributes)
+        WithAttributes._handle_bases(bases, doc, documented, supported_attributes)
+        if doc:
+            attr_doc = '\n    '.join(chain(['Attributes:'], doc))
+            cls_dict['__doc__'] = (cls_dict.get('__doc__', '') + '\n\n'
+                                   + attr_doc)
+        cls_dict['_supported_attributes'] = supported_attributes
+        return super().__new__(mcls, classname, bases, cls_dict)
+
+    @staticmethod
+    def _handle_bases(bases, doc, documented, supported_attributes):
         for base_class in bases:
             try:
                 supported_attributes.extend(base_class._supported_attributes)
@@ -254,12 +264,6 @@ class WithAttributes(WithNamedDescriptors):
                                .format(attr.accepted_type.__name__, format))
                     doc.append('\n            *Default*: {}\n'.format(default))
                     documented.add(name)
-        if doc:
-            attr_doc = '\n    '.join(chain(['Attributes:'], doc))
-            cls_dict['__doc__'] = (cls_dict.get('__doc__', '') + '\n\n'
-                                   + attr_doc)
-        cls_dict['_supported_attributes'] = supported_attributes
-        return super().__new__(mcls, classname, bases, cls_dict)
 
     @property
     def _all_attributes(cls):
