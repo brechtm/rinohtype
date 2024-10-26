@@ -604,47 +604,60 @@ class ParagraphState(FlowableState):
                 for _ in range(self.group_index):
                     next(groups)
                     group_index += 1
-                for special, chars in groups:
-                    group_index += 1
-                    if special is ForwardSlash:
-                        self.group_index = group_index - 1
-                        if word:
-                            container = yield word
-                        word = Word()
-                    elif special:
-                        word_string = str(word).strip()
-                        last_word = (word_string.rsplit(maxsplit=1)[-1]
-                                     if word_string else '')
-                        if not (last_word.lower() in no_break_after
-                                and special is Space):
-                            self.group_index = group_index - 1
-                            if word:
-                                container = yield word
-                            for _ in chars:
-                                container = yield special(span, lig_kern)
-                            word = Word()
-                            continue
-                    part = ''.join(chars).replace('\N{NO-BREAK SPACE}', ' ')
-                    if word and word[-1].span is span:
-                        prev_glyphs_span = word.pop()
-                        part = str(prev_glyphs_span) + part
-                    try:
-                        glyphs = [get_glyph_metrics(char) for char in part]
-                    except MissingGlyphException:
-                        # FIXME: span annotations are lost here
-                        rest = ''.join(char for _, group in groups
-                                       for char in group)
-                        rest_of_span = SingleStyledText(part + rest, parent=span)
-                        missing_glyphs_spans = handle_missing_glyphs(rest_of_span, container)
-                        break
-                    glyphs = lig_kern(part, glyphs)
-                    glyphs_span = GlyphsSpan(span, lig_kern, glyphs)
-                    word.append(glyphs_span)
+                container, group_index, missing_glyphs_spans, word = yield from self._process_groups(container,
+                                                                                get_glyph_metrics,
+                                                                                group_index,
+                                                                                groups,
+                                                                                lig_kern,
+                                                                                missing_glyphs_spans,
+                                                                                no_break_after,
+                                                                                span,
+                                                                                word)
             except InlineFlowableException:
                 glyphs_span = span.flow_inline(container, 0)
                 word.append(glyphs_span)
         if word:
             yield word
+
+    def _process_groups(self, container, get_glyph_metrics, group_index, groups, lig_kern, missing_glyphs_spans,
+                        no_break_after, span, word):
+        for special, chars in groups:
+            group_index += 1
+            if special is ForwardSlash:
+                self.group_index = group_index - 1
+                if word:
+                    container = yield word
+                word = Word()
+            elif special:
+                word_string = str(word).strip()
+                last_word = (word_string.rsplit(maxsplit=1)[-1]
+                             if word_string else '')
+                if not (last_word.lower() in no_break_after
+                        and special is Space):
+                    self.group_index = group_index - 1
+                    if word:
+                        container = yield word
+                    for _ in chars:
+                        container = yield special(span, lig_kern)
+                    word = Word()
+                    continue
+            part = ''.join(chars).replace('\N{NO-BREAK SPACE}', ' ')
+            if word and word[-1].span is span:
+                prev_glyphs_span = word.pop()
+                part = str(prev_glyphs_span) + part
+            try:
+                glyphs = [get_glyph_metrics(char) for char in part]
+            except MissingGlyphException:
+                # FIXME: span annotations are lost here
+                rest = ''.join(char for _, group in groups
+                               for char in group)
+                rest_of_span = SingleStyledText(part + rest, parent=span)
+                missing_glyphs_spans = handle_missing_glyphs(rest_of_span, container)
+                break
+            glyphs = lig_kern(part, glyphs)
+            glyphs_span = GlyphsSpan(span, lig_kern, glyphs)
+            word.append(glyphs_span)
+        return container, group_index, missing_glyphs_spans, word
 
     def prepend_word(self, word):
         self._first_word = word
