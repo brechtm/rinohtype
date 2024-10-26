@@ -87,39 +87,42 @@ class AdobeFontMetricsParser(dict):
                 continue
             if key == 'Comment':
                 pass
-            elif key.startswith('Start'):
-                section_name = key[5:]
-                section_names.append(section_name)
-                section[section_name] = {}
-                section = section[section_name]
-                sections.append(section)
-            elif key.startswith('End'):
-                assert key[3:] == section_names.pop()
-                sections.pop()
-                section = sections[-1]
-            elif section_names[-1] == 'CharMetrics':
-                glyph_metrics = self._parse_character_metrics(line)
-                self._glyphs[glyph_metrics.name] = glyph_metrics
-            elif section_names[-1] == 'KernPairs':
-                tokens = line.split()
-                if tokens[0] == 'KPX':
-                    pair, kerning = (tokens[1], tokens[2]), tokens[-1]
-                    self._kerning_pairs[pair] = number(kerning)
-                else:
-                    raise NotImplementedError
-            elif section_names[-1] == 'Composites':
-                warn('Composites in Type1 fonts are currently not supported.'
-                     '({})'.format(self.filename) if self.filename else '')
-            elif key == chr(26):    # EOF marker
-                assert not file.read()
+            self._process_line(file, key, line, section, section_names, sections, values)
+
+    def _process_line(self, file, key, line, section, section_names, sections, values):
+        if key.startswith('Start'):
+            section_name = key[5:]
+            section_names.append(section_name)
+            section[section_name] = {}
+            section = section[section_name]
+            sections.append(section)
+        elif key.startswith('End'):
+            assert key[3:] == section_names.pop()
+            sections.pop()
+            section = sections[-1]
+        elif section_names[-1] == 'CharMetrics':
+            glyph_metrics = self._parse_character_metrics(line)
+            self._glyphs[glyph_metrics.name] = glyph_metrics
+        elif section_names[-1] == 'KernPairs':
+            tokens = line.split()
+            if tokens[0] == 'KPX':
+                pair, kerning = (tokens[1], tokens[2]), tokens[-1]
+                self._kerning_pairs[pair] = number(kerning)
             else:
-                funcs = self.KEYWORDS[key]
-                try:
-                    values = [func(val)
-                              for func, val in zip(funcs, values.split())]
-                except TypeError:
-                    values = funcs(values)
-                section[key] = values
+                raise NotImplementedError
+        elif section_names[-1] == 'Composites':
+            warn('Composites in Type1 fonts are currently not supported.'
+                 '({})'.format(self.filename) if self.filename else '')
+        elif key == chr(26):  # EOF marker
+            assert not file.read()
+        else:
+            funcs = self.KEYWORDS[key]
+            try:
+                values = [func(val)
+                          for func, val in zip(funcs, values.split())]
+            except TypeError:
+                values = funcs(values)
+            section[key] = values
 
     def _parse_character_metrics(self, line):
         ligatures = {}
