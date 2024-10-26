@@ -401,17 +401,9 @@ class Field(MixedStyledTextBase):
     def children(self, container):
         if container is None:
             text = '${}'.format(self.type)
-        elif self.type == PAGE_NUMBER:
-            text = container.page.formatted_number
-        elif self.type == NUMBER_OF_PAGES:
-            part = container.document_part
-            text = format_number(part.number_of_pages, part.page_number_format)
-        elif self.type == DOCUMENT_TITLE:
-            text = container.document.get_metadata('title')
-        elif self.type == DOCUMENT_SUBTITLE:
-            text = container.document.get_metadata('subtitle')
-        elif self.type == DOCUMENT_AUTHOR:
-            text = container.document.get_metadata('author')
+        elif self.type in [PAGE_NUMBER, NUMBER_OF_PAGES, DOCUMENT_TITLE
+                            , DOCUMENT_SUBTITLE, DOCUMENT_AUTHOR]:
+            text = _handle_type(self, container)
         elif isinstance(self.type, SectionFieldType):
             doc = container.document
             section = container.page.get_current_section(self.type.level)
@@ -447,6 +439,21 @@ class Field(MixedStyledTextBase):
 
         return substitute_variables(text, cls.RE_FIELD, create_variable,
                                     substitute_others, style)
+
+def _handle_type(self, container):
+    if self.type == PAGE_NUMBER:
+        text = container.page.formatted_number
+    elif self.type == NUMBER_OF_PAGES:
+        part = container.document_part
+        text = format_number(part.number_of_pages, part.page_number_format)
+    elif self.type == DOCUMENT_TITLE:
+        text = container.document.get_metadata('title')
+    elif self.type == DOCUMENT_SUBTITLE:
+        text = container.document.get_metadata('subtitle')
+    elif self.type == DOCUMENT_AUTHOR:
+        text = container.document.get_metadata('author')
+
+    return text
 
 
 def substitute_variables(text, split_regex, create_variable,
