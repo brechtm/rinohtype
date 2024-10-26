@@ -410,7 +410,7 @@ class Table(Flowable):
                 elif vertical_align == VerticalAlign.MIDDLE:
                     vertical_offset = (cell_height - rendered_cell.height) / 2
                 elif vertical_align == VerticalAlign.BOTTOM:
-                    vertical_offset = (cell_height - rendered_cell.height)
+                    vertical_offset = cell_height - rendered_cell.height
                 y_offset = float(y_cursor + vertical_offset)
                 rendered_cell.container.place_at(container, x_cursor, y_offset)
             y_cursor += rendered_row.height
