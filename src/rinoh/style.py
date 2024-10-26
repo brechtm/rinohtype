@@ -1049,92 +1049,99 @@ class StyleLog(object):
         with log_path.open('w', encoding='utf-8') as log:
             current_page = None
             current_container = None
-            for entry in self.entries:
-                if entry.page_number != current_page:
-                    current_page = entry.page_number
-                    log.write('{line} page {} {line}\n'.format(current_page,
-                                                               line='-' * 34))
-                container = entry.container
-                if container.top_level_container is not current_container:
-                    current_container = container.top_level_container
-                    log.write("#### {}('{}')\n"
-                              .format(type(current_container).__name__,
-                                      current_container.name))
-                styled = entry.styled
-                level = styled.nesting_level
-                attrs = OrderedDict()
-                style = None
-                indent = '  ' * level
-                loc = ''
-                if styled.source:
-                    try:
-                        filename, line, tag_name = styled.source.location
-                    except ValueError:
-                        loc = f'   {styled.source.location}'
-                    else:
-                        if filename:
-                            try:
-                                filename, extra = filename.split(':')
-                            except ValueError:
-                                extra = None
-                            file_path = Path(filename)
-                            if file_path.is_absolute():
-                                try:
-                                    file_path = file_path.relative_to(
-                                        document_source_root)
-                                except ValueError:
-                                    pass
-                            loc = f'   {file_path}'
-                            if line:
-                                loc += f':{line}'
-                            if extra:
-                                loc += f' ({extra})'
-                        if tag_name:
-                            classes = (f" classes='{' '.join(styled.classes)}'"
-                                       if styled.classes else '')
-                            loc += f'   <{tag_name}{classes}>'
-                continued_text = '(continued) ' if entry.continued else ''
-                log.write('  {}{}{}{}'
-                          .format(indent, continued_text,
-                                  styled.short_repr(container), loc))
-                if entry.custom_message:
-                    log.write('\n      {} ! {}\n'.format(indent,
-                                                         entry.custom_message))
-                    continue
-                first = True
-                if style is not None:
-                    first = False
-                    style_attrs = ', '.join(key + '=' + value
-                                            for key, value in style.items())
-                    log.write('\n      {} > {}({})'
-                              .format(indent, attrs['style'], style_attrs))
-                if entry:
-                    for match in entry.matches:
-                        base = ''
-                        stylesheet = match.stylesheet
-                        if stylesheet:
-                            if first:
-                                label = '>'
-                                first = False
-                            else:
-                                label = ' '
-                            name = match.style_name
-                            style = self.stylesheet.get_configuration(name)
-                            base_name = ("DEFAULT" if style.base is None
-                                         else str(style.base))
-                            base = f' > {base_name}'
-                            stylesheet_path = Path(stylesheet)
-                            if stylesheet_path.is_absolute():
-                                stylesheet = stylesheet_path.relative_to(
-                                    document_source_root)
-                        else:
-                            label = 'x'
-                        specificity = ','.join(str(score)
-                                               for score in match.specificity)
+            self._log_entries(current_container, current_page, document_source_root, log)
 
-                        log.write('\n      {} {} ({}) {}{}{}'
-                                  .format(indent, label, specificity,
-                                          match.style_name,
-                                          f' [{stylesheet}]' if stylesheet
-                                          else '', base))
-                log.write('\n')
+    def _log_entries(self, current_container, current_page, document_source_root, log):
+        for entry in self.entries:
+            if entry.page_number != current_page:
+                current_page = entry.page_number
+                log.write('{line} page {} {line}\n'.format(current_page,
+                                                           line='-' * 34))
+            container = entry.container
+            if container.top_level_container is not current_container:
+                current_container = container.top_level_container
+                log.write("#### {}('{}')\n"
+                          .format(type(current_container).__name__,
+                                  current_container.name))
+            styled = entry.styled
+            level = styled.nesting_level
+            attrs = OrderedDict()
+            style = None
+            indent = '  ' * level
+
+            loc = self._handle_source(document_source_root, styled)
+            continued_text = '(continued) ' if entry.continued else ''
+            log.write('  {}{}{}{}'
+                      .format(indent, continued_text,
+                              styled.short_repr(container), loc))
+            if entry.custom_message:
+                log.write('\n      {} ! {}\n'.format(indent,
+                                                     entry.custom_message))
+                continue
+            first = True
+            if style is not None:
+                first = False
+                style_attrs = ', '.join(key + '=' + value
+                                        for key, value in style.items())
+                log.write('\n      {} > {}({})'
+                          .format(indent, attrs['style'], style_attrs))
+            if entry:
+                for match in entry.matches:
+                    base = ''
+                    stylesheet = match.stylesheet
+                    if stylesheet:
+                        if first:
+                            label = '>'
+                            first = False
+                        else:
+                            label = ' '
+                        name = match.style_name
+                        style = self.stylesheet.get_configuration(name)
+                        base_name = ("DEFAULT" if style.base is None
+                                     else str(style.base))
+                        base = f' > {base_name}'
+                        stylesheet_path = Path(stylesheet)
+                        if stylesheet_path.is_absolute():
+                            stylesheet = stylesheet_path.relative_to(
+                                document_source_root)
+                    else:
+                        label = 'x'
+                    specificity = ','.join(str(score)
+                                           for score in match.specificity)
+                    log.write('\n      {} {} ({}) {}{}{}'
+                              .format(indent, label, specificity,
+                                      match.style_name,
+                                      f' [{stylesheet}]' if stylesheet
+                                      else '', base))
+            log.write('\n')
+
+    def _handle_source(self, document_source_root, styled):
+        loc = ''
+        if styled.source:
+            try:
+                filename, line, tag_name = styled.source.location
+            except ValueError:
+                loc = f'   {styled.source.location}'
+            else:
+                if filename:
+                    try:
+                        filename, extra = filename.split(':')
+                    except ValueError:
+                        extra = None
+                    file_path = Path(filename)
+                    if file_path.is_absolute():
+                        try:
+                            file_path = file_path.relative_to(
+                                document_source_root)
+                        except ValueError:
+                            pass
+                    loc = f'   {file_path}'
+                    if line:
+                        loc += f':{line}'
+                    if extra:
+                        loc += f' ({extra})'
+                if tag_name:
+                    classes = (f" classes='{' '.join(styled.classes)}'"
+                               if styled.classes else '')
+                    loc += f'   <{tag_name}{classes}>'
+        return loc
