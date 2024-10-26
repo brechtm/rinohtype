@@ -21,7 +21,7 @@ License: LGPL. More info: http://python-hyphenator.googlecode.com/
 import sys
 import re
 
-__all__ = ("Hyphenator")
+__all__ = ["Hyphenator"]
 
 # cache of per-file Hyph_dict objects
 hdcache = {}
