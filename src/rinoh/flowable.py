@@ -725,19 +725,9 @@ class LabeledFlowable(Flowable):
         label_width = label_column_width or clamp(label_min_width,
                                                   free_label_width,
                                                   label_max_width)
-        if label_max_width is None:
-            label_spillover = True
-        elif free_label_width > label_width:
-            if style('wrap_label'):
-                vcontainer = VirtualContainer(container, width=label_max_width)
-                wrapped_width, _, _ = self.label.flow(vcontainer, 0)
-                if wrapped_width < label_max_width:
-                    label_width = wrapped_width
-                else:
-                    label_width = label_min_width
-                    label_spillover = True
-            else:
-                label_spillover = True
+        label_spillover, label_width = self._compute_spillover(container
+                                            , free_label_width, label_max_width
+                                            , label_min_width, label_spillover, label_width, style)
 
         left = label_width + style('label_spacing')
         max_label_width = None if label_spillover else label_width
@@ -784,6 +774,23 @@ class LabeledFlowable(Flowable):
             container.advance(label_height - offset_content)
             descender = label_descender
         return left + width, label_baseline, descender
+
+    def _compute_spillover(self, container, free_label_width, label_max_width, label_min_width, label_spillover,
+                           label_width, style):
+        if label_max_width is None:
+            label_spillover = True
+        elif free_label_width > label_width:
+            if style('wrap_label'):
+                vcontainer = VirtualContainer(container, width=label_max_width)
+                wrapped_width, _, _ = self.label.flow(vcontainer, 0)
+                if wrapped_width < label_max_width:
+                    label_width = wrapped_width
+                else:
+                    label_width = label_min_width
+                    label_spillover = True
+            else:
+                label_spillover = True
+        return label_spillover, label_width
 
     def _flow_label(self, container, last_descender, max_width, y_offset,
                     space_below):
