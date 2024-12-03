@@ -460,6 +460,10 @@ class GroupedFlowablesState(FlowableState):
     def at_end(self):
         return self._index >= len(self.flowables)
 
+    @property
+    def content_flowable_state(self):
+        return self
+
     def __copy__(self):
         copy_flowables = copy(self.flowables)
         copy_first_flowable_state = copy(self.first_flowable_state)
