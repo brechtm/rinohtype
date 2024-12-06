@@ -1,0 +1,11 @@
+[TEMPLATE_CONFIGURATION]
+name=ref
+template=book
+stylesheet=stylesheet.rts
+
+[contents]
+page_number_prefix = '{SECTION_NUMBER(1)}-'
+
+[back_matter]
+page_number_prefix = 'I-'
+page_number_format = number

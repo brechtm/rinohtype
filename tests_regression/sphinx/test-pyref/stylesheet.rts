@@ -1,0 +1,16 @@
+[STYLESHEET]
+name = Sphinx ref
+base = sphinx_base14
+
+
+[title page date : Paragraph('title page date')]
+hide = true
+
+[chapter]
+page_break = any
+
+[content chapter]
+page_break = any
+
+[table of contents section]
+page_break = left
