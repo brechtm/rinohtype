@@ -385,22 +385,7 @@ class CmapSubtable(MultiFormatTable):
         elif self['format'] == 2:
             raise NotImplementedError
         elif self['format'] == 4:
-            seg_count = self['segCountX2'] >> 1
-            self['glyphIdArray'] = array(ushort, self['length'])(file)
-            segments = zip(self['startCount'], self['endCount'],
-                           self['idDelta'], self['idRangeOffset'])
-            out = {}
-            for i, (start, end, delta, range_offset) in enumerate(segments):
-                if i == seg_count - 1:
-                    assert end == 0xFFFF
-                    break
-                if range_offset > 0:
-                    for j, code in enumerate(range(start, end + 1)):
-                        index = (range_offset >> 1) - seg_count + i + j
-                        out[code] = self['glyphIdArray'][index]
-                else:
-                    for code in range(start, end + 1):
-                        out[code] = (code + delta) % 2**16
+            out = self._handle_format_4(file)
         elif self['format'] == 6:
             out = {code: index for code, index in
                    zip(range(self['firstCode'],
@@ -422,6 +407,25 @@ class CmapSubtable(MultiFormatTable):
         else:
             raise NotImplementedError
         self.mapping = out
+
+    def _handle_format_4(self, file):
+        seg_count = self['segCountX2'] >> 1
+        self['glyphIdArray'] = array(ushort, self['length'])(file)
+        segments = zip(self['startCount'], self['endCount'],
+                       self['idDelta'], self['idRangeOffset'])
+        out = {}
+        for i, (start, end, delta, range_offset) in enumerate(segments):
+            if i == seg_count - 1:
+                assert end == 0xFFFF
+                break
+            if range_offset > 0:
+                for j, code in enumerate(range(start, end + 1)):
+                    index = (range_offset >> 1) - seg_count + i + j
+                    out[code] = self['glyphIdArray'][index]
+            else:
+                for code in range(start, end + 1):
+                    out[code] = (code + delta) % 2 ** 16
+        return out
 
 
 class CmapRecord(Record):

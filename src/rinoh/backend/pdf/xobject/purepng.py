@@ -417,28 +417,31 @@ def check_color(c, greyscale, which):
 
 def check_time(value):
     """Convert time from most popular representations to datetime"""
+    time_value = None
     if value is None:
-        return None
-    if isinstance(value, (time.struct_time, tuple)):
-        return value
-    if isinstance(value, datetime.datetime):
-        return value.timetuple()
-    if isinstance(value, datetime.date):
+        time_value = None
+    elif isinstance(value, (time.struct_time, tuple)):
+        time_value = value
+    elif isinstance(value, datetime.datetime):
+        time_value = value.timetuple()
+    elif isinstance(value, datetime.date):
         res = datetime.datetime.utcnow()
         res.replace(year=value.year, month=value.month, day=value.day)
-        return res.timetuple()
-    if isinstance(value, datetime.time):
-        return datetime.datetime.combine(datetime.date.today(),
+        time_value = res.timetuple()
+    elif isinstance(value, datetime.time):
+        time_value = datetime.datetime.combine(datetime.date.today(),
                                          value).timetuple()
-    if isinteger(value):
+    elif isinteger(value):
         # Handle integer as timestamp
-        return time.gmtime(value)
-    if isinstance(value, basestring):
+        time_value = time.gmtime(value)
+    elif isinstance(value, basestring):
         if value.lower() == 'now':
-            return time.gmtime()
+            time_value = time.gmtime()
         # TODO: parsing some popular strings
-    raise ValueError("Unsupported time representation:" + repr(value))
+    else:
+        raise ValueError("Unsupported time representation:" + repr(value))
 
+    return time_value
 
 def popdict(src, keys):
     """

@@ -144,8 +144,10 @@ class TopDict(Dict):
                                                            # and offset (0)
                  (12, 20): Operator('SyntheticBase', number), # synthetic base font index
                  (12, 21): Operator('PostScript', sid), # embedded PostScript language code
-                 (12, 22): Operator('BaseFontName', sid), # (added as needed by Adobe-based technology)
-                 (12, 23): Operator('BaseFontBlend', delta)} # (added as needed by Adobe-based technology)
+                 (12, 22): Operator('BaseFontName'
+                                    , sid), # (added as needed by Adobe-based technology)
+                 (12, 23): Operator('BaseFontBlend'
+                                    , delta)} # (added as needed by Adobe-based technology)
 
 
 class Index(list):

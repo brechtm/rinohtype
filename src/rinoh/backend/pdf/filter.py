@@ -365,16 +365,7 @@ def run_length_encoder(destination):
         destination.write(buffer)
         return b''
 
-    last_byte = yield
-    buffer = b''
-    same_count = 1
-    while True:
-        try:
-            byte = yield
-        except GeneratorExit:
-            break
-        if byte == b'':
-            break
+    def _handle_byte(buffer, byte, flush, last_byte, same_count, write_repeat):
         if byte != last_byte:
             if same_count > 2:
                 _, same_count = write_repeat(last_byte, same_count)
@@ -390,6 +381,19 @@ def run_length_encoder(destination):
                 buffer = flush(buffer)
             if same_count == 128:
                 byte, same_count = write_repeat(last_byte, same_count)
+        return buffer, byte, same_count
+
+    last_byte = yield
+    buffer = b''
+    same_count = 1
+    while True:
+        try:
+            byte = yield
+        except GeneratorExit:
+            break
+        if byte == b'':
+            break
+        buffer, byte, same_count = _handle_byte(buffer, byte, flush, last_byte, same_count, write_repeat)
         last_byte = byte
     if same_count > 2:
         _, same_count = write_repeat(last_byte, same_count)

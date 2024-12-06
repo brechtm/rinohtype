@@ -78,7 +78,7 @@ class Filename(str):
         return posix_path(str(self)) == posix_path(str(other))
 
     def __ne__(self, other):
-        return not (self == other)
+        return not self == other
 
 
 class RequiredArg(Attribute):
@@ -100,7 +100,7 @@ class ImagePath(AcceptNoneAttributeType):
 
     @classmethod
     def doc_format(cls):
-        return ('path to an image file enclosed in quotes')
+        return 'path to an image file enclosed in quotes'
 
 
 class ImageArgsBase(AttributesDictionary):

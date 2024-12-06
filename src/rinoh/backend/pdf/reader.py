@@ -160,31 +160,7 @@ class PDFObjectReader(object):
         if self.next_token() == b'stream':
             self.jump_to_next_line()
             length = int(dictionary['Length'])
-            if 'Filter' in dictionary:
-                filter_or_filters = dictionary['Filter']
-                if isinstance(filter_or_filters, cos.Name):
-                    filter_class = FILTER_SUBCLASSES[filter_or_filters]
-                    try:
-                        decode_params = dictionary['DecodeParms']
-                        decode_params.__class__ = filter_class.params_class
-                    except KeyError:
-                        decode_params = None
-                    stream_filter = filter_class(params=decode_params)
-                else:
-                    filter_classes = [FILTER_SUBCLASSES[filter_name]
-                                      for filter_name in filter_or_filters]
-                    try:
-                        stream_filter = []
-                        for fltr_cls, params in zip(filter_classes,
-                                                    dictionary['DecodeParms']):
-                            if params:
-                                params.__class__ = fltr_cls.params_class
-                            stream_filter.append(fltr_cls(params=params))
-                    except KeyError:
-                        stream_filter = [filter_class()
-                                         for filter_class in filter_classes]
-            else:
-                stream_filter = None
+            stream_filter = self._handle_filter(dictionary)
             stream = cos.Stream(stream_filter)
             # copy dict contents: .update() would dereference Reference values!
             for key, value in dictionary.items():
@@ -202,6 +178,34 @@ class PDFObjectReader(object):
         if key in DICTIONARY_SUBCLASSES:
             dictionary.__class__ = DICTIONARY_SUBCLASSES[key]
         return dictionary
+
+    def _handle_filter(self, dictionary):
+        if 'Filter' in dictionary:
+            filter_or_filters = dictionary['Filter']
+            if isinstance(filter_or_filters, cos.Name):
+                filter_class = FILTER_SUBCLASSES[filter_or_filters]
+                try:
+                    decode_params = dictionary['DecodeParms']
+                    decode_params.__class__ = filter_class.params_class
+                except KeyError:
+                    decode_params = None
+                stream_filter = filter_class(params=decode_params)
+            else:
+                filter_classes = [FILTER_SUBCLASSES[filter_name]
+                                  for filter_name in filter_or_filters]
+                try:
+                    stream_filter = []
+                    for fltr_cls, params in zip(filter_classes,
+                                                dictionary['DecodeParms']):
+                        if params:
+                            params.__class__ = fltr_cls.params_class
+                        stream_filter.append(fltr_cls(params=params))
+                except KeyError:
+                    stream_filter = [filter_class()
+                                     for filter_class in filter_classes]
+        else:
+            stream_filter = None
+        return stream_filter
 
     escape_chars = b'nrtbf()\\'
 

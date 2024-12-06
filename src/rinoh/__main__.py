@@ -164,63 +164,26 @@ def main():
     args = parser.parse_args()
     do_exit = False
     if args.versions:
-        print(f'rinohtype {__version__} ({__release_date__})')
-        with suppress(ImportError):
-            import sphinx
-            print(f'Sphinx {sphinx.__version__}')
-        print(f'Python {sys.version}')
-        print(platform())
+        _handle_versions()
         return
     if args.docs:
         webbrowser.open(DOCS_URL)
         return
     if args.list_templates:
-        print('Installed document templates:')
-        for name, _ in sorted(DocumentTemplate.installed_resources):
-            print('- {}'.format(name))
+        _handle_templates()
         do_exit = True
     if args.list_stylesheets:
-        print('Installed style sheets:')
-        for name, _ in sorted(StyleSheet.installed_resources):
-            print('- {}'.format(name))
+        _handle_stylesheets()
         do_exit = True
     if args.list_formats:
-        print('Supported input file formats:')
-        for entry_point, dist in find_entry_points('rinoh.frontends'):
-            reader_cls = entry_point.load()
-            print('- {} (.{}) [{}]'
-                  .format(entry_point.name, ', .'.join(reader_cls.extensions),
-                          get_distribution_name(dist)))
+        _handle_formats()
         do_exit = True
     if args.list_options:
-        reader_name, reader_cls = get_reader_by_name(args.list_options)
-        if list(reader_cls.supported_attributes):
-            print('Options supported by the {} frontend'.format(reader_name))
-            for name in reader_cls.supported_attributes:
-                attr_def = reader_cls.attribute_definition(name)
-                print('- {} ({}): {}. Default: {}'
-                      .format(name, attr_def.accepted_type.__name__,
-                              attr_def.description, attr_def.default_value))
-        else:
-            print('The {} frontend takes no options'.format(reader_name))
+        _handle_list_options(args)
         do_exit = True
     if args.list_fonts:
         if args.list_fonts is object:
-            print('Installed fonts:')
-            for typeface, distribution in installed_typefaces():
-                print('- {} [{}]' .format(typeface.name, distribution))
-                widths = OrderedDict()
-                for font in typeface.fonts():
-                    widths.setdefault(font.width, []).append(font)
-                for width, fonts in widths.items():
-                    styles = []
-                    for font in fonts:
-                        style = FontWeight.to_name(font.weight)
-                        if font.slant != FontSlant.UPRIGHT:
-                            style = '{}-{}'.format(font.slant, style)
-                        styles.append(style)
-                    print('   {}: {}'.format(FontWidth.to_name(width),
-                                             ', '.join(styles)))
+            _handle_fonts()
         else:
             display_fonts(args.list_fonts)
         do_exit = True
@@ -234,6 +197,35 @@ def main():
     template_cfg = {}
     variables = {}
     cwd_source = CwdSource()
+    _handle_stylesheet(args, cwd_source, parser, template_cfg)
+    if args.paper:
+        _handle_paper(args, variables)
+
+    if not os.path.exists(args.input):
+        raise SystemExit('{}: No such file'.format(args.input))
+    input_dir, input_filename = os.path.split(args.input)
+    input_root, input_ext = os.path.splitext(input_filename)
+
+    output_path = set_ouput_path(args, input_root)
+
+    reader_name, reader_cls = (get_reader_by_name(args.format) if args.format
+                               else get_reader_by_extension(input_ext[1:]))
+    str_options = dict((part.strip() for part in option.split('=', maxsplit=1))
+                       for option, in args.option)
+    options = _build_options(reader_cls, reader_name, str_options)
+    reader = reader_cls(**options)
+
+    template_cls = set_template(args, cwd_source, parser, template_cfg)
+
+    configuration = template_cls.Configuration('rinoh command line options',
+                                               **template_cfg)
+    configuration.variables.update(variables)
+
+    document_tree = reader.parse(args.input)
+    _do_rendering(args, configuration, document_tree, output_path, template_cls)
+
+
+def _handle_stylesheet(args, cwd_source, parser, template_cfg):
     if args.stylesheet:
         try:
             stylesheet = StyleSheet.from_string(args.stylesheet,
@@ -246,65 +238,9 @@ def main():
                              "out which style sheets are installed."
                              .format(args.stylesheet, parser.prog))
         template_cfg['stylesheet'] = stylesheet
-    if args.paper:
-        try:
-            variables['paper_size'] = Paper.from_string(args.paper.lower())
-        except ValueError:
-            accepted = ', '.join(sorted(paper.name for paper
-                                        in PAPER_BY_NAME.values()))
-            raise SystemExit("Unknown paper size '{}'. Must be one of:\n"
-                             "   {}".format(args.paper, accepted))
 
-    if not os.path.exists(args.input):
-        raise SystemExit('{}: No such file'.format(args.input))
-    input_dir, input_filename = os.path.split(args.input)
-    input_root, input_ext = os.path.splitext(input_filename)
 
-    if args.output:
-        if os.path.isdir(args.output):
-            output_path = os.path.join(args.output, input_root)
-        else:
-            output_path = args.output
-    else:
-        output_path = input_root
-
-    reader_name, reader_cls = (get_reader_by_name(args.format) if args.format
-                               else get_reader_by_extension(input_ext[1:]))
-    str_options = dict((part.strip() for part in option.split('=', maxsplit=1))
-                       for option, in args.option)
-    try:
-        options = {}
-        for key, str_value in str_options.items():
-            attr_def = reader_cls.attribute_definition(key)
-            options[key] = attr_def.accepted_type.from_string(str_value)
-    except KeyError as e:
-        raise SystemExit('The {} frontend does not accept the option {}'
-                         .format(reader_name, e))
-    except ValueError as e:
-        raise SystemExit("The value passed to the '{}' option is not valid:\n"
-                         '  {}'.format(key, e))
-    reader = reader_cls(**options)
-
-    if os.path.isfile(args.template):
-        template_cfg['base'] = TemplateConfigurationFile(args.template,
-                                                         source=cwd_source)
-        template_cls = template_cfg['base'].template
-    else:
-        try:
-            template_cls = DocumentTemplate.from_string(args.template)
-        except ResourceNotFound:
-            raise SystemExit("Could not find the template (configuration file) "
-                             "'{}'. Aborting.\nMake sure the path to your "
-                             "template configuration file is correct, or run "
-                             "`{} --list-stylesheets` to find out which "
-                             "templates are installed.".format(args.template,
-                                                               parser.prog))
-
-    configuration = template_cls.Configuration('rinoh command line options',
-                                               **template_cfg)
-    configuration.variables.update(variables)
-
-    document_tree = reader.parse(args.input)
+def _do_rendering(args, configuration, document_tree, output_path, template_cls):
     while True:
         try:
             document = template_cls(document_tree, configuration=configuration)
@@ -326,6 +262,121 @@ def main():
                                  "--install-resources command line option."
                                  .format(err.resource_type.title(),
                                          err.resource_name))
+
+
+def set_template(args, cwd_source, parser, template_cfg):
+    if os.path.isfile(args.template):
+        template_cfg['base'] = TemplateConfigurationFile(args.template,
+                                                         source=cwd_source)
+        template_cls = template_cfg['base'].template
+    else:
+        try:
+            template_cls = DocumentTemplate.from_string(args.template)
+        except ResourceNotFound:
+            raise SystemExit("Could not find the template (configuration file) "
+                             "'{}'. Aborting.\nMake sure the path to your "
+                             "template configuration file is correct, or run "
+                             "`{} --list-stylesheets` to find out which "
+                             "templates are installed.".format(args.template,
+                                                               parser.prog))
+    return template_cls
+
+
+def _build_options(reader_cls, reader_name, str_options):
+    try:
+        options = {}
+        for key, str_value in str_options.items():
+            attr_def = reader_cls.attribute_definition(key)
+            options[key] = attr_def.accepted_type.from_string(str_value)
+    except KeyError as e:
+        raise SystemExit('The {} frontend does not accept the option {}'
+                         .format(reader_name, e))
+    except ValueError as e:
+        raise SystemExit("The value passed to the '{}' option is not valid:\n"
+                         '  {}'.format(key, e))
+    return options
+
+
+def set_ouput_path(args, input_root):
+    if args.output:
+        if os.path.isdir(args.output):
+            output_path = os.path.join(args.output, input_root)
+        else:
+            output_path = args.output
+    else:
+        output_path = input_root
+    return output_path
+
+
+def _handle_paper(args, variables):
+    try:
+        variables['paper_size'] = Paper.from_string(args.paper.lower())
+    except ValueError:
+        accepted = ', '.join(sorted(paper.name for paper
+                                    in PAPER_BY_NAME.values()))
+        raise SystemExit("Unknown paper size '{}'. Must be one of:\n"
+                         "   {}".format(args.paper, accepted))
+
+
+def _handle_fonts():
+    print('Installed fonts:')
+    for typeface, distribution in installed_typefaces():
+        print('- {} [{}]'.format(typeface.name, distribution))
+        widths = OrderedDict()
+        for font in typeface.fonts():
+            widths.setdefault(font.width, []).append(font)
+        for width, fonts in widths.items():
+            styles = []
+            for font in fonts:
+                style = FontWeight.to_name(font.weight)
+                if font.slant != FontSlant.UPRIGHT:
+                    style = '{}-{}'.format(font.slant, style)
+                styles.append(style)
+            print('   {}: {}'.format(FontWidth.to_name(width),
+                                     ', '.join(styles)))
+
+
+def _handle_list_options(args):
+    reader_name, reader_cls = get_reader_by_name(args.list_options)
+    if list(reader_cls.supported_attributes):
+        print('Options supported by the {} frontend'.format(reader_name))
+        for name in reader_cls.supported_attributes:
+            attr_def = reader_cls.attribute_definition(name)
+            print('- {} ({}): {}. Default: {}'
+                  .format(name, attr_def.accepted_type.__name__,
+                          attr_def.description, attr_def.default_value))
+    else:
+        print('The {} frontend takes no options'.format(reader_name))
+
+
+def _handle_formats():
+    print('Supported input file formats:')
+    for entry_point, dist in find_entry_points('rinoh.frontends'):
+        reader_cls = entry_point.load()
+        print('- {} (.{}) [{}]'
+              .format(entry_point.name, ', .'.join(reader_cls.extensions),
+                      get_distribution_name(dist)))
+
+
+def _handle_stylesheets():
+    print('Installed style sheets:')
+    for name, _ in sorted(StyleSheet.installed_resources):
+        print('- {}'.format(name))
+
+
+def _handle_templates():
+    print('Installed document templates:')
+    for name, _ in sorted(DocumentTemplate.installed_resources):
+        print('- {}'.format(name))
+
+
+def _handle_versions():
+    print(f'rinohtype {__version__} ({__release_date__})')
+    with suppress(ImportError):
+        import sphinx
+        print(f'Sphinx {sphinx.__version__}')
+    print(f'Python {sys.version}')
+    print(platform())
 
 
 class CwdSource(Source):
