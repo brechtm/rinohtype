@@ -38,8 +38,9 @@ body:
     attributes:
       label: Source files
       description: The Sphinx project files or inputs to rinoh that cause the crash.
-                   Please note that these are crucial for reproducing the crash! You
-                   can also provide any additional information that could be useful.
+                   These are crucial for reproducing the issue! Issues with source
+                   files attached get priority. Please also provide any additional
+                   information that could be useful.
       placeholder: |
         - insert a link to the input files (e.g. a Sphinx project repository), or
         - attach an archive (e.g. zip) containing the source files
