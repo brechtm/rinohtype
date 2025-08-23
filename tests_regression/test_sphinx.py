@@ -22,7 +22,7 @@ OUTPUT_PATH = TESTS_PATH / 'sphinx_output'
 OUTPUT_PATH.mkdir(exist_ok=True)
 
 
-# run these tests on on specific platforms
+# run these tests only on specific platforms
 PLATFORMS = {
     'graphviz': ('darwin'),
 }

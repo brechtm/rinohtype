@@ -18,8 +18,8 @@ nox.options.sessions = ['check', 'check_docs',
                         f'regression-{CURRENT_PYTHON}(wheel)']
 
 
-PYTHONS = ['3.8', '3.9', '3.10', '3.11', '3.12', '3.13']
-PYTHONS += ['pypy3'] if os.getenv('CI') else ['pypy3.10']
+PYTHONS = ['3.9', '3.10', '3.11', '3.12', '3.13', '3.14']
+PYTHONS += ['pypy3'] if os.getenv('CI') else ['pypy3.11']
 
 DEPENDENCIES = ['pytest', 'pytest-xdist', 'pytest-cov', 'coverage', 'Sphinx']
 if os.getenv('GITHUB_SHA'):
