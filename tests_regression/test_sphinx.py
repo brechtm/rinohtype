@@ -13,7 +13,7 @@ import sys
 from contextlib import suppress
 from pathlib import Path
 
-from helpers.regression import verify_output
+from .helpers.regression import verify_output
 
 
 TESTS_PATH = Path(__file__).parent

@@ -10,10 +10,10 @@ import os
 
 import pytest
 
-from helpers.diffpdf import diff_pdf
-from helpers.pdf_linkchecker import check_pdf_links
-from helpers.regression import TEST_DIR
-from helpers.util import in_directory
+from .helpers.diffpdf import diff_pdf
+from .helpers.pdf_linkchecker import check_pdf_links
+from .helpers.regression import TEST_DIR
+from .helpers.util import in_directory
 
 from rinoh.frontend.rst import ReStructuredTextReader
 from rinoh.template import TemplateConfigurationFile

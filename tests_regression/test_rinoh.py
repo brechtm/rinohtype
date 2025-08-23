@@ -9,7 +9,7 @@ from pathlib import Path
 
 import pytest
 
-from helpers.regression import verify_output
+from .helpers.regression import verify_output
 
 
 RINOH_PATH = Path(__file__).parent / 'rinoh'

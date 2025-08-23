@@ -11,7 +11,7 @@ from pathlib import Path
 
 import sphinx
 
-from helpers.regression import render_rst_file, render_sphinx_rst_file
+from .helpers.regression import render_rst_file, render_sphinx_rst_file
 
 
 RST_PATH = Path(__file__).parent / 'rst'

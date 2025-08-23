@@ -6,7 +6,7 @@ import pytest
 from sphinx.testing.path import path
 
 
-from helpers.regression import verify_output
+from .helpers.regression import verify_output
 
 
 pytest_plugins = 'sphinx.testing.fixtures'
