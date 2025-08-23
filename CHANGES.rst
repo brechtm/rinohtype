@@ -25,6 +25,8 @@ Changed:
 
 Fixed:
 
+* Sphinx frontend: support the desc_type_parameter_list document node
+
 
 Release 0.5.5 (2024-07-13)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~

@@ -364,6 +364,30 @@ class Desc_Parameter(DocutilsInlineNode):
         return self.process_content(style=style)
 
 
+class Desc_Type_Parameter_List(DocutilsInlineNode):
+    def build_styled_text(self):
+        try:
+            params = intersperse((param.styled_text()
+                                  for param in self.desc_type_parameter), ', ')
+        except AttributeError:
+            params = ()
+        try:
+            params = chain(params, (self.desc_optional.styled_text(), ))
+        except AttributeError:
+            pass
+        return (SingleStyledText(' ( ', style='parentheses')
+                + MixedStyledText(params, style='type parameter list')
+                + SingleStyledText(' ) ', style='parentheses'))
+
+
+class Desc_Type_Parameter(Desc_Parameter):
+    def build_styled_text(self):
+        style = 'type parameter'
+        if self.get('noemph'):
+            style = 'noemph ' + style
+        return self.process_content(style=style)
+
+
 class Desc_Optional(DocutilsInlineNode):
     def build_styled_text(self):
         return (SingleStyledText(' [, ', style='brackets')
