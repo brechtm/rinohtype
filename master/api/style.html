@@ -32,7 +32,7 @@
         <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
       
     
-        <link rel="stylesheet" type="text/css" href="../_static/sphinx_immaterial_theme.4b4a8c74e2ff2ab5b.min.css?v=afa97f93" />
+        <link rel="stylesheet" type="text/css" href="../_static/sphinx_immaterial_theme.9badc98c4f78aac06.min.css?v=60124955" />
         <link rel="stylesheet" type="text/css" href="../_static/tweaks.css?v=ac567af0" />
     <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -1070,7 +1070,7 @@
         
           <li class="md-nav__item">
   <a href="#rinoh.style.StyledMatcher.update" class="md-nav__link">
-    <span aria-label="Python method" class="objinfo-icon objinfo-icon__procedure" title="Python method">M</span><span title="rinoh.style.StyledMatcher.update (Python method) — If E is present and has a .keys() method, then does:  for k in E: D[k] = E[k] If E is present and lacks a .keys() method, then does:  for k, v in E: D[k] = v In either case, this is followed by: for k in F:  D[k] = F[k]" class="md-ellipsis">update</span>
+    <span aria-label="Python method" class="objinfo-icon objinfo-icon__procedure" title="Python method">M</span><span title="rinoh.style.StyledMatcher.update (Python method) — If E is present and has a .keys() method, then does:  for k in E.keys(): D[k] = E[k] If E is present and lacks a .keys() method, then does:  for k, v in E: D[k] = v In either case, this is followed by: for k in F:  D[k] = F[k]" class="md-ellipsis">update</span>
   </a>
   
 </li>
@@ -1477,7 +1477,7 @@
         
           <li class="md-nav__item">
   <a href="#rinoh.style.StyledMatcher.update" class="md-nav__link">
-    <span aria-label="Python method" class="objinfo-icon objinfo-icon__procedure" title="Python method">M</span><span title="rinoh.style.StyledMatcher.update (Python method) — If E is present and has a .keys() method, then does:  for k in E: D[k] = E[k] If E is present and lacks a .keys() method, then does:  for k, v in E: D[k] = v In either case, this is followed by: for k in F:  D[k] = F[k]" class="md-ellipsis">update</span>
+    <span aria-label="Python method" class="objinfo-icon objinfo-icon__procedure" title="Python method">M</span><span title="rinoh.style.StyledMatcher.update (Python method) — If E is present and has a .keys() method, then does:  for k in E.keys(): D[k] = E[k] If E is present and lacks a .keys() method, then does:  for k, v in E: D[k] = v In either case, this is followed by: for k in F:  D[k] = F[k]" class="md-ellipsis">update</span>
   </a>
   
 </li>
@@ -1651,8 +1651,8 @@ style sheet file.</p>
 by passing a mapping, an interable and/or keyword arguments.</p>
 <dl class="py method objdesc">
 <dt class="sig sig-object highlight py" id="rinoh.style.StyledMatcher.update">
-<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><span class="optional">[</span><span class="sig-param-decl"><em class="sig-param"><span class="n"><span class="pre">E</span></span></em>, </span><span class="optional">]</span><span class="sig-param-decl"><em class="sig-param"><span class="n"><span class="pre">**F</span></span></em></span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="desctype"><span class="pre">None.</span>&#160; <span class="pre">Update</span> <span class="pre">D</span> <span class="pre">from</span> <span class="pre">dict/iterable</span> <span class="pre">E</span> <span class="pre">and</span> <span class="pre">F.</span></span></span></span><a class="headerlink" href="#rinoh.style.StyledMatcher.update" title="Link to this definition">¶</a></dt>
-<dd><p>If E is present and has a .keys() method, then does:  for k in E: D[k] = E[k]
+<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><span class="optional">[</span><span class="sig-param-decl"><em class="sig-param"><span class="n"><span class="pre">E</span></span></em>, </span><span class="optional">]</span><span class="sig-param-decl"><em class="sig-param"><span class="n"><span class="pre">**F</span></span></em></span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="desctype"><span class="pre">None.</span>&#160; <span class="pre">Update</span> <span class="pre">D</span> <span class="pre">from</span> <span class="pre">mapping/iterable</span> <span class="pre">E</span> <span class="pre">and</span> <span class="pre">F.</span></span></span></span><a class="headerlink" href="#rinoh.style.StyledMatcher.update" title="Link to this definition">¶</a></dt>
+<dd><p>If E is present and has a .keys() method, then does:  for k in E.keys(): D[k] = E[k]
 If E is present and lacks a .keys() method, then does:  for k, v in E: D[k] = v
 In either case, this is followed by: for k in F:  D[k] = F[k]</p>
 </dd></dl>
@@ -1720,7 +1720,7 @@ In either case, this is followed by: for k in F:  D[k] = F[k]</p>
       <div class="md-copyright">
   
     <div class="md-footer-copyright__highlight">
-        &#169; Copyright 2024, Brecht Machiels and contributors.
+        &#169; Copyright 2025, Brecht Machiels and contributors.
         
     </div>
   
