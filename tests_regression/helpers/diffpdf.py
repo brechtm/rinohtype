@@ -3,7 +3,7 @@
 # usage: diffpdf.py file1.pdf file2.pdf
 
 # requirements:
-# - ImageMagick (convert, compare or magick on Windows)
+# - ImageMagick 7
 # - MuPDF's mutool >= 1.13.0
 #   or poppler's pdftoppm (known to work: 0.18.4, 0.41.0, 0.85.0, 0.89.0;
 #                          known to fail: 0.42.0)
@@ -24,7 +24,6 @@ from rinoh.backend.pdf import PDFReader
 
 DIFF_DIR = 'pdfdiff'
 SHELL = sys.platform == 'win32'
-MAGICK = ['magick'] if sys.platform == 'win32' else []
 
 
 def diff_pdf(a_filename, b_filename, depth=None):
@@ -130,8 +129,8 @@ def diff_page(a_filename, b_filename, ab_page):
     page_number = a_page
     diff_jpg_path = os.path.join(DIFF_DIR, '{}.jpg'.format(page_number))
     # http://stackoverflow.com/a/28779982/438249
-    diff = Popen(MAGICK + ['convert', '-', '(', '-clone', '0-1', '-compose',
-                                                'darken', '-composite', ')',
+    diff = Popen(['magick', 'convert', '-', '(', '-clone', '0-1', '-compose',
+                                                 'darken', '-composite', ')',
                   '-channel', 'RGB', '-combine', diff_jpg_path],
                  shell=SHELL, stdin=PIPE)
     a_page = pdf_page_to_ppm(a_filename, page_number, diff.stdin, gray=True)
@@ -141,7 +140,7 @@ def diff_page(a_filename, b_filename, ab_page):
     diff.stdin.close()
     if b_page.wait() != 0 or diff.wait() != 0:
         raise CommandFailed(page_number)
-    grayscale = Popen(MAGICK + ['convert', diff_jpg_path, '-colorspace', 'HSL',
+    grayscale = Popen(['magick', diff_jpg_path, '-colorspace', 'HSL',
                        '-channel', 'g', '-separate', '+channel', '-format',
                        '%[fx:mean]', 'info:'], shell=SHELL, stdout=PIPE)
     return Decimal(grayscale.stdout.read().decode('ascii'))
@@ -149,7 +148,7 @@ def diff_page(a_filename, b_filename, ab_page):
 
 def compare_page(a_filename, b_filename, a_page, b_page):
     """Returns ``True`` if the pages at ``page_number`` are identical"""
-    compare = Popen(MAGICK + ['compare', '-', '-metric', 'AE', 'null:'],
+    compare = Popen(['magick', '-', '-metric', 'AE', 'null:'],
                     shell=SHELL, stdin=PIPE, stdout=DEVNULL, stderr=DEVNULL)
     a_page = pdf_page_to_ppm(a_filename, a_page, compare.stdin)
     if a_page.wait() != 0:
@@ -187,7 +186,7 @@ else:
     raise SystemExit(2)
 
 
-if (MAGICK and not which(*MAGICK)) or not which('compare'):
+if not which('magick'):
     print("ImageMagick is required", file=sys.stderr)
     raise SystemExit(2)
 

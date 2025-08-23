@@ -268,10 +268,13 @@ jobs:
         path: ${{ steps.cache-dirs-windows.outputs.dir }}
         key: ${{ runner.os }}-scoop
 
+    - name: Set up Homebrew
+      if: startsWith(runner.os, 'Linux')
+      uses: Homebrew/actions/setup-homebrew@main
     - name: Install tools required by the regression tests (Linux)
       if: startsWith(runner.os, 'Linux')
       run: |
-        sudo apt-get install mupdf-tools imagemagick
+        brew install mupdf-tools imagemagick
     - name: Install tools required by the regression tests (macOS)
       if: startsWith(runner.os, 'macOS')
       run: |
