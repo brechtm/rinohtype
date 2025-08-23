@@ -182,12 +182,12 @@ if which('mutool'):
 elif which('pdftoppm'):
     pdf_page_to_ppm = pdftoppm
 else:
-    print("mutool or poppler's pdftoppm is required", file=sys.stderr)
+    print("ERROR: mutool or poppler's pdftoppm is required", file=sys.stderr)
     raise SystemExit(2)
 
 
 if not which('magick'):
-    print("ImageMagick is required", file=sys.stderr)
+    print("ERROR: ImageMagick is required", file=sys.stderr)
     raise SystemExit(2)
 
 
