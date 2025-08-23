@@ -420,7 +420,19 @@ base=definition term
 
 [object signature]
 base=definition term paragraph
+typeface=$(mono_typeface)
 font_weight=regular
+text_align=LEFT
+
+[object signature space]
+
+[object signature name]
+
+[object signature operator]
+
+[object signature punctuation]
+
+[object signature keyword]
 
 [object name]
 typeface=$(mono_typeface)

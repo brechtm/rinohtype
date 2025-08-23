@@ -25,6 +25,7 @@ Changed:
 
 Fixed:
 
+* Sphinx frontend: support the desc_sig_keyword document node (#444)
 * Sphinx frontend: support the desc_type_parameter_list document node
 
 

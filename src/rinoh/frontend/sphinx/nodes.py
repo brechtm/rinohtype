@@ -313,19 +313,23 @@ class Desc_Signature_Line(DocutilsInlineNode):
 
 
 class Desc_Sig_Space(DocutilsInlineNode):
-    pass
+    style = 'signature space'
 
 
 class Desc_Sig_Name(DocutilsInlineNode):
-    pass
+    style = 'signature name'
 
 
 class Desc_Sig_Operator(DocutilsInlineNode):
-    pass
+    style = 'signature operator'
 
 
 class Desc_Sig_Punctuation(DocutilsInlineNode):
-    pass
+    style = 'signature punctuation'
+
+
+class Desc_Sig_Keyword(DocutilsInlineNode):
+    style = 'signature keyword'
 
 
 class Desc_Name(DocutilsInlineNode):
