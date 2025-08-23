@@ -293,7 +293,7 @@ jobs:
       run: ${{ env.nox_cmd }} ${{ env.NOXENV }} -- -s
     - name: Store test artifacts
       if: failure()
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: ${{ matrix.os }} ${{ matrix.python-version }} regression tests${{ matrix.name }}
         path: tests_regression/*_output/
