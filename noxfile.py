@@ -124,13 +124,20 @@ def _install(session, docutils=None, sphinx=None, dist='wheel',
             sphinx = '5.3.0'
     if sphinx:
         deps.append(f"sphinx=={sphinx}")
-        major, _ = sphinx.split('.', maxsplit=1)
-        if int(major) < 4:
+        sphinx_version = tuple(int(v) for v in sphinx.split('.'))
+        if sphinx_version < (4, ):
             # https://github.com/sphinx-doc/sphinx/issues/10291
             deps.append("jinja2<3.1")
-        elif int(major) < 6:
+        elif sphinx_version < (6, ):
             deps.append("myst-parser==0.18.1")
-        if int(major) < 5:
+        if sphinx_version <= (6, 2):
+            try:
+                python_version = tuple(int(v) for v in session.python.split('.'))
+            except AttributeError:
+                python_version = sys.version_info[:3]
+            if python_version >= (3, 13):
+                deps.append("standard-imghdr==3.13.0")
+        if sphinx_version < (5, ):
             # https://github.com/sphinx-doc/sphinx/issues/11890
             deps.append("alabaster==0.7.13")
             deps.append("sphinxcontrib-applehelp==1.0.4")
@@ -168,7 +175,7 @@ def _regression(session, docutils=None, sphinx=None, dist='wheel',
                '--script-launch-mode=subprocess',
                ignore_deprecation_warnings=ignore_deprecation_warnings)
 
-    
+
 def _run_tests(session, tests_dir, *args, ignore_deprecation_warnings=False):
     filterwarnings = ['-W', ''] if ignore_deprecation_warnings else []
     session.run('python', 'run_tests.py', *args, *filterwarnings,
