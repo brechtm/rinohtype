@@ -255,7 +255,7 @@ class WithAttributes(WithNamedDescriptors):
                     doc.append('\n            *Default*: {}\n'.format(default))
                     documented.add(name)
         if doc:
-            attr_doc = '\n        '.join(chain(['    Attributes:'], doc))
+            attr_doc = '\n    '.join(chain(['Attributes:'], doc))
             cls_dict['__doc__'] = (cls_dict.get('__doc__', '') + '\n\n'
                                    + attr_doc)
         cls_dict['_supported_attributes'] = supported_attributes
