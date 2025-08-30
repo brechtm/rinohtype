@@ -550,6 +550,7 @@ class TemplateConfiguration(RuleSet):
     Args:
         name (str): a label for this template configuration
         base (TemplateConfiguration): the template configuration to extend
+        source (str): the source of this configuration (e.g. a file path)
         template (DocumentTemplateMeta or str): the document template to
             configure
         description (str): a short string describing this style sheet
