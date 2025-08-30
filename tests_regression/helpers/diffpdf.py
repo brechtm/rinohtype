@@ -129,7 +129,7 @@ def diff_page(a_filename, b_filename, ab_page):
     page_number = a_page
     diff_jpg_path = os.path.join(DIFF_DIR, '{}.jpg'.format(page_number))
     # http://stackoverflow.com/a/28779982/438249
-    diff = Popen(['magick', 'convert', '-', '(', '-clone', '0-1', '-compose',
+    diff = Popen(['magick', '-', '(', '-clone', '0-1', '-compose',
                                                  'darken', '-composite', ')',
                   '-channel', 'RGB', '-combine', diff_jpg_path],
                  shell=SHELL, stdin=PIPE)
@@ -140,7 +140,7 @@ def diff_page(a_filename, b_filename, ab_page):
     diff.stdin.close()
     if b_page.wait() != 0 or diff.wait() != 0:
         raise CommandFailed(page_number)
-    grayscale = Popen(['magick', 'convert', diff_jpg_path, '-colorspace', 'HSL',
+    grayscale = Popen(['magick', diff_jpg_path, '-colorspace', 'HSL',
                        '-channel', 'g', '-separate', '+channel', '-format',
                        '%[fx:mean]', 'info:'], shell=SHELL, stdout=PIPE)
     return Decimal(grayscale.stdout.read().decode('ascii'))
