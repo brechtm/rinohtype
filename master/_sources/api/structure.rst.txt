@@ -29,9 +29,6 @@ Lists
 .. autoclass:: ListItem
     :members:
 
-.. autoclass:: ListItemStyle
-    :members:
-
 .. autoclass:: ListItemLabel
     :members:
 
