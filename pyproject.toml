@@ -84,7 +84,7 @@ times = "rinoh.fonts.adobe14:times"
 rinoh = "rinoh.frontend.sphinx"
 
 [tool.poetry.dependencies]
-python = "^3.8.0"
+python = "^3.9.0"
 appdirs = "^1.4.3"
 docutils = ">=0.15"
 myst-parser = ">=0.18.1"
