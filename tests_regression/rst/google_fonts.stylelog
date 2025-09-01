@@ -110,7 +110,8 @@
                 Reference('Chapter 2')   <reference>
                      > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
                   MixedStyledText('Chapter 2')
-                    SingleStyledText('Chapter')
+                    StringField('Chapter')
+                      SingleStyledText('Chapter')
                     SingleStyledText(' ')
                     SingleStyledText('2')
                 SingleStyledText('), external hyperlinks with embe...')
@@ -140,7 +141,8 @@
                 Reference('Chapter 2')   <reference>
                      > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
                   MixedStyledText('Chapter 2')
-                    SingleStyledText('Chapter')
+                    StringField('Chapter')
+                      SingleStyledText('Chapter')
                     SingleStyledText(' ')
                     SingleStyledText('2')
                 SingleStyledText('), external hyperlinks with embe...')
