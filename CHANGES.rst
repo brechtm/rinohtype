@@ -19,6 +19,7 @@ Release 0.5.6 (in development)
 
 New Features:
 
+* The style log now also shows the classes for each element (if any)
 
 Changed:
 

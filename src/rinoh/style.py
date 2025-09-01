@@ -1090,7 +1090,9 @@ class StyleLog(object):
                             if extra:
                                 loc += f' ({extra})'
                         if tag_name:
-                            loc += f'   <{tag_name}>'
+                            classes = (f" classes='{' '.join(styled.classes)}'"
+                                       if styled.classes else '')
+                            loc += f'   <{tag_name}{classes}>'
                 continued_text = '(continued) ' if entry.continued else ''
                 log.write('  {}{}{}{}'
                           .format(indent, continued_text,
