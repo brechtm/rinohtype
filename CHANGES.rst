@@ -24,7 +24,7 @@ Changed:
 
 * Add support for Python 3.13 and 3.14
 * Support for Python 3.8 was dropped (end-of-life in October 2024)
-
+* Improve error message for unsupported nodes (#421)
 
 Fixed:
 

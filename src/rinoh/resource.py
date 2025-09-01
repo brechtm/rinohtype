@@ -184,10 +184,10 @@ class DynamicRinohDistribution(ilm.Distribution):
                 for name, value in entry_points.items()]
 
     def read_text(self, filename):  # is abstract in importlib-metadata
-        raise NotImplementedError
+        return None
 
     def locate_file(self, path):    # is abstract in importlib-metadata
-        raise NotImplementedError
+        return path
 
 
 _DISTRIBUTION = DynamicRinohDistribution()

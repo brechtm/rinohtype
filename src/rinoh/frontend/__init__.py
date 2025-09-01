@@ -6,6 +6,7 @@
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
 
+from importlib import metadata as ilm
 from itertools import chain
 
 from ..attribute import AttributesDictionary
@@ -15,6 +16,17 @@ from ..util import NotImplementedAttribute
 
 __all__ = ['TreeNode', 'InlineNode', 'BodyNode', 'BodySubNode', 'GroupingNode',
            'DummyNode', 'TreeNodeMeta', 'Reader']
+
+
+def find_distribution_for_module(module_name):
+    top_level_package_name, *_ = module_name.split('.', maxsplit=1)
+    for dist_name in ilm.packages_distributions()[top_level_package_name]:
+        print(dist_name)
+        dist = ilm.distribution(dist_name)
+        for file_path in dist.files:
+            if str(file_path).startswith(module_name.replace('.', '/')):
+                return dist.name
+    return None
 
 
 class TreeNode(object):
@@ -27,9 +39,18 @@ class TreeNode(object):
             return cls._mapping[node_name.replace('-', '_')](node, **context)
         except KeyError:
             filename, line, node_name = cls.node_location(node)
-            raise NotImplementedError("{}:{} the '{}' node is not yet supported "
-                                      "({})" .format(filename, line, node_name,
-                                                     cls.__module__))
+            node_module = node.__module__
+            node_package, *_ = node_module.split('.', maxsplit=1)
+            if node_package in ('docutils', 'sphinx'):
+                raise NotImplementedError("{}:{} the '{}' node is not yet "
+                    "supported by rinohtype ({}); please report this issue at "
+                    "https://github.com/brechtm/rinohtype/issues"
+                    .format(filename, line, node_name))
+            else:
+                distribution_name = find_distribution_for_module(node_module)
+                raise RuntimeError("The Sphinx extension '{}' lacks support for"
+                                   " the rinoh builder (node '{}')"
+                                   .format(distribution_name or '?', node_name))
 
     def __init__(self, doctree_node, **context):
         self.node = doctree_node
