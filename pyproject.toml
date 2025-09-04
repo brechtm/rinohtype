@@ -10,20 +10,27 @@ repository = "https://github.com/brechtm/rinohtype"
 documentation = "http://www.mos6581.org/rinohtype/master"
 keywords = ["typesetting", "rst", "pdf", "opentype"]
 classifiers = [
+    "Development Status :: 4 - Beta",
     "Environment :: Console",
     "Environment :: Other Environment",
     "Environment :: Web Environment",
-    "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",
     "Intended Audience :: End Users/Desktop",
+    "License :: OSI Approved :: GNU Affero General Public License v3",
     "Operating System :: OS Independent",
     "Programming Language :: Python :: Implementation :: CPython",
     "Programming Language :: Python :: Implementation :: PyPy",
+    "Topic :: Documentation",
+    "Topic :: Documentation :: Sphinx",
     "Topic :: Printing",
     "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Text Processing",
     "Topic :: Text Processing :: Fonts",
     "Topic :: Text Processing :: Markup",
-    "Topic :: Text Processing :: Markup :: XML"
+    "Topic :: Text Processing :: Markup :: Markdown",
+    "Topic :: Text Processing :: Markup :: reStructuredText",
+    "Topic :: Text Processing :: Markup :: XML",
+    "Framework :: Sphinx :: Extension"
 ]
 packages = [
     { include = "rinoh", from = "src" }
