@@ -94,7 +94,10 @@ rinoh = "rinoh.frontend.sphinx"
 python = "^3.9.0"
 appdirs = "^1.4.3"
 docutils = ">=0.15"
-myst-parser = ">=0.18.1"
+myst-parser = [
+    {version = ">=0.18.1" , python = "<3.10"},
+    {version = ">=4.0.0", python = ">=3.10"},
+]
 packaging = ">=14.0"
 rinoh-typeface-dejavuserif = "^0.1.3"
 rinoh-typeface-texgyrecursor = "^0.1.1"
@@ -115,7 +118,8 @@ restview = "^3.0.0"
 Sphinx = [
   {version = ">=2.2.1,<7.2.0", python = "<3.9"},
   {version = ">=2.2.1", python = "3.9"},
-  {version = ">=2.2.1,!=3.5.*,!=4.0.*,!=4.1.*", python = ">=3.10"}
+  {version = ">=2.2.1,!=3.5.*,!=4.0.*,!=4.1.*", python = ">=3.10"},
+  {version = ">=8.1.0", python = ">=3.11"},
 ]
 defusedxml = ">=0.7.1"  # for Sphinx>=7.3
 sphinx-immaterial = ">=0.10"
@@ -126,3 +130,6 @@ pytest-pycharm = "^0.7.0"
 [build-system]
 requires = ["poetry-core>=1.0.8"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.requires-plugins]
+poetry-plugin-export = ">=1.8"
