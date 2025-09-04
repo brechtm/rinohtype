@@ -12,6 +12,8 @@ from itertools import chain, zip_longest
 from pathlib import Path
 from warnings import catch_warnings
 
+from docutils.writers import pseudoxml
+from docutils.io import FileOutput
 from sphinx.application import Sphinx
 from sphinx.util.docutils import docutils_namespace
 from sphinx.testing.restructuredtext import parse as sphinx_parse
@@ -79,6 +81,13 @@ class MinimalSphinxTemplate(DocumentTemplate):
 register_template('minimal_sphinx', MinimalSphinxTemplate)
 
 
+def write_pseudoxml(docutils_doctree, out_filepath):
+    out_filepath.parent.mkdir(parents=True, exist_ok=True)
+    pxml_writer = pseudoxml.Writer()
+    output = FileOutput(encoding='utf-8', destination_path=out_filepath)
+    pxml_writer.write(docutils_doctree, output)
+
+
 def render_md_file(md_path, out_filename, reference_path):
     reader = CommonMarkReader()
     doctree = reader.parse(md_path)
@@ -87,10 +96,13 @@ def render_md_file(md_path, out_filename, reference_path):
 
 
 def render_rst_file(rst_path, out_filename, reference_path):
+    output_dir = TEST_DIR / 'rst_output'
     reader = ReStructuredTextReader()
     doctree = reader.parse(rst_path)
-    return _render_file(rst_path, doctree, TEST_DIR / 'rst_output',
-                        out_filename, reference_path)
+    pseudoxml_path = (output_dir / out_filename / out_filename).with_suffix('.pxml')
+    write_pseudoxml(doctree.source.node, pseudoxml_path)
+    return _render_file(rst_path, doctree, output_dir, out_filename,
+                        reference_path)
 
 
 def render_sphinx_rst_file(rst_path, out_filename, reference_path):
@@ -103,6 +115,8 @@ def render_sphinx_rst_file(rst_path, out_filename, reference_path):
             contents = rst_file.read()
         sphinx_doctree = sphinx_parse(app, contents)
     doctree = from_doctree(sphinx_doctree)
+    pseudoxml_path = (output_dir / out_filename / out_filename).with_suffix('.pxml')
+    write_pseudoxml(sphinx_doctree, pseudoxml_path)
     docinfo = sphinx_doctree.settings.env.metadata['index']
     warnings = docinfo.get('warnings', '').splitlines()
     return _render_file(rst_path, doctree, output_dir, out_filename,
