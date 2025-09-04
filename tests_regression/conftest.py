@@ -1,12 +1,16 @@
 
 import os
 
-import pytest
+from pathlib import Path
 
-from sphinx.testing.path import path
+import pytest
+import sphinx
 
 
 from .helpers.regression import verify_output
+
+
+ROOT_DIR = Path(__file__).parent / 'sphinx'
 
 
 pytest_plugins = 'sphinx.testing.fixtures'
@@ -15,7 +19,11 @@ collect_ignore = ['sphinx']
 
 @pytest.fixture(scope='session')
 def rootdir():
-    return path(__file__).parent.abspath() / 'sphinx'
+    if sphinx.version_info < (8, 0):
+        from sphinx.testing.path import path
+        return path(__file__).parent.abspath() / 'sphinx'
+    else:
+        return Path(__file__).parent / 'sphinx'
 
 
 @pytest.fixture(scope='function')
