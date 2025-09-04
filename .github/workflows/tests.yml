@@ -37,6 +37,7 @@ on:
 env:
   current_python: '3.13'
   poetry_version: '2.1.4'
+  poetry_export_version: '1.9.0'
   nox_cmd: 'nox --verbose --error-on-missing-interpreters --session'
 jobs:
   check:
@@ -64,6 +65,7 @@ jobs:
     - name: Install Nox & co
       run: |
         pip${{ env.current_python }} install poetry==${{ env.poetry_version }}
+        pip${{ env.current_python }} install poetry-plugin-export==${{ env.poetry_export_version }}
         poetry export --with dev --without-hashes --format constraints.txt --output constraints.txt
         pip${{ env.current_python }} install --constraint constraints.txt nox nox-poetry
 
@@ -171,6 +173,7 @@ jobs:
     - name: Install Nox & co
       run: |
         pip${{ env.current_python }} install poetry==${{ env.poetry_version }}
+        pip${{ env.current_python }} install poetry-plugin-export==${{ env.poetry_export_version }}
         poetry export --with dev --without-hashes --format constraints.txt --output constraints.txt
         pip${{ env.current_python }} install --constraint constraints.txt nox nox-poetry
     - name: Install Python ${{ matrix.python-version }}
@@ -223,6 +226,7 @@ jobs:
     - name: Install Nox & co
       run: |
         pip${{ env.current_python }} install poetry==${{ env.poetry_version }}
+        pip${{ env.current_python }} install poetry-plugin-export==${{ env.poetry_export_version }}
         poetry export --with dev --without-hashes --format constraints.txt --output constraints.txt
         pip${{ env.current_python }} install --constraint constraints.txt nox nox-poetry
     - name: Install Python ${{ matrix.python-version }}
