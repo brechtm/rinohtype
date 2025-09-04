@@ -225,8 +225,24 @@ class SeeAlso(rst.Admonition):
     pass
 
 
-class VersionModified(DocutilsGroupingNode):
-    pass
+class VersionModified(rst.Admonition):
+    def build_flowable(self):
+        subtype = self.attributes['type']
+        title_class = subtype[len('version'):] if subtype.startswith('version') else subtype
+
+        def pop_title(items):
+            """Remove and return the admonition title from the paragraph"""
+            first_item = items[0]
+            if title_class in first_item.classes:
+                del items[0]
+                return first_item
+            return pop_title(first_item)
+
+        children = self.children_flowables()
+        first_paragraph = children[0]
+        custom_title = pop_title(first_paragraph.content)
+        return self.grouped_flowables_class(children, title=custom_title,
+                                            style=subtype)
 
 
 # special nodes

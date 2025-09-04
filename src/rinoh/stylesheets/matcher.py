@@ -203,7 +203,26 @@ matcher('related link reference', rlpe / ReferenceField.like(type='reference'))
 
 # (Sphinx) version added/changed & deprecated
 
-matcher('versionmodified', StyledText.like(classes=['versionmodified']))
+vermod = matcher('versionmodified', Admonition.like('versionmodified'))
+matcher('versionmodified title', vermod / Paragraph.like('title'))
+matcher('versionmodified inline title', vermod / Paragraph.like('title'))
+matcher('versionmodified inline title', vermod / ... / StyledText.like('inline title'))
+
+veradd = matcher('versionadded', Admonition.like('versionadded'))
+matcher('versionadded title', veradd / Paragraph.like('title'))
+matcher('versionadded inline title', veradd / ... / StyledText.like('inline title'))
+
+verrem = matcher('versionremoved', Admonition.like('versionremoved'))
+matcher('versionremoved title', verrem / Paragraph.like('title'))
+matcher('versionremoved inline title', verrem / ... / StyledText.like('inline title'))
+
+verchg = matcher('versionchanged', Admonition.like('versionchanged'))
+matcher('versionchanged title', verchg / Paragraph.like('title'))
+matcher('versionchanged inline title', verchg / ... / StyledText.like('inline title'))
+
+deprec = matcher('deprecated', Admonition.like('deprecated'))
+matcher('deprecated title', deprec / Paragraph.like('title'))
+matcher('deprecated inline title', deprec / ... / StyledText.like('inline title'))
 
 # (Sphinx) object descriptions
 

@@ -402,11 +402,6 @@ base=body
 space_above=1pt
 
 
-# (Sphinx) version added/changed & deprecated
-
-[versionmodified]
-font_slant=ITALIC
-
 # (Sphinx) object descriptions
 
 [object description]
@@ -596,6 +591,45 @@ base=builtin admonition
 base=admonition
 border_top=none
 border_bottom=none
+
+[versionmodified : Admonition]
+base=builtin admonition
+space_above=2pt
+space_below=2pt
+padding_top=0
+padding_bottom=0pt
+border_top=none
+border_bottom=none
+
+[versionmodified inline title : StyledText]
+base=admonition inline title
+# title already includes a trailing space
+after = ''
+
+[versionadded]
+base=versionmodified
+
+[versionadded inline title]
+base=versionmodified inline title
+
+[versionchanged]
+base=versionmodified
+
+[versionchanged inline title]
+base=versionmodified inline title
+
+[versionremoved]
+base=versionmodified
+
+[versionremoved inline title]
+base=versionmodified inline title
+
+[deprecated]
+base=versionmodified
+
+[deprecated inline title]
+base=versionmodified inline title
+
 
 [header_footer:Paragraph]
 base=default

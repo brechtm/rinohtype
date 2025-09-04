@@ -1,0 +1,25 @@
+<document source="/Users/brechtm/Code/rinohtype/tests_regression/rst/index.rst" translation_progress="{'total': 0, 'translated': 0}">
+    <seealso>
+        <paragraph>
+            This other place.
+    <versionmodified type="versionadded" version="3">
+        <paragraph translatable="False">
+            <inline classes="versionmodified added">
+                Added in version 3: 
+            Don't try to use this in an older version!
+    <versionmodified type="versionchanged" version="2.3">
+        <paragraph translatable="False">
+            <inline classes="versionmodified changed">
+                Changed in version 2.3: 
+            Different behavior, so be careful when upgrading!
+    <versionmodified type="versionremoved" version="3.14">
+        <paragraph translatable="False">
+            <inline classes="versionmodified removed">
+                Removed in version 3.14: 
+            It's gone, sorry!
+    <versionmodified type="deprecated" version="2.5">
+        <paragraph translatable="False">
+            <inline classes="versionmodified deprecated">
+                Deprecated since version 2.5: 
+            Use something else instead.
+            This feature will be removed in a future version.

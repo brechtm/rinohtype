@@ -19,6 +19,8 @@ Release 0.5.6 (in development)
 
 New Features:
 
+* versionmodified directive support (versionadded, versionchanged,
+  versionremoved, deprecated) (#440)
 * The style log now also shows the classes for each element (if any)
 
 Changed:

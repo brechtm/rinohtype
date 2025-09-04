@@ -17,8 +17,9 @@ from .helpers.regression import render_rst_file, render_sphinx_rst_file
 RST_PATH = Path(__file__).parent / 'rst'
 
 MIN_SPHINX_VERSION = {
-    'sphinx_inline_markup': '3.2',
+    'sphinx_admonition': '7.3',
     'sphinx_collapsible': '8.2',
+    'sphinx_inline_markup': '3.2',
 }
 
 

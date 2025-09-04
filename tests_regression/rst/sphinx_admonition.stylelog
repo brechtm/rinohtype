@@ -1,0 +1,108 @@
+---------------------------------- page 1 ----------------------------------
+#### FlowablesContainer('background')
+  StaticGroupedFlowables()
+#### FootnoteContainer('footnotes')
+  StaticGroupedFlowables()
+#### DownExpandingContainer('floats')
+  StaticGroupedFlowables()
+#### ChainedContainer('column1')
+  StaticGroupedFlowables()
+    DocumentTree()   index.rst   <document>
+      Admonition()   index.rst   <seealso>
+           > (0,0,0,1,2) seealso admonition [Sphinx] > admonition
+             (0,0,0,0,2) admonition [Sphinx] > DEFAULT
+        Paragraph('See also', style='title')
+             x (0,0,1,1,4) seealso admonition title
+             > (0,0,1,0,4) admonition title [Sphinx] > body
+               (0,0,1,0,2) title [Sphinx] > default
+               (0,0,0,0,2) body [Sphinx] > default
+            SingleStyledText('See also')
+        Paragraph('This other place.')   index.rst:2   <paragraph>
+             > (0,0,0,0,2) body [Sphinx] > default
+            MixedStyledText('This other place.')
+              MixedStyledText('This other place.')
+                SingleStyledText('This other place.')
+      Admonition(style='versionadded')   index.rst:4   <versionmodified>
+           > (0,0,1,0,2) versionadded [Sphinx] > versionmodified
+             (0,0,0,0,2) admonition [Sphinx] > DEFAULT
+        AdmonitionTitleParagraph('Added in version 3: Don't try to...')   index.rst:5   <paragraph>
+             x (1,0,0,0,4) admonition title paragraph
+             > (0,0,0,0,1) body [Sphinx] > default
+            MixedStyledText('Added in version 3: Don't try to...')
+              MixedStyledText('Added in version 3: Don't try to...')
+                MixedStyledText('Added in version 3: ', style='inline title')
+                     > (0,0,2,0,3) versionadded inline title [Sphinx] > versionmodified inline title
+                       (0,0,1,0,3) admonition inline title [Sphinx] > admonition title
+                  MixedStyledText('Added in version 3: ')   index.rst:5   <inline>
+                    SingleStyledText('Added in version 3: ')
+                MixedStyledText('Don't try to use this in an olde...')
+                  MixedStyledText('Don't try to use this in an olde...')
+                    SingleStyledText('Don't try to use this in an olde...')
+      Admonition(style='versionchanged')   index.rst:6   <versionmodified>
+           > (0,0,1,0,2) versionchanged [Sphinx] > versionmodified
+             (0,0,0,0,2) admonition [Sphinx] > DEFAULT
+        AdmonitionTitleParagraph('Changed in version 2.3: Differen...')   index.rst:7   <paragraph>
+             x (1,0,0,0,4) admonition title paragraph
+             > (0,0,0,0,1) body [Sphinx] > default
+            MixedStyledText('Changed in version 2.3: Differen...')
+              MixedStyledText('Changed in version 2.3: Differen...')
+                MixedStyledText('Changed in version 2.3: ', style='inline title')
+                     > (0,0,2,0,3) versionchanged inline title [Sphinx] > versionmodified inline title
+                       (0,0,1,0,3) admonition inline title [Sphinx] > admonition title
+                  MixedStyledText('Changed in version 2.3: ')   index.rst:7   <inline>
+                    SingleStyledText('Changed in version 2.3: ')
+                MixedStyledText('Different behavior, so be carefu...')
+                  MixedStyledText('Different behavior, so be carefu...')
+                    SingleStyledText('Different behavior, so be carefu...')
+            MixedStyledText('Changed in version 2.3: Differen...')
+              MixedStyledText('Changed in version 2.3: Differen...')
+                MixedStyledText('Changed in version 2.3: ', style='inline title')
+                     > (0,0,2,0,3) versionchanged inline title [Sphinx] > versionmodified inline title
+                       (0,0,1,0,3) admonition inline title [Sphinx] > admonition title
+                  MixedStyledText('Changed in version 2.3: ')   index.rst:7   <inline>
+                    SingleStyledText('Changed in version 2.3: ')
+                MixedStyledText('Different behavior, so be carefu...')
+                  MixedStyledText('Different behavior, so be carefu...')
+                    SingleStyledText('Different behavior, so be carefu...')
+      Admonition(style='versionremoved')   index.rst:8   <versionmodified>
+           > (0,0,1,0,2) versionremoved [Sphinx] > versionmodified
+             (0,0,0,0,2) admonition [Sphinx] > DEFAULT
+        AdmonitionTitleParagraph('Removed in version 3.14: It's go...')   index.rst:9   <paragraph>
+             x (1,0,0,0,4) admonition title paragraph
+             > (0,0,0,0,1) body [Sphinx] > default
+            MixedStyledText('Removed in version 3.14: It's go...')
+              MixedStyledText('Removed in version 3.14: It's go...')
+                MixedStyledText('Removed in version 3.14: ', style='inline title')
+                     > (0,0,2,0,3) versionremoved inline title [Sphinx] > versionmodified inline title
+                       (0,0,1,0,3) admonition inline title [Sphinx] > admonition title
+                  MixedStyledText('Removed in version 3.14: ')   index.rst:9   <inline>
+                    SingleStyledText('Removed in version 3.14: ')
+                MixedStyledText('It's gone, sorry!')
+                  MixedStyledText('It's gone, sorry!')
+                    SingleStyledText('It's gone, sorry!')
+      Admonition(style='deprecated')   index.rst:10   <versionmodified>
+           > (0,0,1,0,2) deprecated [Sphinx] > versionmodified
+             (0,0,0,0,2) admonition [Sphinx] > DEFAULT
+        AdmonitionTitleParagraph('Deprecated since version 2.5: Us...')   index.rst:11   <paragraph>
+             x (1,0,0,0,4) admonition title paragraph
+             > (0,0,0,0,1) body [Sphinx] > default
+            MixedStyledText('Deprecated since version 2.5: Us...')
+              MixedStyledText('Deprecated since version 2.5: Us...')
+                MixedStyledText('Deprecated since version 2.5: ', style='inline title')
+                     > (0,0,2,0,3) deprecated inline title [Sphinx] > versionmodified inline title
+                       (0,0,1,0,3) admonition inline title [Sphinx] > admonition title
+                  MixedStyledText('Deprecated since version 2.5: ')   index.rst:11   <inline>
+                    SingleStyledText('Deprecated since version 2.5: ')
+                MixedStyledText('Use something else instead. This...')
+                  MixedStyledText('Use something else instead. This...')
+                    SingleStyledText('Use something else instead. This...')
+            MixedStyledText('Deprecated since version 2.5: Us...')
+              MixedStyledText('Deprecated since version 2.5: Us...')
+                MixedStyledText('Deprecated since version 2.5: ', style='inline title')
+                     > (0,0,2,0,3) deprecated inline title [Sphinx] > versionmodified inline title
+                       (0,0,1,0,3) admonition inline title [Sphinx] > admonition title
+                  MixedStyledText('Deprecated since version 2.5: ')   index.rst:11   <inline>
+                    SingleStyledText('Deprecated since version 2.5: ')
+                MixedStyledText('Use something else instead. This...')
+                  MixedStyledText('Use something else instead. This...')
+                    SingleStyledText('Use something else instead. This...')
