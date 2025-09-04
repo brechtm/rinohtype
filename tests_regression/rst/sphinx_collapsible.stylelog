@@ -1,0 +1,56 @@
+---------------------------------- page 1 ----------------------------------
+#### FlowablesContainer('background')
+  StaticGroupedFlowables()
+#### FootnoteContainer('footnotes')
+  StaticGroupedFlowables()
+#### DownExpandingContainer('floats')
+  StaticGroupedFlowables()
+#### ChainedContainer('column1')
+  StaticGroupedFlowables()
+    DocumentTree()   index.rst   <document>
+      Admonition()   index.rst   <note>
+           > (0,0,0,1,2) note admonition [Sphinx] > builtin admonition
+             (0,0,0,0,2) admonition [Sphinx] > DEFAULT
+        AdmonitionTitleParagraph('NoteThis note is collapsible, an...')   index.rst:5   <paragraph>
+             x (1,0,0,1,4) note admonition title paragraph
+             x (1,0,0,0,4) admonition title paragraph
+             > (0,0,0,0,1) body [Sphinx] > default
+            MixedStyledText('NoteThis note is collapsible, an...')
+              MixedStyledText('NoteThis note is collapsible, an...')
+                MixedStyledText('Note', style='inline title')
+                     x (0,0,1,1,3) note admonition inline title
+                     > (0,0,1,0,3) admonition inline title [Sphinx] > admonition title
+                  SingleStyledText('Note')
+                MixedStyledText('This note is collapsible, and in...')
+                  MixedStyledText('This note is collapsible, and in...')
+                    SingleStyledText('This note is collapsible, and in...')
+      Admonition()   index.rst   <admonition classes='admonition-example'>
+           > (0,0,0,0,2) admonition [Sphinx] > DEFAULT
+        Paragraph('Example', style='title')
+             > (0,0,1,0,4) admonition title [Sphinx] > body
+               (0,0,1,0,2) title [Sphinx] > default
+               (0,0,0,0,2) body [Sphinx] > default
+            MixedStyledText('Example')
+              MixedStyledText('Example')   index.rst:7   <title>
+                SingleStyledText('Example')
+        Paragraph('This example is collapsible, and...')   index.rst:10   <paragraph>
+             > (0,0,0,0,2) body [Sphinx] > default
+            MixedStyledText('This example is collapsible, and...')
+              MixedStyledText('This example is collapsible, and...')
+                SingleStyledText('This example is collapsible, and...')
+      Admonition()   index.rst   <hint>
+           > (0,0,0,1,2) hint admonition [Sphinx] > builtin admonition
+             (0,0,0,0,2) admonition [Sphinx] > DEFAULT
+        AdmonitionTitleParagraph('HintThis hint is collapsible, bu...')   index.rst:15   <paragraph>
+             x (1,0,0,1,4) hint admonition title paragraph
+             x (1,0,0,0,4) admonition title paragraph
+             > (0,0,0,0,1) body [Sphinx] > default
+            MixedStyledText('HintThis hint is collapsible, bu...')
+              MixedStyledText('HintThis hint is collapsible, bu...')
+                MixedStyledText('Hint', style='inline title')
+                     x (0,0,1,1,3) hint admonition inline title
+                     > (0,0,1,0,3) admonition inline title [Sphinx] > admonition title
+                  SingleStyledText('Hint')
+                MixedStyledText('This hint is collapsible, but in...')
+                  MixedStyledText('This hint is collapsible, but in...')
+                    SingleStyledText('This hint is collapsible, but in...')

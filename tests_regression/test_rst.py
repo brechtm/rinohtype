@@ -18,6 +18,7 @@ RST_PATH = Path(__file__).parent / 'rst'
 
 MIN_SPHINX_VERSION = {
     'sphinx_inline_markup': '3.2',
+    'sphinx_collapsible': '8.2',
 }
 
 
