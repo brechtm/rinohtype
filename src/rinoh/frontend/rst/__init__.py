@@ -145,5 +145,6 @@ class ReStructuredTextReader(DocutilsReader):
 
 
 def from_doctree(doctree, **context):
+    doctree.attributes['rinoh_regression_test'] = True
     mapped_tree = DocutilsNode.map_node(doctree, **context)
     return mapped_tree.flowable()

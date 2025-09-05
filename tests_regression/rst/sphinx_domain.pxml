@@ -1,0 +1,110 @@
+<document source="/Users/brechtm/Code/rinohtype/tests_regression/rst/index.rst" translation_progress="{'total': 0, 'translated': 0}">
+    <index entries="('pair',\ 'built-in\ function;\ Timer.repeat()',\ 'Timer.repeat',\ '',\ None)">
+    <desc classes="py function" desctype="function" domain="py" no-contents-entry="False" no-index="False" no-index-entry="False" no-typesetting="False" nocontentsentry="False" noindex="False" noindexentry="False" objtype="function">
+        <desc_signature _toc_name="Timer.repeat()" _toc_parts="('Timer', 'repeat')" class="Timer" classes="sig sig-object" fullname="Timer.repeat" ids="Timer.repeat" module="True">
+            <desc_addname classes="sig-prename descclassname" xml:space="preserve">
+                Timer.
+            <desc_name classes="sig-name descname" xml:space="preserve">
+                repeat
+            <desc_parameterlist multi_line_parameter_list="False" multi_line_trailing_comma="True" xml:space="preserve">
+                <desc_parameter xml:space="preserve">
+                    <desc_sig_name classes="n">
+                        source
+                    <desc_sig_punctuation classes="p">
+                        :
+                    <desc_sig_space classes="w">
+                         
+                    <desc_sig_name classes="n">
+                        <pending_xref py:class="True" py:module="True" refdomain="py" refspecific="False" reftarget="str" reftype="class">
+                            str
+                <desc_parameter xml:space="preserve">
+                    <desc_sig_name classes="n">
+                        repeat
+                    <desc_sig_punctuation classes="p">
+                        :
+                    <desc_sig_space classes="w">
+                         
+                    <desc_sig_name classes="n">
+                        <pending_xref py:class="True" py:module="True" refdomain="py" refspecific="False" reftarget="int" reftype="class">
+                            int
+                    <desc_sig_space classes="w">
+                         
+                    <desc_sig_operator classes="o">
+                        =
+                    <desc_sig_space classes="w">
+                         
+                    <inline classes="default_value" support_smartquotes="False">
+                        3
+                <desc_parameter xml:space="preserve">
+                    <desc_sig_name classes="n">
+                        hurry
+                    <desc_sig_punctuation classes="p">
+                        :
+                    <desc_sig_space classes="w">
+                         
+                    <desc_sig_name classes="n">
+                        <pending_xref py:class="True" py:module="True" refdomain="py" refspecific="False" reftarget="Literal" reftype="class">
+                            Literal
+                        <desc_sig_punctuation classes="p">
+                            [
+                        <desc_sig_keyword classes="k">
+                            True
+                        <desc_sig_punctuation classes="p">
+                            ,
+                        <desc_sig_space classes="w">
+                             
+                        <desc_sig_keyword classes="k">
+                            False
+                        <desc_sig_punctuation classes="p">
+                            ]
+                    <desc_sig_space classes="w">
+                         
+                    <desc_sig_operator classes="o">
+                        =
+                    <desc_sig_space classes="w">
+                         
+                    <inline classes="default_value" support_smartquotes="False">
+                        True
+        <desc_content>
+            <paragraph>
+                Not sure what this is supposed to do.
+    <index entries="('single',\ 'SomeClass\ (built-in\ class)',\ 'SomeClass',\ '',\ None)">
+    <desc classes="py class" desctype="class" domain="py" no-contents-entry="False" no-index="False" no-index-entry="False" no-typesetting="False" nocontentsentry="False" noindex="False" noindexentry="False" objtype="class">
+        <desc_signature _toc_name="SomeClass" _toc_parts="('SomeClass',)" class="" classes="sig sig-object" fullname="SomeClass" ids="SomeClass" module="True">
+            <desc_annotation xml:space="preserve">
+                <desc_sig_keyword classes="k">
+                    class
+                <desc_sig_space classes="w">
+                     
+            <desc_name classes="sig-name descname" xml:space="preserve">
+                SomeClass
+            <desc_type_parameter_list multi_line_parameter_list="False" multi_line_trailing_comma="True" xml:space="preserve">
+                <desc_type_parameter xml:space="preserve">
+                    <desc_sig_name classes="n">
+                        S
+                    <desc_sig_punctuation classes="p">
+                        :
+                    <desc_sig_space classes="w">
+                         
+                    <desc_sig_name classes="n">
+                        <pending_xref py:class="True" py:module="True" refdomain="py" refspecific="False" reftarget="Sequence" reftype="class">
+                            Sequence
+                        <desc_sig_punctuation classes="p">
+                            [
+                        <pending_xref py:class="True" py:module="True" refdomain="py" refspecific="False" reftarget="T" reftype="class">
+                            T
+                        <desc_sig_punctuation classes="p">
+                            ]
+                <desc_type_parameter xml:space="preserve">
+                    <desc_sig_name classes="n">
+                        T
+                <desc_type_parameter xml:space="preserve">
+                    <desc_sig_name classes="n">
+                        KT
+                <desc_type_parameter xml:space="preserve">
+                    <desc_sig_name classes="n">
+                        VT
+            <desc_parameterlist xml:space="preserve">
+                <desc_parameter xml:space="preserve">
+                    Dict[KT, VT]
+        <desc_content>

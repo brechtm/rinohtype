@@ -20,6 +20,7 @@ MIN_SPHINX_VERSION = {
     'sphinx_admonition': '7.3',
     'sphinx_collapsible': '8.2',
     'sphinx_inline_markup': '3.2',
+    'sphinx_domain': '7.1',
 }
 
 

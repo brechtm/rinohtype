@@ -1,0 +1,316 @@
+---------------------------------- page 1 ----------------------------------
+#### FlowablesContainer('background')
+  StaticGroupedFlowables()
+#### FootnoteContainer('footnotes')
+  StaticGroupedFlowables()
+#### DownExpandingContainer('floats')
+  StaticGroupedFlowables()
+#### ChainedContainer('column1')
+  StaticGroupedFlowables()
+    DocumentTree()   index.rst   <document>
+      LabeledFlowable(style='object description')   index.rst   <desc classes='py function'>
+           > (0,0,1,0,2) object description [Sphinx] > definition list item
+        StaticGroupedFlowables(style='signatures')
+             > (0,0,2,0,3) object signatures [Sphinx] > definition term
+          Paragraph('Timer.repeat ( source: str, repe...', id='Timer.repeat')   index.rst:2   <desc_signature classes='sig sig-object'>
+               > (0,0,2,0,5) object signature [Sphinx] > definition term paragraph
+                 (0,0,0,0,2) body [Sphinx] > default
+              MixedStyledText('Timer.repeat ( source: str, repe...')
+                MixedStyledText('Timer.repeat ( source: str, repe...')
+                  MixedStyledText('Timer.', style='additional name part')   index.rst:2   <desc_addname classes='sig-prename descclassname'>
+                       > (0,0,3,0,6) additional name part [Sphinx] > monospaced
+                    SingleStyledText('Timer.')
+                  MixedStyledText('repeat', style='main object name')   index.rst:2   <desc_name classes='sig-name descname'>
+                       > (0,0,3,0,6) object name [Sphinx] > DEFAULT
+                    SingleStyledText('repeat')
+                  MixedStyledText(' ( source: str, repeat: int = 3,...')   index.rst:2   <desc_parameterlist>
+                    MixedStyledText(' ( source: str, repeat: int = 3,...')
+                      SingleStyledText(' ( ', style='parentheses')
+                           > (0,0,3,0,6) object parentheses [Sphinx] > DEFAULT
+                      MixedStyledText('source: str, repeat: int = 3, hu...', style='parameter list')
+                           > (0,0,3,0,6) object parameter list [Sphinx] > DEFAULT
+                        MixedStyledText('source: str', style='parameter')   <desc_parameter>
+                             > (0,0,3,0,6) object parameter [Sphinx] > object parameter (no emphasis)
+                          MixedStyledText('source', style='signature name')   <desc_sig_name classes='n'>
+                               > (0,0,3,0,6) object signature name [Sphinx] > DEFAULT
+                            SingleStyledText('source')
+                          MixedStyledText(':', style='signature punctuation')   <desc_sig_punctuation classes='p'>
+                               > (0,0,3,0,6) object signature punctuation [Sphinx] > DEFAULT
+                            SingleStyledText(':')
+                          MixedStyledText(' ', style='signature space')   <desc_sig_space classes='w'>
+                               > (0,0,3,0,6) object signature space [Sphinx] > DEFAULT
+                            SingleStyledText(' ')
+                          MixedStyledText('str', style='signature name')   <desc_sig_name classes='n'>
+                               > (0,0,3,0,6) object signature name [Sphinx] > DEFAULT
+                            MixedStyledText('str')   <pending_xref>
+                              SingleStyledText('str')
+                        SingleStyledText(', ')
+                        MixedStyledText('repeat: int = 3', style='parameter')   <desc_parameter>
+                             > (0,0,3,0,6) object parameter [Sphinx] > object parameter (no emphasis)
+                          MixedStyledText('repeat', style='signature name')   <desc_sig_name classes='n'>
+                               > (0,0,3,0,6) object signature name [Sphinx] > DEFAULT
+                            SingleStyledText('repeat')
+                          MixedStyledText(':', style='signature punctuation')   <desc_sig_punctuation classes='p'>
+                               > (0,0,3,0,6) object signature punctuation [Sphinx] > DEFAULT
+                            SingleStyledText(':')
+                          MixedStyledText(' ', style='signature space')   <desc_sig_space classes='w'>
+                               > (0,0,3,0,6) object signature space [Sphinx] > DEFAULT
+                            SingleStyledText(' ')
+                          MixedStyledText('int', style='signature name')   <desc_sig_name classes='n'>
+                               > (0,0,3,0,6) object signature name [Sphinx] > DEFAULT
+                            MixedStyledText('int')   <pending_xref>
+                              SingleStyledText('int')
+                          MixedStyledText(' ', style='signature space')   <desc_sig_space classes='w'>
+                               > (0,0,3,0,6) object signature space [Sphinx] > DEFAULT
+                            SingleStyledText(' ')
+                          MixedStyledText('=', style='signature operator')   <desc_sig_operator classes='o'>
+                               > (0,0,3,0,6) object signature operator [Sphinx] > DEFAULT
+                            SingleStyledText('=')
+                          MixedStyledText(' ', style='signature space')   <desc_sig_space classes='w'>
+                               > (0,0,3,0,6) object signature space [Sphinx] > DEFAULT
+                            SingleStyledText(' ')
+              MixedStyledText('Timer.repeat ( source: str, repe...')
+                MixedStyledText('Timer.repeat ( source: str, repe...')
+                  MixedStyledText('Timer.', style='additional name part')   index.rst:2   <desc_addname classes='sig-prename descclassname'>
+                       > (0,0,3,0,6) additional name part [Sphinx] > monospaced
+                    SingleStyledText('Timer.')
+                  MixedStyledText('repeat', style='main object name')   index.rst:2   <desc_name classes='sig-name descname'>
+                       > (0,0,3,0,6) object name [Sphinx] > DEFAULT
+                    SingleStyledText('repeat')
+                  MixedStyledText(' ( source: str, repeat: int = 3,...')   index.rst:2   <desc_parameterlist>
+                    MixedStyledText(' ( source: str, repeat: int = 3,...')
+                      SingleStyledText(' ( ', style='parentheses')
+                           > (0,0,3,0,6) object parentheses [Sphinx] > DEFAULT
+                      MixedStyledText('source: str, repeat: int = 3, hu...', style='parameter list')
+                           > (0,0,3,0,6) object parameter list [Sphinx] > DEFAULT
+                        MixedStyledText('source: str', style='parameter')   <desc_parameter>
+                             > (0,0,3,0,6) object parameter [Sphinx] > object parameter (no emphasis)
+                          MixedStyledText('source', style='signature name')   <desc_sig_name classes='n'>
+                               > (0,0,3,0,6) object signature name [Sphinx] > DEFAULT
+                            SingleStyledText('source')
+                          MixedStyledText(':', style='signature punctuation')   <desc_sig_punctuation classes='p'>
+                               > (0,0,3,0,6) object signature punctuation [Sphinx] > DEFAULT
+                            SingleStyledText(':')
+                          MixedStyledText(' ', style='signature space')   <desc_sig_space classes='w'>
+                               > (0,0,3,0,6) object signature space [Sphinx] > DEFAULT
+                            SingleStyledText(' ')
+                          MixedStyledText('str', style='signature name')   <desc_sig_name classes='n'>
+                               > (0,0,3,0,6) object signature name [Sphinx] > DEFAULT
+                            MixedStyledText('str')   <pending_xref>
+                              SingleStyledText('str')
+                        SingleStyledText(', ')
+                        MixedStyledText('repeat: int = 3', style='parameter')   <desc_parameter>
+                             > (0,0,3,0,6) object parameter [Sphinx] > object parameter (no emphasis)
+                          MixedStyledText('repeat', style='signature name')   <desc_sig_name classes='n'>
+                               > (0,0,3,0,6) object signature name [Sphinx] > DEFAULT
+                            SingleStyledText('repeat')
+                          MixedStyledText(':', style='signature punctuation')   <desc_sig_punctuation classes='p'>
+                               > (0,0,3,0,6) object signature punctuation [Sphinx] > DEFAULT
+                            SingleStyledText(':')
+                          MixedStyledText(' ', style='signature space')   <desc_sig_space classes='w'>
+                               > (0,0,3,0,6) object signature space [Sphinx] > DEFAULT
+                            SingleStyledText(' ')
+                          MixedStyledText('int', style='signature name')   <desc_sig_name classes='n'>
+                               > (0,0,3,0,6) object signature name [Sphinx] > DEFAULT
+                            MixedStyledText('int')   <pending_xref>
+                              SingleStyledText('int')
+                          MixedStyledText(' ', style='signature space')   <desc_sig_space classes='w'>
+                               > (0,0,3,0,6) object signature space [Sphinx] > DEFAULT
+                            SingleStyledText(' ')
+                          MixedStyledText('=', style='signature operator')   <desc_sig_operator classes='o'>
+                               > (0,0,3,0,6) object signature operator [Sphinx] > DEFAULT
+                            SingleStyledText('=')
+                          MixedStyledText(' ', style='signature space')   <desc_sig_space classes='w'>
+                               > (0,0,3,0,6) object signature space [Sphinx] > DEFAULT
+                            SingleStyledText(' ')
+                          MixedStyledText('3')   <inline classes='default_value'>
+                            SingleStyledText('3')
+                        SingleStyledText(', ')
+                        MixedStyledText('hurry: Literal[True, False] = Tr...', style='parameter')   <desc_parameter>
+                             > (0,0,3,0,6) object parameter [Sphinx] > object parameter (no emphasis)
+                          MixedStyledText('hurry', style='signature name')   <desc_sig_name classes='n'>
+                               > (0,0,3,0,6) object signature name [Sphinx] > DEFAULT
+                            SingleStyledText('hurry')
+                          MixedStyledText(':', style='signature punctuation')   <desc_sig_punctuation classes='p'>
+                               > (0,0,3,0,6) object signature punctuation [Sphinx] > DEFAULT
+                            SingleStyledText(':')
+                          MixedStyledText(' ', style='signature space')   <desc_sig_space classes='w'>
+                               > (0,0,3,0,6) object signature space [Sphinx] > DEFAULT
+                            SingleStyledText(' ')
+                          MixedStyledText('Literal[True, False]', style='signature name')   <desc_sig_name classes='n'>
+                               > (0,0,3,0,6) object signature name [Sphinx] > DEFAULT
+                            MixedStyledText('Literal')   <pending_xref>
+                              SingleStyledText('Literal')
+                            MixedStyledText('[', style='signature punctuation')   <desc_sig_punctuation classes='p'>
+                                 > (0,0,3,0,6) object signature punctuation [Sphinx] > DEFAULT
+                              SingleStyledText('[')
+                            MixedStyledText('True', style='signature keyword')   <desc_sig_keyword classes='k'>
+                                 > (0,0,3,0,6) object signature keyword [Sphinx] > DEFAULT
+                              SingleStyledText('True')
+                            MixedStyledText(',', style='signature punctuation')   <desc_sig_punctuation classes='p'>
+                                 > (0,0,3,0,6) object signature punctuation [Sphinx] > DEFAULT
+                              SingleStyledText(',')
+                            MixedStyledText(' ', style='signature space')   <desc_sig_space classes='w'>
+                                 > (0,0,3,0,6) object signature space [Sphinx] > DEFAULT
+                              SingleStyledText(' ')
+                            MixedStyledText('False', style='signature keyword')   <desc_sig_keyword classes='k'>
+                                 > (0,0,3,0,6) object signature keyword [Sphinx] > DEFAULT
+                              SingleStyledText('False')
+                            MixedStyledText(']', style='signature punctuation')   <desc_sig_punctuation classes='p'>
+                                 > (0,0,3,0,6) object signature punctuation [Sphinx] > DEFAULT
+                              SingleStyledText(']')
+                          MixedStyledText(' ', style='signature space')   <desc_sig_space classes='w'>
+                               > (0,0,3,0,6) object signature space [Sphinx] > DEFAULT
+                            SingleStyledText(' ')
+                          MixedStyledText('=', style='signature operator')   <desc_sig_operator classes='o'>
+                               > (0,0,3,0,6) object signature operator [Sphinx] > DEFAULT
+                            SingleStyledText('=')
+                          MixedStyledText(' ', style='signature space')   <desc_sig_space classes='w'>
+                               > (0,0,3,0,6) object signature space [Sphinx] > DEFAULT
+                            SingleStyledText(' ')
+                          MixedStyledText('True')   <inline classes='default_value'>
+                            SingleStyledText('True')
+                    SingleStyledText(' ) ', style='parentheses')
+                         > (0,0,3,0,6) object parentheses [Sphinx] > DEFAULT
+        StaticGroupedFlowables(style='content')   index.rst   <desc_content>
+             > (0,0,2,0,3) object description content [Sphinx] > definition
+          Paragraph('Not sure what this is supposed t...')   index.rst:4   <paragraph>
+               > (0,0,2,0,5) object description content paragraph [Sphinx] > body
+                 (0,0,0,0,2) body [Sphinx] > default
+              MixedStyledText('Not sure what this is supposed t...')
+                MixedStyledText('Not sure what this is supposed t...')
+                  SingleStyledText('Not sure what this is supposed t...')
+      LabeledFlowable(style='object description')   <desc classes='py class'>
+           > (0,0,1,0,2) object description [Sphinx] > definition list item
+        StaticGroupedFlowables(style='signatures')
+             > (0,0,2,0,3) object signatures [Sphinx] > definition term
+          Paragraph('class SomeClass ( S: Sequence[T]...', id='SomeClass')   index.rst:6   <desc_signature classes='sig sig-object'>
+               > (0,0,2,0,5) object signature [Sphinx] > definition term paragraph
+                 (0,0,0,0,2) body [Sphinx] > default
+              MixedStyledText('class SomeClass ( S: Sequence[T]...')
+                MixedStyledText('class SomeClass ( S: Sequence[T]...')
+                  MixedStyledText('class ', style='annotation')   index.rst:6   <desc_annotation>
+                       > (0,0,3,0,6) object annotation [Sphinx] > DEFAULT
+                    MixedStyledText('class', style='signature keyword')   <desc_sig_keyword classes='k'>
+                         > (0,0,3,0,6) object signature keyword [Sphinx] > DEFAULT
+                      SingleStyledText('class')
+                    MixedStyledText(' ', style='signature space')   <desc_sig_space classes='w'>
+                         > (0,0,3,0,6) object signature space [Sphinx] > DEFAULT
+                      SingleStyledText(' ')
+                  MixedStyledText('SomeClass', style='main object name')   index.rst:6   <desc_name classes='sig-name descname'>
+                       > (0,0,3,0,6) object name [Sphinx] > DEFAULT
+                    SingleStyledText('SomeClass')
+                  MixedStyledText(' ( S: Sequence[T], T, KT, VT ) ')   index.rst:6   <desc_type_parameter_list>
+                    MixedStyledText(' ( S: Sequence[T], T, KT, VT')
+                      SingleStyledText(' ( ', style='parentheses')
+                           > (0,0,3,0,6) object parentheses [Sphinx] > DEFAULT
+                      MixedStyledText('S: Sequence[T], T, KT, VT', style='type parameter list')
+                        MixedStyledText('S: Sequence[T]', style='type parameter')   <desc_type_parameter>
+                          MixedStyledText('S', style='signature name')   <desc_sig_name classes='n'>
+                               > (0,0,3,0,6) object signature name [Sphinx] > DEFAULT
+                            SingleStyledText('S')
+                          MixedStyledText(':', style='signature punctuation')   <desc_sig_punctuation classes='p'>
+                               > (0,0,3,0,6) object signature punctuation [Sphinx] > DEFAULT
+                            SingleStyledText(':')
+                          MixedStyledText(' ', style='signature space')   <desc_sig_space classes='w'>
+                               > (0,0,3,0,6) object signature space [Sphinx] > DEFAULT
+                            SingleStyledText(' ')
+                          MixedStyledText('Sequence[T]', style='signature name')   <desc_sig_name classes='n'>
+                               > (0,0,3,0,6) object signature name [Sphinx] > DEFAULT
+                            MixedStyledText('Sequence')   <pending_xref>
+                              SingleStyledText('Sequence')
+                            MixedStyledText('[', style='signature punctuation')   <desc_sig_punctuation classes='p'>
+                                 > (0,0,3,0,6) object signature punctuation [Sphinx] > DEFAULT
+                              SingleStyledText('[')
+                            MixedStyledText('T')   <pending_xref>
+                              SingleStyledText('T')
+                            MixedStyledText(']', style='signature punctuation')   <desc_sig_punctuation classes='p'>
+                                 > (0,0,3,0,6) object signature punctuation [Sphinx] > DEFAULT
+                              SingleStyledText(']')
+                        SingleStyledText(', ')
+                        MixedStyledText('T', style='type parameter')   <desc_type_parameter>
+                          MixedStyledText('T', style='signature name')   <desc_sig_name classes='n'>
+                               > (0,0,3,0,6) object signature name [Sphinx] > DEFAULT
+                            SingleStyledText('T')
+                        SingleStyledText(', ')
+                        MixedStyledText('KT', style='type parameter')   <desc_type_parameter>
+                          MixedStyledText('KT', style='signature name')   <desc_sig_name classes='n'>
+                               > (0,0,3,0,6) object signature name [Sphinx] > DEFAULT
+                            SingleStyledText('KT')
+                        SingleStyledText(', ')
+                        MixedStyledText('VT', style='type parameter')   <desc_type_parameter>
+                          MixedStyledText('VT', style='signature name')   <desc_sig_name classes='n'>
+                               > (0,0,3,0,6) object signature name [Sphinx] > DEFAULT
+                            SingleStyledText('VT')
+                    SingleStyledText(' ) ', style='parentheses')
+                         > (0,0,3,0,6) object parentheses [Sphinx] > DEFAULT
+              MixedStyledText('class SomeClass ( S: Sequence[T]...')
+                MixedStyledText('class SomeClass ( S: Sequence[T]...')
+                  MixedStyledText('class ', style='annotation')   index.rst:6   <desc_annotation>
+                       > (0,0,3,0,6) object annotation [Sphinx] > DEFAULT
+                    MixedStyledText('class', style='signature keyword')   <desc_sig_keyword classes='k'>
+                         > (0,0,3,0,6) object signature keyword [Sphinx] > DEFAULT
+                      SingleStyledText('class')
+                    MixedStyledText(' ', style='signature space')   <desc_sig_space classes='w'>
+                         > (0,0,3,0,6) object signature space [Sphinx] > DEFAULT
+                      SingleStyledText(' ')
+                  MixedStyledText('SomeClass', style='main object name')   index.rst:6   <desc_name classes='sig-name descname'>
+                       > (0,0,3,0,6) object name [Sphinx] > DEFAULT
+                    SingleStyledText('SomeClass')
+                  MixedStyledText(' ( S: Sequence[T], T, KT, VT ) ')   index.rst:6   <desc_type_parameter_list>
+                    MixedStyledText(' ( S: Sequence[T], T, KT, VT')
+                      SingleStyledText(' ( ', style='parentheses')
+                           > (0,0,3,0,6) object parentheses [Sphinx] > DEFAULT
+                      MixedStyledText('S: Sequence[T], T, KT, VT', style='type parameter list')
+                        MixedStyledText('S: Sequence[T]', style='type parameter')   <desc_type_parameter>
+                          MixedStyledText('S', style='signature name')   <desc_sig_name classes='n'>
+                               > (0,0,3,0,6) object signature name [Sphinx] > DEFAULT
+                            SingleStyledText('S')
+                          MixedStyledText(':', style='signature punctuation')   <desc_sig_punctuation classes='p'>
+                               > (0,0,3,0,6) object signature punctuation [Sphinx] > DEFAULT
+                            SingleStyledText(':')
+                          MixedStyledText(' ', style='signature space')   <desc_sig_space classes='w'>
+                               > (0,0,3,0,6) object signature space [Sphinx] > DEFAULT
+                            SingleStyledText(' ')
+                          MixedStyledText('Sequence[T]', style='signature name')   <desc_sig_name classes='n'>
+                               > (0,0,3,0,6) object signature name [Sphinx] > DEFAULT
+                            MixedStyledText('Sequence')   <pending_xref>
+                              SingleStyledText('Sequence')
+                            MixedStyledText('[', style='signature punctuation')   <desc_sig_punctuation classes='p'>
+                                 > (0,0,3,0,6) object signature punctuation [Sphinx] > DEFAULT
+                              SingleStyledText('[')
+                            MixedStyledText('T')   <pending_xref>
+                              SingleStyledText('T')
+                            MixedStyledText(']', style='signature punctuation')   <desc_sig_punctuation classes='p'>
+                                 > (0,0,3,0,6) object signature punctuation [Sphinx] > DEFAULT
+                              SingleStyledText(']')
+                        SingleStyledText(', ')
+                        MixedStyledText('T', style='type parameter')   <desc_type_parameter>
+                          MixedStyledText('T', style='signature name')   <desc_sig_name classes='n'>
+                               > (0,0,3,0,6) object signature name [Sphinx] > DEFAULT
+                            SingleStyledText('T')
+                        SingleStyledText(', ')
+                        MixedStyledText('KT', style='type parameter')   <desc_type_parameter>
+                          MixedStyledText('KT', style='signature name')   <desc_sig_name classes='n'>
+                               > (0,0,3,0,6) object signature name [Sphinx] > DEFAULT
+                            SingleStyledText('KT')
+                        SingleStyledText(', ')
+                        MixedStyledText('VT', style='type parameter')   <desc_type_parameter>
+                          MixedStyledText('VT', style='signature name')   <desc_sig_name classes='n'>
+                               > (0,0,3,0,6) object signature name [Sphinx] > DEFAULT
+                            SingleStyledText('VT')
+                    SingleStyledText(' ) ', style='parentheses')
+                         > (0,0,3,0,6) object parentheses [Sphinx] > DEFAULT
+                  MixedStyledText(' ( Dict[KT, VT] ) ')   index.rst:6   <desc_parameterlist>
+                    MixedStyledText(' ( Dict[KT, VT]')
+                      SingleStyledText(' ( ', style='parentheses')
+                           > (0,0,3,0,6) object parentheses [Sphinx] > DEFAULT
+                      MixedStyledText('Dict[KT, VT]', style='parameter list')
+                           > (0,0,3,0,6) object parameter list [Sphinx] > DEFAULT
+                        MixedStyledText('Dict[KT, VT]', style='parameter')   <desc_parameter>
+                             > (0,0,3,0,6) object parameter [Sphinx] > object parameter (no emphasis)
+                          SingleStyledText('Dict[KT, VT]')
+                    SingleStyledText(' ) ', style='parentheses')
+                         > (0,0,3,0,6) object parentheses [Sphinx] > DEFAULT
+        StaticGroupedFlowables(style='content')   <desc_content>
+             > (0,0,2,0,3) object description content [Sphinx] > definition
