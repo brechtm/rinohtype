@@ -16,24 +16,34 @@ from .helpers.regression import render_rst_file, render_sphinx_rst_file
 
 RST_PATH = Path(__file__).parent / 'rst'
 
-MIN_SPHINX_VERSION = {
-    'sphinx_admonition': '7.3',
-    'sphinx_collapsible': '8.2',
-    'sphinx_inline_markup': '3.2',
-    'sphinx_domain': '7.1',
+SPHINX_MIN_MAX_VERSION = {  # min=inclusive, max=exclusive
+    'sphinx_admonition': ('7.3', None),
+    'sphinx_collapsible': ('8.2', None),
+    'sphinx_inline_markup': ('3.2', '8.2'),
+    'sphinx_domain': ('7.1', None),
 }
+
+
+def version_to_tuple(version):
+    return tuple(int(v) for v in version.split('.'))
 
 
 def collect_tests():
     for rst_path in sorted(RST_PATH.glob('*.rst')):
         marks = []
         try:
-            version = MIN_SPHINX_VERSION[rst_path.stem]
-            skip = sphinx.version_info < tuple(map(int, version.split('.')))
-            reason = "minimum Sphinx version is " + '.'.join(version)
-            marks.append(pytest.mark.skipif(skip, reason=reason))
+            min_ver, max_ver = SPHINX_MIN_MAX_VERSION[rst_path.stem]
         except KeyError:
             pass
+        else:
+            if min_ver and sphinx.version_info < version_to_tuple(min_ver):
+                reason = f"minimum Sphinx version is {min_ver}"
+            elif max_ver and sphinx.version_info >= version_to_tuple(max_ver):
+                reason = f"maximum Sphinx version is {max_ver}"
+            else:
+                reason = None
+            if reason:
+                marks.append(pytest.mark.skip(reason))
         if rst_path.stem.startswith('sphinx_'):
             marks.append(pytest.mark.with_sphinx)
         yield pytest.param(rst_path.stem, marks=marks)
