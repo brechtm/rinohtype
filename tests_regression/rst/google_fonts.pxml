@@ -1,0 +1,110 @@
+<document source="/Users/brechtm/Code/rinohtype/tests_regression/rst/google_fonts.rst">
+    <section ids="inline-markup" names="inline\ markup">
+        <title>
+            Inline Markup
+        <paragraph>
+            Paragraphs contain text and may contain inline markup: 
+            <emphasis>
+                emphasis
+            ,
+            <strong>
+                strong emphasis
+            , 
+            <literal>
+                inline literals
+            , standalone hyperlinks
+            (
+            <reference refuri="http://www.python.org">
+                http://www.python.org
+            ), external hyperlinks (
+            <reference name="Python" refuri="http://www.python.org/">
+                Python
+            ), internal
+            cross-references (
+            <reference name="example" refid="example">
+                example
+            ), external hyperlinks with embedded URIs
+            (
+            <reference name="Python web site" refuri="http://www.python.org">
+                Python web site
+            ).
+        <target ids="python" names="python" refuri="http://www.python.org/">
+        <paragraph>
+            Literal blocks are indicated with a double-colon ("::") at the end of
+            the preceding paragraph (over there 
+            <literal>
+                -->
+            ).  They can be indented:
+        <literal_block xml:space="preserve">
+            if literal_block:
+                text = 'is left as-is'
+                spaces_and_linebreaks = 'are preserved'
+                markup_processing = None
+        <target refid="example">
+    <section ids="table example" names="table example">
+        <title>
+            Table
+        <table>
+            <tgroup cols="3">
+                <colspec colwidth="5">
+                <colspec colwidth="5">
+                <colspec colwidth="6">
+                <thead>
+                    <row>
+                        <entry morecols="1">
+                            <paragraph>
+                                Inputs
+                        <entry>
+                            <paragraph>
+                                Output
+                    <row>
+                        <entry>
+                            <paragraph>
+                                A
+                        <entry>
+                            <paragraph>
+                                B
+                        <entry>
+                            <paragraph>
+                                A or B
+                <tbody>
+                    <row>
+                        <entry>
+                            <paragraph>
+                                False
+                        <entry>
+                            <paragraph>
+                                False
+                        <entry>
+                            <paragraph>
+                                False
+                    <row>
+                        <entry>
+                            <paragraph>
+                                True
+                        <entry>
+                            <paragraph>
+                                False
+                        <entry>
+                            <paragraph>
+                                True
+                    <row>
+                        <entry>
+                            <paragraph>
+                                False
+                        <entry>
+                            <paragraph>
+                                True
+                        <entry>
+                            <paragraph>
+                                True
+                    <row>
+                        <entry>
+                            <paragraph>
+                                True
+                        <entry>
+                            <paragraph>
+                                True
+                        <entry>
+                            <paragraph>
+                                True
