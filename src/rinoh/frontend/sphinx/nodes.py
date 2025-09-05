@@ -333,6 +333,14 @@ class Desc_Signature_Line(DocutilsInlineNode):
 class Desc_Sig_Space(DocutilsInlineNode):
     style = 'signature space'
 
+    def styled_text(self):
+        styled_text = super().styled_text()
+        if len(styled_text) == 2:   # Sphinx < 7.2 adds an extra space
+            del styled_text[1]
+        else:
+            assert len(styled_text) == 1
+        return styled_text
+
 
 class Desc_Sig_Name(DocutilsInlineNode):
     style = 'signature name'
