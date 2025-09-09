@@ -9,8 +9,10 @@
 import os
 import xml.etree.ElementTree as etree
 
+from pathlib import Path
 from zipfile import ZipFile
 
+from ...document import DocumentTree
 from ..xml.elementtree import Parser
 from ..xml import (ElementTreeNode, ElementTreeInlineNode, ElementTreeBodyNode,
                    ElementTreeBodySubNode, ElementTreeGroupingNode,
@@ -32,6 +34,14 @@ NS_MAP = dict(cnt='urn:oasis:names:tc:opendocument:xmlns:container',
 
 class EPubNode(ElementTreeNode, metaclass=ElementTreeNodeMeta):
     NAMESPACE = NS_MAP['xhtml']
+
+    @property
+    def _ids(self):
+        return [self.get('id')]
+
+    @property
+    def root(self):
+        return Path(self.filename).parent
 
 
 class EPubInlineNode(EPubNode, ElementTreeInlineNode):
@@ -89,15 +99,15 @@ class EPubReader(object):
             for itemref in spine.findall('./opf:itemref', NS_MAP):
                 item = items[itemref.get('idref')]
                 filename = os.path.join(content_dir, item.get('href'))
-                if filename.endswith('pt04.html'):
+                if filename.endswith('ch07.html'):
                     break
                 print(filename)
                 with epub.open(filename) as xhtml_file:
                     xhtml_parser = Parser(EPubNode)
                     xhtml_tree = xhtml_parser.parse(xhtml_file)
-                for flowable in self.from_doctree(xhtml_tree.getroot()):
+                for flowable in self.from_doctree(xhtml_tree):
                     flowables.append(flowable)
-        return flowables
+        return DocumentTree(flowables)
 
     def from_doctree(self, xhtml_root):
         xhtml_body = xhtml_root.find('./xhtml:body', NS_MAP)

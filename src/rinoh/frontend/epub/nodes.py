@@ -170,21 +170,25 @@ class UL(EPubBodyNode):
 
 
 class LI(EPubGroupingNode):
-    pass
-
-
-class DL(EPubBodyNode):
     def build_flowable(self):
-        items = [(dt.flowable(), dd.flowable())
-                 for dt, dd in zip(self.dt, self.dd)]
-        return styleds.DefinitionList(items)
+        return styleds.ListItem(super().build_flowable())
+
+
+class DL(EPubGroupingNode):
+    grouped_flowables_class = styleds.DefinitionList
+
+    def children_flowables(self, skip_first=0):
+        return [styleds.LabeledFlowable(
+                    styleds.StaticGroupedFlowables(
+                        [dt.flowable()], style='definition term'),
+                    dd.flowable())
+                for dt, dd in zip(self.dt, self.dd)]
 
 
 class DT(EPubBodyNode):
     def build_flowable(self):
-        term = styleds.Paragraph(self.process_content())
-        return styleds.DefinitionTerm([term])
+        return styleds.Paragraph(self.process_content())
 
 
 class DD(EPubGroupingNode):
-    grouped_flowables_class = styleds.Definition
+    style = 'definition'

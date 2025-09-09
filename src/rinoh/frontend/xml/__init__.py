@@ -101,7 +101,7 @@ class ElementTreeNode(TreeNode):
 
     @staticmethod
     def node_children(node):
-        return node.getchildren()
+        return list(node)
 
     @property
     def location(self):

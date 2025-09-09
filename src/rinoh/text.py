@@ -693,20 +693,18 @@ SUBSCRIPT_STYLE = TextStyle(position='subscript')
 class Superscript(MixedStyledText):
     """Superscript."""
 
-    def __init__(self, text, parent=None, source=None):
-        """Accepts a single instance of :class:`str` or :class:`StyledText`, or
-        an iterable of these."""
-        super().__init__(text, style=SUPERSCRIPT_STYLE, parent=parent,
+    def __init__(self, text_or_items, id=None, style=SUPERSCRIPT_STYLE,
+                 parent=None, source=None):
+        super().__init__(text_or_items, id=id, style=style, parent=parent,
                          source=source)
 
 
 class Subscript(MixedStyledText):
     """Subscript."""
 
-    def __init__(self, text, parent=None, source=None):
-        """Accepts a single instance of :class:`str` or :class:`StyledText`, or
-        an iterable of these."""
-        super().__init__(text, style=SUBSCRIPT_STYLE, parent=parent,
+    def __init__(self, text_or_items, id=None, style=SUBSCRIPT_STYLE,
+                 parent=None, source=None):
+        super().__init__(text_or_items, id=id, style=style, parent=parent,
                          source=source)
 
 
