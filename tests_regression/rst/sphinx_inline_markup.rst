@@ -7,9 +7,9 @@ Inline Markup roles:
                 :abbr:`KISS (keep it simple, stupid)`; :abbr:`LIFO`
 :command:       :command:`rm`
 :dfn:           :dfn:`definition`
-:file:          :file:`README.txt` :file:`Makefile`
+:file:          :file:`README.txt`, :file:`Makefile`
 :guilabel:      :guilabel:`&Cancel`
-:kbd:           :kbd:`Control-x`
+:kbd:           :kbd:`Control-x`, :kbd:`page up`, :kbd:`+`
 :mailheader:    :mailheader:`Content-Type`
 :makevar:       :makevar:`var`
 :manpage:       :manpage:`ls(1)`

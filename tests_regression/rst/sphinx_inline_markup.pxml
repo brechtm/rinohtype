@@ -1,0 +1,131 @@
+<document rinoh_regression_test="True" source="/Users/brechtm/Code/rinohtype/tests_regression/rst/index.rst">
+    <paragraph>
+        Inline Markup roles:
+    <field_list>
+        <field>
+            <field_name>
+                abbr
+            <field_body>
+                <paragraph>
+                    <abbreviation explanation="last-in, first-out">
+                        LIFO
+                    ; 
+                    <abbreviation>
+                        FIFO
+                    ;
+                    <abbreviation explanation="keep it simple, stupid">
+                        KISS
+                    ; 
+                    <abbreviation>
+                        LIFO
+        <field>
+            <field_name>
+                command
+            <field_body>
+                <paragraph>
+                    <literal_strong classes="command">
+                        rm
+        <field>
+            <field_name>
+                dfn
+            <field_body>
+                <paragraph>
+                    <emphasis classes="dfn">
+                        definition
+        <field>
+            <field_name>
+                file
+            <field_body>
+                <paragraph>
+                    <literal classes="file" role="file">
+                        README.txt
+                    , 
+                    <literal classes="file" role="file">
+                        Makefile
+        <field>
+            <field_name>
+                guilabel
+            <field_body>
+                <paragraph>
+                    <inline classes="guilabel" rawtext=":guilabel:`&Cancel`">
+                        <inline classes="accelerator">
+                            C
+                        ancel
+        <field>
+            <field_name>
+                kbd
+            <field_body>
+                <paragraph>
+                    <literal classes="kbd">
+                        Control-x
+                    , 
+                    <literal classes="kbd">
+                        page up
+                    , 
+                    <literal classes="kbd">
+                        +
+        <field>
+            <field_name>
+                mailheader
+            <field_body>
+                <paragraph>
+                    <literal_emphasis classes="mailheader">
+                        Content-Type
+        <field>
+            <field_name>
+                makevar
+            <field_body>
+                <paragraph>
+                    <literal_strong classes="makevar">
+                        var
+        <field>
+            <field_name>
+                manpage
+            <field_body>
+                <paragraph>
+                    <manpage classes="manpage" page="ls" path="ls(1)" section="1" xml:space="preserve">
+                        ls(1)
+        <field>
+            <field_name>
+                menuselection
+            <field_body>
+                <paragraph>
+                    <inline classes="menuselection" rawtext=":menuselection:`Menu --> Item`">
+                        Menu ‣ Item
+        <field>
+            <field_name>
+                mimetype
+            <field_body>
+                <paragraph>
+                    <literal_emphasis classes="mimetype">
+                        png
+        <field>
+            <field_name>
+                newsgroup
+            <field_body>
+                <paragraph>
+                    <literal_emphasis classes="newsgroup">
+                        comp.lang.python
+        <field>
+            <field_name>
+                program
+            <field_body>
+                <paragraph>
+                    <literal_strong classes="program">
+                        rinoh
+        <field>
+            <field_name>
+                regexp
+            <field_body>
+                <paragraph>
+                    <literal classes="regexp">
+                        .*
+        <field>
+            <field_name>
+                samp
+            <field_body>
+                <paragraph>
+                    <literal classes="samp" role="samp">
+                        print 1+
+                        <emphasis>
+                            variable

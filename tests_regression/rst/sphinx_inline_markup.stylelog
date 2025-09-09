@@ -1,4 +1,6 @@
 ---------------------------------- page 1 ----------------------------------
+#### FlowablesContainer('background')
+  StaticGroupedFlowables()
 #### FootnoteContainer('footnotes')
   StaticGroupedFlowables()
 #### DownExpandingContainer('floats')
@@ -45,6 +47,25 @@
                       MixedStyledText('keep it simple, stupid', style='glossary inline definition')
                            > (0,0,1,0,1) glossary inline definition [Sphinx] > DEFAULT
                         SingleStyledText('keep it simple, stupid')
+                MixedStyledText('LIFOlast-in, first-out; FIFO; KI...')
+                  MixedStyledText('LIFOlast-in, first-out; FIFO; KI...')
+                    GlossaryTerm('LIFOlast-in, first-out', style='abbreviation')   <abbreviation>
+                      MixedStyledText('LIFO')
+                        SingleStyledText('LIFO')
+                      MixedStyledText('last-in, first-out', style='glossary inline definition')
+                           > (0,0,1,0,1) glossary inline definition [Sphinx] > DEFAULT
+                        SingleStyledText('last-in, first-out')
+                    SingleStyledText('; ')
+                    GlossaryTerm('FIFO', style='abbreviation')   <abbreviation>
+                      MixedStyledText('FIFO')
+                        SingleStyledText('FIFO')
+                    SingleStyledText('; ')
+                    GlossaryTerm('KISSkeep it simple, stupid', style='abbreviation')   <abbreviation>
+                      MixedStyledText('KISS')
+                        SingleStyledText('KISS')
+                      MixedStyledText('keep it simple, stupid', style='glossary inline definition')
+                           > (0,0,1,0,1) glossary inline definition [Sphinx] > DEFAULT
+                        SingleStyledText('keep it simple, stupid')
                     SingleStyledText('; ')
                     GlossaryTerm('LIFO', style='abbreviation')   <abbreviation>
                       MixedStyledText('LIFO')
@@ -63,7 +84,7 @@
                  > (0,0,0,0,2) body [Sphinx] > default
                 MixedStyledText('rm')
                   MixedStyledText('rm')
-                    MixedStyledText('rm', style='command')   <literal_strong>
+                    MixedStyledText('rm', style='command')   <literal_strong classes='command'>
                          > (0,0,1,0,1) command [Sphinx] > literal strong
                       SingleStyledText('rm')
         LabeledFlowable()   index.rst:9   <field>
@@ -80,7 +101,7 @@
                  > (0,0,0,0,2) body [Sphinx] > default
                 MixedStyledText('definition')
                   MixedStyledText('definition')
-                    MixedStyledText('definition', style='definition')   <emphasis>
+                    MixedStyledText('definition', style='definition')   <emphasis classes='dfn'>
                          x (0,0,1,0,1) inline definition
                       SingleStyledText('definition')
         LabeledFlowable()   index.rst:10   <field>
@@ -93,15 +114,15 @@
                 MixedStyledText('file')   index.rst   <field_name>
                   SingleStyledText('file')
           StaticGroupedFlowables()   <field_body>
-            Paragraph('README.txt Makefile')   index.rst:10   <paragraph>
+            Paragraph('README.txt, Makefile')   index.rst:10   <paragraph>
                  > (0,0,0,0,2) body [Sphinx] > default
-                MixedStyledText('README.txt Makefile')
-                  MixedStyledText('README.txt Makefile')
-                    MixedStyledText('README.txt', style='file path')   <literal>
+                MixedStyledText('README.txt, Makefile')
+                  MixedStyledText('README.txt, Makefile')
+                    MixedStyledText('README.txt', style='file path')   <literal classes='file'>
                          > (0,0,1,0,1) file path [Sphinx] > monospaced
                       SingleStyledText('README.txt')
-                    SingleStyledText(' ')
-                    MixedStyledText('Makefile', style='file path')   <literal>
+                    SingleStyledText(', ')
+                    MixedStyledText('Makefile', style='file path')   <literal classes='file'>
                          > (0,0,1,0,1) file path [Sphinx] > monospaced
                       SingleStyledText('Makefile')
         LabeledFlowable()   index.rst:11   <field>
@@ -118,9 +139,9 @@
                  > (0,0,0,0,2) body [Sphinx] > default
                 MixedStyledText('Cancel')
                   MixedStyledText('Cancel')
-                    MixedStyledText('Cancel', style='UI control')   <inline>
+                    MixedStyledText('Cancel', style='UI control')   <inline classes='guilabel'>
                          > (0,0,1,0,1) UI control [Sphinx] > DEFAULT
-                      MixedStyledText('C', style='accelerator')   <inline>
+                      MixedStyledText('C', style='accelerator')   <inline classes='accelerator'>
                            > (0,0,2,0,2) UI control accelerator [Sphinx] > DEFAULT
                         SingleStyledText('C')
                       SingleStyledText('ancel')
@@ -134,13 +155,21 @@
                 MixedStyledText('kbd')   index.rst   <field_name>
                   SingleStyledText('kbd')
           StaticGroupedFlowables()   <field_body>
-            Paragraph('Control-x')   index.rst:12   <paragraph>
+            Paragraph('Control-x, page up, +')   index.rst:12   <paragraph>
                  > (0,0,0,0,2) body [Sphinx] > default
-                MixedStyledText('Control-x')
-                  MixedStyledText('Control-x')
-                    MixedStyledText('Control-x', style='keystrokes')   <literal>
+                MixedStyledText('Control-x, page up, +')
+                  MixedStyledText('Control-x, page up, +')
+                    MixedStyledText('Control-x', style='keystrokes')   <literal classes='kbd'>
                          > (0,0,1,0,1) keystrokes [Sphinx] > monospaced
                       SingleStyledText('Control-x')
+                    SingleStyledText(', ')
+                    MixedStyledText('page up', style='keystrokes')   <literal classes='kbd'>
+                         > (0,0,1,0,1) keystrokes [Sphinx] > monospaced
+                      SingleStyledText('page up')
+                    SingleStyledText(', ')
+                    MixedStyledText('+', style='keystrokes')   <literal classes='kbd'>
+                         > (0,0,1,0,1) keystrokes [Sphinx] > monospaced
+                      SingleStyledText('+')
         LabeledFlowable()   index.rst:13   <field>
              > (0,0,1,0,4) field list item [Sphinx] > DEFAULT
                (0,0,0,0,4) definition list item [Sphinx] > DEFAULT
@@ -155,7 +184,7 @@
                  > (0,0,0,0,2) body [Sphinx] > default
                 MixedStyledText('Content-Type')
                   MixedStyledText('Content-Type')
-                    MixedStyledText('Content-Type', style='mail header')   <literal_emphasis>
+                    MixedStyledText('Content-Type', style='mail header')   <literal_emphasis classes='mailheader'>
                          > (0,0,1,0,1) mail header [Sphinx] > literal emphasis
                       SingleStyledText('Content-Type')
         LabeledFlowable()   index.rst:14   <field>
@@ -172,7 +201,7 @@
                  > (0,0,0,0,2) body [Sphinx] > default
                 MixedStyledText('var')
                   MixedStyledText('var')
-                    MixedStyledText('var', style='make variable')   <literal_strong>
+                    MixedStyledText('var', style='make variable')   <literal_strong classes='makevar'>
                          > (0,0,1,0,1) make variable [Sphinx] > literal strong
                       SingleStyledText('var')
         LabeledFlowable()   index.rst:15   <field>
@@ -189,7 +218,7 @@
                  > (0,0,0,0,2) body [Sphinx] > default
                 MixedStyledText('ls(1)')
                   MixedStyledText('ls(1)')
-                    MixedStyledText('ls(1)', style='man page')   <manpage>
+                    MixedStyledText('ls(1)', style='man page')   <manpage classes='manpage'>
                          > (0,0,1,0,1) man page [Sphinx] > literal emphasis
                       SingleStyledText('ls(1)')
         LabeledFlowable()   index.rst:16   <field>
@@ -206,7 +235,7 @@
                  > (0,0,0,0,2) body [Sphinx] > default
                 MixedStyledText('Menu ‣ Item')
                   MixedStyledText('Menu ‣ Item')
-                    MixedStyledText('Menu ‣ Item', style='menu cascade')   <inline>
+                    MixedStyledText('Menu ‣ Item', style='menu cascade')   <inline classes='menuselection'>
                          > (0,0,1,0,1) menu cascade [Sphinx] > DEFAULT
                       SingleStyledText('Menu ‣ Item')
         LabeledFlowable()   index.rst:17   <field>
@@ -223,7 +252,7 @@
                  > (0,0,0,0,2) body [Sphinx] > default
                 MixedStyledText('png')
                   MixedStyledText('png')
-                    MixedStyledText('png', style='MIME type')   <literal_emphasis>
+                    MixedStyledText('png', style='MIME type')   <literal_emphasis classes='mimetype'>
                          > (0,0,1,0,1) MIME type [Sphinx] > literal emphasis
                       SingleStyledText('png')
         LabeledFlowable()   index.rst:18   <field>
@@ -240,7 +269,7 @@
                  > (0,0,0,0,2) body [Sphinx] > default
                 MixedStyledText('comp.lang.python')
                   MixedStyledText('comp.lang.python')
-                    MixedStyledText('comp.lang.python', style='newsgroup')   <literal_emphasis>
+                    MixedStyledText('comp.lang.python', style='newsgroup')   <literal_emphasis classes='newsgroup'>
                          > (0,0,1,0,1) newsgroup [Sphinx] > literal emphasis
                       SingleStyledText('comp.lang.python')
         LabeledFlowable()   index.rst:19   <field>
@@ -257,7 +286,7 @@
                  > (0,0,0,0,2) body [Sphinx] > default
                 MixedStyledText('rinoh')
                   MixedStyledText('rinoh')
-                    MixedStyledText('rinoh', style='program')   <literal_strong>
+                    MixedStyledText('rinoh', style='program')   <literal_strong classes='program'>
                          > (0,0,1,0,1) program [Sphinx] > literal strong
                       SingleStyledText('rinoh')
         LabeledFlowable()   index.rst:20   <field>
@@ -274,7 +303,7 @@
                  > (0,0,0,0,2) body [Sphinx] > default
                 MixedStyledText('.*')
                   MixedStyledText('.*')
-                    MixedStyledText('.*', style='regular expression')   <literal>
+                    MixedStyledText('.*', style='regular expression')   <literal classes='regexp'>
                          > (0,0,1,0,1) regular expression [Sphinx] > monospaced
                       SingleStyledText('.*')
         LabeledFlowable()   index.rst:21   <field>
@@ -291,7 +320,7 @@
                  > (0,0,0,0,2) body [Sphinx] > default
                 MixedStyledText('print 1+variable')
                   MixedStyledText('print 1+variable')
-                    MixedStyledText('print 1+variable', style='code with variable')   <literal>
+                    MixedStyledText('print 1+variable', style='code with variable')   <literal classes='samp'>
                          > (0,0,1,0,1) code with variable [Sphinx] > monospaced
                       SingleStyledText('print 1+')
                       MixedStyledText('variable', style='emphasis')   <emphasis>
