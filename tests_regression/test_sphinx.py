@@ -13,7 +13,9 @@ import sys
 from contextlib import suppress
 from pathlib import Path
 
-from .helpers.regression import verify_output
+import sphinx
+
+from .helpers.regression import verify_output, version_to_tuple
 
 
 TESTS_PATH = Path(__file__).parent
@@ -27,6 +29,10 @@ PLATFORMS = {
     'graphviz': ('darwin'),
 }
 
+SPHINX_MIN_VERSION = {
+    'pyref': '6.2'
+}
+
 
 def collect_tests():
     for root_path in sorted(ROOTS_PATH.glob('test-*')):
@@ -37,6 +43,11 @@ def collect_tests():
             marks.append(pytest.mark.skipif(sys.platform not in platforms,
                                             reason='skipping test on '
                                                    f'{sys.platform}'))
+        with suppress(KeyError):
+            min_ver = SPHINX_MIN_VERSION[test_name]
+            if sphinx.version_info < version_to_tuple(min_ver):
+                reason = f"minimum Sphinx version is {min_ver}"
+                marks.append(pytest.mark.skip(reason))
         yield pytest.param(test_name, marks=marks)
 
 

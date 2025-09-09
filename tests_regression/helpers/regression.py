@@ -183,3 +183,7 @@ def format_outlines(reference, outlines):
                      f"{'':<{l2 - 1}}{title2!s:{25 - l2}} {id2!s:20}"
                      for (l1, title1, id1), (l2, title2, id2)
                      in zip_longest(reference, outlines, fillvalue=(1, '', '')))
+
+
+def version_to_tuple(version):
+    return tuple(int(v) for v in version.split('.'))
