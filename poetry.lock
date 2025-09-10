@@ -1366,14 +1366,15 @@ test = ["cython (>=3.0)", "defusedxml (>=0.7.1)", "pytest (>=8.0)", "pytest-xdis
 
 [[package]]
 name = "sphinx-immaterial"
-version = "0.11.14"
+version = "0.12.5"
 description = "Adaptation of mkdocs-material theme for the Sphinx documentation system"
 optional = false
-python-versions = ">=3.8"
+python-versions = ">=3.9"
 groups = ["dev"]
+markers = "python_version == \"3.9\""
 files = [
-    {file = "sphinx_immaterial-0.11.14-py3-none-any.whl", hash = "sha256:dd1a30614c8ecaa931155189e7d54f211232e31cf3e5c6d28ba9f04a4817f0a3"},
-    {file = "sphinx_immaterial-0.11.14.tar.gz", hash = "sha256:e1e8ba93c78a3e007743fede01a3be43f5ae97c5cc19b8e2a4d2aa058abead61"},
+    {file = "sphinx_immaterial-0.12.5-py3-none-any.whl", hash = "sha256:4173b22ad343fd9c75b51baf305851d89b98b94603c474b428e30e8c8476673b"},
+    {file = "sphinx_immaterial-0.12.5.tar.gz", hash = "sha256:a7c0c4be3dcb4960eb7b299dfee07cdf8a02bf56821f5d0d62e5d31b7b7b5ec5"},
 ]
 
 [package.dependencies]
@@ -1386,6 +1387,36 @@ sphinx = ">=4.5"
 typing-extensions = "*"
 
 [package.extras]
+black = ["black"]
+clang-format = ["clang-format"]
+cpp = ["libclang"]
+json = ["pyyaml"]
+jsonschema-validation = ["jsonschema"]
+keys = ["pymdown-extensions"]
+
+[[package]]
+name = "sphinx-immaterial"
+version = "0.13.6"
+description = "Adaptation of mkdocs-material theme for the Sphinx documentation system"
+optional = false
+python-versions = ">=3.10"
+groups = ["dev"]
+markers = "python_version >= \"3.10\""
+files = [
+    {file = "sphinx_immaterial-0.13.6-py3-none-any.whl", hash = "sha256:4c7dce949967fa0905f71e5af22ba781f2dc9a22f2c6d4e0cef166cef099871c"},
+]
+
+[package.dependencies]
+appdirs = "*"
+markupsafe = "*"
+pydantic = ">=2.4"
+pydantic-extra-types = "*"
+requests = "*"
+sphinx = ">=6"
+typing-extensions = "*"
+
+[package.extras]
+black = ["black"]
 clang-format = ["clang-format"]
 cpp = ["libclang"]
 json = ["pyyaml"]
