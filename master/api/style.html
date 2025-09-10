@@ -1,5 +1,6 @@
 
 
+
 <!doctype html>
 <html lang="en" class="no-js">
   <head>
@@ -7,6 +8,13 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
+      
+      
+      
+        <link rel="prev" href="strings.html">
+      
+      
+        <link rel="next" href="table.html">
       
       
       <link rel="icon" href="../_static/rinohtype_logo_abbrev.svg">
@@ -19,11 +27,13 @@
     
       
         
-        
       
       
 
+
     
+    
+      
     
     
       
@@ -32,9 +42,9 @@
         <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
       
     
-        <link rel="stylesheet" type="text/css" href="../_static/sphinx_immaterial_theme.9badc98c4f78aac06.min.css?v=60124955" />
+        <link rel="stylesheet" type="text/css" href="../_static/sphinx_immaterial_theme.acf80fe7f4d9ef9e2.min.css?v=9e56d0d2" />
         <link rel="stylesheet" type="text/css" href="../_static/tweaks.css?v=ac567af0" />
-    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -54,9 +64,6 @@
     <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="red" data-md-color-accent="light-blue">
   
     
-    
-      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
-    
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
     <label class="md-overlay" for="__drawer"></label>
@@ -72,20 +79,23 @@
       
     </div>
     
-      <div data-md-component="outdated" hidden>
+      <div data-md-color-scheme="default" data-md-component="outdated" hidden>
         
       </div>
     
     
       
 
-<header class="md-header" data-md-component="header">
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
     <a href="../index.html" title="rinohtype" class="md-header__button md-logo" aria-label="rinohtype" data-md-component="logo">
       <img src="../_static/logo_white.svg" alt="logo">
     </a>
     <label class="md-header__button md-icon" for="__drawer">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
     </label>
     <div class="md-header__title" data-md-component="header-title">
       <div class="md-header__ellipsis">
@@ -104,32 +114,40 @@
       </div>
     </div>
     
-      <form class="md-header__option" data-md-component="palette">
-        
-          
-          
-          <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="red" data-md-color-accent="light-blue"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
-          
-            <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 1 7 7c0 2.38-1.19 4.47-3 5.74V17a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-2.26C6.19 13.47 5 11.38 5 9a7 7 0 0 1 7-7M9 21v-1h6v1a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1m3-17a5 5 0 0 0-5 5c0 2.05 1.23 3.81 3 4.58V16h4v-2.42c1.77-.77 3-2.53 3-4.58a5 5 0 0 0-5-5Z"/></svg>
-            </label>
-          
-        
-          
-          
-          <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="red" data-md-color-accent="orange"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
-          
-            <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 0-7 7c0 2.38 1.19 4.47 3 5.74V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 0 0-7-7M9 21a1 1 0 0 0 1 1h4a1 1 0 0 0 1-1v-1H9v1Z"/></svg>
-            </label>
-          
-        
-      </form>
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="red" data-md-color-accent="light-blue"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 1 7 7c0 2.38-1.19 4.47-3 5.74V17a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-2.26C6.19 13.47 5 11.38 5 9a7 7 0 0 1 7-7M9 21v-1h6v1a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1m3-17a5 5 0 0 0-5 5c0 2.05 1.23 3.81 3 4.58V16h4v-2.42c1.77-.77 3-2.53 3-4.58a5 5 0 0 0-5-5"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="red" data-md-color-accent="orange"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 0-7 7c0 2.38 1.19 4.47 3 5.74V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 0 0-7-7M9 21a1 1 0 0 0 1 1h4a1 1 0 0 0 1-1v-1H9z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
     
     
     
       <label class="md-header__button md-icon" for="__search">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
       </label>
       <div class="md-search" data-md-component="search" role="dialog">
   <label class="md-search__overlay" for="__search"></label>
@@ -137,24 +155,27 @@
     <form class="md-search__form" name="search">
       <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
       <label class="md-search__icon md-icon" for="__search">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
       </label>
       <nav class="md-search__options" aria-label="Search">
         
         <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
         </button>
       </nav>
       
     </form>
     <div class="md-search__output">
-      <div class="md-search__scrollwrap" data-md-scrollfix>
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
         <div class="md-search-result" data-md-component="search-result">
           <div class="md-search-result__meta">
             Initializing search
           </div>
-          <ol class="md-search-result__list"></ol>
+          <ol class="md-search-result__list" role="presentation"></ol>
         </div>
       </div>
     </div>
@@ -166,7 +187,7 @@
         <a href="https://github.com/brechtm/rinohtype" title="Go to repository" class="md-source" data-md-component="source">
   <div class="md-source__icon md-icon">
     
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
   </div>
   <div class="md-source__repository">
     rinohtype
@@ -198,6 +219,7 @@
                     
 
 
+
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
     <a href="../index.html" title="rinohtype" class="md-nav__button md-logo" aria-label="rinohtype" data-md-component="logo">
@@ -210,7 +232,7 @@
       <a href="https://github.com/brechtm/rinohtype" title="Go to repository" class="md-source" data-md-component="source">
   <div class="md-source__icon md-icon">
     
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
   </div>
   <div class="md-source__repository">
     rinohtype
@@ -222,200 +244,314 @@
     
       
       
-      
-
+  
   
   
   
     
+    
       
+        
+        
+      
+    
     
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
       
-      
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_1" type="checkbox" id="__nav_1" checked>
-      
-      
-      
-        <label class="md-nav__link" for="__nav_1">
-          <span class="md-ellipsis">User Manual</span> [<a class="pdf-link" href="../manual.pdf">PDF</a>]
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <nav class="md-nav" aria-label="User Manual" data-md-level="1">
-        <label class="md-nav__title" for="__nav_1">
-          <span class="md-nav__icon md-icon"></span>
-          <span class="md-ellipsis">User Manual</span> [<a class="pdf-link" href="../manual.pdf">PDF</a>]
-        </label>
-        <ul class="md-nav__list" data-md-scrollfix>
+        
+        
           
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_1" id="__nav_1_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    <span>User Manual</span> [<a class="pdf-link" href="../manual.pdf">PDF</a>]
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1">
+            <span class="md-nav__icon md-icon"></span>
+            <span>User Manual</span> [<a class="pdf-link" href="../manual.pdf">PDF</a>]
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
             
               
+                
+  
   
   
   
   
     <li class="md-nav__item">
       <a href="../intro.html" class="md-nav__link">
-        <span class="md-ellipsis">Introduction</span>
+        
+  
+  
+  <span class="md-ellipsis">
+    <span>Introduction</span>
+    
+  </span>
+  
+
       </a>
     </li>
   
 
-            
-          
+              
             
               
+                
+  
   
   
   
   
     <li class="md-nav__item">
       <a href="../showcase.html" class="md-nav__link">
-        <span class="md-ellipsis">Showcase</span>
+        
+  
+  
+  <span class="md-ellipsis">
+    <span>Showcase</span>
+    
+  </span>
+  
+
       </a>
     </li>
   
 
-            
-          
+              
             
               
+                
+  
   
   
   
   
     <li class="md-nav__item">
       <a href="../install.html" class="md-nav__link">
-        <span class="md-ellipsis">Installation</span>
+        
+  
+  
+  <span class="md-ellipsis">
+    <span>Installation</span>
+    
+  </span>
+  
+
       </a>
     </li>
   
 
-            
-          
+              
             
               
+                
+  
   
   
   
   
     <li class="md-nav__item">
       <a href="../quickstart.html" class="md-nav__link">
-        <span class="md-ellipsis">Quickstart</span>
+        
+  
+  
+  <span class="md-ellipsis">
+    <span>Quickstart</span>
+    
+  </span>
+  
+
       </a>
     </li>
   
 
-            
-          
+              
             
               
+                
+  
   
   
   
   
     <li class="md-nav__item">
       <a href="../basicstyling.html" class="md-nav__link">
-        <span class="md-ellipsis">Basic Document Styling</span>
+        
+  
+  
+  <span class="md-ellipsis">
+    <span>Basic Document Styling</span>
+    
+  </span>
+  
+
       </a>
     </li>
   
 
-            
-          
+              
             
               
+                
+  
   
   
   
   
     <li class="md-nav__item">
       <a href="../elementstyling.html" class="md-nav__link">
-        <span class="md-ellipsis">Element Styling</span>
+        
+  
+  
+  <span class="md-ellipsis">
+    <span>Element Styling</span>
+    
+  </span>
+  
+
       </a>
     </li>
   
 
-            
-          
+              
             
               
+                
+  
   
   
   
   
     <li class="md-nav__item">
       <a href="../templates.html" class="md-nav__link">
-        <span class="md-ellipsis">Document Templates</span>
+        
+  
+  
+  <span class="md-ellipsis">
+    <span>Document Templates</span>
+    
+  </span>
+  
+
       </a>
     </li>
   
 
-            
-          
+              
             
               
+                
+  
   
   
   
   
     <li class="md-nav__item">
       <a href="../faq.html" class="md-nav__link">
-        <span class="md-ellipsis">Frequently Asked Questions</span>
+        
+  
+  
+  <span class="md-ellipsis">
+    <span>Frequently Asked Questions</span>
+    
+  </span>
+  
+
       </a>
     </li>
   
 
-            
-          
+              
             
               
+                
+  
   
   
   
   
     <li class="md-nav__item">
       <a href="../contributing.html" class="md-nav__link">
-        <span class="md-ellipsis">Contributing</span>
+        
+  
+  
+  <span class="md-ellipsis">
+    <span>Contributing</span>
+    
+  </span>
+  
+
       </a>
     </li>
   
 
-            
-          
+              
             
               
+                
+  
   
   
   
   
     <li class="md-nav__item">
       <a href="../developing.html" class="md-nav__link">
-        <span class="md-ellipsis">Developing</span>
+        
+  
+  
+  <span class="md-ellipsis">
+    <span>Developing</span>
+    
+  </span>
+  
+
       </a>
     </li>
   
 
-            
-          
+              
             
               
+                
+  
   
   
   
   
     <li class="md-nav__item">
       <a href="../changelog.html" class="md-nav__link">
-        <span class="md-ellipsis">Release History</span>
+        
+  
+  
+  <span class="md-ellipsis">
+    <span>Release History</span>
+    
+  </span>
+  
+
       </a>
     </li>
   
 
+              
             
-          
-        </ul>
-      </nav>
+          </ul>
+        </nav>
+      
     </li>
   
   
@@ -423,388 +559,612 @@
     
       
       
-      
-
   
   
     
   
   
+  
+    
     
       
+        
+        
+      
+    
     
     <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
-      
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" checked>
-      
-      
-      
-        <label class="md-nav__link" for="__nav_2">
-          <span class="md-ellipsis">Reference Guide</span> [<a class="pdf-link" href="../reference.pdf">PDF</a>]
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <nav class="md-nav" aria-label="Reference Guide" data-md-level="1">
-        <label class="md-nav__title" for="__nav_2">
-          <span class="md-nav__icon md-icon"></span>
-          <span class="md-ellipsis">Reference Guide</span> [<a class="pdf-link" href="../reference.pdf">PDF</a>]
-        </label>
-        <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
           
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    <span>Reference Guide</span> [<a class="pdf-link" href="../reference.pdf">PDF</a>]
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            <span>Reference Guide</span> [<a class="pdf-link" href="../reference.pdf">PDF</a>]
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
             
               
+                
+  
   
   
   
   
     <li class="md-nav__item">
       <a href="../rinoh.html" class="md-nav__link">
-        <span class="md-ellipsis">rinoh</span>
+        
+  
+  
+  <span class="md-ellipsis">
+    <span>rinoh</span>
+    
+  </span>
+  
+
       </a>
     </li>
   
 
-            
-          
+              
             
               
+                
+  
   
   
   
   
     <li class="md-nav__item">
       <a href="../sphinx.html" class="md-nav__link">
-        <span class="md-ellipsis">Sphinx Builder</span>
+        
+  
+  
+  <span class="md-ellipsis">
+    <span>Sphinx Builder</span>
+    
+  </span>
+  
+
       </a>
     </li>
   
 
-            
-          
+              
             
               
+                
+  
   
   
   
   
     <li class="md-nav__item">
       <a href="../stylesheets.html" class="md-nav__link">
-        <span class="md-ellipsis">Style Sheets</span>
+        
+  
+  
+  <span class="md-ellipsis">
+    <span>Style Sheets</span>
+    
+  </span>
+  
+
       </a>
     </li>
   
 
-            
-          
+              
             
               
+                
+  
   
   
   
   
     <li class="md-nav__item">
       <a href="../stdtemplates.html" class="md-nav__link">
-        <span class="md-ellipsis">Standard Document Templates</span>
+        
+  
+  
+  <span class="md-ellipsis">
+    <span>Standard Document Templates</span>
+    
+  </span>
+  
+
       </a>
     </li>
   
 
-            
-          
+              
             
               
+                
   
   
     
   
   
+  
+    
+    
+      
+    
     
     <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
-      
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2_5" type="checkbox" id="__nav_2_5" checked>
-      
-      
-      
         
-        <div class="md-nav__link md-nav__link--index ">
-          <a href="api.html"><span class="md-ellipsis">API Documentation</span></a>
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_5" checked>
+        
           
-            <label for="__nav_2_5">
-              <span class="md-nav__icon md-icon"></span>
-            </label>
-          
-        </div>
-      
-      <nav class="md-nav" aria-label="API Documentation" data-md-level="2">
-        <label class="md-nav__title" for="__nav_2_5">
-          <span class="md-nav__icon md-icon"></span>
-          <span class="md-ellipsis">API Documentation</span>
-        </label>
-        <ul class="md-nav__list" data-md-scrollfix>
-          
+          <div class="md-nav__link md-nav__container">
+            <a href="api.html" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    <span>API Documentation</span>
+    
+  </span>
+  
+
+            </a>
             
               
+              <label class="md-nav__link " for="__nav_2_5" id="__nav_2_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_5">
+            <span class="md-nav__icon md-icon"></span>
+            <span>API Documentation</span>
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
   
   
   
   
     <li class="md-nav__item">
       <a href="attribute.html" class="md-nav__link">
-        <span class="md-ellipsis">Attribute <wbr>(rinoh.<wbr>attribute)</span>
+        
+  
+  
+  <span class="md-ellipsis">
+    <span>Attribute <wbr>(rinoh.<wbr>attribute)</span>
+    
+  </span>
+  
+
       </a>
     </li>
   
 
-            
-          
+              
             
               
+                
+  
   
   
   
   
     <li class="md-nav__item">
       <a href="color.html" class="md-nav__link">
-        <span class="md-ellipsis">Color <wbr>(rinoh.<wbr>color)</span>
+        
+  
+  
+  <span class="md-ellipsis">
+    <span>Color <wbr>(rinoh.<wbr>color)</span>
+    
+  </span>
+  
+
       </a>
     </li>
   
 
-            
-          
+              
             
               
+                
+  
   
   
   
   
     <li class="md-nav__item">
       <a href="dimension.html" class="md-nav__link">
-        <span class="md-ellipsis">Dimension <wbr>(rinoh.<wbr>dimension)</span>
+        
+  
+  
+  <span class="md-ellipsis">
+    <span>Dimension <wbr>(rinoh.<wbr>dimension)</span>
+    
+  </span>
+  
+
       </a>
     </li>
   
 
-            
-          
+              
             
               
+                
+  
   
   
   
   
     <li class="md-nav__item">
       <a href="document.html" class="md-nav__link">
-        <span class="md-ellipsis">Document <wbr>(rinoh.<wbr>document)</span>
+        
+  
+  
+  <span class="md-ellipsis">
+    <span>Document <wbr>(rinoh.<wbr>document)</span>
+    
+  </span>
+  
+
       </a>
     </li>
   
 
-            
-          
+              
             
               
+                
+  
   
   
   
   
     <li class="md-nav__item">
       <a href="draw.html" class="md-nav__link">
-        <span class="md-ellipsis">Drawing Primitives <wbr>(rinoh.<wbr>draw)</span>
+        
+  
+  
+  <span class="md-ellipsis">
+    <span>Drawing Primitives <wbr>(rinoh.<wbr>draw)</span>
+    
+  </span>
+  
+
       </a>
     </li>
   
 
-            
-          
+              
             
               
+                
+  
   
   
   
   
     <li class="md-nav__item">
       <a href="flowable.html" class="md-nav__link">
-        <span class="md-ellipsis">Flowable <wbr>(rinoh.<wbr>flowable)</span>
+        
+  
+  
+  <span class="md-ellipsis">
+    <span>Flowable <wbr>(rinoh.<wbr>flowable)</span>
+    
+  </span>
+  
+
       </a>
     </li>
   
 
-            
-          
+              
             
               
+                
+  
   
   
   
   
     <li class="md-nav__item">
       <a href="font.html" class="md-nav__link">
-        <span class="md-ellipsis">Fonts and Typefaces <wbr>(rinoh.<wbr>font)</span>
+        
+  
+  
+  <span class="md-ellipsis">
+    <span>Fonts and Typefaces <wbr>(rinoh.<wbr>font)</span>
+    
+  </span>
+  
+
       </a>
     </li>
   
 
-            
-          
+              
             
               
+                
+  
   
   
   
   
     <li class="md-nav__item">
       <a href="image.html" class="md-nav__link">
-        <span class="md-ellipsis">Images and Figures <wbr>(rinoh.<wbr>image)</span>
+        
+  
+  
+  <span class="md-ellipsis">
+    <span>Images and Figures <wbr>(rinoh.<wbr>image)</span>
+    
+  </span>
+  
+
       </a>
     </li>
   
 
-            
-          
+              
             
               
+                
+  
   
   
   
   
     <li class="md-nav__item">
       <a href="index.html" class="md-nav__link">
-        <span class="md-ellipsis">Index <wbr>(rinoh.<wbr>index)</span>
+        
+  
+  
+  <span class="md-ellipsis">
+    <span>Index <wbr>(rinoh.<wbr>index)</span>
+    
+  </span>
+  
+
       </a>
     </li>
   
 
-            
-          
+              
             
               
+                
+  
   
   
   
   
     <li class="md-nav__item">
       <a href="language.html" class="md-nav__link">
-        <span class="md-ellipsis">Language <wbr>(rinoh.<wbr>language)</span>
+        
+  
+  
+  <span class="md-ellipsis">
+    <span>Language <wbr>(rinoh.<wbr>language)</span>
+    
+  </span>
+  
+
       </a>
     </li>
   
 
-            
-          
+              
             
               
+                
+  
   
   
   
   
     <li class="md-nav__item">
       <a href="number.html" class="md-nav__link">
-        <span class="md-ellipsis">Number <wbr>(rinoh.<wbr>number)</span>
+        
+  
+  
+  <span class="md-ellipsis">
+    <span>Number <wbr>(rinoh.<wbr>number)</span>
+    
+  </span>
+  
+
       </a>
     </li>
   
 
-            
-          
+              
             
               
+                
+  
   
   
   
   
     <li class="md-nav__item">
       <a href="paper.html" class="md-nav__link">
-        <span class="md-ellipsis">Paper sizes <wbr>(rinoh.<wbr>paper)</span>
+        
+  
+  
+  <span class="md-ellipsis">
+    <span>Paper sizes <wbr>(rinoh.<wbr>paper)</span>
+    
+  </span>
+  
+
       </a>
     </li>
   
 
-            
-          
+              
             
               
+                
+  
   
   
   
   
     <li class="md-nav__item">
       <a href="paragraph.html" class="md-nav__link">
-        <span class="md-ellipsis">Paragraph <wbr>(rinoh.<wbr>paragraph)</span>
+        
+  
+  
+  <span class="md-ellipsis">
+    <span>Paragraph <wbr>(rinoh.<wbr>paragraph)</span>
+    
+  </span>
+  
+
       </a>
     </li>
   
 
-            
-          
+              
             
               
+                
+  
   
   
   
   
     <li class="md-nav__item">
       <a href="reference.html" class="md-nav__link">
-        <span class="md-ellipsis">Cross-<wbr>References and Fields <wbr>(rinoh.<wbr>reference)</span>
+        
+  
+  
+  <span class="md-ellipsis">
+    <span>Cross-<wbr>References and Fields <wbr>(rinoh.<wbr>reference)</span>
+    
+  </span>
+  
+
       </a>
     </li>
   
 
-            
-          
+              
             
               
+                
+  
   
   
   
   
     <li class="md-nav__item">
       <a href="structure.html" class="md-nav__link">
-        <span class="md-ellipsis">Structure <wbr>(rinoh.<wbr>structure)</span>
+        
+  
+  
+  <span class="md-ellipsis">
+    <span>Structure <wbr>(rinoh.<wbr>structure)</span>
+    
+  </span>
+  
+
       </a>
     </li>
   
 
-            
-          
+              
             
               
+                
+  
   
   
   
   
     <li class="md-nav__item">
       <a href="strings.html" class="md-nav__link">
-        <span class="md-ellipsis">Strings <wbr>(rinoh.<wbr>strings)</span>
+        
+  
+  
+  <span class="md-ellipsis">
+    <span>Strings <wbr>(rinoh.<wbr>strings)</span>
+    
+  </span>
+  
+
       </a>
     </li>
   
 
-            
-          
+              
             
               
+                
   
   
     
   
     
+  
   
   
     <li class="md-nav__item md-nav__item--active">
       
       
-      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
       
         <label class="md-nav__link md-nav__link--active" for="__toc">
-          <span class="md-ellipsis">Style <wbr>(rinoh.<wbr>style)</span>
+          
+  
+  
+  <span class="md-ellipsis">
+    <span>Style <wbr>(rinoh.<wbr>style)</span>
+    
+  </span>
+  
+
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <a href="#" class="md-nav__link md-nav__link--active">
-        <span class="md-ellipsis">Style <wbr>(rinoh.<wbr>style)</span>
+        
+  
+  
+  <span class="md-ellipsis">
+    <span>Style <wbr>(rinoh.<wbr>style)</span>
+    
+  </span>
+  
+
       </a>
       
         
@@ -819,13 +1179,18 @@
   
     <label class="md-nav__title" for="__toc">
       <span class="md-nav__icon md-icon"></span>
-      <span class="md-ellipsis">Style <wbr>(rinoh.<wbr>style)</span>
+      <span>Style <wbr>(rinoh.<wbr>style)</span>
     </label>
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
   <a href="#rinoh.style.Styled" class="md-nav__link">
-    <span aria-label="Python class" class="objinfo-icon objinfo-icon__data" title="Python class">C</span><span title="rinoh.style.Styled (Python class) — A document element who&#39;s style can be configured." class="md-ellipsis">rinoh.<wbr>style.<wbr>Styled</span>
+    
+      <span aria-label="Python class" class="objinfo-icon objinfo-icon__data" title="Python class">C</span>
+    
+    <span class="md-ellipsis">
+      <span title="rinoh.style.Styled (Python class) — A document element who&#39;s style can be configured."><span>rinoh.<wbr>style.<wbr>Styled</span></span>
+    </span>
   </a>
   
     <nav class="md-nav" aria-label="rinoh.style.Styled">
@@ -833,7 +1198,10 @@
         
           <li class="md-nav__item">
   <a href="#rinoh.style.Styled-parameters" class="md-nav__link">
-    <span class="md-ellipsis">Parameters</span>
+    
+    <span class="md-ellipsis">
+      <span>Parameters</span>
+    </span>
   </a>
   
     <nav class="md-nav" aria-label="Parameters">
@@ -841,7 +1209,12 @@
         
           <li class="md-nav__item">
   <a href="#rinoh.style.Styled.__init__.style" class="md-nav__link">
-    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="rinoh.style.Styled.__init__.style (Python parameter) — the style to associate with this element. If style is a string, the corresponding style is lookup up in the document&#39;s style sheet by means of selectors." class="md-ellipsis">style</span>
+    
+      <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span>
+    
+    <span class="md-ellipsis">
+      <span title="rinoh.style.Styled.__init__.style (Python parameter) — the style to associate with this element."><span>style</span></span>
+    </span>
   </a>
   
 </li>
@@ -853,28 +1226,48 @@
         
           <li class="md-nav__item">
   <a href="#rinoh.style.Styled.style_class" class="md-nav__link">
-    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="rinoh.style.Styled.style_class (Python attribute) — The Style subclass that corresponds to this Styled subclass." class="md-ellipsis">style_<wbr>class</span>
+    
+      <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span>
+    
+    <span class="md-ellipsis">
+      <span title="rinoh.style.Styled.style_class (Python attribute) — The Style subclass that corresponds to this Styled subclass."><span>style_<wbr>class</span></span>
+    </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
   <a href="#rinoh.style.Styled.has_id" class="md-nav__link">
-    <span aria-label="Python property" class="objinfo-icon objinfo-icon__alias" title="Python property">P</span><span title="rinoh.style.Styled.has_id (Python property) — Filter selection on an ID of this Styled" class="md-ellipsis">has_<wbr>id</span>
+    
+      <span aria-label="Python property" class="objinfo-icon objinfo-icon__alias" title="Python property">P</span>
+    
+    <span class="md-ellipsis">
+      <span title="rinoh.style.Styled.has_id (Python property) — Filter selection on an ID of this Styled"><span>has_<wbr>id</span></span>
+    </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
   <a href="#rinoh.style.Styled.has_class" class="md-nav__link">
-    <span aria-label="Python property" class="objinfo-icon objinfo-icon__alias" title="Python property">P</span><span title="rinoh.style.Styled.has_class (Python property) — Filter selection on a class of this Styled" class="md-ellipsis">has_<wbr>class</span>
+    
+      <span aria-label="Python property" class="objinfo-icon objinfo-icon__alias" title="Python property">P</span>
+    
+    <span class="md-ellipsis">
+      <span title="rinoh.style.Styled.has_class (Python property) — Filter selection on a class of this Styled"><span>has_<wbr>class</span></span>
+    </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
   <a href="#rinoh.style.Styled.has_classes" class="md-nav__link">
-    <span aria-label="Python property" class="objinfo-icon objinfo-icon__alias" title="Python property">P</span><span title="rinoh.style.Styled.has_classes (Python property) — Filter selection on a set of classes of this Styled" class="md-ellipsis">has_<wbr>classes</span>
+    
+      <span aria-label="Python property" class="objinfo-icon objinfo-icon__alias" title="Python property">P</span>
+    
+    <span class="md-ellipsis">
+      <span title="rinoh.style.Styled.has_classes (Python property) — Filter selection on a set of classes of this Styled"><span>has_<wbr>classes</span></span>
+    </span>
   </a>
   
 </li>
@@ -886,7 +1279,12 @@
       
         <li class="md-nav__item">
   <a href="#rinoh.style.Style" class="md-nav__link">
-    <span aria-label="Python class" class="objinfo-icon objinfo-icon__data" title="Python class">C</span><span title="rinoh.style.Style (Python class) — Dictionary storing style attributes." class="md-ellipsis">rinoh.<wbr>style.<wbr>Style</span>
+    
+      <span aria-label="Python class" class="objinfo-icon objinfo-icon__data" title="Python class">C</span>
+    
+    <span class="md-ellipsis">
+      <span title="rinoh.style.Style (Python class) — Dictionary storing style attributes."><span>rinoh.<wbr>style.<wbr>Style</span></span>
+    </span>
   </a>
   
     <nav class="md-nav" aria-label="rinoh.style.Style">
@@ -894,7 +1292,12 @@
         
           <li class="md-nav__item">
   <a href="#rinoh.style.Style.hide" class="md-nav__link">
-    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="rinoh.style.Style.hide (Python attribute) — Suppress rendering this element" class="md-ellipsis">hide</span>
+    
+      <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span>
+    
+    <span class="md-ellipsis">
+      <span title="rinoh.style.Style.hide (Python attribute) — Suppress rendering this element"><span>hide</span></span>
+    </span>
   </a>
   
 </li>
@@ -906,7 +1309,10 @@
       
         <li class="md-nav__item">
   <a href="#style-sheet" class="md-nav__link">
-    <span class="md-ellipsis">Style Sheet</span>
+    
+    <span class="md-ellipsis">
+      <span>Style Sheet</span>
+    </span>
   </a>
   
     <nav class="md-nav" aria-label="Style Sheet">
@@ -914,7 +1320,12 @@
         
           <li class="md-nav__item">
   <a href="#rinoh.style.StyleSheet" class="md-nav__link">
-    <span aria-label="Python class" class="objinfo-icon objinfo-icon__data" title="Python class">C</span><span title="rinoh.style.StyleSheet (Python class) — Dictionary storing a collection of related styles by name." class="md-ellipsis">rinoh.<wbr>style.<wbr>Style<wbr>Sheet</span>
+    
+      <span aria-label="Python class" class="objinfo-icon objinfo-icon__data" title="Python class">C</span>
+    
+    <span class="md-ellipsis">
+      <span title="rinoh.style.StyleSheet (Python class) — Dictionary storing a collection of related styles by name."><span>rinoh.<wbr>style.<wbr>Style<wbr>Sheet</span></span>
+    </span>
   </a>
   
     <nav class="md-nav" aria-label="rinoh.style.StyleSheet">
@@ -922,7 +1333,10 @@
         
           <li class="md-nav__item">
   <a href="#rinoh.style.StyleSheet-parameters" class="md-nav__link">
-    <span class="md-ellipsis">Parameters</span>
+    
+    <span class="md-ellipsis">
+      <span>Parameters</span>
+    </span>
   </a>
   
     <nav class="md-nav" aria-label="Parameters">
@@ -930,35 +1344,60 @@
         
           <li class="md-nav__item">
   <a href="#rinoh.style.StyleSheet.__init__.name" class="md-nav__link">
-    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="rinoh.style.StyleSheet.__init__.name (Python parameter) — a label for this style sheet" class="md-ellipsis">name</span>
+    
+      <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span>
+    
+    <span class="md-ellipsis">
+      <span title="rinoh.style.StyleSheet.__init__.name (Python parameter) — a label for this style sheet"><span>name</span></span>
+    </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
   <a href="#rinoh.style.StyleSheet.__init__.matcher" class="md-nav__link">
-    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="rinoh.style.StyleSheet.__init__.matcher (Python parameter) — the matcher providing the selectors the styles contained in this style sheet map to. If no matcher is given and base is specified, the base&#39;s matcher is used. If base is not set, the default matcher is used." class="md-ellipsis">matcher</span>
+    
+      <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span>
+    
+    <span class="md-ellipsis">
+      <span title="rinoh.style.StyleSheet.__init__.matcher (Python parameter) — the matcher providing the selectors the styles contained in this style sheet map to."><span>matcher</span></span>
+    </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
   <a href="#rinoh.style.StyleSheet.__init__.base" class="md-nav__link">
-    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="rinoh.style.StyleSheet.__init__.base (Python parameter) — the style sheet to extend" class="md-ellipsis">base</span>
+    
+      <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span>
+    
+    <span class="md-ellipsis">
+      <span title="rinoh.style.StyleSheet.__init__.base (Python parameter) — the style sheet to extend"><span>base</span></span>
+    </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
   <a href="#rinoh.style.StyleSheet.__init__.description" class="md-nav__link">
-    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="rinoh.style.StyleSheet.__init__.description (Python parameter) — a short string describing this style sheet" class="md-ellipsis">description</span>
+    
+      <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span>
+    
+    <span class="md-ellipsis">
+      <span title="rinoh.style.StyleSheet.__init__.description (Python parameter) — a short string describing this style sheet"><span>description</span></span>
+    </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
   <a href="#rinoh.style.StyleSheet.__init__.pygments_style" class="md-nav__link">
-    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="rinoh.style.StyleSheet.__init__.pygments_style (Python parameter) — the Pygments style to use for styling code blocks" class="md-ellipsis">pygments_<wbr>style</span>
+    
+      <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span>
+    
+    <span class="md-ellipsis">
+      <span title="rinoh.style.StyleSheet.__init__.pygments_style (Python parameter) — the Pygments style to use for styling code blocks"><span>pygments_<wbr>style</span></span>
+    </span>
   </a>
   
 </li>
@@ -970,7 +1409,12 @@
         
           <li class="md-nav__item">
   <a href="#rinoh.style.StyleSheet.get_selector" class="md-nav__link">
-    <span aria-label="Python method" class="objinfo-icon objinfo-icon__procedure" title="Python method">M</span><span title="rinoh.style.StyleSheet.get_selector (Python method) — Find a selector mapped to a style in this or a base style sheet." class="md-ellipsis">get_<wbr>selector</span>
+    
+      <span aria-label="Python method" class="objinfo-icon objinfo-icon__procedure" title="Python method">M</span>
+    
+    <span class="md-ellipsis">
+      <span title="rinoh.style.StyleSheet.get_selector (Python method) — Find a selector mapped to a style in this or a base style sheet."><span>get_<wbr>selector</span></span>
+    </span>
   </a>
   
     <nav class="md-nav" aria-label="get_selector">
@@ -978,7 +1422,10 @@
         
           <li class="md-nav__item">
   <a href="#rinoh.style.StyleSheet.get_selector-parameters" class="md-nav__link">
-    <span class="md-ellipsis">Parameters</span>
+    
+    <span class="md-ellipsis">
+      <span>Parameters</span>
+    </span>
   </a>
   
     <nav class="md-nav" aria-label="Parameters">
@@ -986,7 +1433,12 @@
         
           <li class="md-nav__item">
   <a href="#rinoh.style.StyleSheet.get_selector.name" class="md-nav__link">
-    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="rinoh.style.StyleSheet.get_selector.name (Python parameter) — a style name" class="md-ellipsis">name</span>
+    
+      <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span>
+    
+    <span class="md-ellipsis">
+      <span title="rinoh.style.StyleSheet.get_selector.name (Python parameter) — a style name"><span>name</span></span>
+    </span>
   </a>
   
 </li>
@@ -998,14 +1450,20 @@
         
           <li class="md-nav__item">
   <a href="#rinoh.style.StyleSheet.get_selector-returns" class="md-nav__link">
-    <span class="md-ellipsis">Returns</span>
+    
+    <span class="md-ellipsis">
+      <span>Returns</span>
+    </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
   <a href="#rinoh.style.StyleSheet.get_selector-raises" class="md-nav__link">
-    <span class="md-ellipsis">Raises</span>
+    
+    <span class="md-ellipsis">
+      <span>Raises</span>
+    </span>
   </a>
   
 </li>
@@ -1022,7 +1480,12 @@
         
           <li class="md-nav__item">
   <a href="#rinoh.style.StyleSheetFile" class="md-nav__link">
-    <span aria-label="Python class" class="objinfo-icon objinfo-icon__data" title="Python class">C</span><span title="rinoh.style.StyleSheetFile (Python class) — Loads styles defined in a .rts file (INI format)." class="md-ellipsis">rinoh.<wbr>style.<wbr>Style<wbr>Sheet<wbr>File</span>
+    
+      <span aria-label="Python class" class="objinfo-icon objinfo-icon__data" title="Python class">C</span>
+    
+    <span class="md-ellipsis">
+      <span title="rinoh.style.StyleSheetFile (Python class) — Loads styles defined in a .rts file (INI format)."><span>rinoh.<wbr>style.<wbr>Style<wbr>Sheet<wbr>File</span></span>
+    </span>
   </a>
   
     <nav class="md-nav" aria-label="rinoh.style.StyleSheetFile">
@@ -1030,7 +1493,10 @@
         
           <li class="md-nav__item">
   <a href="#rinoh.style.StyleSheetFile-parameters" class="md-nav__link">
-    <span class="md-ellipsis">Parameters</span>
+    
+    <span class="md-ellipsis">
+      <span>Parameters</span>
+    </span>
   </a>
   
     <nav class="md-nav" aria-label="Parameters">
@@ -1038,7 +1504,12 @@
         
           <li class="md-nav__item">
   <a href="#rinoh.style.StyleSheetFile.__init__.filename" class="md-nav__link">
-    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="rinoh.style.StyleSheetFile.__init__.filename (Python parameter) — the path to the style sheet file" class="md-ellipsis">filename</span>
+    
+      <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span>
+    
+    <span class="md-ellipsis">
+      <span title="rinoh.style.StyleSheetFile.__init__.filename (Python parameter) — the path to the style sheet file"><span>filename</span></span>
+    </span>
   </a>
   
 </li>
@@ -1055,7 +1526,12 @@
         
           <li class="md-nav__item">
   <a href="#rinoh.style.StyledMatcher" class="md-nav__link">
-    <span aria-label="Python class" class="objinfo-icon objinfo-icon__data" title="Python class">C</span><span title="rinoh.style.StyledMatcher (Python class) — Dictionary mapping labels to selectors." class="md-ellipsis">rinoh.<wbr>style.<wbr>Styled<wbr>Matcher</span>
+    
+      <span aria-label="Python class" class="objinfo-icon objinfo-icon__data" title="Python class">C</span>
+    
+    <span class="md-ellipsis">
+      <span title="rinoh.style.StyledMatcher (Python class) — Dictionary mapping labels to selectors."><span>rinoh.<wbr>style.<wbr>Styled<wbr>Matcher</span></span>
+    </span>
   </a>
   
     <nav class="md-nav" aria-label="rinoh.style.StyledMatcher">
@@ -1063,7 +1539,12 @@
         
           <li class="md-nav__item">
   <a href="#rinoh.style.StyledMatcher.update" class="md-nav__link">
-    <span aria-label="Python method" class="objinfo-icon objinfo-icon__procedure" title="Python method">M</span><span title="rinoh.style.StyledMatcher.update (Python method) — If E is present and has a .keys() method, then does:  for k in E.keys(): D[k] = E[k] If E is present and lacks a .keys() method, then does:  for k, v in E: D[k] = v In either case, this is followed by: for k in F:  D[k] = F[k]" class="md-ellipsis">update</span>
+    
+      <span aria-label="Python method" class="objinfo-icon objinfo-icon__procedure" title="Python method">M</span>
+    
+    <span class="md-ellipsis">
+      <span title="rinoh.style.StyledMatcher.update (Python method) — If E is present and has a .keys() method, then does:  for k in E.keys(): D[k] = E[k] If E is present and lacks a .keys() method, then does:  for k, v in E: D[k] = v In either case, this is followed by: for k in F:  D[k] = F[k]"><span>update</span></span>
+    </span>
   </a>
   
 </li>
@@ -1085,48 +1566,68 @@
     </li>
   
 
-            
-          
+              
             
               
+                
+  
   
   
   
   
     <li class="md-nav__item">
       <a href="table.html" class="md-nav__link">
-        <span class="md-ellipsis">Tables <wbr>(rinoh.<wbr>table)</span>
+        
+  
+  
+  <span class="md-ellipsis">
+    <span>Tables <wbr>(rinoh.<wbr>table)</span>
+    
+  </span>
+  
+
       </a>
     </li>
   
 
-            
-          
+              
             
               
+                
+  
   
   
   
   
     <li class="md-nav__item">
       <a href="template.html" class="md-nav__link">
-        <span class="md-ellipsis">Templates <wbr>(rinoh.<wbr>template)</span>
+        
+  
+  
+  <span class="md-ellipsis">
+    <span>Templates <wbr>(rinoh.<wbr>template)</span>
+    
+  </span>
+  
+
       </a>
     </li>
   
 
+              
             
-          
-        </ul>
-      </nav>
+          </ul>
+        </nav>
+      
     </li>
   
   
 
+              
             
-          
-        </ul>
-      </nav>
+          </ul>
+        </nav>
+      
     </li>
   
   
@@ -1134,65 +1635,98 @@
     
       
       
-      
-
+  
   
   
   
     
+    
       
+        
+        
+      
+    
     
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
       
-      
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" checked>
-      
-      
-      
-        <label class="md-nav__link" for="__nav_3">
-          <span class="md-ellipsis">Indices</span>
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <nav class="md-nav" aria-label="Indices" data-md-level="1">
-        <label class="md-nav__title" for="__nav_3">
-          <span class="md-nav__icon md-icon"></span>
-          <span class="md-ellipsis">Indices</span>
-        </label>
-        <ul class="md-nav__list" data-md-scrollfix>
+        
+        
           
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    <span>Indices</span>
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            <span>Indices</span>
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
             
               
+                
+  
   
   
   
   
     <li class="md-nav__item">
       <a href="../genindex.html" class="md-nav__link">
-        <span class="md-ellipsis">Index</span>
+        
+  
+  
+  <span class="md-ellipsis">
+    <span>Index</span>
+    
+  </span>
+  
+
       </a>
     </li>
   
 
-            
-          
+              
             
               
+                
+  
   
   
   
   
     <li class="md-nav__item">
       <a href="../py-modindex.html" class="md-nav__link">
-        <span class="md-ellipsis">Module Index</span>
+        
+  
+  
+  <span class="md-ellipsis">
+    <span>Module Index</span>
+    
+  </span>
+  
+
       </a>
     </li>
   
 
+              
             
-          
-        </ul>
-      </nav>
+          </ul>
+        </nav>
+      
     </li>
   
   
@@ -1219,13 +1753,18 @@
   
     <label class="md-nav__title" for="__toc">
       <span class="md-nav__icon md-icon"></span>
-      <span class="md-ellipsis">Style <wbr>(rinoh.<wbr>style)</span>
+      <span>Style <wbr>(rinoh.<wbr>style)</span>
     </label>
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
   <a href="#rinoh.style.Styled" class="md-nav__link">
-    <span aria-label="Python class" class="objinfo-icon objinfo-icon__data" title="Python class">C</span><span title="rinoh.style.Styled (Python class) — A document element who&#39;s style can be configured." class="md-ellipsis">rinoh.<wbr>style.<wbr>Styled</span>
+    
+      <span aria-label="Python class" class="objinfo-icon objinfo-icon__data" title="Python class">C</span>
+    
+    <span class="md-ellipsis">
+      <span title="rinoh.style.Styled (Python class) — A document element who&#39;s style can be configured."><span>rinoh.<wbr>style.<wbr>Styled</span></span>
+    </span>
   </a>
   
     <nav class="md-nav" aria-label="rinoh.style.Styled">
@@ -1233,7 +1772,10 @@
         
           <li class="md-nav__item">
   <a href="#rinoh.style.Styled-parameters" class="md-nav__link">
-    <span class="md-ellipsis">Parameters</span>
+    
+    <span class="md-ellipsis">
+      <span>Parameters</span>
+    </span>
   </a>
   
     <nav class="md-nav" aria-label="Parameters">
@@ -1241,7 +1783,12 @@
         
           <li class="md-nav__item">
   <a href="#rinoh.style.Styled.__init__.style" class="md-nav__link">
-    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="rinoh.style.Styled.__init__.style (Python parameter) — the style to associate with this element. If style is a string, the corresponding style is lookup up in the document&#39;s style sheet by means of selectors." class="md-ellipsis">style</span>
+    
+      <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span>
+    
+    <span class="md-ellipsis">
+      <span title="rinoh.style.Styled.__init__.style (Python parameter) — the style to associate with this element."><span>style</span></span>
+    </span>
   </a>
   
 </li>
@@ -1253,28 +1800,48 @@
         
           <li class="md-nav__item">
   <a href="#rinoh.style.Styled.style_class" class="md-nav__link">
-    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="rinoh.style.Styled.style_class (Python attribute) — The Style subclass that corresponds to this Styled subclass." class="md-ellipsis">style_<wbr>class</span>
+    
+      <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span>
+    
+    <span class="md-ellipsis">
+      <span title="rinoh.style.Styled.style_class (Python attribute) — The Style subclass that corresponds to this Styled subclass."><span>style_<wbr>class</span></span>
+    </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
   <a href="#rinoh.style.Styled.has_id" class="md-nav__link">
-    <span aria-label="Python property" class="objinfo-icon objinfo-icon__alias" title="Python property">P</span><span title="rinoh.style.Styled.has_id (Python property) — Filter selection on an ID of this Styled" class="md-ellipsis">has_<wbr>id</span>
+    
+      <span aria-label="Python property" class="objinfo-icon objinfo-icon__alias" title="Python property">P</span>
+    
+    <span class="md-ellipsis">
+      <span title="rinoh.style.Styled.has_id (Python property) — Filter selection on an ID of this Styled"><span>has_<wbr>id</span></span>
+    </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
   <a href="#rinoh.style.Styled.has_class" class="md-nav__link">
-    <span aria-label="Python property" class="objinfo-icon objinfo-icon__alias" title="Python property">P</span><span title="rinoh.style.Styled.has_class (Python property) — Filter selection on a class of this Styled" class="md-ellipsis">has_<wbr>class</span>
+    
+      <span aria-label="Python property" class="objinfo-icon objinfo-icon__alias" title="Python property">P</span>
+    
+    <span class="md-ellipsis">
+      <span title="rinoh.style.Styled.has_class (Python property) — Filter selection on a class of this Styled"><span>has_<wbr>class</span></span>
+    </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
   <a href="#rinoh.style.Styled.has_classes" class="md-nav__link">
-    <span aria-label="Python property" class="objinfo-icon objinfo-icon__alias" title="Python property">P</span><span title="rinoh.style.Styled.has_classes (Python property) — Filter selection on a set of classes of this Styled" class="md-ellipsis">has_<wbr>classes</span>
+    
+      <span aria-label="Python property" class="objinfo-icon objinfo-icon__alias" title="Python property">P</span>
+    
+    <span class="md-ellipsis">
+      <span title="rinoh.style.Styled.has_classes (Python property) — Filter selection on a set of classes of this Styled"><span>has_<wbr>classes</span></span>
+    </span>
   </a>
   
 </li>
@@ -1286,7 +1853,12 @@
       
         <li class="md-nav__item">
   <a href="#rinoh.style.Style" class="md-nav__link">
-    <span aria-label="Python class" class="objinfo-icon objinfo-icon__data" title="Python class">C</span><span title="rinoh.style.Style (Python class) — Dictionary storing style attributes." class="md-ellipsis">rinoh.<wbr>style.<wbr>Style</span>
+    
+      <span aria-label="Python class" class="objinfo-icon objinfo-icon__data" title="Python class">C</span>
+    
+    <span class="md-ellipsis">
+      <span title="rinoh.style.Style (Python class) — Dictionary storing style attributes."><span>rinoh.<wbr>style.<wbr>Style</span></span>
+    </span>
   </a>
   
     <nav class="md-nav" aria-label="rinoh.style.Style">
@@ -1294,7 +1866,12 @@
         
           <li class="md-nav__item">
   <a href="#rinoh.style.Style.hide" class="md-nav__link">
-    <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span><span title="rinoh.style.Style.hide (Python attribute) — Suppress rendering this element" class="md-ellipsis">hide</span>
+    
+      <span aria-label="Python attribute" class="objinfo-icon objinfo-icon__alias" title="Python attribute">A</span>
+    
+    <span class="md-ellipsis">
+      <span title="rinoh.style.Style.hide (Python attribute) — Suppress rendering this element"><span>hide</span></span>
+    </span>
   </a>
   
 </li>
@@ -1306,7 +1883,10 @@
       
         <li class="md-nav__item">
   <a href="#style-sheet" class="md-nav__link">
-    <span class="md-ellipsis">Style Sheet</span>
+    
+    <span class="md-ellipsis">
+      <span>Style Sheet</span>
+    </span>
   </a>
   
     <nav class="md-nav" aria-label="Style Sheet">
@@ -1314,7 +1894,12 @@
         
           <li class="md-nav__item">
   <a href="#rinoh.style.StyleSheet" class="md-nav__link">
-    <span aria-label="Python class" class="objinfo-icon objinfo-icon__data" title="Python class">C</span><span title="rinoh.style.StyleSheet (Python class) — Dictionary storing a collection of related styles by name." class="md-ellipsis">rinoh.<wbr>style.<wbr>Style<wbr>Sheet</span>
+    
+      <span aria-label="Python class" class="objinfo-icon objinfo-icon__data" title="Python class">C</span>
+    
+    <span class="md-ellipsis">
+      <span title="rinoh.style.StyleSheet (Python class) — Dictionary storing a collection of related styles by name."><span>rinoh.<wbr>style.<wbr>Style<wbr>Sheet</span></span>
+    </span>
   </a>
   
     <nav class="md-nav" aria-label="rinoh.style.StyleSheet">
@@ -1322,7 +1907,10 @@
         
           <li class="md-nav__item">
   <a href="#rinoh.style.StyleSheet-parameters" class="md-nav__link">
-    <span class="md-ellipsis">Parameters</span>
+    
+    <span class="md-ellipsis">
+      <span>Parameters</span>
+    </span>
   </a>
   
     <nav class="md-nav" aria-label="Parameters">
@@ -1330,35 +1918,60 @@
         
           <li class="md-nav__item">
   <a href="#rinoh.style.StyleSheet.__init__.name" class="md-nav__link">
-    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="rinoh.style.StyleSheet.__init__.name (Python parameter) — a label for this style sheet" class="md-ellipsis">name</span>
+    
+      <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span>
+    
+    <span class="md-ellipsis">
+      <span title="rinoh.style.StyleSheet.__init__.name (Python parameter) — a label for this style sheet"><span>name</span></span>
+    </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
   <a href="#rinoh.style.StyleSheet.__init__.matcher" class="md-nav__link">
-    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="rinoh.style.StyleSheet.__init__.matcher (Python parameter) — the matcher providing the selectors the styles contained in this style sheet map to. If no matcher is given and base is specified, the base&#39;s matcher is used. If base is not set, the default matcher is used." class="md-ellipsis">matcher</span>
+    
+      <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span>
+    
+    <span class="md-ellipsis">
+      <span title="rinoh.style.StyleSheet.__init__.matcher (Python parameter) — the matcher providing the selectors the styles contained in this style sheet map to."><span>matcher</span></span>
+    </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
   <a href="#rinoh.style.StyleSheet.__init__.base" class="md-nav__link">
-    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="rinoh.style.StyleSheet.__init__.base (Python parameter) — the style sheet to extend" class="md-ellipsis">base</span>
+    
+      <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span>
+    
+    <span class="md-ellipsis">
+      <span title="rinoh.style.StyleSheet.__init__.base (Python parameter) — the style sheet to extend"><span>base</span></span>
+    </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
   <a href="#rinoh.style.StyleSheet.__init__.description" class="md-nav__link">
-    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="rinoh.style.StyleSheet.__init__.description (Python parameter) — a short string describing this style sheet" class="md-ellipsis">description</span>
+    
+      <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span>
+    
+    <span class="md-ellipsis">
+      <span title="rinoh.style.StyleSheet.__init__.description (Python parameter) — a short string describing this style sheet"><span>description</span></span>
+    </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
   <a href="#rinoh.style.StyleSheet.__init__.pygments_style" class="md-nav__link">
-    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="rinoh.style.StyleSheet.__init__.pygments_style (Python parameter) — the Pygments style to use for styling code blocks" class="md-ellipsis">pygments_<wbr>style</span>
+    
+      <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span>
+    
+    <span class="md-ellipsis">
+      <span title="rinoh.style.StyleSheet.__init__.pygments_style (Python parameter) — the Pygments style to use for styling code blocks"><span>pygments_<wbr>style</span></span>
+    </span>
   </a>
   
 </li>
@@ -1370,7 +1983,12 @@
         
           <li class="md-nav__item">
   <a href="#rinoh.style.StyleSheet.get_selector" class="md-nav__link">
-    <span aria-label="Python method" class="objinfo-icon objinfo-icon__procedure" title="Python method">M</span><span title="rinoh.style.StyleSheet.get_selector (Python method) — Find a selector mapped to a style in this or a base style sheet." class="md-ellipsis">get_<wbr>selector</span>
+    
+      <span aria-label="Python method" class="objinfo-icon objinfo-icon__procedure" title="Python method">M</span>
+    
+    <span class="md-ellipsis">
+      <span title="rinoh.style.StyleSheet.get_selector (Python method) — Find a selector mapped to a style in this or a base style sheet."><span>get_<wbr>selector</span></span>
+    </span>
   </a>
   
     <nav class="md-nav" aria-label="get_selector">
@@ -1378,7 +1996,10 @@
         
           <li class="md-nav__item">
   <a href="#rinoh.style.StyleSheet.get_selector-parameters" class="md-nav__link">
-    <span class="md-ellipsis">Parameters</span>
+    
+    <span class="md-ellipsis">
+      <span>Parameters</span>
+    </span>
   </a>
   
     <nav class="md-nav" aria-label="Parameters">
@@ -1386,7 +2007,12 @@
         
           <li class="md-nav__item">
   <a href="#rinoh.style.StyleSheet.get_selector.name" class="md-nav__link">
-    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="rinoh.style.StyleSheet.get_selector.name (Python parameter) — a style name" class="md-ellipsis">name</span>
+    
+      <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span>
+    
+    <span class="md-ellipsis">
+      <span title="rinoh.style.StyleSheet.get_selector.name (Python parameter) — a style name"><span>name</span></span>
+    </span>
   </a>
   
 </li>
@@ -1398,14 +2024,20 @@
         
           <li class="md-nav__item">
   <a href="#rinoh.style.StyleSheet.get_selector-returns" class="md-nav__link">
-    <span class="md-ellipsis">Returns</span>
+    
+    <span class="md-ellipsis">
+      <span>Returns</span>
+    </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
   <a href="#rinoh.style.StyleSheet.get_selector-raises" class="md-nav__link">
-    <span class="md-ellipsis">Raises</span>
+    
+    <span class="md-ellipsis">
+      <span>Raises</span>
+    </span>
   </a>
   
 </li>
@@ -1422,7 +2054,12 @@
         
           <li class="md-nav__item">
   <a href="#rinoh.style.StyleSheetFile" class="md-nav__link">
-    <span aria-label="Python class" class="objinfo-icon objinfo-icon__data" title="Python class">C</span><span title="rinoh.style.StyleSheetFile (Python class) — Loads styles defined in a .rts file (INI format)." class="md-ellipsis">rinoh.<wbr>style.<wbr>Style<wbr>Sheet<wbr>File</span>
+    
+      <span aria-label="Python class" class="objinfo-icon objinfo-icon__data" title="Python class">C</span>
+    
+    <span class="md-ellipsis">
+      <span title="rinoh.style.StyleSheetFile (Python class) — Loads styles defined in a .rts file (INI format)."><span>rinoh.<wbr>style.<wbr>Style<wbr>Sheet<wbr>File</span></span>
+    </span>
   </a>
   
     <nav class="md-nav" aria-label="rinoh.style.StyleSheetFile">
@@ -1430,7 +2067,10 @@
         
           <li class="md-nav__item">
   <a href="#rinoh.style.StyleSheetFile-parameters" class="md-nav__link">
-    <span class="md-ellipsis">Parameters</span>
+    
+    <span class="md-ellipsis">
+      <span>Parameters</span>
+    </span>
   </a>
   
     <nav class="md-nav" aria-label="Parameters">
@@ -1438,7 +2078,12 @@
         
           <li class="md-nav__item">
   <a href="#rinoh.style.StyleSheetFile.__init__.filename" class="md-nav__link">
-    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="rinoh.style.StyleSheetFile.__init__.filename (Python parameter) — the path to the style sheet file" class="md-ellipsis">filename</span>
+    
+      <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span>
+    
+    <span class="md-ellipsis">
+      <span title="rinoh.style.StyleSheetFile.__init__.filename (Python parameter) — the path to the style sheet file"><span>filename</span></span>
+    </span>
   </a>
   
 </li>
@@ -1455,7 +2100,12 @@
         
           <li class="md-nav__item">
   <a href="#rinoh.style.StyledMatcher" class="md-nav__link">
-    <span aria-label="Python class" class="objinfo-icon objinfo-icon__data" title="Python class">C</span><span title="rinoh.style.StyledMatcher (Python class) — Dictionary mapping labels to selectors." class="md-ellipsis">rinoh.<wbr>style.<wbr>Styled<wbr>Matcher</span>
+    
+      <span aria-label="Python class" class="objinfo-icon objinfo-icon__data" title="Python class">C</span>
+    
+    <span class="md-ellipsis">
+      <span title="rinoh.style.StyledMatcher (Python class) — Dictionary mapping labels to selectors."><span>rinoh.<wbr>style.<wbr>Styled<wbr>Matcher</span></span>
+    </span>
   </a>
   
     <nav class="md-nav" aria-label="rinoh.style.StyledMatcher">
@@ -1463,7 +2113,12 @@
         
           <li class="md-nav__item">
   <a href="#rinoh.style.StyledMatcher.update" class="md-nav__link">
-    <span aria-label="Python method" class="objinfo-icon objinfo-icon__procedure" title="Python method">M</span><span title="rinoh.style.StyledMatcher.update (Python method) — If E is present and has a .keys() method, then does:  for k in E.keys(): D[k] = E[k] If E is present and lacks a .keys() method, then does:  for k, v in E: D[k] = v In either case, this is followed by: for k in F:  D[k] = F[k]" class="md-ellipsis">update</span>
+    
+      <span aria-label="Python method" class="objinfo-icon objinfo-icon__procedure" title="Python method">M</span>
+    
+    <span class="md-ellipsis">
+      <span title="rinoh.style.StyledMatcher.update (Python method) — If E is present and has a .keys() method, then does:  for k in E.keys(): D[k] = E[k] If E is present and lacks a .keys() method, then does:  for k, v in E: D[k] = v In either case, this is followed by: for k in F:  D[k] = F[k]"><span>update</span></span>
+    </span>
   </a>
   
 </li>
@@ -1489,18 +2144,18 @@
           
             <div class="md-content" data-md-component="content">
               <article class="md-content__inner md-typeset" role="main">
+                
+                
                   
 
 
-  <a href="https://github.com/brechtm/rinohtype/edit/master/doc/api/style.rst" title="Edit this page" class="md-content__button md-icon">
-    
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25Z"/></svg>
-  </a>
+  
+  
 
 <h1 id="style-rinoh-style"><span id="style"></span><span id="module-rinoh.style"></span>Style (<a class="reference internal" href="#module-rinoh.style" title="rinoh.style (Python module)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.style</span></code></a>)<a class="headerlink" href="#style-rinoh-style" title="Link to this heading">¶</a></h1>
 <dl class="py class objdesc">
 <dt class="sig sig-object highlight sig-wrap py" id="rinoh.style.Styled">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rinoh.style.</span></span><span class="sig-name descname"><span class="pre">Styled</span></span><span class="sig-paren">(</span><span class="sig-param-decl"><em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="kc">None</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#rinoh.style.Styled.__init__.style" title="rinoh.style.Styled.__init__.style (Python parameter) — the style to associate with this element. If style is a string, the corresponding style is lookup up in the document's style sheet by means of selectors."><span class="n"><span class="pre">style</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="kc">None</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="kc">None</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="kc">None</span></code></em></span><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.style.Styled" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rinoh.style.</span></span><span class="sig-name descname"><span class="pre">Styled</span></span><span class="sig-paren">(</span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#rinoh.style.Styled" title="rinoh.style.Styled.__init__.id (Python parameter)"><span class="n"><span class="pre">id</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="kc">None</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#rinoh.style.Styled.__init__.style" title="rinoh.style.Styled.__init__.style (Python parameter) — the style to associate with this element."><span class="n"><span class="pre">style</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="kc">None</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#rinoh.style.Styled" title="rinoh.style.Styled.__init__.parent (Python parameter)"><span class="n"><span class="pre">parent</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="kc">None</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#rinoh.style.Styled" title="rinoh.style.Styled.__init__.source (Python parameter)"><span class="n"><span class="pre">source</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="kc">None</span></code></em></span><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.style.Styled" title="Link to this definition">¶</a></dt>
 <dd><p>A document element who’s style can be configured.</p>
 <dl class="field-list simple">
 <dt class="field-odd" id="rinoh.style.Styled-parameters">Parameters<span class="colon">:</span><a class="headerlink" href="#rinoh.style.Styled-parameters" title="Permalink to this headline">¶</a></dt>
@@ -1521,19 +2176,19 @@ subclass.</p>
 
 <dl class="py property objdesc">
 <dt class="sig sig-object highlight py" id="rinoh.style.Styled.has_id">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">has_id</span></span><a class="headerlink" href="#rinoh.style.Styled.has_id" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">has_id</span></span><a class="headerlink" href="#rinoh.style.Styled.has_id" title="Link to this definition">¶</a></dt>
 <dd><p>Filter selection on an ID of this <a class="reference internal" href="#rinoh.style.Styled" title="rinoh.style.Styled (Python class) — A document element who's style can be configured."><code class="xref py py-class docutils literal notranslate"><span class="pre">Styled</span></code></a></p>
 </dd></dl>
 
 <dl class="py property objdesc">
 <dt class="sig sig-object highlight py" id="rinoh.style.Styled.has_class">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">has_class</span></span><a class="headerlink" href="#rinoh.style.Styled.has_class" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">has_class</span></span><a class="headerlink" href="#rinoh.style.Styled.has_class" title="Link to this definition">¶</a></dt>
 <dd><p>Filter selection on a class of this <a class="reference internal" href="#rinoh.style.Styled" title="rinoh.style.Styled (Python class) — A document element who's style can be configured."><code class="xref py py-class docutils literal notranslate"><span class="pre">Styled</span></code></a></p>
 </dd></dl>
 
 <dl class="py property objdesc">
 <dt class="sig sig-object highlight py" id="rinoh.style.Styled.has_classes">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">has_classes</span></span><a class="headerlink" href="#rinoh.style.Styled.has_classes" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">has_classes</span></span><a class="headerlink" href="#rinoh.style.Styled.has_classes" title="Link to this definition">¶</a></dt>
 <dd><p>Filter selection on a set of classes of this <a class="reference internal" href="#rinoh.style.Styled" title="rinoh.style.Styled (Python class) — A document element who's style can be configured."><code class="xref py py-class docutils literal notranslate"><span class="pre">Styled</span></code></a></p>
 </dd></dl>
 
@@ -1541,7 +2196,7 @@ subclass.</p>
 
 <dl class="py class objdesc">
 <dt class="sig sig-object highlight py" id="rinoh.style.Style">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rinoh.style.</span></span><span class="sig-name descname"><span class="pre">Style</span></span><span class="sig-paren">(</span><span class="sig-param-decl"><em class="sig-param"><span class="n"><span class="pre">base</span></span><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="kc">None</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">attributes</span></span></em></span><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.style.Style" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rinoh.style.</span></span><span class="sig-name descname"><span class="pre">Style</span></span><span class="sig-paren">(</span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#rinoh.style.Style" title="rinoh.style.Style.__init__.base (Python parameter)"><span class="n"><span class="pre">base</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="kc">None</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><span class="o"><span class="pre">**</span></span><a class="n reference internal" href="#rinoh.style.Style" title="rinoh.style.Style.__init__.attributes (Python parameter)"><span class="n"><span class="pre">attributes</span></span></a></em></span><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.style.Style" title="Link to this definition">¶</a></dt>
 <dd><p>Dictionary storing style attributes.</p>
 <p>The style attributes associated with this <a class="reference internal" href="#rinoh.style.Style" title="rinoh.style.Style (Python class) — Dictionary storing style attributes."><code class="xref py py-class docutils literal notranslate"><span class="pre">Style</span></code></a> are specified as
 class attributes of type <code class="xref py py-class docutils literal notranslate"><span class="pre">Attribute</span></code>.</p>
@@ -1559,7 +2214,7 @@ class attributes of type <code class="xref py py-class docutils literal notransl
 <h2 id="style-sheet">Style Sheet<a class="headerlink" href="#style-sheet" title="Link to this heading">¶</a></h2>
 <dl class="py class objdesc">
 <dt class="sig sig-object highlight sig-wrap py" id="rinoh.style.StyleSheet">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rinoh.style.</span></span><span class="sig-name descname"><span class="pre">StyleSheet</span></span><span class="sig-paren">(</span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#rinoh.style.StyleSheet.__init__.name" title="rinoh.style.StyleSheet.__init__.name (Python parameter) — a label for this style sheet"><span class="n"><span class="pre">name</span></span></a></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#rinoh.style.StyleSheet.__init__.matcher" title="rinoh.style.StyleSheet.__init__.matcher (Python parameter) — the matcher providing the selectors the styles contained in this style sheet map to. If no matcher is given and base is specified, the base's matcher is used. If base is not set, the default matcher is used."><span class="n"><span class="pre">matcher</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="kc">None</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#rinoh.style.StyleSheet.__init__.base" title="rinoh.style.StyleSheet.__init__.base (Python parameter) — the style sheet to extend"><span class="n"><span class="pre">base</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="kc">None</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="kc">None</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#rinoh.style.StyleSheet.__init__.description" title="rinoh.style.StyleSheet.__init__.description (Python parameter) — a short string describing this style sheet"><span class="n"><span class="pre">description</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="kc">None</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#rinoh.style.StyleSheet.__init__.pygments_style" title="rinoh.style.StyleSheet.__init__.pygments_style (Python parameter) — the Pygments style to use for styling code blocks"><span class="n"><span class="pre">pygments_style</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="kc">None</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">user_options</span></span></em></span><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.style.StyleSheet" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rinoh.style.</span></span><span class="sig-name descname"><span class="pre">StyleSheet</span></span><span class="sig-paren">(</span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#rinoh.style.StyleSheet.__init__.name" title="rinoh.style.StyleSheet.__init__.name (Python parameter) — a label for this style sheet"><span class="n"><span class="pre">name</span></span></a></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#rinoh.style.StyleSheet.__init__.matcher" title="rinoh.style.StyleSheet.__init__.matcher (Python parameter) — the matcher providing the selectors the styles contained in this style sheet map to."><span class="n"><span class="pre">matcher</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="kc">None</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#rinoh.style.StyleSheet.__init__.base" title="rinoh.style.StyleSheet.__init__.base (Python parameter) — the style sheet to extend"><span class="n"><span class="pre">base</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="kc">None</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#rinoh.style.StyleSheet" title="rinoh.style.StyleSheet.__init__.source (Python parameter)"><span class="n"><span class="pre">source</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="kc">None</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#rinoh.style.StyleSheet.__init__.description" title="rinoh.style.StyleSheet.__init__.description (Python parameter) — a short string describing this style sheet"><span class="n"><span class="pre">description</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="kc">None</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#rinoh.style.StyleSheet.__init__.pygments_style" title="rinoh.style.StyleSheet.__init__.pygments_style (Python parameter) — the Pygments style to use for styling code blocks"><span class="n"><span class="pre">pygments_style</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="kc">None</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><span class="o"><span class="pre">**</span></span><a class="n reference internal" href="#rinoh.style.StyleSheet" title="rinoh.style.StyleSheet.__init__.user_options (Python parameter)"><span class="n"><span class="pre">user_options</span></span></a></em></span><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.style.StyleSheet" title="Link to this definition">¶</a></dt>
 <dd><p>Dictionary storing a collection of related styles by name.</p>
 <p><a class="reference internal" href="#rinoh.style.Style" title="rinoh.style.Style (Python class) — Dictionary storing style attributes."><code class="xref py py-class docutils literal notranslate"><span class="pre">Style</span></code></a>s stored in a <a class="reference internal" href="#rinoh.style.StyleSheet" title="rinoh.style.StyleSheet (Python class) — Dictionary storing a collection of related styles by name."><code class="xref py py-class docutils literal notranslate"><span class="pre">StyleSheet</span></code></a> can refer to their base
 style by name.</p>
@@ -1607,7 +2262,7 @@ not set, the default matcher is used.</p>
 
 <dl class="py class objdesc">
 <dt class="sig sig-object highlight sig-wrap py" id="rinoh.style.StyleSheetFile">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rinoh.style.</span></span><span class="sig-name descname"><span class="pre">StyleSheetFile</span></span><span class="sig-paren">(</span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#rinoh.style.StyleSheetFile.__init__.filename" title="rinoh.style.StyleSheetFile.__init__.filename (Python parameter) — the path to the style sheet file"><span class="n"><span class="pre">filename</span></span></a></em>, </span><span class="sig-param-decl"><em class="sig-param"><span class="n"><span class="pre">base</span></span><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="kc">None</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="kc">None</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em></span><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.style.StyleSheetFile" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rinoh.style.</span></span><span class="sig-name descname"><span class="pre">StyleSheetFile</span></span><span class="sig-paren">(</span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#rinoh.style.StyleSheetFile.__init__.filename" title="rinoh.style.StyleSheetFile.__init__.filename (Python parameter) — the path to the style sheet file"><span class="n"><span class="pre">filename</span></span></a></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#rinoh.style.StyleSheetFile" title="rinoh.style.StyleSheetFile.__init__.base (Python parameter)"><span class="n"><span class="pre">base</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="kc">None</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#rinoh.style.StyleSheetFile" title="rinoh.style.StyleSheetFile.__init__.source (Python parameter)"><span class="n"><span class="pre">source</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="kc">None</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><span class="o"><span class="pre">**</span></span><a class="n reference internal" href="#rinoh.style.StyleSheetFile" title="rinoh.style.StyleSheetFile.__init__.kwargs (Python parameter)"><span class="n"><span class="pre">kwargs</span></span></a></em></span><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.style.StyleSheetFile" title="Link to this definition">¶</a></dt>
 <dd><p>Loads styles defined in a <cite>.rts</cite> file (INI format).</p>
 <dl class="field-list simple">
 <dt class="field-odd" id="rinoh.style.StyleSheetFile-parameters">Parameters<span class="colon">:</span><a class="headerlink" href="#rinoh.style.StyleSheetFile-parameters" title="Permalink to this headline">¶</a></dt>
@@ -1626,13 +2281,13 @@ style sheet file.</p>
 
 <dl class="py class objdesc">
 <dt class="sig sig-object highlight py" id="rinoh.style.StyledMatcher">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rinoh.style.</span></span><span class="sig-name descname"><span class="pre">StyledMatcher</span></span><span class="sig-paren">(</span><span class="sig-param-decl"><em class="sig-param"><span class="n"><span class="pre">mapping_or_iterable</span></span><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="kc">None</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em></span><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.style.StyledMatcher" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rinoh.style.</span></span><span class="sig-name descname"><span class="pre">StyledMatcher</span></span><span class="sig-paren">(</span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#rinoh.style.StyledMatcher" title="rinoh.style.StyledMatcher.__init__.mapping_or_iterable (Python parameter)"><span class="n"><span class="pre">mapping_or_iterable</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="kc">None</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><span class="o"><span class="pre">**</span></span><a class="n reference internal" href="#rinoh.style.StyledMatcher" title="rinoh.style.StyledMatcher.__init__.kwargs (Python parameter)"><span class="n"><span class="pre">kwargs</span></span></a></em></span><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.style.StyledMatcher" title="Link to this definition">¶</a></dt>
 <dd><p>Dictionary mapping labels to selectors.</p>
 <p>This matcher can be initialized in the same way as a <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.13)"><code class="docutils literal notranslate"><span class="pre">dict</span></code></a>
 by passing a mapping, an interable and/or keyword arguments.</p>
 <dl class="py method objdesc">
 <dt class="sig sig-object highlight py" id="rinoh.style.StyledMatcher.update">
-<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><span class="optional">[</span><span class="sig-param-decl"><em class="sig-param"><span class="n"><span class="pre">E</span></span></em>, </span><span class="optional">]</span><span class="sig-param-decl"><em class="sig-param"><span class="n"><span class="pre">**F</span></span></em></span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="desctype"><span class="pre">None.</span>&#160; <span class="pre">Update</span> <span class="pre">D</span> <span class="pre">from</span> <span class="pre">mapping/iterable</span> <span class="pre">E</span> <span class="pre">and</span> <span class="pre">F.</span></span></span></span><a class="headerlink" href="#rinoh.style.StyledMatcher.update" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><span class="optional">[</span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#rinoh.style.StyledMatcher.update" title="rinoh.style.StyledMatcher.update.E (Python parameter)"><span class="n"><span class="pre">E</span></span></a></em>, </span><span class="optional">]</span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#rinoh.style.StyledMatcher.update" title="rinoh.style.StyledMatcher.update.**F (Python parameter)"><span class="n"><span class="pre">**F</span></span></a></em></span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="desctype"><span class="pre">None.</span>&#160; <span class="pre">Update</span> <span class="pre">D</span> <span class="pre">from</span> <span class="pre">mapping/iterable</span> <span class="pre">E</span> <span class="pre">and</span> <span class="pre">F.</span></span></span></span><a class="headerlink" href="#rinoh.style.StyledMatcher.update" title="Link to this definition">¶</a></dt>
 <dd><p>If E is present and has a .keys() method, then does:  for k in E.keys(): D[k] = E[k]
 If E is present and lacks a .keys() method, then does:  for k, v in E: D[k] = v
 In either case, this is followed by: for k in F:  D[k] = F[k]</p>
@@ -1640,6 +2295,14 @@ In either case, this is followed by: for k in F:  D[k] = F[k]</p>
 
 </dd></dl>
 
+
+
+
+
+
+
+  
+  
 
 
 
@@ -1657,42 +2320,6 @@ In either case, this is followed by: for k in F:  D[k] = F[k]</p>
       
         <footer class="md-footer">
   
-    
-    <nav class="md-footer__inner md-grid" aria-label="Footer" >
-      
-        
-        <a href="strings.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: Strings (rinoh.strings)" rel="prev">
-          <div class="md-footer__button md-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
-          </div>
-          <div class="md-footer__title">
-            <div class="md-ellipsis">
-              <span class="md-footer__direction">
-                Previous
-              </span>
-              Strings (rinoh.strings)
-            </div>
-          </div>
-        </a>
-      
-      
-        
-        <a href="table.html" class="md-footer__link md-footer__link--next" aria-label="Next: Tables (rinoh.table)" rel="next">
-          <div class="md-footer__title">
-            <div class="md-ellipsis">
-              <span class="md-footer__direction">
-                Next
-              </span>
-              Tables (rinoh.table)
-            </div>
-          </div>
-          <div class="md-footer__button md-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
-          </div>
-        </a>
-      
-    </nav>
-  
   
   
   <div class="md-footer-meta md-typeset">
@@ -1707,7 +2334,7 @@ In either case, this is followed by: for k in F:  D[k] = F[k]</p>
   
     Created using
     <a href="https://www.sphinx-doc.org/" target="_blank" rel="noopener">Sphinx</a>
-    7.3.7.
+    8.2.3.
      and
     <a href="https://github.com/jbms/sphinx-immaterial/" target="_blank" rel="noopener">Sphinx-Immaterial</a>
   
@@ -1723,10 +2350,11 @@ In either case, this is followed by: for k in F:  D[k] = F[k]</p>
       <div class="md-dialog__inner md-typeset"></div>
     </div>
     
-    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.expand", "navigation.sections", "navigation.instant"], "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "version": {"provider": "mike", "staticVersions": null, "versionPath": "../im_versions.json"}}</script>
+    
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.expand", "navigation.sections", "navigation.instant"], "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike", "staticVersions": null, "versionPath": "../im_versions.json"}}</script>
     
       
-        <script src="../_static/sphinx_immaterial_theme.f9d9eeeb247ace16c.min.js?v=8ec58cb5"></script>
+        <script src="../_static/sphinx_immaterial_theme.32136f45f91ae6956.min.js?v=a7a9472a"></script>
     
   </body>
 </html>

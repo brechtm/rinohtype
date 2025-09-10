@@ -1,5 +1,6 @@
 
 
+
 <!doctype html>
 <html lang="en" class="no-js">
   <head>
@@ -7,6 +8,13 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
+      
+      
+      
+        <link rel="prev" href="dimension.html">
+      
+      
+        <link rel="next" href="draw.html">
       
       
       <link rel="icon" href="../_static/rinohtype_logo_abbrev.svg">
@@ -19,11 +27,13 @@
     
       
         
-        
       
       
 
+
     
+    
+      
     
     
       
@@ -32,9 +42,9 @@
         <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
       
     
-        <link rel="stylesheet" type="text/css" href="../_static/sphinx_immaterial_theme.9badc98c4f78aac06.min.css?v=60124955" />
+        <link rel="stylesheet" type="text/css" href="../_static/sphinx_immaterial_theme.acf80fe7f4d9ef9e2.min.css?v=9e56d0d2" />
         <link rel="stylesheet" type="text/css" href="../_static/tweaks.css?v=ac567af0" />
-    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -54,9 +64,6 @@
     <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="red" data-md-color-accent="light-blue">
   
     
-    
-      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
-    
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
     <label class="md-overlay" for="__drawer"></label>
@@ -72,20 +79,23 @@
       
     </div>
     
-      <div data-md-component="outdated" hidden>
+      <div data-md-color-scheme="default" data-md-component="outdated" hidden>
         
       </div>
     
     
       
 
-<header class="md-header" data-md-component="header">
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
     <a href="../index.html" title="rinohtype" class="md-header__button md-logo" aria-label="rinohtype" data-md-component="logo">
       <img src="../_static/logo_white.svg" alt="logo">
     </a>
     <label class="md-header__button md-icon" for="__drawer">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
     </label>
     <div class="md-header__title" data-md-component="header-title">
       <div class="md-header__ellipsis">
@@ -104,32 +114,40 @@
       </div>
     </div>
     
-      <form class="md-header__option" data-md-component="palette">
-        
-          
-          
-          <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="red" data-md-color-accent="light-blue"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
-          
-            <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 1 7 7c0 2.38-1.19 4.47-3 5.74V17a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-2.26C6.19 13.47 5 11.38 5 9a7 7 0 0 1 7-7M9 21v-1h6v1a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1m3-17a5 5 0 0 0-5 5c0 2.05 1.23 3.81 3 4.58V16h4v-2.42c1.77-.77 3-2.53 3-4.58a5 5 0 0 0-5-5Z"/></svg>
-            </label>
-          
-        
-          
-          
-          <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="red" data-md-color-accent="orange"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
-          
-            <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 0-7 7c0 2.38 1.19 4.47 3 5.74V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 0 0-7-7M9 21a1 1 0 0 0 1 1h4a1 1 0 0 0 1-1v-1H9v1Z"/></svg>
-            </label>
-          
-        
-      </form>
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="red" data-md-color-accent="light-blue"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 1 7 7c0 2.38-1.19 4.47-3 5.74V17a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-2.26C6.19 13.47 5 11.38 5 9a7 7 0 0 1 7-7M9 21v-1h6v1a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1m3-17a5 5 0 0 0-5 5c0 2.05 1.23 3.81 3 4.58V16h4v-2.42c1.77-.77 3-2.53 3-4.58a5 5 0 0 0-5-5"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="red" data-md-color-accent="orange"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 0-7 7c0 2.38 1.19 4.47 3 5.74V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 0 0-7-7M9 21a1 1 0 0 0 1 1h4a1 1 0 0 0 1-1v-1H9z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
     
     
     
       <label class="md-header__button md-icon" for="__search">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
       </label>
       <div class="md-search" data-md-component="search" role="dialog">
   <label class="md-search__overlay" for="__search"></label>
@@ -137,24 +155,27 @@
     <form class="md-search__form" name="search">
       <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
       <label class="md-search__icon md-icon" for="__search">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
       </label>
       <nav class="md-search__options" aria-label="Search">
         
         <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
         </button>
       </nav>
       
     </form>
     <div class="md-search__output">
-      <div class="md-search__scrollwrap" data-md-scrollfix>
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
         <div class="md-search-result" data-md-component="search-result">
           <div class="md-search-result__meta">
             Initializing search
           </div>
-          <ol class="md-search-result__list"></ol>
+          <ol class="md-search-result__list" role="presentation"></ol>
         </div>
       </div>
     </div>
@@ -166,7 +187,7 @@
         <a href="https://github.com/brechtm/rinohtype" title="Go to repository" class="md-source" data-md-component="source">
   <div class="md-source__icon md-icon">
     
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
   </div>
   <div class="md-source__repository">
     rinohtype
@@ -198,6 +219,7 @@
                     
 
 
+
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
     <a href="../index.html" title="rinohtype" class="md-nav__button md-logo" aria-label="rinohtype" data-md-component="logo">
@@ -210,7 +232,7 @@
       <a href="https://github.com/brechtm/rinohtype" title="Go to repository" class="md-source" data-md-component="source">
   <div class="md-source__icon md-icon">
     
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
   </div>
   <div class="md-source__repository">
     rinohtype
@@ -222,200 +244,314 @@
     
       
       
-      
-
+  
   
   
   
     
+    
       
+        
+        
+      
+    
     
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
       
-      
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_1" type="checkbox" id="__nav_1" checked>
-      
-      
-      
-        <label class="md-nav__link" for="__nav_1">
-          <span class="md-ellipsis">User Manual</span> [<a class="pdf-link" href="../manual.pdf">PDF</a>]
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <nav class="md-nav" aria-label="User Manual" data-md-level="1">
-        <label class="md-nav__title" for="__nav_1">
-          <span class="md-nav__icon md-icon"></span>
-          <span class="md-ellipsis">User Manual</span> [<a class="pdf-link" href="../manual.pdf">PDF</a>]
-        </label>
-        <ul class="md-nav__list" data-md-scrollfix>
+        
+        
           
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_1" id="__nav_1_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    <span>User Manual</span> [<a class="pdf-link" href="../manual.pdf">PDF</a>]
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1">
+            <span class="md-nav__icon md-icon"></span>
+            <span>User Manual</span> [<a class="pdf-link" href="../manual.pdf">PDF</a>]
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
             
               
+                
+  
   
   
   
   
     <li class="md-nav__item">
       <a href="../intro.html" class="md-nav__link">
-        <span class="md-ellipsis">Introduction</span>
+        
+  
+  
+  <span class="md-ellipsis">
+    <span>Introduction</span>
+    
+  </span>
+  
+
       </a>
     </li>
   
 
-            
-          
+              
             
               
+                
+  
   
   
   
   
     <li class="md-nav__item">
       <a href="../showcase.html" class="md-nav__link">
-        <span class="md-ellipsis">Showcase</span>
+        
+  
+  
+  <span class="md-ellipsis">
+    <span>Showcase</span>
+    
+  </span>
+  
+
       </a>
     </li>
   
 
-            
-          
+              
             
               
+                
+  
   
   
   
   
     <li class="md-nav__item">
       <a href="../install.html" class="md-nav__link">
-        <span class="md-ellipsis">Installation</span>
+        
+  
+  
+  <span class="md-ellipsis">
+    <span>Installation</span>
+    
+  </span>
+  
+
       </a>
     </li>
   
 
-            
-          
+              
             
               
+                
+  
   
   
   
   
     <li class="md-nav__item">
       <a href="../quickstart.html" class="md-nav__link">
-        <span class="md-ellipsis">Quickstart</span>
+        
+  
+  
+  <span class="md-ellipsis">
+    <span>Quickstart</span>
+    
+  </span>
+  
+
       </a>
     </li>
   
 
-            
-          
+              
             
               
+                
+  
   
   
   
   
     <li class="md-nav__item">
       <a href="../basicstyling.html" class="md-nav__link">
-        <span class="md-ellipsis">Basic Document Styling</span>
+        
+  
+  
+  <span class="md-ellipsis">
+    <span>Basic Document Styling</span>
+    
+  </span>
+  
+
       </a>
     </li>
   
 
-            
-          
+              
             
               
+                
+  
   
   
   
   
     <li class="md-nav__item">
       <a href="../elementstyling.html" class="md-nav__link">
-        <span class="md-ellipsis">Element Styling</span>
+        
+  
+  
+  <span class="md-ellipsis">
+    <span>Element Styling</span>
+    
+  </span>
+  
+
       </a>
     </li>
   
 
-            
-          
+              
             
               
+                
+  
   
   
   
   
     <li class="md-nav__item">
       <a href="../templates.html" class="md-nav__link">
-        <span class="md-ellipsis">Document Templates</span>
+        
+  
+  
+  <span class="md-ellipsis">
+    <span>Document Templates</span>
+    
+  </span>
+  
+
       </a>
     </li>
   
 
-            
-          
+              
             
               
+                
+  
   
   
   
   
     <li class="md-nav__item">
       <a href="../faq.html" class="md-nav__link">
-        <span class="md-ellipsis">Frequently Asked Questions</span>
+        
+  
+  
+  <span class="md-ellipsis">
+    <span>Frequently Asked Questions</span>
+    
+  </span>
+  
+
       </a>
     </li>
   
 
-            
-          
+              
             
               
+                
+  
   
   
   
   
     <li class="md-nav__item">
       <a href="../contributing.html" class="md-nav__link">
-        <span class="md-ellipsis">Contributing</span>
+        
+  
+  
+  <span class="md-ellipsis">
+    <span>Contributing</span>
+    
+  </span>
+  
+
       </a>
     </li>
   
 
-            
-          
+              
             
               
+                
+  
   
   
   
   
     <li class="md-nav__item">
       <a href="../developing.html" class="md-nav__link">
-        <span class="md-ellipsis">Developing</span>
+        
+  
+  
+  <span class="md-ellipsis">
+    <span>Developing</span>
+    
+  </span>
+  
+
       </a>
     </li>
   
 
-            
-          
+              
             
               
+                
+  
   
   
   
   
     <li class="md-nav__item">
       <a href="../changelog.html" class="md-nav__link">
-        <span class="md-ellipsis">Release History</span>
+        
+  
+  
+  <span class="md-ellipsis">
+    <span>Release History</span>
+    
+  </span>
+  
+
       </a>
     </li>
   
 
+              
             
-          
-        </ul>
-      </nav>
+          </ul>
+        </nav>
+      
     </li>
   
   
@@ -423,193 +559,300 @@
     
       
       
-      
-
   
   
     
   
   
+  
+    
     
       
+        
+        
+      
+    
     
     <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
-      
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" checked>
-      
-      
-      
-        <label class="md-nav__link" for="__nav_2">
-          <span class="md-ellipsis">Reference Guide</span> [<a class="pdf-link" href="../reference.pdf">PDF</a>]
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <nav class="md-nav" aria-label="Reference Guide" data-md-level="1">
-        <label class="md-nav__title" for="__nav_2">
-          <span class="md-nav__icon md-icon"></span>
-          <span class="md-ellipsis">Reference Guide</span> [<a class="pdf-link" href="../reference.pdf">PDF</a>]
-        </label>
-        <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
           
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    <span>Reference Guide</span> [<a class="pdf-link" href="../reference.pdf">PDF</a>]
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            <span>Reference Guide</span> [<a class="pdf-link" href="../reference.pdf">PDF</a>]
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
             
               
+                
+  
   
   
   
   
     <li class="md-nav__item">
       <a href="../rinoh.html" class="md-nav__link">
-        <span class="md-ellipsis">rinoh</span>
+        
+  
+  
+  <span class="md-ellipsis">
+    <span>rinoh</span>
+    
+  </span>
+  
+
       </a>
     </li>
   
 
-            
-          
+              
             
               
+                
+  
   
   
   
   
     <li class="md-nav__item">
       <a href="../sphinx.html" class="md-nav__link">
-        <span class="md-ellipsis">Sphinx Builder</span>
+        
+  
+  
+  <span class="md-ellipsis">
+    <span>Sphinx Builder</span>
+    
+  </span>
+  
+
       </a>
     </li>
   
 
-            
-          
+              
             
               
+                
+  
   
   
   
   
     <li class="md-nav__item">
       <a href="../stylesheets.html" class="md-nav__link">
-        <span class="md-ellipsis">Style Sheets</span>
+        
+  
+  
+  <span class="md-ellipsis">
+    <span>Style Sheets</span>
+    
+  </span>
+  
+
       </a>
     </li>
   
 
-            
-          
+              
             
               
+                
+  
   
   
   
   
     <li class="md-nav__item">
       <a href="../stdtemplates.html" class="md-nav__link">
-        <span class="md-ellipsis">Standard Document Templates</span>
+        
+  
+  
+  <span class="md-ellipsis">
+    <span>Standard Document Templates</span>
+    
+  </span>
+  
+
       </a>
     </li>
   
 
-            
-          
+              
             
               
+                
   
   
     
   
   
+  
+    
+    
+      
+    
     
     <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
-      
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2_5" type="checkbox" id="__nav_2_5" checked>
-      
-      
-      
         
-        <div class="md-nav__link md-nav__link--index ">
-          <a href="api.html"><span class="md-ellipsis">API Documentation</span></a>
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_5" checked>
+        
           
-            <label for="__nav_2_5">
-              <span class="md-nav__icon md-icon"></span>
-            </label>
-          
-        </div>
-      
-      <nav class="md-nav" aria-label="API Documentation" data-md-level="2">
-        <label class="md-nav__title" for="__nav_2_5">
-          <span class="md-nav__icon md-icon"></span>
-          <span class="md-ellipsis">API Documentation</span>
-        </label>
-        <ul class="md-nav__list" data-md-scrollfix>
-          
+          <div class="md-nav__link md-nav__container">
+            <a href="api.html" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    <span>API Documentation</span>
+    
+  </span>
+  
+
+            </a>
             
               
+              <label class="md-nav__link " for="__nav_2_5" id="__nav_2_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_5">
+            <span class="md-nav__icon md-icon"></span>
+            <span>API Documentation</span>
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
   
   
   
   
     <li class="md-nav__item">
       <a href="attribute.html" class="md-nav__link">
-        <span class="md-ellipsis">Attribute <wbr>(rinoh.<wbr>attribute)</span>
+        
+  
+  
+  <span class="md-ellipsis">
+    <span>Attribute <wbr>(rinoh.<wbr>attribute)</span>
+    
+  </span>
+  
+
       </a>
     </li>
   
 
-            
-          
+              
             
               
+                
+  
   
   
   
   
     <li class="md-nav__item">
       <a href="color.html" class="md-nav__link">
-        <span class="md-ellipsis">Color <wbr>(rinoh.<wbr>color)</span>
+        
+  
+  
+  <span class="md-ellipsis">
+    <span>Color <wbr>(rinoh.<wbr>color)</span>
+    
+  </span>
+  
+
       </a>
     </li>
   
 
-            
-          
+              
             
               
+                
+  
   
   
   
   
     <li class="md-nav__item">
       <a href="dimension.html" class="md-nav__link">
-        <span class="md-ellipsis">Dimension <wbr>(rinoh.<wbr>dimension)</span>
+        
+  
+  
+  <span class="md-ellipsis">
+    <span>Dimension <wbr>(rinoh.<wbr>dimension)</span>
+    
+  </span>
+  
+
       </a>
     </li>
   
 
-            
-          
+              
             
               
+                
   
   
     
   
     
+  
   
   
     <li class="md-nav__item md-nav__item--active">
       
       
-      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
       
         <label class="md-nav__link md-nav__link--active" for="__toc">
-          <span class="md-ellipsis">Document <wbr>(rinoh.<wbr>document)</span>
+          
+  
+  
+  <span class="md-ellipsis">
+    <span>Document <wbr>(rinoh.<wbr>document)</span>
+    
+  </span>
+  
+
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <a href="#" class="md-nav__link md-nav__link--active">
-        <span class="md-ellipsis">Document <wbr>(rinoh.<wbr>document)</span>
+        
+  
+  
+  <span class="md-ellipsis">
+    <span>Document <wbr>(rinoh.<wbr>document)</span>
+    
+  </span>
+  
+
       </a>
       
         
@@ -624,13 +867,18 @@
   
     <label class="md-nav__title" for="__toc">
       <span class="md-nav__icon md-icon"></span>
-      <span class="md-ellipsis">Document <wbr>(rinoh.<wbr>document)</span>
+      <span>Document <wbr>(rinoh.<wbr>document)</span>
     </label>
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
   <a href="#rinoh.document.DocumentTree" class="md-nav__link">
-    <span aria-label="Python class" class="objinfo-icon objinfo-icon__data" title="Python class">C</span><span title="rinoh.document.DocumentTree (Python class) — Holds the document&#39;s contents as a tree of flowables" class="md-ellipsis">rinoh.<wbr>document.<wbr>Document<wbr>Tree</span>
+    
+      <span aria-label="Python class" class="objinfo-icon objinfo-icon__data" title="Python class">C</span>
+    
+    <span class="md-ellipsis">
+      <span title="rinoh.document.DocumentTree (Python class) — Holds the document&#39;s contents as a tree of flowables"><span>rinoh.<wbr>document.<wbr>Document<wbr>Tree</span></span>
+    </span>
   </a>
   
     <nav class="md-nav" aria-label="rinoh.document.DocumentTree">
@@ -638,7 +886,10 @@
         
           <li class="md-nav__item">
   <a href="#rinoh.document.DocumentTree-parameters" class="md-nav__link">
-    <span class="md-ellipsis">Parameters</span>
+    
+    <span class="md-ellipsis">
+      <span>Parameters</span>
+    </span>
   </a>
   
     <nav class="md-nav" aria-label="Parameters">
@@ -646,14 +897,24 @@
         
           <li class="md-nav__item">
   <a href="#rinoh.document.DocumentTree.__init__.flowables" class="md-nav__link">
-    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="rinoh.document.DocumentTree.__init__.flowables (Python parameter) — the list of top-level flowables" class="md-ellipsis">flowables</span>
+    
+      <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span>
+    
+    <span class="md-ellipsis">
+      <span title="rinoh.document.DocumentTree.__init__.flowables (Python parameter) — the list of top-level flowables"><span>flowables</span></span>
+    </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
   <a href="#rinoh.document.DocumentTree.__init__.options" class="md-nav__link">
-    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="rinoh.document.DocumentTree.__init__.options (Python parameter) — frontend-specific options" class="md-ellipsis">options</span>
+    
+      <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span>
+    
+    <span class="md-ellipsis">
+      <span title="rinoh.document.DocumentTree.__init__.options (Python parameter) — frontend-specific options"><span>options</span></span>
+    </span>
   </a>
   
 </li>
@@ -670,7 +931,12 @@
       
         <li class="md-nav__item">
   <a href="#rinoh.document.Document" class="md-nav__link">
-    <span aria-label="Python class" class="objinfo-icon objinfo-icon__data" title="Python class">C</span><span title="rinoh.document.Document (Python class) — Renders a document tree to pages" class="md-ellipsis">rinoh.<wbr>document.<wbr>Document</span>
+    
+      <span aria-label="Python class" class="objinfo-icon objinfo-icon__data" title="Python class">C</span>
+    
+    <span class="md-ellipsis">
+      <span title="rinoh.document.Document (Python class) — Renders a document tree to pages"><span>rinoh.<wbr>document.<wbr>Document</span></span>
+    </span>
   </a>
   
     <nav class="md-nav" aria-label="rinoh.document.Document">
@@ -678,7 +944,10 @@
         
           <li class="md-nav__item">
   <a href="#rinoh.document.Document-parameters" class="md-nav__link">
-    <span class="md-ellipsis">Parameters</span>
+    
+    <span class="md-ellipsis">
+      <span>Parameters</span>
+    </span>
   </a>
   
     <nav class="md-nav" aria-label="Parameters">
@@ -686,35 +955,60 @@
         
           <li class="md-nav__item">
   <a href="#rinoh.document.Document.__init__.document_tree" class="md-nav__link">
-    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="rinoh.document.Document.__init__.document_tree (Python parameter) — a tree of the document&#39;s contents" class="md-ellipsis">document_<wbr>tree</span>
+    
+      <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span>
+    
+    <span class="md-ellipsis">
+      <span title="rinoh.document.Document.__init__.document_tree (Python parameter) — a tree of the document&#39;s contents"><span>document_<wbr>tree</span></span>
+    </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
   <a href="#rinoh.document.Document.__init__.stylesheet" class="md-nav__link">
-    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="rinoh.document.Document.__init__.stylesheet (Python parameter) — style sheet used to style document elements" class="md-ellipsis">stylesheet</span>
+    
+      <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span>
+    
+    <span class="md-ellipsis">
+      <span title="rinoh.document.Document.__init__.stylesheet (Python parameter) — style sheet used to style document elements"><span>stylesheet</span></span>
+    </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
   <a href="#rinoh.document.Document.__init__.language" class="md-nav__link">
-    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="rinoh.document.Document.__init__.language (Python parameter) — the language to use for standard strings" class="md-ellipsis">language</span>
+    
+      <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span>
+    
+    <span class="md-ellipsis">
+      <span title="rinoh.document.Document.__init__.language (Python parameter) — the language to use for standard strings"><span>language</span></span>
+    </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
   <a href="#rinoh.document.Document.__init__.strings" class="md-nav__link">
-    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="rinoh.document.Document.__init__.strings (Python parameter) — user-defined string variables and can override localized strings provided by language" class="md-ellipsis">strings</span>
+    
+      <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span>
+    
+    <span class="md-ellipsis">
+      <span title="rinoh.document.Document.__init__.strings (Python parameter) — user-defined string variables and can override localized strings provided by language"><span>strings</span></span>
+    </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
   <a href="#rinoh.document.Document.__init__.backend" class="md-nav__link">
-    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="rinoh.document.Document.__init__.backend (Python parameter) — the backend used for rendering the document" class="md-ellipsis">backend</span>
+    
+      <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span>
+    
+    <span class="md-ellipsis">
+      <span title="rinoh.document.Document.__init__.backend (Python parameter) — the backend used for rendering the document"><span>backend</span></span>
+    </span>
   </a>
   
 </li>
@@ -726,7 +1020,12 @@
         
           <li class="md-nav__item">
   <a href="#rinoh.document.Document.render" class="md-nav__link">
-    <span aria-label="Python method" class="objinfo-icon objinfo-icon__procedure" title="Python method">M</span><span title="rinoh.document.Document.render (Python method) — Render the document repeatedly until the output no longer changes due to cross-references that need some iterations to converge." class="md-ellipsis">render</span>
+    
+      <span aria-label="Python method" class="objinfo-icon objinfo-icon__procedure" title="Python method">M</span>
+    
+    <span class="md-ellipsis">
+      <span title="rinoh.document.Document.render (Python method) — Render the document repeatedly until the output no longer changes due to cross-references that need some iterations to converge."><span>render</span></span>
+    </span>
   </a>
   
 </li>
@@ -738,7 +1037,10 @@
       
         <li class="md-nav__item">
   <a href="#pages" class="md-nav__link">
-    <span class="md-ellipsis">Pages</span>
+    
+    <span class="md-ellipsis">
+      <span>Pages</span>
+    </span>
   </a>
   
     <nav class="md-nav" aria-label="Pages">
@@ -746,7 +1048,12 @@
         
           <li class="md-nav__item">
   <a href="#rinoh.document.Page" class="md-nav__link">
-    <span aria-label="Python class" class="objinfo-icon objinfo-icon__data" title="Python class">C</span><span title="rinoh.document.Page (Python class) — A single page in a document." class="md-ellipsis">rinoh.<wbr>document.<wbr>Page</span>
+    
+      <span aria-label="Python class" class="objinfo-icon objinfo-icon__data" title="Python class">C</span>
+    
+    <span class="md-ellipsis">
+      <span title="rinoh.document.Page (Python class) — A single page in a document."><span>rinoh.<wbr>document.<wbr>Page</span></span>
+    </span>
   </a>
   
     <nav class="md-nav" aria-label="rinoh.document.Page">
@@ -754,7 +1061,10 @@
         
           <li class="md-nav__item">
   <a href="#rinoh.document.Page-parameters" class="md-nav__link">
-    <span class="md-ellipsis">Parameters</span>
+    
+    <span class="md-ellipsis">
+      <span>Parameters</span>
+    </span>
   </a>
   
     <nav class="md-nav" aria-label="Parameters">
@@ -762,35 +1072,60 @@
         
           <li class="md-nav__item">
   <a href="#rinoh.document.Page.__init__.document_part" class="md-nav__link">
-    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="rinoh.document.Page.__init__.document_part (Python parameter) — the document part this page is part of" class="md-ellipsis">document_<wbr>part</span>
+    
+      <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span>
+    
+    <span class="md-ellipsis">
+      <span title="rinoh.document.Page.__init__.document_part (Python parameter) — the document part this page is part of"><span>document_<wbr>part</span></span>
+    </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
   <a href="#rinoh.document.Page.__init__.number" class="md-nav__link">
-    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="rinoh.document.Page.__init__.number (Python parameter) — the 1-based index of this page in the document part" class="md-ellipsis">number</span>
+    
+      <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span>
+    
+    <span class="md-ellipsis">
+      <span title="rinoh.document.Page.__init__.number (Python parameter) — the 1-based index of this page in the document part"><span>number</span></span>
+    </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
   <a href="#rinoh.document.Page.__init__.paper" class="md-nav__link">
-    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="rinoh.document.Page.__init__.paper (Python parameter) — determines the dimensions of this page" class="md-ellipsis">paper</span>
+    
+      <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span>
+    
+    <span class="md-ellipsis">
+      <span title="rinoh.document.Page.__init__.paper (Python parameter) — determines the dimensions of this page"><span>paper</span></span>
+    </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
   <a href="#rinoh.document.Page.__init__.orientation" class="md-nav__link">
-    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="rinoh.document.Page.__init__.orientation (Python parameter) — the orientation of this page" class="md-ellipsis">orientation</span>
+    
+      <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span>
+    
+    <span class="md-ellipsis">
+      <span title="rinoh.document.Page.__init__.orientation (Python parameter) — the orientation of this page"><span>orientation</span></span>
+    </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
   <a href="#rinoh.document.Page.__init__.display_sideways" class="md-nav__link">
-    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="rinoh.document.Page.__init__.display_sideways (Python parameter) — display the page rotated" class="md-ellipsis">display_<wbr>sideways</span>
+    
+      <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span>
+    
+    <span class="md-ellipsis">
+      <span title="rinoh.document.Page.__init__.display_sideways (Python parameter) — display the page rotated"><span>display_<wbr>sideways</span></span>
+    </span>
   </a>
   
 </li>
@@ -802,21 +1137,36 @@
         
           <li class="md-nav__item">
   <a href="#rinoh.document.Page.page" class="md-nav__link">
-    <span aria-label="Python property" class="objinfo-icon objinfo-icon__alias" title="Python property">P</span><span title="rinoh.document.Page.page (Python property) — Returns the page itself." class="md-ellipsis">page</span>
+    
+      <span aria-label="Python property" class="objinfo-icon objinfo-icon__alias" title="Python property">P</span>
+    
+    <span class="md-ellipsis">
+      <span title="rinoh.document.Page.page (Python property) — Returns the page itself."><span>page</span></span>
+    </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
   <a href="#rinoh.document.Page.render" class="md-nav__link">
-    <span aria-label="Python method" class="objinfo-icon objinfo-icon__procedure" title="Python method">M</span><span title="rinoh.document.Page.render (Python method) — Render the contents of this container to its canvas." class="md-ellipsis">render</span>
+    
+      <span aria-label="Python method" class="objinfo-icon objinfo-icon__procedure" title="Python method">M</span>
+    
+    <span class="md-ellipsis">
+      <span title="rinoh.document.Page.render (Python method) — Render the contents of this container to its canvas."><span>render</span></span>
+    </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
   <a href="#rinoh.document.Page.place" class="md-nav__link">
-    <span aria-label="Python method" class="objinfo-icon objinfo-icon__procedure" title="Python method">M</span><span title="rinoh.document.Page.place (Python method) — Place this container&#39;s canvas onto the parent container&#39;s canvas." class="md-ellipsis">place</span>
+    
+      <span aria-label="Python method" class="objinfo-icon objinfo-icon__procedure" title="Python method">M</span>
+    
+    <span class="md-ellipsis">
+      <span title="rinoh.document.Page.place (Python method) — Place this container&#39;s canvas onto the parent container&#39;s canvas."><span>place</span></span>
+    </span>
   </a>
   
 </li>
@@ -828,21 +1178,36 @@
         
           <li class="md-nav__item">
   <a href="#rinoh.document.PageOrientation" class="md-nav__link">
-    <span aria-label="Python class" class="objinfo-icon objinfo-icon__data" title="Python class">C</span><span title="rinoh.document.PageOrientation (Python class) — Accepts: portrait, landscape" class="md-ellipsis">rinoh.<wbr>document.<wbr>Page<wbr>Orientation</span>
+    
+      <span aria-label="Python class" class="objinfo-icon objinfo-icon__data" title="Python class">C</span>
+    
+    <span class="md-ellipsis">
+      <span title="rinoh.document.PageOrientation (Python class) — Accepts: portrait, landscape"><span>rinoh.<wbr>document.<wbr>Page<wbr>Orientation</span></span>
+    </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
   <a href="#rinoh.document.PageType" class="md-nav__link">
-    <span aria-label="Python class" class="objinfo-icon objinfo-icon__data" title="Python class">C</span><span title="rinoh.document.PageType (Python class) — Accepts: left, right, any" class="md-ellipsis">rinoh.<wbr>document.<wbr>Page<wbr>Type</span>
+    
+      <span aria-label="Python class" class="objinfo-icon objinfo-icon__data" title="Python class">C</span>
+    
+    <span class="md-ellipsis">
+      <span title="rinoh.document.PageType (Python class) — Accepts: left, right, any"><span>rinoh.<wbr>document.<wbr>Page<wbr>Type</span></span>
+    </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
   <a href="#rinoh.document.PageNumberFormat" class="md-nav__link">
-    <span aria-label="Python class" class="objinfo-icon objinfo-icon__data" title="Python class">C</span><span title="rinoh.document.PageNumberFormat (Python class) — How (or if) page numbers are displayed" class="md-ellipsis">rinoh.<wbr>document.<wbr>Page<wbr>Number<wbr>Format</span>
+    
+      <span aria-label="Python class" class="objinfo-icon objinfo-icon__data" title="Python class">C</span>
+    
+    <span class="md-ellipsis">
+      <span title="rinoh.document.PageNumberFormat (Python class) — How (or if) page numbers are displayed"><span>rinoh.<wbr>document.<wbr>Page<wbr>Number<wbr>Format</span></span>
+    </span>
   </a>
   
 </li>
@@ -859,243 +1224,380 @@
     </li>
   
 
-            
-          
+              
             
               
+                
+  
   
   
   
   
     <li class="md-nav__item">
       <a href="draw.html" class="md-nav__link">
-        <span class="md-ellipsis">Drawing Primitives <wbr>(rinoh.<wbr>draw)</span>
+        
+  
+  
+  <span class="md-ellipsis">
+    <span>Drawing Primitives <wbr>(rinoh.<wbr>draw)</span>
+    
+  </span>
+  
+
       </a>
     </li>
   
 
-            
-          
+              
             
               
+                
+  
   
   
   
   
     <li class="md-nav__item">
       <a href="flowable.html" class="md-nav__link">
-        <span class="md-ellipsis">Flowable <wbr>(rinoh.<wbr>flowable)</span>
+        
+  
+  
+  <span class="md-ellipsis">
+    <span>Flowable <wbr>(rinoh.<wbr>flowable)</span>
+    
+  </span>
+  
+
       </a>
     </li>
   
 
-            
-          
+              
             
               
+                
+  
   
   
   
   
     <li class="md-nav__item">
       <a href="font.html" class="md-nav__link">
-        <span class="md-ellipsis">Fonts and Typefaces <wbr>(rinoh.<wbr>font)</span>
+        
+  
+  
+  <span class="md-ellipsis">
+    <span>Fonts and Typefaces <wbr>(rinoh.<wbr>font)</span>
+    
+  </span>
+  
+
       </a>
     </li>
   
 
-            
-          
+              
             
               
+                
+  
   
   
   
   
     <li class="md-nav__item">
       <a href="image.html" class="md-nav__link">
-        <span class="md-ellipsis">Images and Figures <wbr>(rinoh.<wbr>image)</span>
+        
+  
+  
+  <span class="md-ellipsis">
+    <span>Images and Figures <wbr>(rinoh.<wbr>image)</span>
+    
+  </span>
+  
+
       </a>
     </li>
   
 
-            
-          
+              
             
               
+                
+  
   
   
   
   
     <li class="md-nav__item">
       <a href="index.html" class="md-nav__link">
-        <span class="md-ellipsis">Index <wbr>(rinoh.<wbr>index)</span>
+        
+  
+  
+  <span class="md-ellipsis">
+    <span>Index <wbr>(rinoh.<wbr>index)</span>
+    
+  </span>
+  
+
       </a>
     </li>
   
 
-            
-          
+              
             
               
+                
+  
   
   
   
   
     <li class="md-nav__item">
       <a href="language.html" class="md-nav__link">
-        <span class="md-ellipsis">Language <wbr>(rinoh.<wbr>language)</span>
+        
+  
+  
+  <span class="md-ellipsis">
+    <span>Language <wbr>(rinoh.<wbr>language)</span>
+    
+  </span>
+  
+
       </a>
     </li>
   
 
-            
-          
+              
             
               
+                
+  
   
   
   
   
     <li class="md-nav__item">
       <a href="number.html" class="md-nav__link">
-        <span class="md-ellipsis">Number <wbr>(rinoh.<wbr>number)</span>
+        
+  
+  
+  <span class="md-ellipsis">
+    <span>Number <wbr>(rinoh.<wbr>number)</span>
+    
+  </span>
+  
+
       </a>
     </li>
   
 
-            
-          
+              
             
               
+                
+  
   
   
   
   
     <li class="md-nav__item">
       <a href="paper.html" class="md-nav__link">
-        <span class="md-ellipsis">Paper sizes <wbr>(rinoh.<wbr>paper)</span>
+        
+  
+  
+  <span class="md-ellipsis">
+    <span>Paper sizes <wbr>(rinoh.<wbr>paper)</span>
+    
+  </span>
+  
+
       </a>
     </li>
   
 
-            
-          
+              
             
               
+                
+  
   
   
   
   
     <li class="md-nav__item">
       <a href="paragraph.html" class="md-nav__link">
-        <span class="md-ellipsis">Paragraph <wbr>(rinoh.<wbr>paragraph)</span>
+        
+  
+  
+  <span class="md-ellipsis">
+    <span>Paragraph <wbr>(rinoh.<wbr>paragraph)</span>
+    
+  </span>
+  
+
       </a>
     </li>
   
 
-            
-          
+              
             
               
+                
+  
   
   
   
   
     <li class="md-nav__item">
       <a href="reference.html" class="md-nav__link">
-        <span class="md-ellipsis">Cross-<wbr>References and Fields <wbr>(rinoh.<wbr>reference)</span>
+        
+  
+  
+  <span class="md-ellipsis">
+    <span>Cross-<wbr>References and Fields <wbr>(rinoh.<wbr>reference)</span>
+    
+  </span>
+  
+
       </a>
     </li>
   
 
-            
-          
+              
             
               
+                
+  
   
   
   
   
     <li class="md-nav__item">
       <a href="structure.html" class="md-nav__link">
-        <span class="md-ellipsis">Structure <wbr>(rinoh.<wbr>structure)</span>
+        
+  
+  
+  <span class="md-ellipsis">
+    <span>Structure <wbr>(rinoh.<wbr>structure)</span>
+    
+  </span>
+  
+
       </a>
     </li>
   
 
-            
-          
+              
             
               
+                
+  
   
   
   
   
     <li class="md-nav__item">
       <a href="strings.html" class="md-nav__link">
-        <span class="md-ellipsis">Strings <wbr>(rinoh.<wbr>strings)</span>
+        
+  
+  
+  <span class="md-ellipsis">
+    <span>Strings <wbr>(rinoh.<wbr>strings)</span>
+    
+  </span>
+  
+
       </a>
     </li>
   
 
-            
-          
+              
             
               
+                
+  
   
   
   
   
     <li class="md-nav__item">
       <a href="style.html" class="md-nav__link">
-        <span class="md-ellipsis">Style <wbr>(rinoh.<wbr>style)</span>
+        
+  
+  
+  <span class="md-ellipsis">
+    <span>Style <wbr>(rinoh.<wbr>style)</span>
+    
+  </span>
+  
+
       </a>
     </li>
   
 
-            
-          
+              
             
               
+                
+  
   
   
   
   
     <li class="md-nav__item">
       <a href="table.html" class="md-nav__link">
-        <span class="md-ellipsis">Tables <wbr>(rinoh.<wbr>table)</span>
+        
+  
+  
+  <span class="md-ellipsis">
+    <span>Tables <wbr>(rinoh.<wbr>table)</span>
+    
+  </span>
+  
+
       </a>
     </li>
   
 
-            
-          
+              
             
               
+                
+  
   
   
   
   
     <li class="md-nav__item">
       <a href="template.html" class="md-nav__link">
-        <span class="md-ellipsis">Templates <wbr>(rinoh.<wbr>template)</span>
+        
+  
+  
+  <span class="md-ellipsis">
+    <span>Templates <wbr>(rinoh.<wbr>template)</span>
+    
+  </span>
+  
+
       </a>
     </li>
   
 
+              
             
-          
-        </ul>
-      </nav>
+          </ul>
+        </nav>
+      
     </li>
   
   
 
+              
             
-          
-        </ul>
-      </nav>
+          </ul>
+        </nav>
+      
     </li>
   
   
@@ -1103,65 +1605,98 @@
     
       
       
-      
-
+  
   
   
   
     
+    
       
+        
+        
+      
+    
     
     <li class="md-nav__item md-nav__item--section md-nav__item--nested">
       
-      
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" checked>
-      
-      
-      
-        <label class="md-nav__link" for="__nav_3">
-          <span class="md-ellipsis">Indices</span>
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <nav class="md-nav" aria-label="Indices" data-md-level="1">
-        <label class="md-nav__title" for="__nav_3">
-          <span class="md-nav__icon md-icon"></span>
-          <span class="md-ellipsis">Indices</span>
-        </label>
-        <ul class="md-nav__list" data-md-scrollfix>
+        
+        
           
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    <span>Indices</span>
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            <span>Indices</span>
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
             
               
+                
+  
   
   
   
   
     <li class="md-nav__item">
       <a href="../genindex.html" class="md-nav__link">
-        <span class="md-ellipsis">Index</span>
+        
+  
+  
+  <span class="md-ellipsis">
+    <span>Index</span>
+    
+  </span>
+  
+
       </a>
     </li>
   
 
-            
-          
+              
             
               
+                
+  
   
   
   
   
     <li class="md-nav__item">
       <a href="../py-modindex.html" class="md-nav__link">
-        <span class="md-ellipsis">Module Index</span>
+        
+  
+  
+  <span class="md-ellipsis">
+    <span>Module Index</span>
+    
+  </span>
+  
+
       </a>
     </li>
   
 
+              
             
-          
-        </ul>
-      </nav>
+          </ul>
+        </nav>
+      
     </li>
   
   
@@ -1188,13 +1723,18 @@
   
     <label class="md-nav__title" for="__toc">
       <span class="md-nav__icon md-icon"></span>
-      <span class="md-ellipsis">Document <wbr>(rinoh.<wbr>document)</span>
+      <span>Document <wbr>(rinoh.<wbr>document)</span>
     </label>
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
   <a href="#rinoh.document.DocumentTree" class="md-nav__link">
-    <span aria-label="Python class" class="objinfo-icon objinfo-icon__data" title="Python class">C</span><span title="rinoh.document.DocumentTree (Python class) — Holds the document&#39;s contents as a tree of flowables" class="md-ellipsis">rinoh.<wbr>document.<wbr>Document<wbr>Tree</span>
+    
+      <span aria-label="Python class" class="objinfo-icon objinfo-icon__data" title="Python class">C</span>
+    
+    <span class="md-ellipsis">
+      <span title="rinoh.document.DocumentTree (Python class) — Holds the document&#39;s contents as a tree of flowables"><span>rinoh.<wbr>document.<wbr>Document<wbr>Tree</span></span>
+    </span>
   </a>
   
     <nav class="md-nav" aria-label="rinoh.document.DocumentTree">
@@ -1202,7 +1742,10 @@
         
           <li class="md-nav__item">
   <a href="#rinoh.document.DocumentTree-parameters" class="md-nav__link">
-    <span class="md-ellipsis">Parameters</span>
+    
+    <span class="md-ellipsis">
+      <span>Parameters</span>
+    </span>
   </a>
   
     <nav class="md-nav" aria-label="Parameters">
@@ -1210,14 +1753,24 @@
         
           <li class="md-nav__item">
   <a href="#rinoh.document.DocumentTree.__init__.flowables" class="md-nav__link">
-    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="rinoh.document.DocumentTree.__init__.flowables (Python parameter) — the list of top-level flowables" class="md-ellipsis">flowables</span>
+    
+      <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span>
+    
+    <span class="md-ellipsis">
+      <span title="rinoh.document.DocumentTree.__init__.flowables (Python parameter) — the list of top-level flowables"><span>flowables</span></span>
+    </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
   <a href="#rinoh.document.DocumentTree.__init__.options" class="md-nav__link">
-    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="rinoh.document.DocumentTree.__init__.options (Python parameter) — frontend-specific options" class="md-ellipsis">options</span>
+    
+      <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span>
+    
+    <span class="md-ellipsis">
+      <span title="rinoh.document.DocumentTree.__init__.options (Python parameter) — frontend-specific options"><span>options</span></span>
+    </span>
   </a>
   
 </li>
@@ -1234,7 +1787,12 @@
       
         <li class="md-nav__item">
   <a href="#rinoh.document.Document" class="md-nav__link">
-    <span aria-label="Python class" class="objinfo-icon objinfo-icon__data" title="Python class">C</span><span title="rinoh.document.Document (Python class) — Renders a document tree to pages" class="md-ellipsis">rinoh.<wbr>document.<wbr>Document</span>
+    
+      <span aria-label="Python class" class="objinfo-icon objinfo-icon__data" title="Python class">C</span>
+    
+    <span class="md-ellipsis">
+      <span title="rinoh.document.Document (Python class) — Renders a document tree to pages"><span>rinoh.<wbr>document.<wbr>Document</span></span>
+    </span>
   </a>
   
     <nav class="md-nav" aria-label="rinoh.document.Document">
@@ -1242,7 +1800,10 @@
         
           <li class="md-nav__item">
   <a href="#rinoh.document.Document-parameters" class="md-nav__link">
-    <span class="md-ellipsis">Parameters</span>
+    
+    <span class="md-ellipsis">
+      <span>Parameters</span>
+    </span>
   </a>
   
     <nav class="md-nav" aria-label="Parameters">
@@ -1250,35 +1811,60 @@
         
           <li class="md-nav__item">
   <a href="#rinoh.document.Document.__init__.document_tree" class="md-nav__link">
-    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="rinoh.document.Document.__init__.document_tree (Python parameter) — a tree of the document&#39;s contents" class="md-ellipsis">document_<wbr>tree</span>
+    
+      <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span>
+    
+    <span class="md-ellipsis">
+      <span title="rinoh.document.Document.__init__.document_tree (Python parameter) — a tree of the document&#39;s contents"><span>document_<wbr>tree</span></span>
+    </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
   <a href="#rinoh.document.Document.__init__.stylesheet" class="md-nav__link">
-    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="rinoh.document.Document.__init__.stylesheet (Python parameter) — style sheet used to style document elements" class="md-ellipsis">stylesheet</span>
+    
+      <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span>
+    
+    <span class="md-ellipsis">
+      <span title="rinoh.document.Document.__init__.stylesheet (Python parameter) — style sheet used to style document elements"><span>stylesheet</span></span>
+    </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
   <a href="#rinoh.document.Document.__init__.language" class="md-nav__link">
-    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="rinoh.document.Document.__init__.language (Python parameter) — the language to use for standard strings" class="md-ellipsis">language</span>
+    
+      <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span>
+    
+    <span class="md-ellipsis">
+      <span title="rinoh.document.Document.__init__.language (Python parameter) — the language to use for standard strings"><span>language</span></span>
+    </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
   <a href="#rinoh.document.Document.__init__.strings" class="md-nav__link">
-    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="rinoh.document.Document.__init__.strings (Python parameter) — user-defined string variables and can override localized strings provided by language" class="md-ellipsis">strings</span>
+    
+      <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span>
+    
+    <span class="md-ellipsis">
+      <span title="rinoh.document.Document.__init__.strings (Python parameter) — user-defined string variables and can override localized strings provided by language"><span>strings</span></span>
+    </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
   <a href="#rinoh.document.Document.__init__.backend" class="md-nav__link">
-    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="rinoh.document.Document.__init__.backend (Python parameter) — the backend used for rendering the document" class="md-ellipsis">backend</span>
+    
+      <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span>
+    
+    <span class="md-ellipsis">
+      <span title="rinoh.document.Document.__init__.backend (Python parameter) — the backend used for rendering the document"><span>backend</span></span>
+    </span>
   </a>
   
 </li>
@@ -1290,7 +1876,12 @@
         
           <li class="md-nav__item">
   <a href="#rinoh.document.Document.render" class="md-nav__link">
-    <span aria-label="Python method" class="objinfo-icon objinfo-icon__procedure" title="Python method">M</span><span title="rinoh.document.Document.render (Python method) — Render the document repeatedly until the output no longer changes due to cross-references that need some iterations to converge." class="md-ellipsis">render</span>
+    
+      <span aria-label="Python method" class="objinfo-icon objinfo-icon__procedure" title="Python method">M</span>
+    
+    <span class="md-ellipsis">
+      <span title="rinoh.document.Document.render (Python method) — Render the document repeatedly until the output no longer changes due to cross-references that need some iterations to converge."><span>render</span></span>
+    </span>
   </a>
   
 </li>
@@ -1302,7 +1893,10 @@
       
         <li class="md-nav__item">
   <a href="#pages" class="md-nav__link">
-    <span class="md-ellipsis">Pages</span>
+    
+    <span class="md-ellipsis">
+      <span>Pages</span>
+    </span>
   </a>
   
     <nav class="md-nav" aria-label="Pages">
@@ -1310,7 +1904,12 @@
         
           <li class="md-nav__item">
   <a href="#rinoh.document.Page" class="md-nav__link">
-    <span aria-label="Python class" class="objinfo-icon objinfo-icon__data" title="Python class">C</span><span title="rinoh.document.Page (Python class) — A single page in a document." class="md-ellipsis">rinoh.<wbr>document.<wbr>Page</span>
+    
+      <span aria-label="Python class" class="objinfo-icon objinfo-icon__data" title="Python class">C</span>
+    
+    <span class="md-ellipsis">
+      <span title="rinoh.document.Page (Python class) — A single page in a document."><span>rinoh.<wbr>document.<wbr>Page</span></span>
+    </span>
   </a>
   
     <nav class="md-nav" aria-label="rinoh.document.Page">
@@ -1318,7 +1917,10 @@
         
           <li class="md-nav__item">
   <a href="#rinoh.document.Page-parameters" class="md-nav__link">
-    <span class="md-ellipsis">Parameters</span>
+    
+    <span class="md-ellipsis">
+      <span>Parameters</span>
+    </span>
   </a>
   
     <nav class="md-nav" aria-label="Parameters">
@@ -1326,35 +1928,60 @@
         
           <li class="md-nav__item">
   <a href="#rinoh.document.Page.__init__.document_part" class="md-nav__link">
-    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="rinoh.document.Page.__init__.document_part (Python parameter) — the document part this page is part of" class="md-ellipsis">document_<wbr>part</span>
+    
+      <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span>
+    
+    <span class="md-ellipsis">
+      <span title="rinoh.document.Page.__init__.document_part (Python parameter) — the document part this page is part of"><span>document_<wbr>part</span></span>
+    </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
   <a href="#rinoh.document.Page.__init__.number" class="md-nav__link">
-    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="rinoh.document.Page.__init__.number (Python parameter) — the 1-based index of this page in the document part" class="md-ellipsis">number</span>
+    
+      <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span>
+    
+    <span class="md-ellipsis">
+      <span title="rinoh.document.Page.__init__.number (Python parameter) — the 1-based index of this page in the document part"><span>number</span></span>
+    </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
   <a href="#rinoh.document.Page.__init__.paper" class="md-nav__link">
-    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="rinoh.document.Page.__init__.paper (Python parameter) — determines the dimensions of this page" class="md-ellipsis">paper</span>
+    
+      <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span>
+    
+    <span class="md-ellipsis">
+      <span title="rinoh.document.Page.__init__.paper (Python parameter) — determines the dimensions of this page"><span>paper</span></span>
+    </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
   <a href="#rinoh.document.Page.__init__.orientation" class="md-nav__link">
-    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="rinoh.document.Page.__init__.orientation (Python parameter) — the orientation of this page" class="md-ellipsis">orientation</span>
+    
+      <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span>
+    
+    <span class="md-ellipsis">
+      <span title="rinoh.document.Page.__init__.orientation (Python parameter) — the orientation of this page"><span>orientation</span></span>
+    </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
   <a href="#rinoh.document.Page.__init__.display_sideways" class="md-nav__link">
-    <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span><span title="rinoh.document.Page.__init__.display_sideways (Python parameter) — display the page rotated" class="md-ellipsis">display_<wbr>sideways</span>
+    
+      <span aria-label="Python parameter" class="objinfo-icon objinfo-icon__sub-data" title="Python parameter">p</span>
+    
+    <span class="md-ellipsis">
+      <span title="rinoh.document.Page.__init__.display_sideways (Python parameter) — display the page rotated"><span>display_<wbr>sideways</span></span>
+    </span>
   </a>
   
 </li>
@@ -1366,21 +1993,36 @@
         
           <li class="md-nav__item">
   <a href="#rinoh.document.Page.page" class="md-nav__link">
-    <span aria-label="Python property" class="objinfo-icon objinfo-icon__alias" title="Python property">P</span><span title="rinoh.document.Page.page (Python property) — Returns the page itself." class="md-ellipsis">page</span>
+    
+      <span aria-label="Python property" class="objinfo-icon objinfo-icon__alias" title="Python property">P</span>
+    
+    <span class="md-ellipsis">
+      <span title="rinoh.document.Page.page (Python property) — Returns the page itself."><span>page</span></span>
+    </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
   <a href="#rinoh.document.Page.render" class="md-nav__link">
-    <span aria-label="Python method" class="objinfo-icon objinfo-icon__procedure" title="Python method">M</span><span title="rinoh.document.Page.render (Python method) — Render the contents of this container to its canvas." class="md-ellipsis">render</span>
+    
+      <span aria-label="Python method" class="objinfo-icon objinfo-icon__procedure" title="Python method">M</span>
+    
+    <span class="md-ellipsis">
+      <span title="rinoh.document.Page.render (Python method) — Render the contents of this container to its canvas."><span>render</span></span>
+    </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
   <a href="#rinoh.document.Page.place" class="md-nav__link">
-    <span aria-label="Python method" class="objinfo-icon objinfo-icon__procedure" title="Python method">M</span><span title="rinoh.document.Page.place (Python method) — Place this container&#39;s canvas onto the parent container&#39;s canvas." class="md-ellipsis">place</span>
+    
+      <span aria-label="Python method" class="objinfo-icon objinfo-icon__procedure" title="Python method">M</span>
+    
+    <span class="md-ellipsis">
+      <span title="rinoh.document.Page.place (Python method) — Place this container&#39;s canvas onto the parent container&#39;s canvas."><span>place</span></span>
+    </span>
   </a>
   
 </li>
@@ -1392,21 +2034,36 @@
         
           <li class="md-nav__item">
   <a href="#rinoh.document.PageOrientation" class="md-nav__link">
-    <span aria-label="Python class" class="objinfo-icon objinfo-icon__data" title="Python class">C</span><span title="rinoh.document.PageOrientation (Python class) — Accepts: portrait, landscape" class="md-ellipsis">rinoh.<wbr>document.<wbr>Page<wbr>Orientation</span>
+    
+      <span aria-label="Python class" class="objinfo-icon objinfo-icon__data" title="Python class">C</span>
+    
+    <span class="md-ellipsis">
+      <span title="rinoh.document.PageOrientation (Python class) — Accepts: portrait, landscape"><span>rinoh.<wbr>document.<wbr>Page<wbr>Orientation</span></span>
+    </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
   <a href="#rinoh.document.PageType" class="md-nav__link">
-    <span aria-label="Python class" class="objinfo-icon objinfo-icon__data" title="Python class">C</span><span title="rinoh.document.PageType (Python class) — Accepts: left, right, any" class="md-ellipsis">rinoh.<wbr>document.<wbr>Page<wbr>Type</span>
+    
+      <span aria-label="Python class" class="objinfo-icon objinfo-icon__data" title="Python class">C</span>
+    
+    <span class="md-ellipsis">
+      <span title="rinoh.document.PageType (Python class) — Accepts: left, right, any"><span>rinoh.<wbr>document.<wbr>Page<wbr>Type</span></span>
+    </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
   <a href="#rinoh.document.PageNumberFormat" class="md-nav__link">
-    <span aria-label="Python class" class="objinfo-icon objinfo-icon__data" title="Python class">C</span><span title="rinoh.document.PageNumberFormat (Python class) — How (or if) page numbers are displayed" class="md-ellipsis">rinoh.<wbr>document.<wbr>Page<wbr>Number<wbr>Format</span>
+    
+      <span aria-label="Python class" class="objinfo-icon objinfo-icon__data" title="Python class">C</span>
+    
+    <span class="md-ellipsis">
+      <span title="rinoh.document.PageNumberFormat (Python class) — How (or if) page numbers are displayed"><span>rinoh.<wbr>document.<wbr>Page<wbr>Number<wbr>Format</span></span>
+    </span>
   </a>
   
 </li>
@@ -1427,18 +2084,18 @@
           
             <div class="md-content" data-md-component="content">
               <article class="md-content__inner md-typeset" role="main">
+                
+                
                   
 
 
-  <a href="https://github.com/brechtm/rinohtype/edit/master/doc/api/document.rst" title="Edit this page" class="md-content__button md-icon">
-    
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25Z"/></svg>
-  </a>
+  
+  
 
 <h1 id="document-rinoh-document"><span id="document"></span><span id="module-rinoh.document"></span>Document (<a class="reference internal" href="#module-rinoh.document" title="rinoh.document (Python module)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">rinoh.document</span></code></a>)<a class="headerlink" href="#document-rinoh-document" title="Link to this heading">¶</a></h1>
 <dl class="py class objdesc">
 <dt class="sig sig-object highlight sig-wrap py" id="rinoh.document.DocumentTree">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rinoh.document.</span></span><span class="sig-name descname"><span class="pre">DocumentTree</span></span><span class="sig-paren">(</span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#rinoh.document.DocumentTree.__init__.flowables" title="rinoh.document.DocumentTree.__init__.flowables (Python parameter) — the list of top-level flowables"><span class="n"><span class="pre">flowables</span></span></a></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#rinoh.document.DocumentTree.__init__.options" title="rinoh.document.DocumentTree.__init__.options (Python parameter) — frontend-specific options"><span class="n"><span class="pre">options</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="kc">None</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><span class="n"><span class="pre">style</span></span><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="kc">None</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="kc">None</span></code></em></span><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.document.DocumentTree" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rinoh.document.</span></span><span class="sig-name descname"><span class="pre">DocumentTree</span></span><span class="sig-paren">(</span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#rinoh.document.DocumentTree.__init__.flowables" title="rinoh.document.DocumentTree.__init__.flowables (Python parameter) — the list of top-level flowables"><span class="n"><span class="pre">flowables</span></span></a></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#rinoh.document.DocumentTree.__init__.options" title="rinoh.document.DocumentTree.__init__.options (Python parameter) — frontend-specific options"><span class="n"><span class="pre">options</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="kc">None</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#rinoh.document.DocumentTree" title="rinoh.document.DocumentTree.__init__.style (Python parameter)"><span class="n"><span class="pre">style</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="kc">None</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#rinoh.document.DocumentTree" title="rinoh.document.DocumentTree.__init__.source (Python parameter)"><span class="n"><span class="pre">source</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="kc">None</span></code></em></span><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.document.DocumentTree" title="Link to this definition">¶</a></dt>
 <dd><p>Holds the document’s contents as a tree of flowables</p>
 <dl class="field-list simple">
 <dt class="field-odd" id="rinoh.document.DocumentTree-parameters">Parameters<span class="colon">:</span><a class="headerlink" href="#rinoh.document.DocumentTree-parameters" title="Permalink to this headline">¶</a></dt>
@@ -1454,7 +2111,7 @@
 
 <dl class="py class objdesc">
 <dt class="sig sig-object highlight sig-wrap py" id="rinoh.document.Document">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rinoh.document.</span></span><span class="sig-name descname"><span class="pre">Document</span></span><span class="sig-paren">(</span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#rinoh.document.Document.__init__.document_tree" title="rinoh.document.Document.__init__.document_tree (Python parameter) — a tree of the document's contents"><span class="n"><span class="pre">document_tree</span></span></a></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#rinoh.document.Document.__init__.stylesheet" title="rinoh.document.Document.__init__.stylesheet (Python parameter) — style sheet used to style document elements"><span class="n"><span class="pre">stylesheet</span></span></a></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#rinoh.document.Document.__init__.language" title="rinoh.document.Document.__init__.language (Python parameter) — the language to use for standard strings"><span class="n"><span class="pre">language</span></span></a></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#rinoh.document.Document.__init__.strings" title="rinoh.document.Document.__init__.strings (Python parameter) — user-defined string variables and can override localized strings provided by language"><span class="n"><span class="pre">strings</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="kc">None</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#rinoh.document.Document.__init__.backend" title="rinoh.document.Document.__init__.backend (Python parameter) — the backend used for rendering the document"><span class="n"><span class="pre">backend</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="kc">None</span></code></em></span><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.document.Document" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rinoh.document.</span></span><span class="sig-name descname"><span class="pre">Document</span></span><span class="sig-paren">(</span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#rinoh.document.Document.__init__.document_tree" title="rinoh.document.Document.__init__.document_tree (Python parameter) — a tree of the document's contents"><span class="n"><span class="pre">document_tree</span></span></a></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#rinoh.document.Document.__init__.stylesheet" title="rinoh.document.Document.__init__.stylesheet (Python parameter) — style sheet used to style document elements"><span class="n"><span class="pre">stylesheet</span></span></a></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#rinoh.document.Document.__init__.language" title="rinoh.document.Document.__init__.language (Python parameter) — the language to use for standard strings"><span class="n"><span class="pre">language</span></span></a></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#rinoh.document.Document.__init__.strings" title="rinoh.document.Document.__init__.strings (Python parameter) — user-defined string variables and can override localized strings provided by language"><span class="n"><span class="pre">strings</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="kc">None</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#rinoh.document.Document.__init__.backend" title="rinoh.document.Document.__init__.backend (Python parameter) — the backend used for rendering the document"><span class="n"><span class="pre">backend</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="kc">None</span></code></em></span><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.document.Document" title="Link to this definition">¶</a></dt>
 <dd><p>Renders a document tree to pages</p>
 <dl class="field-list simple">
 <dt class="field-odd" id="rinoh.document.Document-parameters">Parameters<span class="colon">:</span><a class="headerlink" href="#rinoh.document.Document-parameters" title="Permalink to this headline">¶</a></dt>
@@ -1475,7 +2132,7 @@ localized strings provided by <cite>language</cite></p>
 </dl>
 <dl class="py method objdesc">
 <dt class="sig sig-object highlight py" id="rinoh.document.Document.render">
-<span class="sig-name descname"><span class="pre">render</span></span><span class="sig-paren">(</span><span class="sig-param-decl"><em class="sig-param"><span class="n"><span class="pre">filename_root</span></span><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="kc">None</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><span class="n"><span class="pre">file</span></span><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="kc">None</span></code></em></span><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.document.Document.render" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">render</span></span><span class="sig-paren">(</span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#rinoh.document.Document.render" title="rinoh.document.Document.render.filename_root (Python parameter)"><span class="n"><span class="pre">filename_root</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="kc">None</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#rinoh.document.Document.render" title="rinoh.document.Document.render.file (Python parameter)"><span class="n"><span class="pre">file</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="kc">None</span></code></em></span><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.document.Document.render" title="Link to this definition">¶</a></dt>
 <dd><p>Render the document repeatedly until the output no longer changes due
 to cross-references that need some iterations to converge.</p>
 </dd></dl>
@@ -1485,7 +2142,7 @@ to cross-references that need some iterations to converge.</p>
 <h2 id="pages">Pages<a class="headerlink" href="#pages" title="Link to this heading">¶</a></h2>
 <dl class="py class objdesc">
 <dt class="sig sig-object highlight sig-wrap py" id="rinoh.document.Page">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rinoh.document.</span></span><span class="sig-name descname"><span class="pre">Page</span></span><span class="sig-paren">(</span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#rinoh.document.Page.__init__.document_part" title="rinoh.document.Page.__init__.document_part (Python parameter) — the document part this page is part of"><span class="n"><span class="pre">document_part</span></span></a></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#rinoh.document.Page.__init__.number" title="rinoh.document.Page.__init__.number (Python parameter) — the 1-based index of this page in the document part"><span class="n"><span class="pre">number</span></span></a></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#rinoh.document.Page.__init__.paper" title="rinoh.document.Page.__init__.paper (Python parameter) — determines the dimensions of this page"><span class="n"><span class="pre">paper</span></span></a></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#rinoh.document.Page.__init__.orientation" title="rinoh.document.Page.__init__.orientation (Python parameter) — the orientation of this page"><span class="n"><span class="pre">orientation</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="s1">&#39;portrait&#39;</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#rinoh.document.Page.__init__.display_sideways" title="rinoh.document.Page.__init__.display_sideways (Python parameter) — display the page rotated"><span class="n"><span class="pre">display_sideways</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="kc">None</span></code></em></span><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.document.Page" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rinoh.document.</span></span><span class="sig-name descname"><span class="pre">Page</span></span><span class="sig-paren">(</span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#rinoh.document.Page.__init__.document_part" title="rinoh.document.Page.__init__.document_part (Python parameter) — the document part this page is part of"><span class="n"><span class="pre">document_part</span></span></a></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#rinoh.document.Page.__init__.number" title="rinoh.document.Page.__init__.number (Python parameter) — the 1-based index of this page in the document part"><span class="n"><span class="pre">number</span></span></a></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#rinoh.document.Page.__init__.paper" title="rinoh.document.Page.__init__.paper (Python parameter) — determines the dimensions of this page"><span class="n"><span class="pre">paper</span></span></a></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#rinoh.document.Page.__init__.orientation" title="rinoh.document.Page.__init__.orientation (Python parameter) — the orientation of this page"><span class="n"><span class="pre">orientation</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="s1">&#39;portrait&#39;</span></code></em>, </span><span class="sig-param-decl"><em class="sig-param"><a class="n reference internal" href="#rinoh.document.Page.__init__.display_sideways" title="rinoh.document.Page.__init__.display_sideways (Python parameter) — display the page rotated"><span class="n"><span class="pre">display_sideways</span></span></a><span class="o"><span class="pre">=</span></span><code class="code python default_value docutils literal highlight highlight-python"><span class="kc">None</span></code></em></span><span class="sig-paren">)</span><a class="headerlink" href="#rinoh.document.Page" title="Link to this definition">¶</a></dt>
 <dd><p>A single page in a document.</p>
 <p>A <a class="reference internal" href="#rinoh.document.Page" title="rinoh.document.Page (Python class) — A single page in a document."><code class="xref py py-class docutils literal notranslate"><span class="pre">Page</span></code></a> is a <code class="xref py py-class docutils literal notranslate"><span class="pre">Container</span></code>, so other containers can be added
 as children.</p>
@@ -1507,7 +2164,7 @@ as children.</p>
 </dl>
 <dl class="py property objdesc">
 <dt class="sig sig-object highlight py" id="rinoh.document.Page.page">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">page</span></span><a class="headerlink" href="#rinoh.document.Page.page" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">page</span></span><a class="headerlink" href="#rinoh.document.Page.page" title="Link to this definition">¶</a></dt>
 <dd><p>Returns the page itself.</p>
 </dd></dl>
 
@@ -1529,23 +2186,31 @@ parent container’s canvas before they become visible.</p>
 
 <dl class="py class objdesc">
 <dt class="sig sig-object highlight py" id="rinoh.document.PageOrientation">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rinoh.document.</span></span><span class="sig-name descname"><span class="pre">PageOrientation</span></span><a class="headerlink" href="#rinoh.document.PageOrientation" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rinoh.document.</span></span><span class="sig-name descname"><span class="pre">PageOrientation</span></span><a class="headerlink" href="#rinoh.document.PageOrientation" title="Link to this definition">¶</a></dt>
 <dd><p>Accepts: <code class="docutils literal notranslate"><span class="pre">portrait</span></code>, <code class="docutils literal notranslate"><span class="pre">landscape</span></code></p>
 </dd></dl>
 
 <dl class="py class objdesc">
 <dt class="sig sig-object highlight py" id="rinoh.document.PageType">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rinoh.document.</span></span><span class="sig-name descname"><span class="pre">PageType</span></span><a class="headerlink" href="#rinoh.document.PageType" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rinoh.document.</span></span><span class="sig-name descname"><span class="pre">PageType</span></span><a class="headerlink" href="#rinoh.document.PageType" title="Link to this definition">¶</a></dt>
 <dd><p>Accepts: <code class="docutils literal notranslate"><span class="pre">left</span></code>, <code class="docutils literal notranslate"><span class="pre">right</span></code>, <code class="docutils literal notranslate"><span class="pre">any</span></code></p>
 </dd></dl>
 
 <dl class="py class objdesc">
 <dt class="sig sig-object highlight py" id="rinoh.document.PageNumberFormat">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rinoh.document.</span></span><span class="sig-name descname"><span class="pre">PageNumberFormat</span></span><a class="headerlink" href="#rinoh.document.PageNumberFormat" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rinoh.document.</span></span><span class="sig-name descname"><span class="pre">PageNumberFormat</span></span><a class="headerlink" href="#rinoh.document.PageNumberFormat" title="Link to this definition">¶</a></dt>
 <dd><p>How (or if) page numbers are displayed</p>
 <p>Accepts: <code class="docutils literal notranslate"><span class="pre">none</span></code>, <code class="docutils literal notranslate"><span class="pre">number</span></code>, <code class="docutils literal notranslate"><span class="pre">symbol</span></code>, <code class="docutils literal notranslate"><span class="pre">lowercase</span> <span class="pre">character</span></code>, <code class="docutils literal notranslate"><span class="pre">uppercase</span> <span class="pre">character</span></code>, <code class="docutils literal notranslate"><span class="pre">lowercase</span> <span class="pre">roman</span></code>, <code class="docutils literal notranslate"><span class="pre">uppercase</span> <span class="pre">roman</span></code>, <code class="docutils literal notranslate"><span class="pre">continue</span></code></p>
 </dd></dl>
 
+
+
+
+
+
+
+  
+  
 
 
 
@@ -1563,42 +2228,6 @@ parent container’s canvas before they become visible.</p>
       
         <footer class="md-footer">
   
-    
-    <nav class="md-footer__inner md-grid" aria-label="Footer" >
-      
-        
-        <a href="dimension.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: Dimension (rinoh.dimension)" rel="prev">
-          <div class="md-footer__button md-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
-          </div>
-          <div class="md-footer__title">
-            <div class="md-ellipsis">
-              <span class="md-footer__direction">
-                Previous
-              </span>
-              Dimension (rinoh.dimension)
-            </div>
-          </div>
-        </a>
-      
-      
-        
-        <a href="draw.html" class="md-footer__link md-footer__link--next" aria-label="Next: Drawing Primitives (rinoh.draw)" rel="next">
-          <div class="md-footer__title">
-            <div class="md-ellipsis">
-              <span class="md-footer__direction">
-                Next
-              </span>
-              Drawing Primitives (rinoh.draw)
-            </div>
-          </div>
-          <div class="md-footer__button md-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
-          </div>
-        </a>
-      
-    </nav>
-  
   
   
   <div class="md-footer-meta md-typeset">
@@ -1613,7 +2242,7 @@ parent container’s canvas before they become visible.</p>
   
     Created using
     <a href="https://www.sphinx-doc.org/" target="_blank" rel="noopener">Sphinx</a>
-    7.3.7.
+    8.2.3.
      and
     <a href="https://github.com/jbms/sphinx-immaterial/" target="_blank" rel="noopener">Sphinx-Immaterial</a>
   
@@ -1629,10 +2258,11 @@ parent container’s canvas before they become visible.</p>
       <div class="md-dialog__inner md-typeset"></div>
     </div>
     
-    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.expand", "navigation.sections", "navigation.instant"], "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "version": {"provider": "mike", "staticVersions": null, "versionPath": "../im_versions.json"}}</script>
+    
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.expand", "navigation.sections", "navigation.instant"], "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike", "staticVersions": null, "versionPath": "../im_versions.json"}}</script>
     
       
-        <script src="../_static/sphinx_immaterial_theme.f9d9eeeb247ace16c.min.js?v=8ec58cb5"></script>
+        <script src="../_static/sphinx_immaterial_theme.32136f45f91ae6956.min.js?v=a7a9472a"></script>
     
   </body>
 </html>
