@@ -260,18 +260,6 @@ jobs:
         path: ${{ steps.cache-dirs-macos.outputs.dir }}
         key: ${{ runner.os }}-homebrew-mupdftools${{ steps.homebrew-versions.outputs.mupdftools }}-im${{ steps.homebrew-versions.outputs.imagemagick }}-graphviz${{ steps.homebrew-versions.outputs.graphviz }}
 
-    - name: Get scoop cache dir (Windows)
-      id: cache-dirs-windows
-      if: startsWith(runner.os, 'Windows')
-      run: |
-        echo "dir=$(echo $env:USERPROFILE\scoop\cache)" >> $env:GITHUB_OUTPUT
-    - name: Cache scoop downloads
-      if: startsWith(runner.os, 'Windows')
-      uses: actions/cache@v3
-      with:
-        path: ${{ steps.cache-dirs-windows.outputs.dir }}
-        key: ${{ runner.os }}-scoop
-
     - name: Set up Homebrew
       if: startsWith(runner.os, 'Linux')
       uses: Homebrew/actions/setup-homebrew@main
@@ -283,18 +271,10 @@ jobs:
       if: startsWith(runner.os, 'macOS')
       run: |
         brew install mupdf-tools imagemagick graphviz
-    - name: Set up scoop (Windows)
-      if: startsWith(runner.os, 'Windows')
-      uses: brechtm/setup-scoop@v2
     - name: Install tools required by the regression tests (Windows)
       if: startsWith(runner.os, 'Windows')
       run: |
-        scoop bucket add extras
-        scoop install mupdf
-        scoop install imagemagick
-        echo "$env:MAGICK_HOME" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
-        echo "MAGICK_HOME=$env:MAGICK_HOME" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
-        echo "MAGICK_CODER_MODULE_PATH=$env:MAGICK_CODER_MODULE_PATH" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+        choco install mupdf --version=1.26.0
 
     - name: Run Nox
       run: ${{ env.nox_cmd }} ${{ env.NOXENV }} -- -s
