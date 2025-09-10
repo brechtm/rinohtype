@@ -8,7 +8,8 @@ import nox
 import nox_poetry
 
 sys.path.append('.')
-from noxutil import get_versions
+from noxutil import get_versions, version_to_tuple
+
 
 CURRENT_PYTHON = (('pypy' if hasattr(sys, 'pypy_version_info') else '')
                   + f'{sys.version_info.major}.{sys.version_info.minor}')
@@ -118,13 +119,13 @@ def _install(session, docutils=None, sphinx=None, dist='wheel',
     deps = []
     if docutils:
         deps.append(f"docutils=={docutils}")
-        major, minor, *_ = docutils.split('.')
-        if (int(major), int(minor)) < (0, 18):
+        docutils_version = version_to_tuple(docutils)
+        if docutils_version < (0, 20):
             assert sphinx is None
             sphinx = '5.3.0'
     if sphinx:
         deps.append(f"sphinx=={sphinx}")
-        sphinx_version = tuple(int(v) for v in sphinx.split('.'))
+        sphinx_version = version_to_tuple(sphinx)
         if sphinx_version < (4, ):
             # https://github.com/sphinx-doc/sphinx/issues/10291
             deps.append("jinja2<3.1")

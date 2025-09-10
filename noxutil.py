@@ -76,3 +76,7 @@ def all_versions(dependency):
     json_data = json.loads(json_string)
     yield from (parse_single_constraint(version)
                 for version in json_data['releases'])
+
+
+def version_to_tuple(version):
+    return tuple(int(v) for v in version.split('.'))
