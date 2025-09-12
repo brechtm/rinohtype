@@ -1,21 +1,21 @@
+from pathlib import Path
+
 from rinoh.frontend.rst import ReStructuredTextReader
-from rinoh.strings import Strings
-from rinoh.structure import AdmonitionTitles
 from rinoh.style import StyleSheet
 from rinoh.template import TemplateConfigurationFile
 
 
+DIR = Path(__file__).parent
+
+
 if __name__ == '__main__':
     default_stylesheet = StyleSheet('empty')
-    default_stylesheet.write('emtpy')
+    # default_stylesheet.write('emtpy')
 
-    strings = Strings(AdmonitionTitles(important='IMPORTANT:',
-                                       tip='TIP:'))
-
-    configuration = TemplateConfigurationFile('article.rtt')
+    configuration = TemplateConfigurationFile(DIR / 'article.rtt')
 
     sphinx_stylesheet = configuration['stylesheet'].base
-    sphinx_stylesheet.write('sphinx')
+    # sphinx_stylesheet.write('sphinx')   # test writing an .rts stylesheet
 
     for name in ('demo', 'quickstart', 'FAQ', 'THANKS'):
         parser = ReStructuredTextReader()
