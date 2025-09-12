@@ -21,7 +21,6 @@ __all__ = ['TreeNode', 'InlineNode', 'BodyNode', 'BodySubNode', 'GroupingNode',
 def find_distribution_for_module(module_name):
     top_level_package_name, *_ = module_name.split('.', maxsplit=1)
     for dist_name in ilm.packages_distributions()[top_level_package_name]:
-        print(dist_name)
         dist = ilm.distribution(dist_name)
         for file_path in dist.files:
             if str(file_path).startswith(module_name.replace('.', '/')):
