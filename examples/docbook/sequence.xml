@@ -204,7 +204,7 @@ from the hose.</phrase>
       <para id="parad66e50" remap="p">
          <mediaobject id="imgd66e51" remap="image">
             <imageobject>
-               <imagedata fileref="../image/carwash.jpg" depth="171" width="249"/>
+               <imagedata fileref="image/carwash.jpg" depth="171" width="249"/>
             </imageobject>
             <textobject remap="alt_attribute">
                <phrase remap="#PCDATA">washing the car</phrase>

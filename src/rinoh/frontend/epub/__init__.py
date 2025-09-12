@@ -9,7 +9,6 @@
 import os
 import xml.etree.ElementTree as etree
 
-from pathlib import Path
 from zipfile import ZipFile
 
 from ...document import DocumentTree
@@ -34,14 +33,6 @@ NS_MAP = dict(cnt='urn:oasis:names:tc:opendocument:xmlns:container',
 
 class EPubNode(ElementTreeNode, metaclass=ElementTreeNodeMeta):
     NAMESPACE = NS_MAP['xhtml']
-
-    @property
-    def _ids(self):
-        return [self.get('id')]
-
-    @property
-    def root(self):
-        return Path(self.filename).parent
 
 
 class EPubInlineNode(EPubNode, ElementTreeInlineNode):

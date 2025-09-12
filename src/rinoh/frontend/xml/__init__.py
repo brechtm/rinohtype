@@ -9,6 +9,7 @@
 import os
 import re
 
+from pathlib import Path
 from urllib.parse import urljoin
 from urllib.request import pathname2url
 
@@ -112,12 +113,20 @@ class ElementTreeNode(TreeNode):
         return self.get('id')
 
     @property
+    def _ids(self):
+        return [self._id] if self._id else []
+
+    @property
     def _location(self):
         return self.node_location(self.node)
 
     @property
     def filename(self):
         return self.node._root._filename
+
+    @property
+    def root(self):
+        return Path(self.filename).parent
 
     @property
     def text(self):

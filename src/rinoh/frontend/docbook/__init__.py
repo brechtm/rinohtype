@@ -9,11 +9,15 @@
 from ..xml.elementtree import Parser
 from ..xml import (ElementTreeNode, ElementTreeInlineNode, ElementTreeBodyNode,
                    ElementTreeBodySubNode, ElementTreeGroupingNode,
-                   ElementTreeDummyNode, ElementTreeNodeMeta)
+                   ElementTreeMixedContentNode, ElementTreeDummyNode, ElementTreeNodeMeta)
+
+from ...document import DocumentTree
+
+from os import path
 
 
 __all__ = ['DocBookNode', 'DocBookInlineNode', 'DocBookBodyNode',
-           'DocBookBodySubNode', 'DocBookGroupingNode', 'DocBookDummyNode',
+           'DocBookBodySubNode', 'DocBookGroupingNode', 'DocBookMixedContentNode', 'DocBookDummyNode',
            'DocBookReader']
 
 
@@ -37,6 +41,10 @@ class DocBookGroupingNode(DocBookNode, ElementTreeGroupingNode):
     pass
 
 
+class DocBookMixedContentNode(DocBookNode, ElementTreeMixedContentNode):
+    pass
+
+
 class DocBookDummyNode(DocBookNode, ElementTreeDummyNode):
     pass
 
@@ -49,13 +57,11 @@ class DocBookReader(object):
     namespace = DocBookNode.NAMESPACE
 
     def parse(self, file):
-        filename = getattr(file, 'name', None)
         parser = Parser(DocBookNode, #namespace=self.namespace,
                         schema=self.rngschema)
-        xml_tree = parser.parse(filename)
-        doctree = xml_tree.getroot()
+        doctree = parser.parse(file)
         return self.from_doctree(doctree)
 
     def from_doctree(self, doctree):
         mapped_tree = DocBookNode.map_node(doctree)
-        return mapped_tree.children_flowables()
+        return DocumentTree(mapped_tree.children_flowables())

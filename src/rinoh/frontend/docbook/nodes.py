@@ -7,9 +7,9 @@
 
 
 from . import (DocBookNode, DocBookInlineNode, DocBookBodyNode,
-               DocBookGroupingNode)
+               DocBookGroupingNode, DocBookMixedContentNode)
 
-from ...reference import TITLE, PAGE
+from ...reference import ReferenceType
 
 from ... import styleds
 
@@ -102,7 +102,7 @@ class VolumeNum(TextInfoField):
     pass
 
 
-class Para(DocBookGroupingNode):
+class Para(DocBookMixedContentNode):
     pass
 
 
@@ -181,6 +181,7 @@ class ListBase(DocBookBodyNode):
     style = None
 
     def build_flowables(self):
+        # Yield any flowables that come before the list items
         for child in self.getchildren():
             if isinstance(child, ListItem):
                 break
@@ -199,11 +200,12 @@ class ItemizedList(ListBase):
 
 
 class ListItem(DocBookGroupingNode):
-    pass
+    def build_flowable(self):
+        return styleds.ListItem(super().build_flowable())
 
 
 class XRef(DocBookBodyNode):
     def build_flowable(self):
-        section_ref = styleds.Reference(self.get('linkend'), type=TITLE)
-        page_ref = styleds.Reference(self.get('linkend'), type=PAGE)
+        section_ref = styleds.Reference(self.get('linkend'), type=ReferenceType.TITLE)
+        page_ref = styleds.Reference(self.get('linkend'), type=ReferenceType.PAGE)
         return styleds.Paragraph(section_ref + ' on page ' + page_ref)
