@@ -429,6 +429,14 @@ text_align=LEFT
 
 [object signature keyword]
 
+[object signature keyword type]
+
+[object signature literal number]
+
+[object signature literal string]
+
+[object signature literal char]
+
 [object name]
 typeface=$(mono_typeface)
 font_weight=BOLD
@@ -468,6 +476,26 @@ base=definition
 [object description content paragraph]
 base=body
 space_above=1pt
+
+[inline signature]
+typeface=$(mono_typeface)
+ligatures=False
+hyphenate=False
+
+[inline signature texpr]
+
+[inline signature space]
+
+[inline signature name]
+font_weight=BOLD
+
+[inline signature operator]
+
+[inline signature punctuation]
+
+[inline signature keyword]
+
+[inline signature keyword type]
 
 
 # (Sphinx) production list

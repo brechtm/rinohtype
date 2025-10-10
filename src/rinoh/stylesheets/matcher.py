@@ -245,6 +245,10 @@ matcher('object signature name', sig / StyledText.like('signature name'))
 matcher('object signature operator', sig / StyledText.like('signature operator'))
 matcher('object signature punctuation', sig / StyledText.like('signature punctuation'))
 matcher('object signature keyword', sig / StyledText.like('signature keyword'))
+matcher('object signature keyword type', sig / StyledText.like('signature keyword type'))
+matcher('object signature literal number', sig / StyledText.like('signature literal number'))
+matcher('object signature literal string', sig / StyledText.like('signature literal string'))
+matcher('object signature literal char', sig / StyledText.like('signature literal char'))
 matcher('object brackets', sig / StyledText.like('brackets'))
 matcher('object optional parameter', sig / StyledText.like('optional'))
 matcher('object annotation', sig / StyledText.like('annotation'))
@@ -252,6 +256,16 @@ matcher('object description content', 'object description'
                                       / GroupedFlowables.like('content'))
 matcher('object description content paragraph', 'object description content'
                                                 / Paragraph)
+
+matcher('inline signature', StyledText.like('inline signature'))
+matcher('inline signature texpr', StyledText.like('inline signature', has_class='texpr'))
+isig = SelectorByName('inline signature') / ...
+matcher('inline signature space', isig / StyledText.like('signature space'))
+matcher('inline signature name', isig / StyledText.like('signature name'))
+matcher('inline signature operator', isig / StyledText.like('signature operator'))
+matcher('inline signature punctuation', isig / StyledText.like('signature punctuation'))
+matcher('inline signature keyword', isig / StyledText.like('signature keyword'))
+matcher('inline signature keyword type', isig / StyledText.like('signature keyword type'))
 
 
 # (Sphinx) production list

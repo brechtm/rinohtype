@@ -32,6 +32,9 @@ Changed:
 
 Fixed:
 
+* Sphinx frontend: support the desc_sig_keyword_type, desc_sig_literal_number,
+  desc_sig_literal_string, desc_sig_literal_char and desc_inline document nodes
+  (#450)
 * Sphinx frontend: support the desc_sig_keyword document node (#444)
 * Sphinx frontend: support the desc_type_parameter_list document node
 

@@ -36,16 +36,21 @@ from ..rst import (DocutilsNode, DocutilsInlineNode, DocutilsBodyNode,
 from ..rst import nodes as rst
 
 
-__all__ = ['Compact_Paragraph', 'Centered', 'HList', 'Index', 'Pending_XRef',
-           'Literal_Emphasis', 'Abbreviation', 'Download_Reference', 'SeeAlso',
-           'Glossary', 'Start_of_File', 'Todo_Node', 'HighlightLang',
-           'Literal_Strong', 'ProductionList', 'Production', 'TermSep', 'Desc',
-           'Desc_Signature', 'Desc_Signature_Line', 'Desc_Sig_Name',
-           'Desc_Sig_Operator', 'Desc_Sig_Punctuation', 'Desc_Name',
-           'Desc_AddName', 'Desc_Type', 'Desc_ParameterList', 'Desc_Parameter',
-           'Desc_Optional', 'Desc_Annotation', 'Desc_Content', 'Desc_Returns',
-           'VersionModified', 'Tabular_Col_Spec', 'AutoSummary_Table',
-           'Autosummary_ToC', 'Number_Reference']
+__all__ = [
+    'Compact_Paragraph', 'Centered', 'HList', 'HListCol', 'Index', 'Pending_XRef',
+    'Inline', 'Emphasis', 'Literal', 'Literal_Emphasis', 'Abbreviation',
+    'Download_Reference', 'SeeAlso', 'Glossary', 'Start_of_File', 'Todo_Node',
+    'HighlightLang', 'Literal_Strong', 'ManPage', 'Literal_Block',
+    'ProductionList', 'Production', 'TermSep', 'Desc', 'Desc_Signature',
+    'Desc_Signature_Line', 'Desc_Sig_Space', 'Desc_Sig_Name', 'Desc_Sig_Operator',
+    'Desc_Sig_Punctuation', 'Desc_Sig_Keyword', 'Desc_Sig_Keyword_Type',
+    'Desc_Sig_Literal_Number', 'Desc_Sig_Literal_String', 'Desc_Sig_Literal_Char',
+    'Desc_Name', 'Desc_AddName', 'Desc_Type', 'Desc_Inline', 'Desc_ParameterList',
+    'Desc_Parameter', 'Desc_Type_Parameter_List', 'Desc_Type_Parameter',
+    'Desc_Optional', 'Desc_Annotation', 'Desc_Content', 'Desc_Returns',
+    'VersionModified', 'Tabular_Col_Spec', 'AutoSummary_Table',
+    'Autosummary_ToC', 'Number_Reference', 'Footnotes_Rubric', 'Graphviz'
+]
 
 
 # other paragraph-level nodes
@@ -358,6 +363,22 @@ class Desc_Sig_Keyword(DocutilsInlineNode):
     style = 'signature keyword'
 
 
+class Desc_Sig_Keyword_Type(DocutilsInlineNode):
+    style = 'signature keyword type'
+
+
+class Desc_Sig_Literal_Number(DocutilsInlineNode):
+    style = 'signature literal number'
+
+
+class Desc_Sig_Literal_String(DocutilsInlineNode):
+    style = 'signature literal string'
+
+
+class Desc_Sig_Literal_Char(DocutilsInlineNode):
+    style = 'signature literal char'
+
+
 class Desc_Name(DocutilsInlineNode):
     style = 'main object name'
 
@@ -368,6 +389,16 @@ class Desc_AddName(DocutilsInlineNode):
 
 class Desc_Type(DocutilsInlineNode):
     style = 'type'
+
+
+class Desc_Inline(DocutilsInlineNode):
+    style = 'inline signature'
+    
+    def styled_text(self):
+        styled_text = super().styled_text()
+        if any(klass.endswith('-texpr') for klass in styled_text.classes):
+            styled_text.classes.append('texpr')
+        return styled_text
 
 
 class Desc_ParameterList(DocutilsInlineNode):

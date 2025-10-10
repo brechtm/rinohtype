@@ -1,4 +1,4 @@
-<document source="/Users/brechtm/Code/rinohtype/tests_regression/rst/index.rst" translation_progress="{'total': 0, 'translated': 0}">
+<document rinoh_regression_test="True" source="/Users/brechtm/Code/rinohtype/tests_regression/rst/index.rst" translation_progress="{'total': 0, 'translated': 0}">
     <index entries="('pair',\ 'built-in\ function;\ Timer.repeat()',\ 'Timer.repeat',\ '',\ None)">
     <desc classes="py function" desctype="function" domain="py" no-contents-entry="False" no-index="False" no-index-entry="False" no-typesetting="False" nocontentsentry="False" noindex="False" noindexentry="False" objtype="function">
         <desc_signature _toc_name="Timer.repeat()" _toc_parts="('Timer', 'repeat')" class="Timer" classes="sig sig-object" fullname="Timer.repeat" ids="Timer.repeat" module="True">
@@ -65,6 +65,36 @@
                          
                     <inline classes="default_value" support_smartquotes="False">
                         True
+                <desc_parameter xml:space="preserve">
+                    <desc_sig_name classes="n">
+                        ab
+                    <desc_sig_punctuation classes="p">
+                        :
+                    <desc_sig_space classes="w">
+                         
+                    <desc_sig_name classes="n">
+                        <pending_xref py:class="True" py:module="True" refdomain="py" refspecific="False" reftarget="Literal" reftype="class">
+                            Literal
+                        <desc_sig_punctuation classes="p">
+                            [
+                        <desc_sig_literal_string classes="s">
+                            'a'
+                        <desc_sig_punctuation classes="p">
+                            ,
+                        <desc_sig_space classes="w">
+                             
+                        <desc_sig_literal_string classes="s">
+                            'b'
+                        <desc_sig_punctuation classes="p">
+                            ]
+                    <desc_sig_space classes="w">
+                         
+                    <desc_sig_operator classes="o">
+                        =
+                    <desc_sig_space classes="w">
+                         
+                    <inline classes="default_value" support_smartquotes="False">
+                        'a'
         <desc_content>
             <paragraph>
                 Not sure what this is supposed to do.
@@ -108,3 +138,233 @@
                 <desc_parameter xml:space="preserve">
                     Dict[KT, VT]
         <desc_content>
+    <index entries="('single',\ 'a\ (C++\ member)',\ '_CPPv41a',\ '',\ None)">
+    <desc classes="cpp var" desctype="var" domain="cpp" no-contents-entry="False" no-index="False" no-index-entry="False" no-typesetting="False" nocontentsentry="False" noindex="False" noindexentry="False" objtype="var">
+        <desc_signature _toc_name="a" _toc_parts="('a',)" classes="sig sig-object" ids="_CPPv41a _CPPv31a _CPPv21a a__i" is_multiline="True" multi_line_parameter_list="False">
+            <desc_signature_line add_permalink="True" xml:space="preserve">
+                <desc_sig_keyword_type classes="kt">
+                    int
+                <desc_sig_space classes="w">
+                     
+                <desc_name classes="sig-name descname" xml:space="preserve">
+                    <desc_sig_name classes="n">
+                        a
+                <desc_sig_space classes="w">
+                     
+                <desc_sig_punctuation classes="p">
+                    =
+                <desc_sig_space classes="w">
+                     
+                <desc_sig_literal_number classes="m">
+                    42
+        <desc_content>
+    <index entries="('single',\ 'f\ (C++\ function)',\ '_CPPv41fi',\ '',\ None)">
+    <desc classes="cpp function" desctype="function" domain="cpp" no-contents-entry="False" no-index="False" no-index-entry="False" no-typesetting="False" nocontentsentry="False" noindex="False" noindexentry="False" objtype="function">
+        <desc_signature _toc_name="f()" _toc_parts="('f',)" classes="sig sig-object" ids="_CPPv41fi _CPPv31fi _CPPv21fi f__i" is_multiline="True" multi_line_parameter_list="False">
+            <desc_signature_line add_permalink="True" xml:space="preserve">
+                <desc_sig_keyword_type classes="kt">
+                    int
+                <desc_sig_space classes="w">
+                     
+                <desc_name classes="sig-name descname" xml:space="preserve">
+                    <desc_sig_name classes="n">
+                        f
+                <desc_parameterlist multi_line_parameter_list="False" xml:space="preserve">
+                    <desc_parameter noemph="True" xml:space="preserve">
+                        <desc_sig_keyword_type classes="kt">
+                            int
+                        <desc_sig_space classes="w">
+                             
+                        <desc_sig_name classes="n sig-param">
+                            i
+        <desc_content>
+    <paragraph>
+        An expression: 
+        <desc_inline classes="cpp-expr sig sig-inline cpp" domain="cpp">
+            <pending_xref classname="True" cpp:parent_key="[]" modname="True" refdomain="cpp" reftarget="a" reftype="identifier">
+                <desc_sig_name classes="n">
+                    a
+            <desc_sig_space classes="w">
+                 
+            <desc_sig_operator classes="o">
+                *
+            <desc_sig_space classes="w">
+                 
+            <pending_xref classname="True" cpp:parent_key="[]" modname="True" refdomain="cpp" reftarget="f" reftype="identifier">
+                <desc_sig_name classes="n">
+                    f
+            <desc_sig_punctuation classes="p">
+                (
+            <pending_xref classname="True" cpp:parent_key="[]" modname="True" refdomain="cpp" reftarget="a" reftype="identifier">
+                <desc_sig_name classes="n">
+                    a
+            <desc_sig_punctuation classes="p">
+                )
+         (or as text: 
+        <desc_inline classes="cpp-texpr sig sig-inline cpp" domain="cpp">
+            <pending_xref classname="True" cpp:parent_key="[]" modname="True" refdomain="cpp" reftarget="a" reftype="identifier">
+                <desc_sig_name classes="n">
+                    a
+            <desc_sig_space classes="w">
+                 
+            <desc_sig_operator classes="o">
+                *
+            <desc_sig_space classes="w">
+                 
+            <pending_xref classname="True" cpp:parent_key="[]" modname="True" refdomain="cpp" reftarget="f" reftype="identifier">
+                <desc_sig_name classes="n">
+                    f
+            <desc_sig_punctuation classes="p">
+                (
+            <pending_xref classname="True" cpp:parent_key="[]" modname="True" refdomain="cpp" reftarget="a" reftype="identifier">
+                <desc_sig_name classes="n">
+                    a
+            <desc_sig_punctuation classes="p">
+                )
+        ).
+    <paragraph>
+        A type: 
+        <desc_inline classes="cpp-expr sig sig-inline cpp" domain="cpp">
+            <desc_sig_keyword classes="k">
+                const
+            <desc_sig_space classes="w">
+                 
+            <pending_xref classname="True" cpp:parent_key="[]" modname="True" refdomain="cpp" reftarget="MySortedContainer<int>" reftype="identifier">
+                <desc_sig_name classes="n">
+                    MySortedContainer
+            <desc_sig_punctuation classes="p">
+                <
+            <desc_sig_keyword_type classes="kt">
+                int
+            <desc_sig_punctuation classes="p">
+                >
+            <desc_sig_punctuation classes="p">
+                &
+        
+        (or as text 
+        <desc_inline classes="cpp-texpr sig sig-inline cpp" domain="cpp">
+            <desc_sig_keyword classes="k">
+                const
+            <desc_sig_space classes="w">
+                 
+            <pending_xref classname="True" cpp:parent_key="[]" modname="True" refdomain="cpp" reftarget="MySortedContainer<int>" reftype="identifier">
+                <desc_sig_name classes="n">
+                    MySortedContainer
+            <desc_sig_punctuation classes="p">
+                <
+            <desc_sig_keyword_type classes="kt">
+                int
+            <desc_sig_punctuation classes="p">
+                >
+            <desc_sig_punctuation classes="p">
+                &
+        ).
+    <index entries="('single',\ 'a\ (C\ var)',\ 'c.a',\ '',\ None)">
+    <desc classes="c var" desctype="var" domain="c" no-contents-entry="False" no-index="False" no-index-entry="False" no-typesetting="False" nocontentsentry="False" noindex="False" noindexentry="False" objtype="var">
+        <desc_signature _toc_name="" _toc_parts="()" classes="sig sig-object" ids="c.a" is_multiline="True" multi_line_parameter_list="False">
+            <desc_signature_line add_permalink="True" xml:space="preserve">
+                <desc_sig_keyword_type classes="kt">
+                    int
+                <desc_sig_space classes="w">
+                     
+                <desc_name classes="sig-name descname" xml:space="preserve">
+                    <desc_sig_name classes="n">
+                        a
+                <desc_sig_space classes="w">
+                     
+                <desc_sig_punctuation classes="p">
+                    =
+                <desc_sig_space classes="w">
+                     
+                <desc_sig_literal_number classes="m">
+                    42
+        <desc_content>
+    <index entries="('single',\ 'f\ (C\ function)',\ 'c.f',\ '',\ None)">
+    <desc classes="c function" desctype="function" domain="c" no-contents-entry="False" no-index="False" no-index-entry="False" no-typesetting="False" nocontentsentry="False" noindex="False" noindexentry="False" objtype="function">
+        <desc_signature _toc_name="" _toc_parts="()" classes="sig sig-object" ids="c.f" is_multiline="True" multi_line_parameter_list="False">
+            <desc_signature_line add_permalink="True" xml:space="preserve">
+                <desc_sig_keyword_type classes="kt">
+                    int
+                <desc_sig_space classes="w">
+                     
+                <desc_name classes="sig-name descname" xml:space="preserve">
+                    <desc_sig_name classes="n">
+                        f
+                <desc_parameterlist multi_line_parameter_list="False" xml:space="preserve">
+                    <desc_parameter noemph="True" xml:space="preserve">
+                        <desc_sig_keyword_type classes="kt">
+                            int
+                        <desc_sig_space classes="w">
+                             
+                        <desc_sig_name classes="n">
+                            i
+        <desc_content>
+    <paragraph>
+        An expression: 
+        <desc_inline classes="c-expr sig sig-inline c" domain="c">
+            <pending_xref c:parent_key="[]" classname="True" modname="True" refdomain="c" reftarget="a" reftype="identifier">
+                <desc_sig_name classes="n">
+                    a
+            <desc_sig_space classes="w">
+                 
+            <desc_sig_operator classes="o">
+                *
+            <desc_sig_space classes="w">
+                 
+            <pending_xref c:parent_key="[]" classname="True" modname="True" refdomain="c" reftarget="f" reftype="identifier">
+                <desc_sig_name classes="n">
+                    f
+            <desc_sig_punctuation classes="p">
+                (
+            <pending_xref c:parent_key="[]" classname="True" modname="True" refdomain="c" reftarget="a" reftype="identifier">
+                <desc_sig_name classes="n">
+                    a
+            <desc_sig_punctuation classes="p">
+                )
+         (or as text: 
+        <desc_inline classes="c-texpr sig sig-inline c" domain="c">
+            <pending_xref c:parent_key="[]" classname="True" modname="True" refdomain="c" reftarget="a" reftype="identifier">
+                <desc_sig_name classes="n">
+                    a
+            <desc_sig_space classes="w">
+                 
+            <desc_sig_operator classes="o">
+                *
+            <desc_sig_space classes="w">
+                 
+            <pending_xref c:parent_key="[]" classname="True" modname="True" refdomain="c" reftarget="f" reftype="identifier">
+                <desc_sig_name classes="n">
+                    f
+            <desc_sig_punctuation classes="p">
+                (
+            <pending_xref c:parent_key="[]" classname="True" modname="True" refdomain="c" reftarget="a" reftype="identifier">
+                <desc_sig_name classes="n">
+                    a
+            <desc_sig_punctuation classes="p">
+                )
+        ).
+    <paragraph>
+        A type: 
+        <desc_inline classes="c-expr sig sig-inline c" domain="c">
+            <desc_sig_keyword classes="k">
+                const
+            <desc_sig_space classes="w">
+                 
+            <pending_xref c:parent_key="[]" classname="True" modname="True" refdomain="c" reftarget="Data" reftype="identifier">
+                <desc_sig_name classes="n">
+                    Data
+            <desc_sig_punctuation classes="p">
+                *
+        
+        (or as text 
+        <desc_inline classes="c-texpr sig sig-inline c" domain="c">
+            <desc_sig_keyword classes="k">
+                const
+            <desc_sig_space classes="w">
+                 
+            <pending_xref c:parent_key="[]" classname="True" modname="True" refdomain="c" reftarget="Data" reftype="identifier">
+                <desc_sig_name classes="n">
+                    Data
+            <desc_sig_punctuation classes="p">
+                *
+        ).

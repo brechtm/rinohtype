@@ -170,6 +170,164 @@
                             SingleStyledText(' ')
                           MixedStyledText('True')   <inline classes='default_value'>
                             SingleStyledText('True')
+                        SingleStyledText(', ')
+                        MixedStyledText('ab: Literal['a', 'b'] = 'a'', style='parameter')   <desc_parameter>
+                             > (0,0,3,0,6) object parameter [Sphinx] > object parameter (no emphasis)
+                          MixedStyledText('ab', style='signature name')   <desc_sig_name classes='n'>
+                               > (0,0,3,0,6) object signature name [Sphinx] > DEFAULT
+                            SingleStyledText('ab')
+                          MixedStyledText(':', style='signature punctuation')   <desc_sig_punctuation classes='p'>
+                               > (0,0,3,0,6) object signature punctuation [Sphinx] > DEFAULT
+                            SingleStyledText(':')
+                          MixedStyledText(' ', style='signature space')   <desc_sig_space classes='w'>
+                               > (0,0,3,0,6) object signature space [Sphinx] > DEFAULT
+                            SingleStyledText(' ')
+              MixedStyledText('Timer.repeat ( source: str, repe...')
+                MixedStyledText('Timer.repeat ( source: str, repe...')
+                  MixedStyledText('Timer.', style='additional name part')   index.rst:2   <desc_addname classes='sig-prename descclassname'>
+                       > (0,0,3,0,6) additional name part [Sphinx] > monospaced
+                    SingleStyledText('Timer.')
+                  MixedStyledText('repeat', style='main object name')   index.rst:2   <desc_name classes='sig-name descname'>
+                       > (0,0,3,0,6) object name [Sphinx] > DEFAULT
+                    SingleStyledText('repeat')
+                  MixedStyledText(' ( source: str, repeat: int = 3,...')   index.rst:2   <desc_parameterlist>
+                    MixedStyledText(' ( source: str, repeat: int = 3,...')
+                      SingleStyledText(' ( ', style='parentheses')
+                           > (0,0,3,0,6) object parentheses [Sphinx] > DEFAULT
+                      MixedStyledText('source: str, repeat: int = 3, hu...', style='parameter list')
+                           > (0,0,3,0,6) object parameter list [Sphinx] > DEFAULT
+                        MixedStyledText('source: str', style='parameter')   <desc_parameter>
+                             > (0,0,3,0,6) object parameter [Sphinx] > object parameter (no emphasis)
+                          MixedStyledText('source', style='signature name')   <desc_sig_name classes='n'>
+                               > (0,0,3,0,6) object signature name [Sphinx] > DEFAULT
+                            SingleStyledText('source')
+                          MixedStyledText(':', style='signature punctuation')   <desc_sig_punctuation classes='p'>
+                               > (0,0,3,0,6) object signature punctuation [Sphinx] > DEFAULT
+                            SingleStyledText(':')
+                          MixedStyledText(' ', style='signature space')   <desc_sig_space classes='w'>
+                               > (0,0,3,0,6) object signature space [Sphinx] > DEFAULT
+                            SingleStyledText(' ')
+                          MixedStyledText('str', style='signature name')   <desc_sig_name classes='n'>
+                               > (0,0,3,0,6) object signature name [Sphinx] > DEFAULT
+                            MixedStyledText('str')   <pending_xref>
+                              SingleStyledText('str')
+                        SingleStyledText(', ')
+                        MixedStyledText('repeat: int = 3', style='parameter')   <desc_parameter>
+                             > (0,0,3,0,6) object parameter [Sphinx] > object parameter (no emphasis)
+                          MixedStyledText('repeat', style='signature name')   <desc_sig_name classes='n'>
+                               > (0,0,3,0,6) object signature name [Sphinx] > DEFAULT
+                            SingleStyledText('repeat')
+                          MixedStyledText(':', style='signature punctuation')   <desc_sig_punctuation classes='p'>
+                               > (0,0,3,0,6) object signature punctuation [Sphinx] > DEFAULT
+                            SingleStyledText(':')
+                          MixedStyledText(' ', style='signature space')   <desc_sig_space classes='w'>
+                               > (0,0,3,0,6) object signature space [Sphinx] > DEFAULT
+                            SingleStyledText(' ')
+                          MixedStyledText('int', style='signature name')   <desc_sig_name classes='n'>
+                               > (0,0,3,0,6) object signature name [Sphinx] > DEFAULT
+                            MixedStyledText('int')   <pending_xref>
+                              SingleStyledText('int')
+                          MixedStyledText(' ', style='signature space')   <desc_sig_space classes='w'>
+                               > (0,0,3,0,6) object signature space [Sphinx] > DEFAULT
+                            SingleStyledText(' ')
+                          MixedStyledText('=', style='signature operator')   <desc_sig_operator classes='o'>
+                               > (0,0,3,0,6) object signature operator [Sphinx] > DEFAULT
+                            SingleStyledText('=')
+                          MixedStyledText(' ', style='signature space')   <desc_sig_space classes='w'>
+                               > (0,0,3,0,6) object signature space [Sphinx] > DEFAULT
+                            SingleStyledText(' ')
+                          MixedStyledText('3')   <inline classes='default_value'>
+                            SingleStyledText('3')
+                        SingleStyledText(', ')
+                        MixedStyledText('hurry: Literal[True, False] = Tr...', style='parameter')   <desc_parameter>
+                             > (0,0,3,0,6) object parameter [Sphinx] > object parameter (no emphasis)
+                          MixedStyledText('hurry', style='signature name')   <desc_sig_name classes='n'>
+                               > (0,0,3,0,6) object signature name [Sphinx] > DEFAULT
+                            SingleStyledText('hurry')
+                          MixedStyledText(':', style='signature punctuation')   <desc_sig_punctuation classes='p'>
+                               > (0,0,3,0,6) object signature punctuation [Sphinx] > DEFAULT
+                            SingleStyledText(':')
+                          MixedStyledText(' ', style='signature space')   <desc_sig_space classes='w'>
+                               > (0,0,3,0,6) object signature space [Sphinx] > DEFAULT
+                            SingleStyledText(' ')
+                          MixedStyledText('Literal[True, False]', style='signature name')   <desc_sig_name classes='n'>
+                               > (0,0,3,0,6) object signature name [Sphinx] > DEFAULT
+                            MixedStyledText('Literal')   <pending_xref>
+                              SingleStyledText('Literal')
+                            MixedStyledText('[', style='signature punctuation')   <desc_sig_punctuation classes='p'>
+                                 > (0,0,3,0,6) object signature punctuation [Sphinx] > DEFAULT
+                              SingleStyledText('[')
+                            MixedStyledText('True', style='signature keyword')   <desc_sig_keyword classes='k'>
+                                 > (0,0,3,0,6) object signature keyword [Sphinx] > DEFAULT
+                              SingleStyledText('True')
+                            MixedStyledText(',', style='signature punctuation')   <desc_sig_punctuation classes='p'>
+                                 > (0,0,3,0,6) object signature punctuation [Sphinx] > DEFAULT
+                              SingleStyledText(',')
+                            MixedStyledText(' ', style='signature space')   <desc_sig_space classes='w'>
+                                 > (0,0,3,0,6) object signature space [Sphinx] > DEFAULT
+                              SingleStyledText(' ')
+                            MixedStyledText('False', style='signature keyword')   <desc_sig_keyword classes='k'>
+                                 > (0,0,3,0,6) object signature keyword [Sphinx] > DEFAULT
+                              SingleStyledText('False')
+                            MixedStyledText(']', style='signature punctuation')   <desc_sig_punctuation classes='p'>
+                                 > (0,0,3,0,6) object signature punctuation [Sphinx] > DEFAULT
+                              SingleStyledText(']')
+                          MixedStyledText(' ', style='signature space')   <desc_sig_space classes='w'>
+                               > (0,0,3,0,6) object signature space [Sphinx] > DEFAULT
+                            SingleStyledText(' ')
+                          MixedStyledText('=', style='signature operator')   <desc_sig_operator classes='o'>
+                               > (0,0,3,0,6) object signature operator [Sphinx] > DEFAULT
+                            SingleStyledText('=')
+                          MixedStyledText(' ', style='signature space')   <desc_sig_space classes='w'>
+                               > (0,0,3,0,6) object signature space [Sphinx] > DEFAULT
+                            SingleStyledText(' ')
+                          MixedStyledText('True')   <inline classes='default_value'>
+                            SingleStyledText('True')
+                        SingleStyledText(', ')
+                        MixedStyledText('ab: Literal['a', 'b'] = 'a'', style='parameter')   <desc_parameter>
+                             > (0,0,3,0,6) object parameter [Sphinx] > object parameter (no emphasis)
+                          MixedStyledText('ab', style='signature name')   <desc_sig_name classes='n'>
+                               > (0,0,3,0,6) object signature name [Sphinx] > DEFAULT
+                            SingleStyledText('ab')
+                          MixedStyledText(':', style='signature punctuation')   <desc_sig_punctuation classes='p'>
+                               > (0,0,3,0,6) object signature punctuation [Sphinx] > DEFAULT
+                            SingleStyledText(':')
+                          MixedStyledText(' ', style='signature space')   <desc_sig_space classes='w'>
+                               > (0,0,3,0,6) object signature space [Sphinx] > DEFAULT
+                            SingleStyledText(' ')
+                          MixedStyledText('Literal['a', 'b']', style='signature name')   <desc_sig_name classes='n'>
+                               > (0,0,3,0,6) object signature name [Sphinx] > DEFAULT
+                            MixedStyledText('Literal')   <pending_xref>
+                              SingleStyledText('Literal')
+                            MixedStyledText('[', style='signature punctuation')   <desc_sig_punctuation classes='p'>
+                                 > (0,0,3,0,6) object signature punctuation [Sphinx] > DEFAULT
+                              SingleStyledText('[')
+                            MixedStyledText(''a'', style='signature literal string')   <desc_sig_literal_string classes='s'>
+                                 > (0,0,3,0,6) object signature literal string [Sphinx] > DEFAULT
+                              SingleStyledText(''a'')
+                            MixedStyledText(',', style='signature punctuation')   <desc_sig_punctuation classes='p'>
+                                 > (0,0,3,0,6) object signature punctuation [Sphinx] > DEFAULT
+                              SingleStyledText(',')
+                            MixedStyledText(' ', style='signature space')   <desc_sig_space classes='w'>
+                                 > (0,0,3,0,6) object signature space [Sphinx] > DEFAULT
+                              SingleStyledText(' ')
+                            MixedStyledText(''b'', style='signature literal string')   <desc_sig_literal_string classes='s'>
+                                 > (0,0,3,0,6) object signature literal string [Sphinx] > DEFAULT
+                              SingleStyledText(''b'')
+                            MixedStyledText(']', style='signature punctuation')   <desc_sig_punctuation classes='p'>
+                                 > (0,0,3,0,6) object signature punctuation [Sphinx] > DEFAULT
+                              SingleStyledText(']')
+                          MixedStyledText(' ', style='signature space')   <desc_sig_space classes='w'>
+                               > (0,0,3,0,6) object signature space [Sphinx] > DEFAULT
+                            SingleStyledText(' ')
+                          MixedStyledText('=', style='signature operator')   <desc_sig_operator classes='o'>
+                               > (0,0,3,0,6) object signature operator [Sphinx] > DEFAULT
+                            SingleStyledText('=')
+                          MixedStyledText(' ', style='signature space')   <desc_sig_space classes='w'>
+                               > (0,0,3,0,6) object signature space [Sphinx] > DEFAULT
+                            SingleStyledText(' ')
+                          MixedStyledText(''a'')   <inline classes='default_value'>
+                            SingleStyledText(''a'')
                     SingleStyledText(' ) ', style='parentheses')
                          > (0,0,3,0,6) object parentheses [Sphinx] > DEFAULT
         StaticGroupedFlowables(style='content')   index.rst   <desc_content>
@@ -314,3 +472,407 @@
                          > (0,0,3,0,6) object parentheses [Sphinx] > DEFAULT
         StaticGroupedFlowables(style='content')   <desc_content>
              > (0,0,2,0,3) object description content [Sphinx] > definition
+      LabeledFlowable(style='object description')   <desc classes='cpp var'>
+           > (0,0,1,0,2) object description [Sphinx] > definition list item
+        StaticGroupedFlowables(style='signatures')
+             > (0,0,2,0,3) object signatures [Sphinx] > definition term
+          Paragraph('int a = 42', id='_CPPv41a')   index.rst:8   <desc_signature classes='sig sig-object'>
+               > (0,0,2,0,5) object signature [Sphinx] > definition term paragraph
+                 (0,0,0,0,2) body [Sphinx] > default
+              MixedStyledText('int a = 42')
+                MixedStyledText('int a = 42')   index.rst:8   <desc_signature_line>
+                  MixedStyledText('int', style='signature keyword type')   index.rst:8   <desc_sig_keyword_type classes='kt'>
+                       > (0,0,3,0,6) object signature keyword type [Sphinx] > DEFAULT
+                    SingleStyledText('int')
+                  MixedStyledText(' ', style='signature space')   index.rst:8   <desc_sig_space classes='w'>
+                       > (0,0,3,0,6) object signature space [Sphinx] > DEFAULT
+                    SingleStyledText(' ')
+                  MixedStyledText('a', style='main object name')   index.rst:8   <desc_name classes='sig-name descname'>
+                       > (0,0,3,0,6) object name [Sphinx] > DEFAULT
+                    MixedStyledText('a', style='signature name')   <desc_sig_name classes='n'>
+                         > (0,0,3,0,6) object signature name [Sphinx] > DEFAULT
+                      SingleStyledText('a')
+                  MixedStyledText(' ', style='signature space')   index.rst:8   <desc_sig_space classes='w'>
+                       > (0,0,3,0,6) object signature space [Sphinx] > DEFAULT
+                    SingleStyledText(' ')
+                  MixedStyledText('=', style='signature punctuation')   index.rst:8   <desc_sig_punctuation classes='p'>
+                       > (0,0,3,0,6) object signature punctuation [Sphinx] > DEFAULT
+                    SingleStyledText('=')
+                  MixedStyledText(' ', style='signature space')   index.rst:8   <desc_sig_space classes='w'>
+                       > (0,0,3,0,6) object signature space [Sphinx] > DEFAULT
+                    SingleStyledText(' ')
+                  MixedStyledText('42', style='signature literal number')   index.rst:8   <desc_sig_literal_number classes='m'>
+                       > (0,0,3,0,6) object signature literal number [Sphinx] > DEFAULT
+                    SingleStyledText('42')
+        StaticGroupedFlowables(style='content')   <desc_content>
+             > (0,0,2,0,3) object description content [Sphinx] > definition
+      LabeledFlowable(style='object description')   <desc classes='cpp function'>
+           > (0,0,1,0,2) object description [Sphinx] > definition list item
+        StaticGroupedFlowables(style='signatures')
+             > (0,0,2,0,3) object signatures [Sphinx] > definition term
+          Paragraph('int f ( int i ) ', id='_CPPv41fi')   index.rst:10   <desc_signature classes='sig sig-object'>
+               > (0,0,2,0,5) object signature [Sphinx] > definition term paragraph
+                 (0,0,0,0,2) body [Sphinx] > default
+              MixedStyledText('int f ( int i ) ')
+                MixedStyledText('int f ( int i ) ')   index.rst:10   <desc_signature_line>
+                  MixedStyledText('int', style='signature keyword type')   index.rst:10   <desc_sig_keyword_type classes='kt'>
+                       > (0,0,3,0,6) object signature keyword type [Sphinx] > DEFAULT
+                    SingleStyledText('int')
+                  MixedStyledText(' ', style='signature space')   index.rst:10   <desc_sig_space classes='w'>
+                       > (0,0,3,0,6) object signature space [Sphinx] > DEFAULT
+                    SingleStyledText(' ')
+                  MixedStyledText('f', style='main object name')   index.rst:10   <desc_name classes='sig-name descname'>
+                       > (0,0,3,0,6) object name [Sphinx] > DEFAULT
+                    MixedStyledText('f', style='signature name')   <desc_sig_name classes='n'>
+                         > (0,0,3,0,6) object signature name [Sphinx] > DEFAULT
+                      SingleStyledText('f')
+                  MixedStyledText(' ( int i ) ')   index.rst:10   <desc_parameterlist>
+                    MixedStyledText(' ( int i')
+                      SingleStyledText(' ( ', style='parentheses')
+                           > (0,0,3,0,6) object parentheses [Sphinx] > DEFAULT
+                      MixedStyledText('int i', style='parameter list')
+                           > (0,0,3,0,6) object parameter list [Sphinx] > DEFAULT
+                        MixedStyledText('int i', style='noemph parameter')   <desc_parameter>
+                             > (0,0,3,0,6) object parameter (no emphasis) [Sphinx] > DEFAULT
+                          MixedStyledText('int', style='signature keyword type')   <desc_sig_keyword_type classes='kt'>
+                               > (0,0,3,0,6) object signature keyword type [Sphinx] > DEFAULT
+                            SingleStyledText('int')
+                          MixedStyledText(' ', style='signature space')   <desc_sig_space classes='w'>
+                               > (0,0,3,0,6) object signature space [Sphinx] > DEFAULT
+                            SingleStyledText(' ')
+                          MixedStyledText('i', style='signature name')   <desc_sig_name classes='n sig-param'>
+                               > (0,0,3,0,6) object signature name [Sphinx] > DEFAULT
+                            SingleStyledText('i')
+                    SingleStyledText(' ) ', style='parentheses')
+                         > (0,0,3,0,6) object parentheses [Sphinx] > DEFAULT
+        StaticGroupedFlowables(style='content')   <desc_content>
+             > (0,0,2,0,3) object description content [Sphinx] > definition
+      Paragraph('An expression: a * f(a) (or as t...')   index.rst:12   <paragraph>
+           > (0,0,0,0,2) body [Sphinx] > default
+          MixedStyledText('An expression: a * f(a) (or as t...')
+            MixedStyledText('An expression: a * f(a) (or as t...')
+              SingleStyledText('An expression: ')
+              MixedStyledText('a * f(a)', style='inline signature')   <desc_inline classes='cpp-expr sig sig-inline cpp'>
+                   > (0,0,1,0,1) inline signature [Sphinx] > DEFAULT
+                MixedStyledText('a')   <pending_xref>
+                  MixedStyledText('a', style='signature name')   <desc_sig_name classes='n'>
+                       > (0,0,2,0,2) inline signature name [Sphinx] > DEFAULT
+                    SingleStyledText('a')
+                MixedStyledText(' ', style='signature space')   <desc_sig_space classes='w'>
+                     > (0,0,2,0,2) inline signature space [Sphinx] > DEFAULT
+                  SingleStyledText(' ')
+                MixedStyledText('*', style='signature operator')   <desc_sig_operator classes='o'>
+                     > (0,0,2,0,2) inline signature operator [Sphinx] > DEFAULT
+                  SingleStyledText('*')
+                MixedStyledText(' ', style='signature space')   <desc_sig_space classes='w'>
+                     > (0,0,2,0,2) inline signature space [Sphinx] > DEFAULT
+                  SingleStyledText(' ')
+                MixedStyledText('f')   <pending_xref>
+                  MixedStyledText('f', style='signature name')   <desc_sig_name classes='n'>
+                       > (0,0,2,0,2) inline signature name [Sphinx] > DEFAULT
+                    SingleStyledText('f')
+                MixedStyledText('(', style='signature punctuation')   <desc_sig_punctuation classes='p'>
+                     > (0,0,2,0,2) inline signature punctuation [Sphinx] > DEFAULT
+                  SingleStyledText('(')
+                MixedStyledText('a')   <pending_xref>
+                  MixedStyledText('a', style='signature name')   <desc_sig_name classes='n'>
+                       > (0,0,2,0,2) inline signature name [Sphinx] > DEFAULT
+                    SingleStyledText('a')
+                MixedStyledText(')', style='signature punctuation')   <desc_sig_punctuation classes='p'>
+                     > (0,0,2,0,2) inline signature punctuation [Sphinx] > DEFAULT
+                  SingleStyledText(')')
+              SingleStyledText(' (or as text: ')
+              MixedStyledText('a * f(a)', style='inline signature')   <desc_inline classes='cpp-texpr sig sig-inline cpp texpr'>
+                   > (0,0,1,1,1) inline signature texpr [Sphinx] > DEFAULT
+                     (0,0,1,0,1) inline signature [Sphinx] > DEFAULT
+                MixedStyledText('a')   <pending_xref>
+                  MixedStyledText('a', style='signature name')   <desc_sig_name classes='n'>
+                       > (0,0,2,0,2) inline signature name [Sphinx] > DEFAULT
+                    SingleStyledText('a')
+                MixedStyledText(' ', style='signature space')   <desc_sig_space classes='w'>
+                     > (0,0,2,0,2) inline signature space [Sphinx] > DEFAULT
+                  SingleStyledText(' ')
+                MixedStyledText('*', style='signature operator')   <desc_sig_operator classes='o'>
+                     > (0,0,2,0,2) inline signature operator [Sphinx] > DEFAULT
+                  SingleStyledText('*')
+                MixedStyledText(' ', style='signature space')   <desc_sig_space classes='w'>
+                     > (0,0,2,0,2) inline signature space [Sphinx] > DEFAULT
+                  SingleStyledText(' ')
+                MixedStyledText('f')   <pending_xref>
+                  MixedStyledText('f', style='signature name')   <desc_sig_name classes='n'>
+                       > (0,0,2,0,2) inline signature name [Sphinx] > DEFAULT
+                    SingleStyledText('f')
+                MixedStyledText('(', style='signature punctuation')   <desc_sig_punctuation classes='p'>
+                     > (0,0,2,0,2) inline signature punctuation [Sphinx] > DEFAULT
+                  SingleStyledText('(')
+                MixedStyledText('a')   <pending_xref>
+                  MixedStyledText('a', style='signature name')   <desc_sig_name classes='n'>
+                       > (0,0,2,0,2) inline signature name [Sphinx] > DEFAULT
+                    SingleStyledText('a')
+                MixedStyledText(')', style='signature punctuation')   <desc_sig_punctuation classes='p'>
+                     > (0,0,2,0,2) inline signature punctuation [Sphinx] > DEFAULT
+                  SingleStyledText(')')
+              SingleStyledText(').')
+      Paragraph('A type: const MySortedContainer<...')   index.rst:14   <paragraph>
+           > (0,0,0,0,2) body [Sphinx] > default
+          MixedStyledText('A type: const MySortedContainer<...')
+            MixedStyledText('A type: const MySortedContainer<...')
+              SingleStyledText('A type: ')
+              MixedStyledText('const MySortedContainer<int>&', style='inline signature')   <desc_inline classes='cpp-expr sig sig-inline cpp'>
+                   > (0,0,1,0,1) inline signature [Sphinx] > DEFAULT
+                MixedStyledText('const', style='signature keyword')   <desc_sig_keyword classes='k'>
+                     > (0,0,2,0,2) inline signature keyword [Sphinx] > DEFAULT
+                  SingleStyledText('const')
+                MixedStyledText(' ', style='signature space')   <desc_sig_space classes='w'>
+                     > (0,0,2,0,2) inline signature space [Sphinx] > DEFAULT
+                  SingleStyledText(' ')
+                MixedStyledText('MySortedContainer')   <pending_xref>
+                  MixedStyledText('MySortedContainer', style='signature name')   <desc_sig_name classes='n'>
+                       > (0,0,2,0,2) inline signature name [Sphinx] > DEFAULT
+                    SingleStyledText('MySortedContainer')
+                MixedStyledText('<', style='signature punctuation')   <desc_sig_punctuation classes='p'>
+                     > (0,0,2,0,2) inline signature punctuation [Sphinx] > DEFAULT
+                  SingleStyledText('<')
+                MixedStyledText('int', style='signature keyword type')   <desc_sig_keyword_type classes='kt'>
+                     > (0,0,2,0,2) inline signature keyword type [Sphinx] > DEFAULT
+                  SingleStyledText('int')
+                MixedStyledText('>', style='signature punctuation')   <desc_sig_punctuation classes='p'>
+                     > (0,0,2,0,2) inline signature punctuation [Sphinx] > DEFAULT
+                  SingleStyledText('>')
+                MixedStyledText('&', style='signature punctuation')   <desc_sig_punctuation classes='p'>
+                     > (0,0,2,0,2) inline signature punctuation [Sphinx] > DEFAULT
+                  SingleStyledText('&')
+              SingleStyledText(' (or as text ')
+          MixedStyledText('A type: const MySortedContainer<...')
+            MixedStyledText('A type: const MySortedContainer<...')
+              SingleStyledText('A type: ')
+              MixedStyledText('const MySortedContainer<int>&', style='inline signature')   <desc_inline classes='cpp-expr sig sig-inline cpp'>
+                   > (0,0,1,0,1) inline signature [Sphinx] > DEFAULT
+                MixedStyledText('const', style='signature keyword')   <desc_sig_keyword classes='k'>
+                     > (0,0,2,0,2) inline signature keyword [Sphinx] > DEFAULT
+                  SingleStyledText('const')
+                MixedStyledText(' ', style='signature space')   <desc_sig_space classes='w'>
+                     > (0,0,2,0,2) inline signature space [Sphinx] > DEFAULT
+                  SingleStyledText(' ')
+                MixedStyledText('MySortedContainer')   <pending_xref>
+                  MixedStyledText('MySortedContainer', style='signature name')   <desc_sig_name classes='n'>
+                       > (0,0,2,0,2) inline signature name [Sphinx] > DEFAULT
+                    SingleStyledText('MySortedContainer')
+                MixedStyledText('<', style='signature punctuation')   <desc_sig_punctuation classes='p'>
+                     > (0,0,2,0,2) inline signature punctuation [Sphinx] > DEFAULT
+                  SingleStyledText('<')
+                MixedStyledText('int', style='signature keyword type')   <desc_sig_keyword_type classes='kt'>
+                     > (0,0,2,0,2) inline signature keyword type [Sphinx] > DEFAULT
+                  SingleStyledText('int')
+                MixedStyledText('>', style='signature punctuation')   <desc_sig_punctuation classes='p'>
+                     > (0,0,2,0,2) inline signature punctuation [Sphinx] > DEFAULT
+                  SingleStyledText('>')
+                MixedStyledText('&', style='signature punctuation')   <desc_sig_punctuation classes='p'>
+                     > (0,0,2,0,2) inline signature punctuation [Sphinx] > DEFAULT
+                  SingleStyledText('&')
+              SingleStyledText(' (or as text ')
+              MixedStyledText('const MySortedContainer<int>&', style='inline signature')   <desc_inline classes='cpp-texpr sig sig-inline cpp texpr'>
+                   > (0,0,1,1,1) inline signature texpr [Sphinx] > DEFAULT
+                     (0,0,1,0,1) inline signature [Sphinx] > DEFAULT
+                MixedStyledText('const', style='signature keyword')   <desc_sig_keyword classes='k'>
+                     > (0,0,2,0,2) inline signature keyword [Sphinx] > DEFAULT
+                  SingleStyledText('const')
+                MixedStyledText(' ', style='signature space')   <desc_sig_space classes='w'>
+                     > (0,0,2,0,2) inline signature space [Sphinx] > DEFAULT
+                  SingleStyledText(' ')
+                MixedStyledText('MySortedContainer')   <pending_xref>
+                  MixedStyledText('MySortedContainer', style='signature name')   <desc_sig_name classes='n'>
+                       > (0,0,2,0,2) inline signature name [Sphinx] > DEFAULT
+                    SingleStyledText('MySortedContainer')
+                MixedStyledText('<', style='signature punctuation')   <desc_sig_punctuation classes='p'>
+                     > (0,0,2,0,2) inline signature punctuation [Sphinx] > DEFAULT
+                  SingleStyledText('<')
+                MixedStyledText('int', style='signature keyword type')   <desc_sig_keyword_type classes='kt'>
+                     > (0,0,2,0,2) inline signature keyword type [Sphinx] > DEFAULT
+                  SingleStyledText('int')
+                MixedStyledText('>', style='signature punctuation')   <desc_sig_punctuation classes='p'>
+                     > (0,0,2,0,2) inline signature punctuation [Sphinx] > DEFAULT
+                  SingleStyledText('>')
+                MixedStyledText('&', style='signature punctuation')   <desc_sig_punctuation classes='p'>
+                     > (0,0,2,0,2) inline signature punctuation [Sphinx] > DEFAULT
+                  SingleStyledText('&')
+              SingleStyledText(').')
+      LabeledFlowable(style='object description')   <desc classes='c var'>
+           > (0,0,1,0,2) object description [Sphinx] > definition list item
+        StaticGroupedFlowables(style='signatures')
+             > (0,0,2,0,3) object signatures [Sphinx] > definition term
+          Paragraph('int a = 42', id='c.a')   index.rst:17   <desc_signature classes='sig sig-object'>
+               > (0,0,2,0,5) object signature [Sphinx] > definition term paragraph
+                 (0,0,0,0,2) body [Sphinx] > default
+              MixedStyledText('int a = 42')
+                MixedStyledText('int a = 42')   index.rst:17   <desc_signature_line>
+                  MixedStyledText('int', style='signature keyword type')   index.rst:17   <desc_sig_keyword_type classes='kt'>
+                       > (0,0,3,0,6) object signature keyword type [Sphinx] > DEFAULT
+                    SingleStyledText('int')
+                  MixedStyledText(' ', style='signature space')   index.rst:17   <desc_sig_space classes='w'>
+                       > (0,0,3,0,6) object signature space [Sphinx] > DEFAULT
+                    SingleStyledText(' ')
+                  MixedStyledText('a', style='main object name')   index.rst:17   <desc_name classes='sig-name descname'>
+                       > (0,0,3,0,6) object name [Sphinx] > DEFAULT
+                    MixedStyledText('a', style='signature name')   <desc_sig_name classes='n'>
+                         > (0,0,3,0,6) object signature name [Sphinx] > DEFAULT
+                      SingleStyledText('a')
+                  MixedStyledText(' ', style='signature space')   index.rst:17   <desc_sig_space classes='w'>
+                       > (0,0,3,0,6) object signature space [Sphinx] > DEFAULT
+                    SingleStyledText(' ')
+                  MixedStyledText('=', style='signature punctuation')   index.rst:17   <desc_sig_punctuation classes='p'>
+                       > (0,0,3,0,6) object signature punctuation [Sphinx] > DEFAULT
+                    SingleStyledText('=')
+                  MixedStyledText(' ', style='signature space')   index.rst:17   <desc_sig_space classes='w'>
+                       > (0,0,3,0,6) object signature space [Sphinx] > DEFAULT
+                    SingleStyledText(' ')
+                  MixedStyledText('42', style='signature literal number')   index.rst:17   <desc_sig_literal_number classes='m'>
+                       > (0,0,3,0,6) object signature literal number [Sphinx] > DEFAULT
+                    SingleStyledText('42')
+        StaticGroupedFlowables(style='content')   <desc_content>
+             > (0,0,2,0,3) object description content [Sphinx] > definition
+      LabeledFlowable(style='object description')   <desc classes='c function'>
+           > (0,0,1,0,2) object description [Sphinx] > definition list item
+        StaticGroupedFlowables(style='signatures')
+             > (0,0,2,0,3) object signatures [Sphinx] > definition term
+          Paragraph('int f ( int i ) ', id='c.f')   index.rst:19   <desc_signature classes='sig sig-object'>
+               > (0,0,2,0,5) object signature [Sphinx] > definition term paragraph
+                 (0,0,0,0,2) body [Sphinx] > default
+              MixedStyledText('int f ( int i ) ')
+                MixedStyledText('int f ( int i ) ')   index.rst:19   <desc_signature_line>
+                  MixedStyledText('int', style='signature keyword type')   index.rst:19   <desc_sig_keyword_type classes='kt'>
+                       > (0,0,3,0,6) object signature keyword type [Sphinx] > DEFAULT
+                    SingleStyledText('int')
+                  MixedStyledText(' ', style='signature space')   index.rst:19   <desc_sig_space classes='w'>
+                       > (0,0,3,0,6) object signature space [Sphinx] > DEFAULT
+                    SingleStyledText(' ')
+                  MixedStyledText('f', style='main object name')   index.rst:19   <desc_name classes='sig-name descname'>
+                       > (0,0,3,0,6) object name [Sphinx] > DEFAULT
+                    MixedStyledText('f', style='signature name')   <desc_sig_name classes='n'>
+                         > (0,0,3,0,6) object signature name [Sphinx] > DEFAULT
+                      SingleStyledText('f')
+                  MixedStyledText(' ( int i ) ')   index.rst:19   <desc_parameterlist>
+                    MixedStyledText(' ( int i')
+                      SingleStyledText(' ( ', style='parentheses')
+                           > (0,0,3,0,6) object parentheses [Sphinx] > DEFAULT
+                      MixedStyledText('int i', style='parameter list')
+                           > (0,0,3,0,6) object parameter list [Sphinx] > DEFAULT
+                        MixedStyledText('int i', style='noemph parameter')   <desc_parameter>
+                             > (0,0,3,0,6) object parameter (no emphasis) [Sphinx] > DEFAULT
+                          MixedStyledText('int', style='signature keyword type')   <desc_sig_keyword_type classes='kt'>
+                               > (0,0,3,0,6) object signature keyword type [Sphinx] > DEFAULT
+                            SingleStyledText('int')
+                          MixedStyledText(' ', style='signature space')   <desc_sig_space classes='w'>
+                               > (0,0,3,0,6) object signature space [Sphinx] > DEFAULT
+                            SingleStyledText(' ')
+                          MixedStyledText('i', style='signature name')   <desc_sig_name classes='n'>
+                               > (0,0,3,0,6) object signature name [Sphinx] > DEFAULT
+                            SingleStyledText('i')
+                    SingleStyledText(' ) ', style='parentheses')
+                         > (0,0,3,0,6) object parentheses [Sphinx] > DEFAULT
+        StaticGroupedFlowables(style='content')   <desc_content>
+             > (0,0,2,0,3) object description content [Sphinx] > definition
+      Paragraph('An expression: a * f(a) (or as t...')   index.rst:21   <paragraph>
+           > (0,0,0,0,2) body [Sphinx] > default
+          MixedStyledText('An expression: a * f(a) (or as t...')
+            MixedStyledText('An expression: a * f(a) (or as t...')
+              SingleStyledText('An expression: ')
+              MixedStyledText('a * f(a)', style='inline signature')   <desc_inline classes='c-expr sig sig-inline c'>
+                   > (0,0,1,0,1) inline signature [Sphinx] > DEFAULT
+                MixedStyledText('a')   <pending_xref>
+                  MixedStyledText('a', style='signature name')   <desc_sig_name classes='n'>
+                       > (0,0,2,0,2) inline signature name [Sphinx] > DEFAULT
+                    SingleStyledText('a')
+                MixedStyledText(' ', style='signature space')   <desc_sig_space classes='w'>
+                     > (0,0,2,0,2) inline signature space [Sphinx] > DEFAULT
+                  SingleStyledText(' ')
+                MixedStyledText('*', style='signature operator')   <desc_sig_operator classes='o'>
+                     > (0,0,2,0,2) inline signature operator [Sphinx] > DEFAULT
+                  SingleStyledText('*')
+                MixedStyledText(' ', style='signature space')   <desc_sig_space classes='w'>
+                     > (0,0,2,0,2) inline signature space [Sphinx] > DEFAULT
+                  SingleStyledText(' ')
+                MixedStyledText('f')   <pending_xref>
+                  MixedStyledText('f', style='signature name')   <desc_sig_name classes='n'>
+                       > (0,0,2,0,2) inline signature name [Sphinx] > DEFAULT
+                    SingleStyledText('f')
+                MixedStyledText('(', style='signature punctuation')   <desc_sig_punctuation classes='p'>
+                     > (0,0,2,0,2) inline signature punctuation [Sphinx] > DEFAULT
+                  SingleStyledText('(')
+                MixedStyledText('a')   <pending_xref>
+                  MixedStyledText('a', style='signature name')   <desc_sig_name classes='n'>
+                       > (0,0,2,0,2) inline signature name [Sphinx] > DEFAULT
+                    SingleStyledText('a')
+                MixedStyledText(')', style='signature punctuation')   <desc_sig_punctuation classes='p'>
+                     > (0,0,2,0,2) inline signature punctuation [Sphinx] > DEFAULT
+                  SingleStyledText(')')
+              SingleStyledText(' (or as text: ')
+              MixedStyledText('a * f(a)', style='inline signature')   <desc_inline classes='c-texpr sig sig-inline c texpr'>
+                   > (0,0,1,1,1) inline signature texpr [Sphinx] > DEFAULT
+                     (0,0,1,0,1) inline signature [Sphinx] > DEFAULT
+                MixedStyledText('a')   <pending_xref>
+                  MixedStyledText('a', style='signature name')   <desc_sig_name classes='n'>
+                       > (0,0,2,0,2) inline signature name [Sphinx] > DEFAULT
+                    SingleStyledText('a')
+                MixedStyledText(' ', style='signature space')   <desc_sig_space classes='w'>
+                     > (0,0,2,0,2) inline signature space [Sphinx] > DEFAULT
+                  SingleStyledText(' ')
+                MixedStyledText('*', style='signature operator')   <desc_sig_operator classes='o'>
+                     > (0,0,2,0,2) inline signature operator [Sphinx] > DEFAULT
+                  SingleStyledText('*')
+                MixedStyledText(' ', style='signature space')   <desc_sig_space classes='w'>
+                     > (0,0,2,0,2) inline signature space [Sphinx] > DEFAULT
+                  SingleStyledText(' ')
+                MixedStyledText('f')   <pending_xref>
+                  MixedStyledText('f', style='signature name')   <desc_sig_name classes='n'>
+                       > (0,0,2,0,2) inline signature name [Sphinx] > DEFAULT
+                    SingleStyledText('f')
+                MixedStyledText('(', style='signature punctuation')   <desc_sig_punctuation classes='p'>
+                     > (0,0,2,0,2) inline signature punctuation [Sphinx] > DEFAULT
+                  SingleStyledText('(')
+                MixedStyledText('a')   <pending_xref>
+                  MixedStyledText('a', style='signature name')   <desc_sig_name classes='n'>
+                       > (0,0,2,0,2) inline signature name [Sphinx] > DEFAULT
+                    SingleStyledText('a')
+                MixedStyledText(')', style='signature punctuation')   <desc_sig_punctuation classes='p'>
+                     > (0,0,2,0,2) inline signature punctuation [Sphinx] > DEFAULT
+                  SingleStyledText(')')
+              SingleStyledText(').')
+      Paragraph('A type: const Data* (or as text ...')   index.rst:23   <paragraph>
+           > (0,0,0,0,2) body [Sphinx] > default
+          MixedStyledText('A type: const Data* (or as text ...')
+            MixedStyledText('A type: const Data* (or as text ...')
+              SingleStyledText('A type: ')
+              MixedStyledText('const Data*', style='inline signature')   <desc_inline classes='c-expr sig sig-inline c'>
+                   > (0,0,1,0,1) inline signature [Sphinx] > DEFAULT
+                MixedStyledText('const', style='signature keyword')   <desc_sig_keyword classes='k'>
+                     > (0,0,2,0,2) inline signature keyword [Sphinx] > DEFAULT
+                  SingleStyledText('const')
+                MixedStyledText(' ', style='signature space')   <desc_sig_space classes='w'>
+                     > (0,0,2,0,2) inline signature space [Sphinx] > DEFAULT
+                  SingleStyledText(' ')
+                MixedStyledText('Data')   <pending_xref>
+                  MixedStyledText('Data', style='signature name')   <desc_sig_name classes='n'>
+                       > (0,0,2,0,2) inline signature name [Sphinx] > DEFAULT
+                    SingleStyledText('Data')
+                MixedStyledText('*', style='signature punctuation')   <desc_sig_punctuation classes='p'>
+                     > (0,0,2,0,2) inline signature punctuation [Sphinx] > DEFAULT
+                  SingleStyledText('*')
+              SingleStyledText(' (or as text ')
+              MixedStyledText('const Data*', style='inline signature')   <desc_inline classes='c-texpr sig sig-inline c texpr'>
+                   > (0,0,1,1,1) inline signature texpr [Sphinx] > DEFAULT
+                     (0,0,1,0,1) inline signature [Sphinx] > DEFAULT
+                MixedStyledText('const', style='signature keyword')   <desc_sig_keyword classes='k'>
+                     > (0,0,2,0,2) inline signature keyword [Sphinx] > DEFAULT
+                  SingleStyledText('const')
+                MixedStyledText(' ', style='signature space')   <desc_sig_space classes='w'>
+                     > (0,0,2,0,2) inline signature space [Sphinx] > DEFAULT
+                  SingleStyledText(' ')
+                MixedStyledText('Data')   <pending_xref>
+                  MixedStyledText('Data', style='signature name')   <desc_sig_name classes='n'>
+                       > (0,0,2,0,2) inline signature name [Sphinx] > DEFAULT
+                    SingleStyledText('Data')
+                MixedStyledText('*', style='signature punctuation')   <desc_sig_punctuation classes='p'>
+                     > (0,0,2,0,2) inline signature punctuation [Sphinx] > DEFAULT
+                  SingleStyledText('*')
+              SingleStyledText(').')
