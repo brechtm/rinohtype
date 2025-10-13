@@ -848,30 +848,30 @@ class ParagraphBase(Flowable, Label):
             except StopIteration:
                 break
             try:
-                if not line.append_word(word):
-                    for first, second, is_last in word.hyphenate(container):
-                        if line.append_word(first, is_last):
-                            state.prepend_word(second)  # prepend second part
-                            break
-                    else:
-                        if not line:    # first word on line, so typeset it anyway
-                            line.append_word(word, True)
-                        else:
-                            state.restore()
-                    wrapped = True
-                    line = typeset_line(line, wrapped_line=True, last_line=False)
-                    if first_line_only:
-                        break
-                    continue
+                wrapped = not line.append_word(word)
             except NewLineException:
-                if not wrapped:
-                    line.append(word.glyphs_span)
-                    line = typeset_line(line, wrapped_line=False, last_line=True)
-                if first_line_only:
-                    break
-                continue
-            state.save()
-            wrapped = False
+                if wrapped: # last line was wrapped
+                    continue
+                line.append(word.glyphs_span)
+            else:
+                if not wrapped: # word fits one line; continue with next word
+                    state.save()
+                    continue
+                for first, second, is_last in word.hyphenate(container):
+                    if line.append_word(first, force=is_last):
+                        state.prepend_word(second)
+                        break
+                else:   # three possibilities:
+                        # - shortest hyphenated part of the word doesn't fit
+                        # - word cannot be hyphenated
+                        # - hyphenation is off
+                    if not line:    # first word on line, so typeset it anyway
+                        line.append_word(word, True)
+                    else:
+                        state.restore()
+            line = typeset_line(line, wrapped_line=wrapped, last_line=not wrapped)
+            if first_line_only:
+                break
         if line:
             typeset_line(line, wrapped_line=True, last_line=True)
 
