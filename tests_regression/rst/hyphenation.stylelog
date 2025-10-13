@@ -13,7 +13,7 @@
           MixedStyledText('No hyphenation:')
             MixedStyledText('No hyphenation:')
               SingleStyledText('No hyphenation:')
-      Paragraph('Conversations and conversations.')   hyphenation.rst:5   <paragraph>
+      Paragraph('Conversations and conversations.')   hyphenation.rst:5   <paragraph classes='nohyph'>
            > (0,0,0,1,2) nohyph [hyphenation.rts] > narrow
              (0,0,0,0,2) body [hyphenation.rts] > DEFAULT
           MixedStyledText('Conversations and conversations.')
@@ -27,7 +27,7 @@
           MixedStyledText('Hyphenation of first word:')
             MixedStyledText('Hyphenation of first word:')
               SingleStyledText('Hyphenation of first word:')
-      Paragraph('Conversations and conversations.')   hyphenation.rst:12   <paragraph>
+      Paragraph('Conversations and conversations.')   hyphenation.rst:12   <paragraph classes='narrow'>
            > (0,0,0,1,2) narrow [hyphenation.rts] > DEFAULT
              (0,0,0,0,2) body [hyphenation.rts] > DEFAULT
           MixedStyledText('Conversations and conversations.')
@@ -36,12 +36,32 @@
           MixedStyledText('Conversations and conversations.')
             MixedStyledText('Conversations and conversations.')
               SingleStyledText('Conversations and conversations.')
-      Paragraph('A long path:')   hyphenation.rst:15   <paragraph>
+      Paragraph('Literal block with long first/mi...')   hyphenation.rst:15   <paragraph>
+           > (0,0,0,0,2) body [hyphenation.rts] > DEFAULT
+          MixedStyledText('Literal block with long first/mi...')
+            MixedStyledText('Literal block with long first/mi...')
+              SingleStyledText('Literal block with long first/mi...')
+      CodeBlock('Taumatawhakatangihangakoauauotam...')   hyphenation.rst:19   <literal_block>
+           > (1,0,0,0,2) code block [Sphinx] > DEFAULT
+             (0,0,0,0,1) body [hyphenation.rts] > DEFAULT
+          MixedStyledText('Taumatawhakatangihangakoauauotam...')
+            MixedStyledText('Taumatawhakatangihangakoauauotam...')
+              Token('Taumatawhakatangihangakoauauotam...', type=Token.Text)
+                   > (0,0,0,1,2) (pygments)Token.Text [FriendlyStyle (pygments)] > DEFAULT
+          MixedStyledText('Taumatawhakatangihangakoauauotam...')
+            MixedStyledText('Taumatawhakatangihangakoauauotam...')
+              Token('Taumatawhakatangihangakoauauotam...', type=Token.Text)
+                   > (0,0,0,1,2) (pygments)Token.Text [FriendlyStyle (pygments)] > DEFAULT
+          MixedStyledText('Taumatawhakatangihangakoauauotam...')
+            MixedStyledText('Taumatawhakatangihangakoauauotam...')
+              Token('Taumatawhakatangihangakoauauotam...', type=Token.Text)
+                   > (0,0,0,1,2) (pygments)Token.Text [FriendlyStyle (pygments)] > DEFAULT
+      Paragraph('A long path:')   hyphenation.rst:27   <paragraph>
            > (0,0,0,0,2) body [hyphenation.rts] > DEFAULT
           MixedStyledText('A long path:')
             MixedStyledText('A long path:')
               SingleStyledText('A long path:')
-      Paragraph('/usr/local/share/man/man1')   hyphenation.rst:19   <paragraph>
+      Paragraph('/usr/local/share/man/man1')   hyphenation.rst:31   <paragraph classes='narrow'>
            > (0,0,0,1,2) narrow [hyphenation.rts] > DEFAULT
              (0,0,0,0,2) body [hyphenation.rts] > DEFAULT
           MixedStyledText('/usr/local/share/man/man1')
@@ -64,12 +84,12 @@
               MixedStyledText('/usr/local/share/man/man1', style='monospaced')   <literal>
                    > (0,0,1,0,1) monospaced [hyphenation.rts] > DEFAULT
                 SingleStyledText('/usr/local/share/man/man1')
-      Paragraph('A long URL:')   hyphenation.rst:21   <paragraph>
+      Paragraph('A long URL:')   hyphenation.rst:33   <paragraph>
            > (0,0,0,0,2) body [hyphenation.rts] > DEFAULT
           MixedStyledText('A long URL:')
             MixedStyledText('A long URL:')
               SingleStyledText('A long URL:')
-      Paragraph('https://www.python.org/community...')   hyphenation.rst:25   <paragraph>
+      Paragraph('https://www.python.org/community...')   hyphenation.rst:37   <paragraph classes='narrow'>
            > (0,0,0,1,2) narrow [hyphenation.rts] > DEFAULT
              (0,0,0,0,2) body [hyphenation.rts] > DEFAULT
           MixedStyledText('https://www.python.org/community...')
@@ -82,12 +102,12 @@
               MixedStyledText('https://www.python.org/community...', style='monospaced')   <literal>
                    > (0,0,1,0,1) monospaced [hyphenation.rts] > DEFAULT
                 SingleStyledText('https://www.python.org/community...')
-      Paragraph('Line break at forward slash:')   hyphenation.rst:28   <paragraph>
+      Paragraph('Line break at forward slash:')   hyphenation.rst:40   <paragraph>
            > (0,0,0,0,2) body [hyphenation.rts] > DEFAULT
           MixedStyledText('Line break at forward slash:')
             MixedStyledText('Line break at forward slash:')
               SingleStyledText('Line break at forward slash:')
-      Paragraph('Kontrast/Rausch-Verhältnis')   hyphenation.rst:34   <paragraph>
+      Paragraph('Kontrast/Rausch-Verhältnis')   hyphenation.rst:46   <paragraph classes='narrow'>
            > (0,0,0,1,2) narrow [hyphenation.rts] > DEFAULT
              (0,0,0,0,2) body [hyphenation.rts] > DEFAULT
           MixedStyledText('Kontrast/Rausch-Verhältnis')
@@ -106,14 +126,14 @@
 #### ChainedContainer('column1')
   (continued) StaticGroupedFlowables()
     (continued) DocumentTree()   hyphenation.rst   <document>
-      PageBreak(style=FlowableStyle)   hyphenation.rst:37   <raw>
-      Paragraph('Hyphenation across pages')   hyphenation.rst:44   <paragraph>
+      PageBreak(style=FlowableStyle)   hyphenation.rst:49   <raw>
+      Paragraph('Hyphenation across pages')   hyphenation.rst:56   <paragraph classes='spacer'>
            > (0,0,0,1,2) spacer [hyphenation.rts] > DEFAULT
              (0,0,0,0,2) body [hyphenation.rts] > DEFAULT
           MixedStyledText('Hyphenation across pages')
             MixedStyledText('Hyphenation across pages')
               SingleStyledText('Hyphenation across pages')
-      Paragraph('Alice was beginning to get very ...')   hyphenation.rst:47   <paragraph>
+      Paragraph('Alice was beginning to get very ...')   hyphenation.rst:59   <paragraph>
            > (0,0,0,0,2) body [hyphenation.rts] > DEFAULT
           MixedStyledText('Alice was beginning to get very ...')
             MixedStyledText('Alice was beginning to get very ...')
@@ -143,7 +163,7 @@
 #### ChainedContainer('column1')
   (continued) StaticGroupedFlowables()
     (continued) DocumentTree()   hyphenation.rst   <document>
-      (continued) Paragraph('Alice was beginning to get very ...')   hyphenation.rst:47   <paragraph>
+      (continued) Paragraph('Alice was beginning to get very ...')   hyphenation.rst:59   <paragraph>
            > (0,0,0,0,2) body [hyphenation.rts] > DEFAULT
           MixedStyledText('Alice was beginning to get very ...')
             MixedStyledText('Alice was beginning to get very ...')

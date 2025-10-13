@@ -801,13 +801,18 @@ class ParagraphBase(Flowable, Label):
         saved_state = copy(state)
         max_line_width = 0
 
-        def typeset_line(line, last_line=False):
+        def typeset_line(line, wrapped_line=True, last_line=False):
             """Typeset `line` and, if no exception is raised, update the
             paragraph's internal rendering state.
 
             Args:
                 line (Line): the line to typeset
-                last_line (bool): True if this is the paragraph's last line
+                wrapped_line (bool): True if this line is wrapped
+                last_line (bool): True if this is the paragraph's last line or
+                  a line explicitly ended by a newline character
+                  
+            Returns:
+                Line: a new, empty line
 
             """
             nonlocal state, saved_state, max_line_width, descender, space_below
@@ -829,11 +834,14 @@ class ParagraphBase(Flowable, Label):
             state.initial = False
             saved_state = copy(state)
             return Line(tab_stops, line_width, container,
-                        significant_whitespace=self.significant_whitespace)
+                        significant_whitespace=self.significant_whitespace,
+                        continued=wrapped_line)
 
         first_line = line = Line(tab_stops, line_width, container,
-                                 indent_first, self.significant_whitespace)
+                                 indent_first, self.significant_whitespace,
+                                 continued=False)
         state.save()
+        wrapped = False
         while True:
             try:
                 word = state.next_word(container)
@@ -846,22 +854,26 @@ class ParagraphBase(Flowable, Label):
                             state.prepend_word(second)  # prepend second part
                             break
                     else:
-                        if not line:
+                        if not line:    # first word on line, so typeset it anyway
                             line.append_word(word, True)
                         else:
                             state.restore()
-                    line = typeset_line(line)
+                    wrapped = True
+                    line = typeset_line(line, wrapped_line=True, last_line=False)
                     if first_line_only:
                         break
                     continue
             except NewLineException:
-                line.append(word.glyphs_span)
-                line = typeset_line(line, last_line=True)
+                if not wrapped:
+                    line.append(word.glyphs_span)
+                    line = typeset_line(line, wrapped_line=False, last_line=True)
                 if first_line_only:
                     break
+                continue
             state.save()
+            wrapped = False
         if line:
-            typeset_line(line, last_line=True)
+            typeset_line(line, wrapped_line=True, last_line=True)
 
         # Correct the horizontal text placement for auto-width paragraphs
         if self._width(container) == FlowableWidth.AUTO:
@@ -1044,11 +1056,13 @@ class Line(list):
         indent (float): left indent width (positive or negative)
         significant_whitespace (bool): whether to typeset whitespace as-is or
             consider them as tokens separating words
+        continued (bool): whether this line is a continuation of a previous line
+            (in which case whitespace at the start of the line is dropped)
 
     """
 
     def __init__(self, tab_stops, width, container, indent=0,
-                 significant_whitespace=False):
+                 significant_whitespace=False, continued=False):
         super().__init__()
         self.tab_stops = tab_stops
         self.width = width
@@ -1057,6 +1071,7 @@ class Line(list):
         self.cursor = indent
         self.advance = 0
         self.significant_whitespace = significant_whitespace
+        self.wrapped_line = continued
         self._has_tab = False
         self._current_tab = None
         self._current_tab_stop = None
@@ -1094,7 +1109,7 @@ class Line(list):
         try:
             first_glyphs_span = word_or_inline[0]
         except SpaceException:
-            if not self and not self.significant_whitespace:
+            if not self and (not self.significant_whitespace or self.wrapped_line):
                 return True
             first_glyphs_span = word_or_inline.glyphs_span
         except TabException:

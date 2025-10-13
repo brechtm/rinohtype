@@ -12,6 +12,15 @@ Hyphenation of first word:
     Conversations and conversations.
 
 
+Literal block with long first/middle/last word::
+
+    Taumatawhakatangihangakoauauotamateaturipukakapikimaungahoronukupokaiwhenuakitanatahu is in NZ.
+
+    Is Taumatawhakatangihangakoauauotamateaturipukakapikimaungahoronukupokaiwhenuakitanatahu in NZ?
+
+    In Taumatawhakatangihangakoauauotamateaturipukakapikimaungahoronukupokaiwhenuakitanatahu.
+
+
 A long path:
 
 .. class:: narrow

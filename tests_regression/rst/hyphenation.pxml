@@ -1,0 +1,42 @@
+<document rinoh_regression_test="True" source="/Users/brechtm/Code/rinohtype/tests_regression/rst/hyphenation.rst">
+    <paragraph>
+        No hyphenation:
+    <paragraph classes="nohyph">
+        Conversations and conversations.
+    <paragraph>
+        Hyphenation of first word:
+    <paragraph classes="narrow">
+        Conversations and conversations.
+    <paragraph>
+        Literal block with long first/middle/last word:
+    <literal_block xml:space="preserve">
+        Taumatawhakatangihangakoauauotamateaturipukakapikimaungahoronukupokaiwhenuakitanatahu is in NZ.
+        
+        Is Taumatawhakatangihangakoauauotamateaturipukakapikimaungahoronukupokaiwhenuakitanatahu in NZ?
+        
+        In Taumatawhakatangihangakoauauotamateaturipukakapikimaungahoronukupokaiwhenuakitanatahu.
+    <paragraph>
+        A long path:
+    <paragraph classes="narrow">
+        <literal>
+            /usr/local/share/man/man1
+    <paragraph>
+        A long URL:
+    <paragraph classes="narrow">
+        <literal>
+            https://www.python.org/community-landing/
+    <paragraph>
+        Line break at forward slash:
+    <comment xml:space="preserve">
+        https://tex.stackexchange.com/questions/193587/hyphenation-of-words-containing-slash
+    <paragraph classes="narrow">
+        Kontrast/Rausch-Verhältnis
+    <raw format="pdf" xml:space="preserve">
+        PageBreak
+    <paragraph classes="spacer">
+        Hyphenation across pages
+    <paragraph>
+        Alice was beginning to get very tired of sitting by her sister on the bank, and
+        of having nothing to do: once or twice she had peeped into the book her sister
+        was reading, but it had no pictures or conversations in it, and where is the
+        use of a book, thought Alice, without pictures or conversations?
