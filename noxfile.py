@@ -113,9 +113,9 @@ def regression_sphinx_py39(session, sphinx):
 
 # utility functions
 
-def _install(session, docutils=None, sphinx=None, dist='wheel',
+def _install(session, docutils=None, sphinx=None, dist='wheel', extras=[],
              dependencies=[]):
-    session.poetry.installroot(distribution_format=dist)
+    session.poetry.installroot(distribution_format=dist, extras=extras)
     deps = []
     if docutils:
         deps.append(f"docutils=={docutils}")
@@ -166,7 +166,7 @@ def _unit(session, docutils=None, sphinx=None, dist='wheel',
 
 def _regression(session, docutils=None, sphinx=None, dist='wheel',
                 ignore_deprecation_warnings=False):
-    _install(session, docutils=docutils, sphinx=sphinx, dist=dist,
+    _install(session, docutils=docutils, sphinx=sphinx, dist=dist, extras=['math'],
              dependencies=[*DEPENDENCIES, 'defusedxml', # for Sphinx>=7.3
                            'pytest-assume', 'pytest-console-scripts'])
     mark_expr = ['-m', 'with_sphinx'] if sphinx else ['-m', 'not longrunning']
