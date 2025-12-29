@@ -1296,11 +1296,11 @@ command-line <strong class="program">rinoh</strong> tool by passing it to the
 <a class="reference internal" href="sphinx.html#confval-rinoh_documents" title="rinoh_documents (Sphinx builder configuration value) — Determines which PDF documents to build. Its format is a list of dictionaries, one for each document to be generated. The supported keys for these dictionaries are listed below. Two of them are required:"><code class="xref std std-confval docutils literal notranslate"><span class="pre">rinoh_documents</span></code></a> option in <code class="docutils literal notranslate"><span class="pre">conf.py</span></code>.</p>
 <p>To render a document using this template configuration programatically, load
 the template file using <code class="xref py py-class docutils literal notranslate"><span class="pre">TemplateConfigurationFile</span></code>:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">sys</span>
-<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
 
-<span class="kn">from</span> <span class="nn">rinoh.frontend.rst</span> <span class="kn">import</span> <span class="n">ReStructuredTextReader</span>
-<span class="kn">from</span> <span class="nn">rinoh.template</span> <span class="kn">import</span> <span class="n">TemplateConfigurationFile</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rinoh.frontend.rst</span><span class="w"> </span><span class="kn">import</span> <span class="n">ReStructuredTextReader</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rinoh.template</span><span class="w"> </span><span class="kn">import</span> <span class="n">TemplateConfigurationFile</span>
 
 <span class="c1"># the parser builds a rinohtype document tree</span>
 <span class="n">parser</span> <span class="o">=</span> <span class="n">ReStructuredTextReader</span><span class="p">()</span>

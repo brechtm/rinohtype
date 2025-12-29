@@ -861,21 +861,21 @@
 <span class="c1"># Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.</span>
 
 
-<span class="kn">from</span> <span class="nn">..attribute</span> <span class="kn">import</span> <span class="n">OverrideDefault</span><span class="p">,</span> <span class="n">Var</span>
-<span class="kn">from</span> <span class="nn">..dimension</span> <span class="kn">import</span> <span class="n">INCH</span>
-<span class="kn">from</span> <span class="nn">..image</span> <span class="kn">import</span> <span class="n">ListOfFiguresSection</span>
-<span class="kn">from</span> <span class="nn">..index</span> <span class="kn">import</span> <span class="n">IndexSection</span>
-<span class="kn">from</span> <span class="nn">..paragraph</span> <span class="kn">import</span> <span class="n">Paragraph</span>
-<span class="kn">from</span> <span class="nn">..reference</span> <span class="kn">import</span> <span class="p">(</span><span class="n">Field</span><span class="p">,</span> <span class="n">PAGE_NUMBER</span><span class="p">,</span> <span class="n">DOCUMENT_TITLE</span><span class="p">,</span> <span class="n">DOCUMENT_SUBTITLE</span><span class="p">,</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..attribute</span><span class="w"> </span><span class="kn">import</span> <span class="n">OverrideDefault</span><span class="p">,</span> <span class="n">Var</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..dimension</span><span class="w"> </span><span class="kn">import</span> <span class="n">INCH</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..image</span><span class="w"> </span><span class="kn">import</span> <span class="n">ListOfFiguresSection</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..index</span><span class="w"> </span><span class="kn">import</span> <span class="n">IndexSection</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..paragraph</span><span class="w"> </span><span class="kn">import</span> <span class="n">Paragraph</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..reference</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span><span class="n">Field</span><span class="p">,</span> <span class="n">PAGE_NUMBER</span><span class="p">,</span> <span class="n">DOCUMENT_TITLE</span><span class="p">,</span> <span class="n">DOCUMENT_SUBTITLE</span><span class="p">,</span>
                          <span class="n">SECTION_NUMBER</span><span class="p">,</span> <span class="n">SECTION_TITLE</span><span class="p">)</span>
-<span class="kn">from</span> <span class="nn">..strings</span> <span class="kn">import</span> <span class="n">StringField</span>
-<span class="kn">from</span> <span class="nn">..structure</span> <span class="kn">import</span> <span class="n">TableOfContentsSection</span>
-<span class="kn">from</span> <span class="nn">..stylesheets</span> <span class="kn">import</span> <span class="n">sphinx</span>
-<span class="kn">from</span> <span class="nn">..table</span> <span class="kn">import</span> <span class="n">ListOfTablesSection</span>
-<span class="kn">from</span> <span class="nn">..template</span> <span class="kn">import</span> <span class="p">(</span><span class="n">TitlePageTemplate</span><span class="p">,</span> <span class="n">BodyPageTemplate</span><span class="p">,</span> <span class="n">DocumentTemplate</span><span class="p">,</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..strings</span><span class="w"> </span><span class="kn">import</span> <span class="n">StringField</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..structure</span><span class="w"> </span><span class="kn">import</span> <span class="n">TableOfContentsSection</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..stylesheets</span><span class="w"> </span><span class="kn">import</span> <span class="n">sphinx</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..table</span><span class="w"> </span><span class="kn">import</span> <span class="n">ListOfTablesSection</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..template</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span><span class="n">TitlePageTemplate</span><span class="p">,</span> <span class="n">BodyPageTemplate</span><span class="p">,</span> <span class="n">DocumentTemplate</span><span class="p">,</span>
                         <span class="n">FixedDocumentPartTemplate</span><span class="p">,</span> <span class="n">ContentsPartTemplate</span><span class="p">,</span>
                         <span class="n">TitlePartTemplate</span><span class="p">,</span> <span class="n">DocumentPartTemplate</span><span class="p">)</span>
-<span class="kn">from</span> <span class="nn">..text</span> <span class="kn">import</span> <span class="n">Tab</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..text</span><span class="w"> </span><span class="kn">import</span> <span class="n">Tab</span>
 
 
 <span class="n">FRONT_MATTER_TITLE</span> <span class="o">=</span> <span class="p">[</span><span class="n">Paragraph</span><span class="p">(</span><span class="n">Field</span><span class="p">(</span><span class="n">SECTION_TITLE</span><span class="p">(</span><span class="mi">1</span><span class="p">)),</span>
@@ -889,15 +889,15 @@
                         <span class="n">style</span><span class="o">=</span><span class="s1">&#39;body matter chapter title&#39;</span><span class="p">)]</span>
 
 
-<span class="k">class</span> <span class="nc">BackMatterTemplate</span><span class="p">(</span><span class="n">DocumentPartTemplate</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">BackMatterTemplate</span><span class="p">(</span><span class="n">DocumentPartTemplate</span><span class="p">):</span>
     <span class="n">index_section</span> <span class="o">=</span> <span class="n">IndexSection</span><span class="p">()</span>
 
-    <span class="k">def</span> <span class="nf">_flowables</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">document</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_flowables</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">document</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">document</span><span class="o">.</span><span class="n">index_entries</span><span class="p">:</span>
             <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">index_section</span>
 
 
-<span class="k">class</span> <span class="nc">Book</span><span class="p">(</span><span class="n">DocumentTemplate</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Book</span><span class="p">(</span><span class="n">DocumentTemplate</span><span class="p">):</span>
     <span class="n">stylesheet</span> <span class="o">=</span> <span class="n">OverrideDefault</span><span class="p">(</span><span class="n">sphinx</span><span class="p">)</span>
 
     <span class="n">parts</span> <span class="o">=</span> <span class="n">OverrideDefault</span><span class="p">([</span><span class="s1">&#39;title&#39;</span><span class="p">,</span> <span class="s1">&#39;front_matter&#39;</span><span class="p">,</span>

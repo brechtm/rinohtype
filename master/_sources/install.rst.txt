@@ -3,11 +3,16 @@
 Installation
 ============
 
-rinohtype supports Python 3.3 and up. Use pip_ to install the latest version
-of rinohtype and its dependencies::
+rinohtype aims to support all stable Python 3 versions that have not reached
+end-of-life_ status. Use pip_ to install the latest version of rinohtype and its
+dependencies::
 
     pip install rinohtype
 
+If your documents include maths, specify the *math* extra to install the
+necessary additional requirements::
+
+    pip install rinohtype[math]
 
 If you plan on using rinohtype as an alternative to LaTeX, you will want to
 install Sphinx_ as well::
@@ -17,6 +22,7 @@ install Sphinx_ as well::
 See :ref:`sphinx_quickstart` in the :ref:`quickstart` guide on how to render
 Sphinx documents with rinohtype.
 
+.. _end-of-life: https://devguide.python.org/versions/#versions
 .. _Sphinx: http://sphinx-doc.org
 
 

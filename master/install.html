@@ -933,9 +933,15 @@
   
 
 <h1 id="installation"><span id="id1"></span>Installation<a class="headerlink" href="#installation" title="Link to this heading">¶</a></h1>
-<p>rinohtype supports Python 3.3 and up. Use <a class="reference external" href="https://pip.pypa.io">pip</a> to install the latest version
-of rinohtype and its dependencies:</p>
+<p>rinohtype aims to support all stable Python 3 versions that have not reached
+<a class="reference external" href="https://devguide.python.org/versions/#versions">end-of-life</a> status. Use <a class="reference external" href="https://pip.pypa.io">pip</a> to install the latest version of rinohtype and its
+dependencies:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><code><span class="n">pip</span> <span class="n">install</span> <span class="n">rinohtype</span>
+</code></pre></div>
+</div>
+<p>If your documents include maths, specify the <em>math</em> extra to install the
+necessary additional requirements:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><code><span class="n">pip</span> <span class="n">install</span> <span class="n">rinohtype</span><span class="p">[</span><span class="n">math</span><span class="p">]</span>
 </code></pre></div>
 </div>
 <p>If you plan on using rinohtype as an alternative to LaTeX, you will want to

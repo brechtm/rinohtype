@@ -962,16 +962,16 @@ programming.</p>
 <p>If you need to customize a template beyond what is possible by configuration,
 you can subclass a template class and override document part and page templates
 with custom templates. The following example subclasses <a class="reference internal" href="article.html#rinoh.templates.article.Article" title="rinoh.templates.article.Article (Python class) — The stylesheet to use for styling document elements (inherited from DocumentTemplate)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Article</span></code></a>.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">rinoh.attribute</span> <span class="kn">import</span> <span class="n">OverrideDefault</span>
-<span class="kn">from</span> <span class="nn">rinoh.template</span> <span class="kn">import</span> <span class="n">DocumentPartTemplate</span><span class="p">,</span> <span class="n">BodyPageTemplate</span>
-<span class="kn">from</span> <span class="nn">rinoh.templates</span> <span class="kn">import</span> <span class="n">Article</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">rinoh.attribute</span><span class="w"> </span><span class="kn">import</span> <span class="n">OverrideDefault</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rinoh.template</span><span class="w"> </span><span class="kn">import</span> <span class="n">DocumentPartTemplate</span><span class="p">,</span> <span class="n">BodyPageTemplate</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rinoh.templates</span><span class="w"> </span><span class="kn">import</span> <span class="n">Article</span>
 
 
-<span class="k">class</span> <span class="nc">BibliographyPartTemplate</span><span class="p">(</span><span class="n">DocumentPartTemplate</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">BibliographyPartTemplate</span><span class="p">(</span><span class="n">DocumentPartTemplate</span><span class="p">):</span>
     <span class="o">...</span>
 
 
-<span class="k">class</span> <span class="nc">MyArticle</span><span class="p">(</span><span class="n">Article</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">MyArticle</span><span class="p">(</span><span class="n">Article</span><span class="p">):</span>
     <span class="n">parts</span> <span class="o">=</span> <span class="n">OverrideDefault</span><span class="p">([</span><span class="s1">&#39;contents&#39;</span><span class="p">,</span> <span class="s1">&#39;bibliography&#39;</span><span class="p">])</span>
 
     <span class="c1"># default document part templates</span>
@@ -995,7 +995,7 @@ the article template, the simpler of the two. The <a class="reference internal" 
 overrides the default style sheet and lists a single document
 part named <code class="xref py py-attr docutils literal notranslate"><span class="pre">contents</span></code> in the <a class="reference internal" href="article.html#rinoh.templates.article.Article.parts" title="rinoh.templates.article.Article.parts (Python attribute) — The parts making up this document (inherited from DocumentTemplate)"><code class="xref py py-attr docutils literal notranslate"><span class="pre">parts</span></code></a> attribute
 and provided a template for it are provided along with page templates:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Article</span><span class="p">(</span><span class="n">DocumentTemplate</span><span class="p">):</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Article</span><span class="p">(</span><span class="n">DocumentTemplate</span><span class="p">):</span>
     <span class="n">stylesheet</span> <span class="o">=</span> <span class="n">OverrideDefault</span><span class="p">(</span><span class="n">sphinx_article</span><span class="p">)</span>
     <span class="n">abstract_location</span> <span class="o">=</span> <span class="n">Option</span><span class="p">(</span><span class="n">AbstractLocation</span><span class="p">,</span> <span class="s1">&#39;title&#39;</span><span class="p">,</span>
                                <span class="s1">&#39;Where to place the abstract&#39;</span><span class="p">)</span>
