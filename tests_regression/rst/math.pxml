@@ -1,0 +1,13 @@
+<document rinoh_regression_test="True" source="/Users/brechtm/Code/rinohtype/tests_regression/rst/math.rst">
+    <paragraph>
+        The area of a circle is 
+        <math>
+            A_\text{c} = (\pi/4) d^2
+        .
+    <math_block ids="myeq" names="myeq" xml:space="preserve">
+        \frac{ \sum_{t=0}^{N}f(t,k) }{N}
+    <paragraph>
+        Referencing 
+        <reference name="myeq" refid="myeq">
+            myeq
+        .

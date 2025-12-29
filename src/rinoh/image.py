@@ -241,7 +241,7 @@ class ImageBase(Flowable):
     def _absolute_path_or_file(self):
         try:
             file_path = Path(self.filename_or_file)
-        except AttributeError:          # self.filename_or_file is a file
+        except TypeError:               # self.filename_or_file is a file
             return self.filename_or_file
         if file_path.is_absolute():
             return file_path

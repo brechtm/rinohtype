@@ -23,6 +23,7 @@ Paragraph A with some references:
 - :ref:`fig-1`, :ref:`this figure <fig-1>`, :numref:`fig-1`
 - :ref:`fig-2`, :ref:`that figure <fig-2>`, :numref:`fig-2`
 - :ref:`table-1`, :ref:`that table <table-1>`, :numref:`table-1`
+- :ref:`eq-1-name`, :ref:`that equation <eq-1-name>`, :eq:`eq-1-label`
 - :term:`&&`, :term:`SOS`
 - broken reference: :ref:`nonexisting`
 

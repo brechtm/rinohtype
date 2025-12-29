@@ -22,7 +22,7 @@ except ModuleNotFoundError:
 
 CORE_MODULES = ['annotation', 'attribute', 'color', 'dimension', 'document',
                 'draw', 'element', 'flowable', 'glossary', 'highlight',
-                'image', 'index', 'inline', 'layout', 'number', 'paper',
+                'image', 'index', 'inline', 'layout', 'math', 'number', 'paper',
                 'paragraph', 'reference', 'structure', 'style', 'table',
                 'template', 'text']
 

@@ -114,6 +114,12 @@ end-of-life_ status. For parsing reStructuredText and CommonMark documents,
 rinohtype depends on docutils_ and myst-parser_ respectively. pip_ takes care
 of installing these requirements when you install rinohtype.
 
+For rendering equations, rinohtype additionally requires ziamath_ and cairosvg_.
+To install these along with rinohtype, specify the *math* extra_ when installing
+rinohtype::
+
+    pip install rinohtype[math]
+
 Syntax highlighting of code blocks is enabled if Pygments_ is installed, which
 will be installed automatically with Sphinx_. If you want to include images
 other than PDF, PNG or JPEG, you also need to install Pillow_.
@@ -122,6 +128,9 @@ other than PDF, PNG or JPEG, you also need to install Pillow_.
 .. _docutils: http://docutils.sourceforge.net/index.html
 .. _myst-parser: https://myst-parser.readthedocs.io
 .. _pip: https://pip.pypa.io
+.. _ziamath: https://ziamath.readthedocs.io
+.. _cairosvg: https://cairosvg.org/
+.. _extra: https://packaging.python.org/en/latest/specifications/dependency-specifiers/#extras
 .. _Pygments: https://pygments.org
 .. _Pillow: http://python-pillow.github.io
 

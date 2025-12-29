@@ -1,4 +1,6 @@
 ---------------------------------- page 1 ----------------------------------
+#### FlowablesContainer('background')
+  StaticGroupedFlowables()
 #### FootnoteContainer('footnotes')
   StaticGroupedFlowables()
 #### DownExpandingContainer('floats')
@@ -6,20 +8,40 @@
 #### ChainedContainer('column1')
   StaticGroupedFlowables()
     DocumentTree()   math.rst   <document>
-      Paragraph('The area of a circle is A_\text{...')   math.rst:5   <paragraph>
+      Paragraph('The area of a circle is InlineEq...')   math.rst:2   <paragraph>
            > (0,0,0,0,2) body [Sphinx] > default
-          MixedStyledText('The area of a circle is A_\text{...')
-            MixedStyledText('The area of a circle is A_\text{...')
+          MixedStyledText('The area of a circle is InlineEq...')
+            MixedStyledText('The area of a circle is InlineEq...')
               SingleStyledText('The area of a circle is ')
-              MixedStyledText('A_\text{c} = (\pi/4) d^2')   <math>
-                WarnInline('')
-                MixedStyledText('A_\text{c} = (\pi/4) d^2', style='math')
-                     > (0,0,1,0,1) inline math [Sphinx] > monospaced
-                  SingleStyledText('A_\text{c} = (\pi/4) d^2')
+              InlineEquation()   <math>
               SingleStyledText('.')
-      Paragraph('\alpha_t(i) = P(O_1, O_2, ... O_...', style='math')   math.rst:9   <math_block>
-           > (0,0,1,0,2) math block [Sphinx] > code block
-             (0,0,0,0,2) body [Sphinx] > default
-          MixedStyledText('\alpha_t(i) = P(O_1, O_2, ... O_...')
-            MixedStyledText('\alpha_t(i) = P(O_1, O_2, ... O_...')
-              SingleStyledText('\alpha_t(i) = P(O_1, O_2, ... O_...')
+              InlineEquation()   <math>
+      Equation()   math.rst:4   <math_block>
+           > (0,0,0,0,2) equation [Sphinx] > DEFAULT
+        EquationLabel('(1)')
+             > (0,0,0,0,2) equation label [Sphinx] > DEFAULT
+            MixedStyledText('(1)', style='label')
+              SingleStyledText('(')
+              SingleStyledText('1')
+              SingleStyledText(')')
+        Paragraph('	InlineEquation')
+             > (1,0,0,0,4) equation paragraph [Sphinx] > DEFAULT
+               (0,0,0,0,2) body [Sphinx] > default
+            MixedStyledText('	InlineEquation')
+              MixedStyledText('	InlineEquation')
+                Tab('	')
+                InlineEquation()
+                InlineEquation()
+      Paragraph('Referencing Equation 1.')   math.rst:10   <paragraph>
+           > (0,0,0,0,2) body [Sphinx] > default
+          MixedStyledText('Referencing Equation 1.')
+            MixedStyledText('Referencing Equation 1.')
+              SingleStyledText('Referencing ')
+              Reference('Equation 1')   <reference>
+                   > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                MixedStyledText('Equation 1')
+                  StringField('Equation')
+                    SingleStyledText('Equation')
+                  SingleStyledText(' ')
+                  SingleStyledText('1')
+              SingleStyledText('.')

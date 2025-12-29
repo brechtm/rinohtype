@@ -24,6 +24,12 @@ Paragraph C.
 
 Paragraph D.
 
+.. math::
+   :name: eq-1-name
+   :label: eq-1-label
+
+   \frac{ \sum_{t=0}^{N}f(t,k) }{N}
+
 
 Glossary
 --------

@@ -7,9 +7,12 @@
 
 
 import re
+
 from datetime import datetime
+from io import BytesIO
 
 import rinoh as rt
+from rinoh.math import InlineEquation
 
 from . import (DocutilsInlineNode, DocutilsNode, DocutilsBodyNode,
                DocutilsGroupingNode, DocutilsDummyNode)
@@ -233,9 +236,12 @@ class Subtitle(DocutilsBodyNode):
 class Math_Block(DocutilsBodyNode):
     style = 'math'
 
-    def build_flowables(self):
-        yield rt.WarnFlowable("The 'math' directive is not yet supported")
-        yield rt.Paragraph(self.process_content(), style=self.style)
+    @property
+    def _ids(self):
+        return [self.get('label'), *self.get('ids')]
+
+    def build_flowable(self):
+        return rt.Equation(self.text)
 
 
 class Admonition(DocutilsGroupingNode):
@@ -321,8 +327,7 @@ class Math(Inline):
     style = 'math'
 
     def build_styled_text(self):
-        return (rt.WarnInline("The 'math' role is not yet supported")
-                + super().build_styled_text())
+        return rt.InlineEquation(self.text)
 
 
 class Superscript(DocutilsInlineNode):

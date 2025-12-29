@@ -160,9 +160,19 @@ padding_bottom=3pt
 base=caption
 keep_with_next=true
 
-[math block]
-base=code block
+[equation]
+label_position=right
+
+[equation paragraph]
 border=none
+tab_stops=50% CENTER, 100% RIGHT
+
+[equation label]
+number_format=number
+numbering_level = 1
+label_prefix = '('
+label_suffix = ')'
+font_weight=BOLD
 
 [graphviz code block]
 base=code block

@@ -19,6 +19,7 @@ Release 0.5.6 (in development)
 
 New Features:
 
+* Equation rendering (thanks to `ziamath <https://ziamath.readthedocs.io>`_)
 * Sphinx < 7.2: handle superfluous space in desc_sig_space
 * Sphinx frontend: versionmodified directive support (versionadded,
   versionchanged, versionremoved, deprecated) (#440)
