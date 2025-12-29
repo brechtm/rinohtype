@@ -30,7 +30,7 @@ from .attribute import (WithAttributes, AttributesDictionary,
                         RuleSet, RuleSetFile, Configurable,
                         DefaultValueException, Attribute, Bool)
 from .element import DocumentElement
-from .resource import Resource, ResourceNotFound
+from .resource import DynamicEntryPoint, Resource, ResourceNotFound
 from .util import (cached, all_subclasses, NotImplementedAttribute,
                    class_property)
 from .warnings import warn
@@ -677,8 +677,9 @@ class StyleSheet(RuleSet, Resource):
     def doc_repr(cls, value):
         for name, ep in cls.installed_resources:
             if value is ep.load():
-                return ('``{}`` (= :data:`{}.{}`)'
-                        .format(name, *ep.value.split(':')))
+                data = ('dynamic entry point' if isinstance(ep, DynamicEntryPoint)
+                        else '= :data:`{}.{}`'.format(*ep.value.split(':')))
+                return f'``{name}`` ({data})'
         raise NotImplementedError
 
     @classmethod
