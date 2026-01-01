@@ -34,7 +34,7 @@ from .paper import Paper, A4
 from .paragraph import Paragraph
 from .reference import (Field, SECTION_NUMBER, SECTION_TITLE,
                         PAGE_NUMBER, NUMBER_OF_PAGES)
-from .resource import Resource
+from .resource import Resource, ResourceNotFound
 from .text import StyledText, Tab
 from .strings import Strings
 from .structure import Header, Footer, HorizontalRule, NewChapterException
@@ -544,7 +544,7 @@ class FixedDocumentPartTemplate(DocumentPartTemplate):
         return self.get_option('flowables', document)
 
 
-class TemplateConfiguration(RuleSet):
+class TemplateConfiguration(RuleSet, Resource):
     """Stores a configuration for a :class:`DocumentTemplate`
 
     Args:
@@ -559,6 +559,7 @@ class TemplateConfiguration(RuleSet):
 
     """
 
+    resource_type = 'template_configuration'
     template = None
     """The :class:`.DocumentTemplate` subclass to configure"""
 
@@ -570,15 +571,21 @@ class TemplateConfiguration(RuleSet):
             assert self.template in (None, template)
             self.template = template
         if base:
-            if isinstance(base, str):
-                base = TemplateConfigurationFile(base, source=self)
+            base = self.from_string(base, self) if isinstance(base, str) else base
             assert self.template in (None, base.template)
             self.template = self.template or base.template
+        else:
+            base = self.template
         for attr, val in options.items():
             options[attr] = self._validate_attribute(self.template, attr, val)
-        base = base or self.template
         super().__init__(name, base=base, source=source, **options)
         self.description = description
+
+    @classmethod
+    def parse_string(cls, string, source):
+        with suppress(ResourceNotFound):
+            return super().parse_string(string, source)
+        return TemplateConfigurationFile(string, source=source)
 
     def get_entries(self, name, document):
         if name in self:

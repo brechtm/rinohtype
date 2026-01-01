@@ -49,5 +49,6 @@ for name in CORE_MODULES:
 
 
 register_template = resource._DISTRIBUTION.register_template
+register_template_configuration = resource._DISTRIBUTION.register_template_configuration
 register_stylesheet = resource._DISTRIBUTION.register_stylesheet
 register_typeface = resource._DISTRIBUTION.register_typeface

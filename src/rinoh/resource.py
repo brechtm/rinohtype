@@ -137,6 +137,7 @@ class DynamicRinohDistribution(ilm.Distribution):
 
     def __init__(self):
         self._templates = {}
+        self._template_configurations = {}
         self._stylesheets = {}
         self._typefaces = {}
 
@@ -149,6 +150,15 @@ class DynamicRinohDistribution(ilm.Distribution):
             raise ValueError("The template '{}' you are trying to register "
                              "is not a DocumentTemplate subclass".format(name))
         self._templates[name] = template_class
+
+    def register_template_configuration(self, name, template_configuration):
+        """Register a template configuration by (entry point) name at runtime"""
+        self._check_existing_entry_point('template_configuration', name)
+        if not isinstance(template_configuration, TemplateConfiguration):
+            raise ValueError("The template configuration '{}' you are trying to"
+                             " register is not a TemplateConfiguration subclass"
+                             .format(name))
+        self._template_configurations[name] = template_configuration
 
     def register_stylesheet(self, name, stylesheet_class):
         """Register a stylesheet by (entry point) name at runtime"""
@@ -183,6 +193,7 @@ class DynamicRinohDistribution(ilm.Distribution):
     def _entry_point_groups(self):
         return {
             'rinoh.templates': self._templates,
+            'rinoh.template_configurations': self._template_configurations,
             'rinoh.stylesheets': self._stylesheets,
             'rinoh.typefaces': self._typefaces,
         }
@@ -221,5 +232,5 @@ sys.meta_path.append(DynamicDistributionFinder)
 
 
 from .font import Typeface
-from .template import DocumentTemplate
+from .template import DocumentTemplate, TemplateConfiguration
 from .style import StyleSheet
