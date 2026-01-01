@@ -4,8 +4,8 @@ Installation
 ============
 
 rinohtype aims to support all stable Python 3 versions that have not reached
-end-of-life_ status. Use pip_ to install the latest version of rinohtype and its
-dependencies::
+end-of-life_ status. Use pip_ to install the latest version of rinohtype and
+its dependencies::
 
     pip install rinohtype
 
