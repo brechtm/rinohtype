@@ -114,9 +114,9 @@ end-of-life_ status. For parsing reStructuredText and CommonMark documents,
 rinohtype depends on docutils_ and myst-parser_ respectively. pip_ takes care
 of installing these requirements when you install rinohtype.
 
-For rendering equations, rinohtype additionally requires ziamath_ and cairosvg_.
-To install these along with rinohtype, specify the *math* extra_ when installing
-rinohtype::
+For rendering equations, rinohtype additionally requires ziamath_ and
+cairosvg_. To install these along with rinohtype, specify the *math* extra_
+when installing rinohtype::
 
     pip install rinohtype[math]
 
