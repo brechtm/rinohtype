@@ -365,8 +365,8 @@ class DummyFlowable(Flowable):
 
     style_class = None
 
-    def __init__(self, id=None, parent=None):
-        super().__init__(id=id, parent=parent)
+    def __init__(self, id=None, parent=None, source=None):
+        super().__init__(id=id, parent=parent, source=source)
 
     def get_style(self, attribute, flowable_target):
         return dict(keep_with_next=True,
@@ -396,8 +396,8 @@ class WarnFlowable(DummyFlowable):
 
     """
 
-    def __init__(self, message, parent=None):
-        super().__init__(parent=parent)
+    def __init__(self, message, parent=None, source=None):
+        super().__init__(parent=parent, source=source)
         self.message = message
 
     def flow(self, container, last_descender, state=None, **kwargs):
@@ -441,7 +441,7 @@ class SetOutOfLineFlowables(DummyFlowable):
 
     def build_document(self, flowable_target):
         for name in self.names:
-            flowable_target.document.supporting_matter[name] = self.flowables
+            flowable_target.document.supporting_matter[name].extend(self.flowables)
 
 
 # grouping flowables

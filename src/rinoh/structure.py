@@ -436,9 +436,12 @@ class OutOfLineFlowables(GroupedFlowables):
         self.name = name
 
     def prepare(self, container):
+        flowables = container.document.supporting_matter[self.name]
         with suppress(KeyError):
-            for flowable in container.document.supporting_matter[self.name]:
+            for flowable in flowables:
                 flowable.parent = self
+        for flowable in flowables:
+            flowable.prepare(container)
 
     def flowables(self, container):
         try:

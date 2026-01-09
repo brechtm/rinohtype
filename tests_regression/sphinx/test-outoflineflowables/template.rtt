@@ -11,6 +11,7 @@ flowables = [
                          style='unnumbered'),
                  OutOfLineFlowables('dedication')],
                 id='dedication'),
+        OutOfLineFlowables('front-matter'),
         TableOfContentsSection(),
         ListOfFiguresSection(),
         ListOfTablesSection(),

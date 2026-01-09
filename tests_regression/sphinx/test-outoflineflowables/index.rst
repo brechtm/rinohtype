@@ -11,5 +11,8 @@ Out-of-line Flowables
    :maxdepth: 2
    :caption: Contents:
 
+   preface
+   important
+
    intro
    conclusion

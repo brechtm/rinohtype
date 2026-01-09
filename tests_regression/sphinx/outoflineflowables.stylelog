@@ -1,4 +1,6 @@
 ---------------------------------- page 1 ----------------------------------
+#### FlowablesContainer('background')
+  StaticGroupedFlowables()
 #### DownExpandingContainer('title')
   StaticGroupedFlowables()
     Paragraph('Out-of-line Flowables', style='title page title')
@@ -14,9 +16,9 @@
            (0,0,0,0,2) body [Sphinx] > default
         SingleStyledText('Author')
 ---------------------------------- page i ----------------------------------
-#### FootnoteContainer('footnotes')
+#### FlowablesContainer('background')
   StaticGroupedFlowables()
-#### DownExpandingContainer('floats')
+#### FootnoteContainer('footnotes')
   StaticGroupedFlowables()
 #### FlowablesContainer('chapter title')
   Paragraph('Dedication', style='front matter section title')
@@ -47,6 +49,8 @@
             Field('i')
               SingleStyledText('i')
 ---------------------------------- page ii ----------------------------------
+#### FlowablesContainer('background')
+  StaticGroupedFlowables()
 #### FootnoteContainer('footnotes')
   StaticGroupedFlowables()
 #### DownExpandingContainer('floats')
@@ -61,9 +65,112 @@
         Field('ii')
           SingleStyledText('ii')
 ---------------------------------- page iii ----------------------------------
+#### FlowablesContainer('background')
+  StaticGroupedFlowables()
+#### FootnoteContainer('footnotes')
+  StaticGroupedFlowables()
+#### FlowablesContainer('chapter title')
+  Paragraph('Preface', style='front matter section title')
+       > (0,0,1,0,2) front matter section title [Sphinx] > DEFAULT
+         (0,0,0,0,2) body [Sphinx] > default
+      Field('Preface')
+        MixedStyledText('Preface')
+          MixedStyledText('Preface')
+            SingleStyledText('Preface')
+#### ChainedContainer('column1')
+  (continued) StaticGroupedFlowables()
+    (continued) StaticGroupedFlowables()   template.rtt
+      OutOfLineFlowables()
+        Section(id='%preface#preface')   preface.rst:5   <section classes='out-of-line front-matter other-class xyz abc'>
+             > (0,0,0,1,2) front matter section [Sphinx out-of-line flowables] > DEFAULT
+               (0,0,0,1,2) chapter [Sphinx] > DEFAULT
+          Paragraph('Hello there!')   preface.rst:7   <paragraph>
+               > (0,0,0,0,2) body [Sphinx] > default
+              MixedStyledText('Hello there!')
+                MixedStyledText('Hello there!')
+                  SingleStyledText('Hello there!')
+#### DownExpandingContainer('footer')
+  StaticGroupedFlowables()
+    Footer('		iii')
+         > (0,0,0,0,2) footer [Sphinx] > header_footer
+        MixedStyledText('		iii')
+          MixedStyledText('		iii')
+            Tab('	')
+            Tab('	')
+            Field('iii')
+              SingleStyledText('iii')
+---------------------------------- page iv ----------------------------------
+#### FlowablesContainer('background')
+  StaticGroupedFlowables()
 #### FootnoteContainer('footnotes')
   StaticGroupedFlowables()
 #### DownExpandingContainer('floats')
+  StaticGroupedFlowables()
+#### ChainedContainer('column1')
+  (continued) StaticGroupedFlowables()
+    (continued) StaticGroupedFlowables()   template.rtt
+      (continued) OutOfLineFlowables()
+#### DownExpandingContainer('footer')
+  StaticGroupedFlowables()
+    Footer('iv')
+         > (0,0,0,0,2) footer [Sphinx] > header_footer
+        Field('iv')
+          SingleStyledText('iv')
+---------------------------------- page v ----------------------------------
+#### FlowablesContainer('background')
+  StaticGroupedFlowables()
+#### FootnoteContainer('footnotes')
+  StaticGroupedFlowables()
+#### FlowablesContainer('chapter title')
+  Paragraph('Important', style='front matter section title')
+       > (0,0,1,0,2) front matter section title [Sphinx] > DEFAULT
+         (0,0,0,0,2) body [Sphinx] > default
+      Field('Important')
+        MixedStyledText('Important')
+          MixedStyledText('Important')
+            SingleStyledText('Important')
+#### ChainedContainer('column1')
+  (continued) StaticGroupedFlowables()
+    (continued) StaticGroupedFlowables()   template.rtt
+      (continued) OutOfLineFlowables()
+        Section(id='%important#important')   important.rst:5   <section classes='out-of-line front-matter'>
+             > (0,0,0,1,2) front matter section [Sphinx out-of-line flowables] > DEFAULT
+               (0,0,0,1,2) chapter [Sphinx] > DEFAULT
+          Paragraph('You should be extremely careful ...')   important.rst:7   <paragraph>
+               > (0,0,0,0,2) body [Sphinx] > default
+              MixedStyledText('You should be extremely careful ...')
+                MixedStyledText('You should be extremely careful ...')
+                  SingleStyledText('You should be extremely careful ...')
+#### DownExpandingContainer('footer')
+  StaticGroupedFlowables()
+    Footer('		v')
+         > (0,0,0,0,2) footer [Sphinx] > header_footer
+        MixedStyledText('		v')
+          MixedStyledText('		v')
+            Tab('	')
+            Tab('	')
+            Field('v')
+              SingleStyledText('v')
+---------------------------------- page vi ----------------------------------
+#### FlowablesContainer('background')
+  StaticGroupedFlowables()
+#### FootnoteContainer('footnotes')
+  StaticGroupedFlowables()
+#### DownExpandingContainer('floats')
+  StaticGroupedFlowables()
+#### ChainedContainer('column1')
+  (continued) StaticGroupedFlowables()
+    (continued) StaticGroupedFlowables()   template.rtt
+#### DownExpandingContainer('footer')
+  StaticGroupedFlowables()
+    Footer('vi')
+         > (0,0,0,0,2) footer [Sphinx] > header_footer
+        Field('vi')
+          SingleStyledText('vi')
+---------------------------------- page vii ----------------------------------
+#### FlowablesContainer('background')
+  StaticGroupedFlowables()
+#### FootnoteContainer('footnotes')
   StaticGroupedFlowables()
 #### FlowablesContainer('chapter title')
   Paragraph('Table of Contents', style='front matter section title')
@@ -80,6 +187,38 @@
              (0,0,0,1,1) chapter [Sphinx] > DEFAULT
         TableOfContents()   table of contents
              > (0,0,0,0,2) table of contents [Sphinx] > default
+          TableOfContentsEntry('	Preface	iii')
+               > (0,0,0,1,2) toc level 1 [Sphinx] > table of contents
+              ReferenceField('')
+                   > (0,0,0,1,4) toc entry number reference field [Sphinx] > linked reference
+                     (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                SingleStyledText('')
+              Tab('	')
+              ReferenceField('Preface')
+                   > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                MixedStyledText('Preface')
+                  MixedStyledText('Preface')
+                    SingleStyledText('Preface')
+              Tab('	')
+              ReferenceField('iii')
+                   > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                SingleStyledText('iii')
+          TableOfContentsEntry('	Important	v')
+               > (0,0,0,1,2) toc level 1 [Sphinx] > table of contents
+              ReferenceField('')
+                   > (0,0,0,1,4) toc entry number reference field [Sphinx] > linked reference
+                     (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                SingleStyledText('')
+              Tab('	')
+              ReferenceField('Important')
+                   > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                MixedStyledText('Important')
+                  MixedStyledText('Important')
+                    SingleStyledText('Important')
+              Tab('	')
+              ReferenceField('v')
+                   > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                SingleStyledText('v')
           TableOfContentsEntry('1	Introduction	1')
                > (0,0,0,1,2) toc level 1 [Sphinx] > table of contents
               ReferenceField('1')
@@ -114,15 +253,17 @@
                 SingleStyledText('3')
 #### DownExpandingContainer('footer')
   StaticGroupedFlowables()
-    Footer('		iii')
+    Footer('		vii')
          > (0,0,0,0,2) footer [Sphinx] > header_footer
-        MixedStyledText('		iii')
-          MixedStyledText('		iii')
+        MixedStyledText('		vii')
+          MixedStyledText('		vii')
             Tab('	')
             Tab('	')
-            Field('iii')
-              SingleStyledText('iii')
----------------------------------- page iv ----------------------------------
+            Field('vii')
+              SingleStyledText('vii')
+---------------------------------- page viii ----------------------------------
+#### FlowablesContainer('background')
+  StaticGroupedFlowables()
 #### FootnoteContainer('footnotes')
   StaticGroupedFlowables()
 #### DownExpandingContainer('floats')
@@ -132,14 +273,14 @@
     (continued) StaticGroupedFlowables()   template.rtt
 #### DownExpandingContainer('footer')
   StaticGroupedFlowables()
-    Footer('iv')
+    Footer('viii')
          > (0,0,0,0,2) footer [Sphinx] > header_footer
-        Field('iv')
-          SingleStyledText('iv')
----------------------------------- page v ----------------------------------
-#### FootnoteContainer('footnotes')
+        Field('viii')
+          SingleStyledText('viii')
+---------------------------------- page ix ----------------------------------
+#### FlowablesContainer('background')
   StaticGroupedFlowables()
-#### DownExpandingContainer('floats')
+#### FootnoteContainer('footnotes')
   StaticGroupedFlowables()
 #### ChainedContainer('column1')
   (continued) StaticGroupedFlowables()
@@ -165,20 +306,21 @@
                   Newline('\n')
                   MixedStyledText('into the despair')   intro.rst   <line>
                     SingleStyledText('into the despair')
+      OutOfLineFlowables()
 #### DownExpandingContainer('footer')
   StaticGroupedFlowables()
-    Footer('		v')
+    Footer('		ix')
          > (0,0,0,0,2) footer [Sphinx] > header_footer
-        MixedStyledText('		v')
-          MixedStyledText('		v')
+        MixedStyledText('		ix')
+          MixedStyledText('		ix')
             Tab('	')
             Tab('	')
-            Field('v')
-              SingleStyledText('v')
+            Field('ix')
+              SingleStyledText('ix')
 ---------------------------------- page 1 ----------------------------------
-#### FootnoteContainer('footnotes')
+#### FlowablesContainer('background')
   StaticGroupedFlowables()
-#### DownExpandingContainer('floats')
+#### FootnoteContainer('footnotes')
   StaticGroupedFlowables()
 #### FlowablesContainer('chapter title')
   Paragraph('Chapter 1', style='body matter chapter label')
@@ -203,8 +345,10 @@
 #### ChainedContainer('column1')
   StaticGroupedFlowables()
     DocumentTree()   index.rst   <document>
-      StaticGroupedFlowables()   index.rst   <compound>
-        StaticGroupedFlowables(id='%intro')   <start_of_file>
+      StaticGroupedFlowables()   index.rst   <compound classes='toctree-wrapper'>
+        StaticGroupedFlowables(id='%preface')   index.rst   <start_of_file>
+        StaticGroupedFlowables(id='%important')   index.rst   <start_of_file>
+        StaticGroupedFlowables(id='%intro')   index.rst   <start_of_file>
           Section(id='%intro#introduction')   intro.rst:2   <section>
                > (0,0,0,1,4) content chapter [Sphinx] > chapter
                  (0,0,0,1,2) chapter [Sphinx] > DEFAULT
@@ -224,6 +368,8 @@
             Field('1')
               SingleStyledText('1')
 ---------------------------------- page 2 ----------------------------------
+#### FlowablesContainer('background')
+  StaticGroupedFlowables()
 #### FootnoteContainer('footnotes')
   StaticGroupedFlowables()
 #### DownExpandingContainer('floats')
@@ -231,7 +377,7 @@
 #### ChainedContainer('column1')
   (continued) StaticGroupedFlowables()
     (continued) DocumentTree()   index.rst   <document>
-      (continued) StaticGroupedFlowables()   index.rst   <compound>
+      (continued) StaticGroupedFlowables()   index.rst   <compound classes='toctree-wrapper'>
 #### UpExpandingContainer('header')
   StaticGroupedFlowables()
     Header('Out-of-line Flowables, Release ')
@@ -264,9 +410,9 @@
                 MixedStyledText('Introduction')
                   SingleStyledText('Introduction')
 ---------------------------------- page 3 ----------------------------------
-#### FootnoteContainer('footnotes')
+#### FlowablesContainer('background')
   StaticGroupedFlowables()
-#### DownExpandingContainer('floats')
+#### FootnoteContainer('footnotes')
   StaticGroupedFlowables()
 #### FlowablesContainer('chapter title')
   Paragraph('Chapter 2', style='body matter chapter label')
@@ -291,8 +437,8 @@
 #### ChainedContainer('column1')
   (continued) StaticGroupedFlowables()
     (continued) DocumentTree()   index.rst   <document>
-      (continued) StaticGroupedFlowables()   index.rst   <compound>
-        StaticGroupedFlowables(id='%conclusion')   <start_of_file>
+      (continued) StaticGroupedFlowables()   index.rst   <compound classes='toctree-wrapper'>
+        StaticGroupedFlowables(id='%conclusion')   index.rst   <start_of_file>
           Section(id='%conclusion#conclusion')   conclusion.rst:2   <section>
                > (0,0,0,1,4) content chapter [Sphinx] > chapter
                  (0,0,0,1,2) chapter [Sphinx] > DEFAULT
@@ -312,9 +458,9 @@
             Field('3')
               SingleStyledText('3')
 ---------------------------------- page 5 ----------------------------------
-#### FootnoteContainer('footnotes')
+#### FlowablesContainer('background')
   StaticGroupedFlowables()
-#### DownExpandingContainer('floats')
+#### FootnoteContainer('footnotes')
   StaticGroupedFlowables()
 #### ChainedContainer('column1')
   StaticGroupedFlowables()

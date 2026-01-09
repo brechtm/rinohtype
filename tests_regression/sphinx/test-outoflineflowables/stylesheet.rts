@@ -10,6 +10,13 @@ hide = true
 show_in_toc = false
 page_break = right
 
+[front matter section : Section(has_class='front-matter')]
+show_in_toc = true
+page_break = right
+
+[front matter heading level 1 : 'front matter section' / Heading]
+number_format = none
+
 [table of contents section]
 page_break = right
 

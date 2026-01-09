@@ -9,10 +9,8 @@
 import re
 
 from datetime import datetime
-from io import BytesIO
 
 import rinoh as rt
-from rinoh.math import InlineEquation
 
 from . import (DocutilsInlineNode, DocutilsNode, DocutilsBodyNode,
                DocutilsGroupingNode, DocutilsDummyNode)
@@ -201,6 +199,23 @@ class Sidebar(DocutilsGroupingNode):
 
 class Section(DocutilsGroupingNode):
     grouped_flowables_class = rt.Section
+
+
+    def flowables(self):
+        classes = self.get('classes')
+        try:
+            index = classes.index('out-of-line')
+        except ValueError:
+            yield from super().flowables()
+        else:
+            try:
+                out_of_line_category = classes[index + 1]
+            except IndexError:
+                yield rt.WarnFlowable("No out-of-line category following class"
+                                      " 'out-of-line'", source=self)
+                yield from super().flowables()
+            else:
+                yield rt.SetOutOfLineFlowables([out_of_line_category], super().flowables())
 
 
 class Paragraph(DocutilsBodyNode):

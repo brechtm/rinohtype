@@ -19,6 +19,17 @@ Release 0.5.6 (in development)
 
 New Features:
 
+* Relocating chapters to other document parts (e.g. front matter) is now
+  possible by assigning the *out-of-line* class and a custom class to a section::
+
+      .. rst-class:: out-of-line front-matter
+
+      My Section
+      ==========
+
+  It was previously possible to relocate body elements by means of the
+  ``.. container::`` directive with the 'out-of-line' class, but this directive
+  does not accept sections as child elements. (to be documented)
 * Equation rendering (thanks to `ziamath <https://ziamath.readthedocs.io>`_)
 * TemplateConfigurations are now also Resources, that can referenced by entry
   point name

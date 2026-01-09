@@ -28,7 +28,7 @@ import re
 import sys
 import time
 
-from collections import OrderedDict, deque
+from collections import OrderedDict, defaultdict, deque
 from contextlib import suppress
 from copy import copy
 from itertools import count
@@ -249,7 +249,7 @@ class Document(object):
         self._no_cache = getenv('RINOH_NO_CACHE', '0') != '0'
         self._single_pass = getenv('RINOH_SINGLE_PASS', '0') != '0'
         self.front_matter = []
-        self.supporting_matter = {}
+        self.supporting_matter = defaultdict(list)
         self.document_tree = document_tree
         self.stylesheet = stylesheet
         self.language = language
@@ -430,9 +430,6 @@ to the terms of the GNU Affero General Public License version 3.''')
         try:
             self.document_tree.build_document(fake_container)
             self.prepare(fake_container)
-            for out_of_line_flowables in self.supporting_matter.values():
-                for flowable in out_of_line_flowables:
-                    flowable.prepare(fake_container)
             backend_metadata = self._get_backend_metadata()
             self.page_elements.clear()
             self.part_page_counts = prev_page_counts
