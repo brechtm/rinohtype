@@ -1266,7 +1266,19 @@ each release. Be sure to check these when upgrading.</p>
 </div>
 <h2 id="release-0-5-6-in-development">Release 0.5.6 (in development)<a class="headerlink" href="#release-0-5-6-in-development" title="Link to this heading">¶</a></h2>
 <p>New Features:</p>
-<ul class="simple">
+<ul>
+<li><p>Relocating chapters to other document parts (e.g. front matter) is now
+possible by assigning the <em>out-of-line</em> class and a custom class to a section:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><code><span class="o">..</span> <span class="n">rst</span><span class="o">-</span><span class="n">class</span><span class="p">::</span> <span class="n">out</span><span class="o">-</span><span class="n">of</span><span class="o">-</span><span class="n">line</span> <span class="n">front</span><span class="o">-</span><span class="n">matter</span>
+
+<span class="n">My</span> <span class="n">Section</span>
+<span class="o">==========</span>
+</code></pre></div>
+</div>
+<p>It was previously possible to relocate body elements by means of the
+<code class="docutils literal notranslate"><span class="pre">..</span> <span class="pre">container::</span></code> directive with the ‘out-of-line’ class, but this directive
+does not accept sections as child elements. (to be documented)</p>
+</li>
 <li><p>Equation rendering (thanks to <a class="reference external" href="https://ziamath.readthedocs.io">ziamath</a>)</p></li>
 <li><p>TemplateConfigurations are now also Resources, that can referenced by entry
 point name</p></li>
