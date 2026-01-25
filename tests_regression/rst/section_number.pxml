@@ -1,0 +1,31 @@
+<document rinoh_regression_test="True" source="/Users/brechtm/Code/rinohtype/tests_regression/rst/section_number.rst">
+    <section ids="section-one" names="section\ one">
+        <title>
+            Section One
+        <paragraph>
+            Different heading color for the first section.
+        <section ids="subsection-x" names="subsection\ x">
+            <title>
+                Subsection X
+            <paragraph>
+                Regular styling.
+        <section ids="subsection-y" names="subsection\ y">
+            <title>
+                Subsection Y
+            <paragraph>
+                Page break before the second subsection.
+        <section ids="subsection-z" names="subsection\ z">
+            <title>
+                Subsection Z
+            <paragraph>
+                Different heading color for the last subsection.
+    <section ids="section-two" names="section\ two">
+        <title>
+            Section Two
+        <paragraph>
+            Regular styling.
+    <section ids="section-three" names="section\ three">
+        <title>
+            Section Three
+        <paragraph>
+            Different heading color for the last section.

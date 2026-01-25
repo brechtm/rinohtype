@@ -7,7 +7,8 @@
 
 
 from contextlib import suppress
-from itertools import chain, takewhile
+from itertools import chain, count, takewhile
+from typing import Iterable
 
 from .attribute import Attribute, Bool, Integer, OverrideDefault
 from .draw import Line, LineStyle
@@ -83,6 +84,38 @@ class Section(StaticGroupedFlowables, SectionBase):
 
     """
 
+    @property
+    def number(self):
+        return SectionNumber(self)
+
+
+class SectionNumber(object):
+    def __init__(self, section):
+        self.section = section
+
+    def __eq__(self, other):
+        if isinstance(other, slice):
+            indices = range(*other.indices(self.num_items))
+        elif isinstance(other, Iterable):
+            indices = other
+        else:
+            indices = (other, )
+        indices = [(self.num_items + 1 + idx) if idx < 0 else idx for idx in indices]
+        print("NUM ITEMS", self.section.level, self.num_items, int(self), indices)
+        return int(self) in indices
+
+    @property
+    def sections(self):
+        return (child for child in self.section.parent.children
+                if isinstance(child, SectionBase))
+
+    @property
+    def num_items(self):
+        return len(list(self.sections))
+
+    def __int__(self):
+        return next(i for subsection, i in zip(self.sections, count(1))
+                    if subsection is self.section)
 
 class HeadingStyle(ParagraphStyle):
     keep_with_next = OverrideDefault(True)

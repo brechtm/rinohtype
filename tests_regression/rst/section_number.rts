@@ -1,0 +1,32 @@
+[STYLESHEET]
+base = sphinx_base14
+
+
+[chapter]
+page_break = none
+
+[heading level 1]
+number_format=number
+space_above=6pt
+space_below=0
+
+[first level 1 section : Section(level=1, number=1) / Heading]
+base=NEXT_STYLE
+font_color=#f00
+
+[last level 1 section : Section(level=1, number=-1) / Heading]
+base=NEXT_STYLE
+font_color=#4f4
+
+[heading level 2]
+number_format=number
+space_above=6pt
+space_below=0
+
+[second level 2 section heading : Section(level=2, number=2)]
+base=NEXT_STYLE
+page_break=ANY
+
+[last level 2 section : Section(level=2, number=-1) / Heading]
+base=NEXT_STYLE
+font_color=#f0f

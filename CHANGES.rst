@@ -19,6 +19,16 @@ Release 0.5.6 (in development)
 
 New Features:
 
+* Section selectors can now select based on the local section number. For
+  Example::
+
+      [first level 2 section : Section(level=2, number=1)]
+      break = ANY
+
+      [last level 2 section heading : Section(level=2, number=-1) / Heading]
+      base = heading level 2
+      font_color = #333
+
 * Relocating chapters to other document parts (e.g. front matter) is now
   possible by assigning the *out-of-line* class and a custom class to a section::
 
