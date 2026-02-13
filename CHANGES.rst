@@ -58,6 +58,7 @@ Changed:
 
 Fixed:
 
+* Fix crash when other installed packages define stylesheet entry points
 * Fix infinite loop on long words in literal block (#453)
 * Sphinx frontend: support the desc_sig_keyword_type, desc_sig_literal_number,
   desc_sig_literal_string, desc_sig_literal_char and desc_inline document nodes

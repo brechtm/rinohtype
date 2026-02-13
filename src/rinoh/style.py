@@ -662,10 +662,7 @@ class StyleSheet(RuleSet, Resource):
         self.user_options = user_options
 
     def __str__(self):
-        for name, entry_point in self.installed_resources:
-            if self is entry_point.load():
-                return name
-        raise NotImplementedError
+        return self.entry_point_name
 
     @classmethod
     def parse_string(cls, string, source):
@@ -676,11 +673,9 @@ class StyleSheet(RuleSet, Resource):
     @classmethod
     def doc_repr(cls, value):
         for name, ep in cls.installed_resources:
-            if value is ep.load():
-                data = ('dynamic entry point' if isinstance(ep, DynamicEntryPoint)
-                        else '= :data:`{}.{}`'.format(*ep.value.split(':')))
-                return f'``{name}`` ({data})'
-        raise NotImplementedError
+            if name == value.entry_point_name:
+                return f"``{name}`` (= :data:`{ep.value.replace(':', '.')})"
+        return None
 
     @classmethod
     def doc_format(cls):

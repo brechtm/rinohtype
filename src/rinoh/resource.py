@@ -25,6 +25,7 @@ __all__ = ['Resource', 'ResourceNotFound', 'find_entry_points']
 
 class Resource(AttributeType):
     resource_type = NotImplementedAttribute()
+    entry_point_name = None
 
     @class_property
     def entry_point_group(cls):
