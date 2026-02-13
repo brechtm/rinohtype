@@ -101,7 +101,6 @@ class SectionNumber(object):
         else:
             indices = (other, )
         indices = [(self.num_items + 1 + idx) if idx < 0 else idx for idx in indices]
-        print("NUM ITEMS", self.section.level, self.num_items, int(self), indices)
         return int(self) in indices
 
     @property
