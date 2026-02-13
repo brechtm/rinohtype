@@ -163,7 +163,7 @@ class BodyPageTemplate(BodyPageTemplateBase):
     chapter_title_flowables = Option(FlowablesList, None,
                                      'Generator that yields the flowables to '
                                      'represent the chapter title')
-    chapter_title_height = Option(Dimension, 150*PT, 'The height of the '
+    chapter_title_height = Option(Dimension, None, 'The height of the '
                                   'container holding the chapter title')
 
     def new_chapter_page(self, document_part, page_number, chain):
@@ -278,9 +278,12 @@ class NewChapterBodyPage(BodyPage):
 
     def get_header_footer_contenttop(self):
         height = self.get_option('chapter_title_height')
-        self.chapter_title = FlowablesContainer('chapter title',
-                                                CHAPTER_TITLE, self.body,
-                                                0, 0, height=height)
+        self.chapter_title = (
+            FlowablesContainer('chapter title', CHAPTER_TITLE, self.body,
+                               0, 0, height=height) if height is not None
+            else DownExpandingContainer('chapter title', CHAPTER_TITLE,
+                                        self.body, 0, 0)
+        )
         header = try_copy(self.get_option('chapter_header_text'))
         footer = try_copy(self.get_option('chapter_footer_text'))
         return header, footer, self.chapter_title.bottom

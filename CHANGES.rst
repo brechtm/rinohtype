@@ -30,7 +30,8 @@ New Features:
       font_color = #333
 
 * Relocating chapters to other document parts (e.g. front matter) is now
-  possible by assigning the *out-of-line* class and a custom class to a section::
+  possible by assigning the *out-of-line* class and a custom class to a
+  section::
 
       .. rst-class:: out-of-line front-matter
 
@@ -52,6 +53,9 @@ New Features:
 
 Changed:
 
+* The default for BodyPageTemplate.chapter_title_height is now ``None``, which
+  creates a DownExpaningContainer for the chapter title flowables instead of
+  one with a fixed height.  
 * Add support for Python 3.13 and 3.14
 * Support for Python 3.8 was dropped (end-of-life in October 2024)
 * Improve error message for unsupported nodes (#421)
