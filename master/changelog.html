@@ -1267,8 +1267,20 @@ each release. Be sure to check these when upgrading.</p>
 <h2 id="release-0-5-6-in-development">Release 0.5.6 (in development)<a class="headerlink" href="#release-0-5-6-in-development" title="Link to this heading">¶</a></h2>
 <p>New Features:</p>
 <ul>
+<li><p>Section selectors can now select based on the local section number. For
+Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><code><span class="p">[</span><span class="n">first</span> <span class="n">level</span> <span class="mi">2</span> <span class="n">section</span> <span class="p">:</span> <span class="n">Section</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">1</span><span class="p">)]</span>
+<span class="k">break</span> <span class="o">=</span> <span class="n">ANY</span>
+
+<span class="p">[</span><span class="n">last</span> <span class="n">level</span> <span class="mi">2</span> <span class="n">section</span> <span class="n">heading</span> <span class="p">:</span> <span class="n">Section</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">number</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="n">Heading</span><span class="p">]</span>
+<span class="n">base</span> <span class="o">=</span> <span class="n">heading</span> <span class="n">level</span> <span class="mi">2</span>
+<span class="n">font_color</span> <span class="o">=</span> <span class="c1">#333</span>
+</code></pre></div>
+</div>
+</li>
 <li><p>Relocating chapters to other document parts (e.g. front matter) is now
-possible by assigning the <em>out-of-line</em> class and a custom class to a section:</p>
+possible by assigning the <em>out-of-line</em> class and a custom class to a
+section:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><code><span class="o">..</span> <span class="n">rst</span><span class="o">-</span><span class="n">class</span><span class="p">::</span> <span class="n">out</span><span class="o">-</span><span class="n">of</span><span class="o">-</span><span class="n">line</span> <span class="n">front</span><span class="o">-</span><span class="n">matter</span>
 
 <span class="n">My</span> <span class="n">Section</span>
@@ -1291,12 +1303,21 @@ versionchanged, versionremoved, deprecated) (#440)</p></li>
 </ul>
 <p>Changed:</p>
 <ul class="simple">
+<li><p>Admonition is a LabeledFlowable subclass now; this makes it possible to show
+an icon to the left/right of the admonition text. This change will however
+require adjustments to the admonition styles in custom stylesheets. Also,
+the admonition style definitions in the ‘sphinx’ stylesheet needs more work.</p></li>
+<li><p>The default for BodyPageTemplate.chapter_title_height is now <code class="docutils literal notranslate"><span class="pre">None</span></code>, which
+creates a DownExpaningContainer for the chapter title flowables instead of
+one with a fixed height.</p></li>
 <li><p>Add support for Python 3.13 and 3.14</p></li>
 <li><p>Support for Python 3.8 was dropped (end-of-life in October 2024)</p></li>
 <li><p>Improve error message for unsupported nodes (#421)</p></li>
 </ul>
 <p>Fixed:</p>
 <ul class="simple">
+<li><p>Fix the selectors for list of tables/figures sections</p></li>
+<li><p>Fix crash when other installed packages define stylesheet entry points</p></li>
 <li><p>Fix infinite loop on long words in literal block (#453)</p></li>
 <li><p>Sphinx frontend: support the desc_sig_keyword_type, desc_sig_literal_number,
 desc_sig_literal_string, desc_sig_literal_char and desc_inline document nodes
