@@ -372,7 +372,8 @@ class DummyFlowable(Flowable):
         return dict(keep_with_next=True,
                     hide=False)[attribute]
 
-    def flow(self, container, last_descender, state=None, **kwargs):
+    def flow(self, container, last_descender, state=None, space_below=0,
+             **kwargs):
         return 0, 0, last_descender
 
 
