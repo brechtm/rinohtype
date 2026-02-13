@@ -2,6 +2,12 @@
 name = Sphinx continuepagenumberformat
 base = sphinx_base14
 
-
 [title page date : Paragraph('title page date')]
 hide = true
+
+[table of contents section]
+page_break=NONE
+show_in_toc=False
+
+[chapter]
+page_break=NONE

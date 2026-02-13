@@ -364,11 +364,11 @@ matcher('L3 toc level 3', TableOfContents.like(level=2)
 matcher('toc entry number reference field',
         TableOfContentsEntry / ... / ReferenceField.like(type='number'))
 
-matcher('list of figures section', ListOfFiguresSection)
+matcher('list of figures section', +ListOfFiguresSection)
 matcher('list of figures', ListOfFigures)
 matcher('list of figures entry', 'list of figures' / ListOfEntry)
 
-matcher('list of tables section', ListOfTablesSection)
+matcher('list of tables section', +ListOfTablesSection)
 matcher('list of tables', ListOfTables)
 matcher('list of tables entry', 'list of tables' / ListOfEntry)
 

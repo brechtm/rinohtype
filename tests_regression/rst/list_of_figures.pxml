@@ -1,0 +1,47 @@
+<document rinoh_regression_test="True" source="/Users/brechtm/Code/rinohtype/tests_regression/rst/list_of_figures.rst">
+    <raw format="rinoh" xml:space="preserve">
+        ListOfFiguresSection
+    <figure>
+        <image uri="../images/title.png">
+        <caption>
+            first figure
+    <section ids="section-1" names="section\ 1">
+        <title>
+            Section 1
+        <raw format="rinoh" xml:space="preserve">
+            ListOfFigures(local=True)
+        <figure>
+            <image uri="../images/title.png">
+            <caption>
+                second figure
+        <section ids="subsection-1" names="subsection\ 1">
+            <title>
+                Subsection 1
+            <raw format="rinoh" xml:space="preserve">
+                ListOfFigures(local=True)
+            <figure>
+                <image uri="../images/biohazard.png">
+                <caption>
+                    third figure
+            <figure>
+                <image uri="../images/biohazard.png">
+                <caption>
+                    fourth figure
+        <section ids="subsection-2" names="subsection\ 2">
+            <title>
+                Subsection 2
+            <raw format="rinoh" xml:space="preserve">
+                ListOfFigures(local=True)
+            <figure>
+                <image uri="../images/title.png">
+                <caption>
+                    fifth figure
+    <section ids="section-2" names="section\ 2">
+        <title>
+            Section 2
+        <raw format="rinoh" xml:space="preserve">
+            ListOfFigures(local=True)
+        <figure>
+            <image uri="../images/title.png">
+            <caption>
+                sixth figure

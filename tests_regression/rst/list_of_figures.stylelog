@@ -1,358 +1,494 @@
 ---------------------------------- page 1 ----------------------------------
+#### FlowablesContainer('background')
+  StaticGroupedFlowables()
 #### FootnoteContainer('footnotes')
   StaticGroupedFlowables()
 #### DownExpandingContainer('floats')
   StaticGroupedFlowables()
 #### ChainedContainer('column1')
   StaticGroupedFlowables()
-    DocumentTree()
-      ListOfFiguresSection(style='list of Chapter')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_figures.rst:2 <raw>
-           > (0,0,0,1,1) chapter
-             (0,0,0,0,2) list of figures section
+    DocumentTree()   list_of_figures.rst   <document>
+      ListOfFiguresSection(style='list of figure')   list_of_figures.rst:2   <raw>
+           > (1,0,0,0,2) list of figures section [Sphinx] > table of contents section
+             (0,0,0,1,3) content chapter [Sphinx] > chapter
+             (0,0,0,1,1) chapter [Sphinx] > DEFAULT
         Heading('List of Figures', style='unnumbered')
-             > (0,0,1,1,2) unnumbered heading level 1
-               (0,0,0,1,2) heading level 1
-               (0,0,0,0,2) other heading levels
-            MixedStyledText('List of Figures')
-              SingleStyledText('')
-              StringField('List of Figures')
-                SingleStyledText('List of Figures')
-        ListOfFigures()   List of Figures
-             > (0,0,0,0,2) list of figures
-          ListOfEntry('Figure 1: first figure	1')
-               > (0,0,0,0,4) list of figures entry
-              ReferenceField('Figure 1')
-                   > (0,0,0,1,1) linked reference
-                SingleStyledText('Figure 1')
+             > (0,0,1,1,2) unnumbered heading level 1 [Sphinx] > heading level 1
+               (0,0,0,1,2) heading level 1 [Sphinx] > DEFAULT
+               (0,0,0,0,2) other heading levels [Sphinx] > heading level 5
+            StringField('List of Figures')
+              SingleStyledText('List of Figures')
+        ListOfFigures()   List of figures
+             > (0,0,0,0,2) list of figures [Sphinx] > table of contents
+          ListOfEntry('Figure 1: first figure	1')
+               > (0,0,0,0,4) list of figures entry [Sphinx] > list of figures
+              ReferenceField('Figure 1')
+                   > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                MixedStyledText('Figure 1')
+                  StringField('Figure')
+                    SingleStyledText('Figure')
+                  SingleStyledText(' ')
+                  SingleStyledText('1')
               SingleStyledText(': ')
               ReferenceField('first figure')
-                   > (0,0,0,1,1) linked reference
-                SingleStyledText('first figure')
+                   > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                MixedStyledText('first figure')
+                  MixedStyledText('first figure')
+                    SingleStyledText('first figure')
               Tab('	')
               ReferenceField('1')
-                   > (0,0,0,1,1) linked reference
+                   > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
                 SingleStyledText('1')
-          ListOfEntry('Figure 1.1: second figure	3')
-               > (0,0,0,0,4) list of figures entry
-              ReferenceField('Figure 1.1')
-                   > (0,0,0,1,1) linked reference
-                SingleStyledText('Figure 1.1')
+          ListOfEntry('Figure 1.1: second figure	3')
+               > (0,0,0,0,4) list of figures entry [Sphinx] > list of figures
+              ReferenceField('Figure 1.1')
+                   > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                MixedStyledText('Figure 1.1')
+                  StringField('Figure')
+                    SingleStyledText('Figure')
+                  SingleStyledText(' ')
+                  SingleStyledText('1.1')
               SingleStyledText(': ')
               ReferenceField('second figure')
-                   > (0,0,0,1,1) linked reference
-                SingleStyledText('second figure')
+                   > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                MixedStyledText('second figure')
+                  MixedStyledText('second figure')
+                    SingleStyledText('second figure')
               Tab('	')
               ReferenceField('3')
-                   > (0,0,0,1,1) linked reference
+                   > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
                 SingleStyledText('3')
-          ListOfEntry('Figure 1.2: third figure	3')
-               > (0,0,0,0,4) list of figures entry
-              ReferenceField('Figure 1.2')
-                   > (0,0,0,1,1) linked reference
-                SingleStyledText('Figure 1.2')
+          ListOfEntry('Figure 1.2: third figure	3')
+               > (0,0,0,0,4) list of figures entry [Sphinx] > list of figures
+              ReferenceField('Figure 1.2')
+                   > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                MixedStyledText('Figure 1.2')
+                  StringField('Figure')
+                    SingleStyledText('Figure')
+                  SingleStyledText(' ')
+                  SingleStyledText('1.2')
               SingleStyledText(': ')
               ReferenceField('third figure')
-                   > (0,0,0,1,1) linked reference
-                SingleStyledText('third figure')
+                   > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                MixedStyledText('third figure')
+                  MixedStyledText('third figure')
+                    SingleStyledText('third figure')
               Tab('	')
               ReferenceField('3')
-                   > (0,0,0,1,1) linked reference
+                   > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
                 SingleStyledText('3')
-          ListOfEntry('Figure 1.3: fourth figure	3')
-               > (0,0,0,0,4) list of figures entry
-              ReferenceField('Figure 1.3')
-                   > (0,0,0,1,1) linked reference
-                SingleStyledText('Figure 1.3')
+          ListOfEntry('Figure 1.3: fourth figure	3')
+               > (0,0,0,0,4) list of figures entry [Sphinx] > list of figures
+              ReferenceField('Figure 1.3')
+                   > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                MixedStyledText('Figure 1.3')
+                  StringField('Figure')
+                    SingleStyledText('Figure')
+                  SingleStyledText(' ')
+                  SingleStyledText('1.3')
               SingleStyledText(': ')
               ReferenceField('fourth figure')
-                   > (0,0,0,1,1) linked reference
-                SingleStyledText('fourth figure')
+                   > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                MixedStyledText('fourth figure')
+                  MixedStyledText('fourth figure')
+                    SingleStyledText('fourth figure')
               Tab('	')
               ReferenceField('3')
-                   > (0,0,0,1,1) linked reference
+                   > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
                 SingleStyledText('3')
-          ListOfEntry('Figure 1.4: fifth figure	4')
-               > (0,0,0,0,4) list of figures entry
-              ReferenceField('Figure 1.4')
-                   > (0,0,0,1,1) linked reference
-                SingleStyledText('Figure 1.4')
+          ListOfEntry('Figure 1.4: fifth figure	4')
+               > (0,0,0,0,4) list of figures entry [Sphinx] > list of figures
+              ReferenceField('Figure 1.4')
+                   > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                MixedStyledText('Figure 1.4')
+                  StringField('Figure')
+                    SingleStyledText('Figure')
+                  SingleStyledText(' ')
+                  SingleStyledText('1.4')
               SingleStyledText(': ')
               ReferenceField('fifth figure')
-                   > (0,0,0,1,1) linked reference
-                SingleStyledText('fifth figure')
+                   > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                MixedStyledText('fifth figure')
+                  MixedStyledText('fifth figure')
+                    SingleStyledText('fifth figure')
               Tab('	')
               ReferenceField('4')
-                   > (0,0,0,1,1) linked reference
+                   > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
                 SingleStyledText('4')
-          ListOfEntry('Figure 2.1: sixth figure	5')
-               > (0,0,0,0,4) list of figures entry
-              ReferenceField('Figure 2.1')
-                   > (0,0,0,1,1) linked reference
-                SingleStyledText('Figure 2.1')
+          ListOfEntry('Figure 2.1: sixth figure	5')
+               > (0,0,0,0,4) list of figures entry [Sphinx] > list of figures
+              ReferenceField('Figure 2.1')
+                   > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                MixedStyledText('Figure 2.1')
+                  StringField('Figure')
+                    SingleStyledText('Figure')
+                  SingleStyledText(' ')
+                  SingleStyledText('2.1')
               SingleStyledText(': ')
               ReferenceField('sixth figure')
-                   > (0,0,0,1,1) linked reference
-                SingleStyledText('sixth figure')
+                   > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                MixedStyledText('sixth figure')
+                  MixedStyledText('sixth figure')
+                    SingleStyledText('sixth figure')
               Tab('	')
               ReferenceField('5')
-                   > (0,0,0,1,1) linked reference
+                   > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
                 SingleStyledText('5')
-      Figure()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_figures.rst:None <figure>
-           > (0,0,0,0,2) figure
-        Image('../images/title.png')   None:None <image>
-             > (0,0,0,0,4) figure image
-               (0,0,0,0,2) image
-        Caption('Figure 1. first figure')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_figures.rst:9 <caption>
-             > (0,0,0,0,4) figure caption
-            MixedStyledText('Figure 1. first figure')
-              SingleStyledText('Figure ')
-              MixedStyledText('1. ')
-                SingleStyledText('1')
-                SingleStyledText('. ')
-              SingleStyledText('first figure')
+      Figure()   list_of_figures.rst:7   <figure>
+           > (0,0,0,0,2) figure [Sphinx] > DEFAULT
+        Image('../images/title.png')   list_of_figures.rst:7   <image>
+             > (0,0,0,0,4) figure image [Sphinx] > image
+               (0,0,0,0,2) image [Sphinx] > DEFAULT
+        Caption('Figure 1. first figure')   list_of_figures.rst:9   <caption>
+             > (0,0,0,0,4) figure caption [Sphinx] > caption
+            StringField('Figure')
+              SingleStyledText('Figure')
+            SingleStyledText(' ')
+            MixedStyledText('1. ', style='label')
+              SingleStyledText('')
+              SingleStyledText('1')
+              SingleStyledText('. ')
+            MixedStyledText('first figure')
+              MixedStyledText('first figure')
+                SingleStyledText('first figure')
 ---------------------------------- page 2 ----------------------------------
+#### FlowablesContainer('background')
+  StaticGroupedFlowables()
 #### FootnoteContainer('footnotes')
   StaticGroupedFlowables()
 #### DownExpandingContainer('floats')
   StaticGroupedFlowables()
 #### ChainedContainer('column1')
   (continued) StaticGroupedFlowables()
-    (continued) DocumentTree()
+    (continued) DocumentTree()   list_of_figures.rst   <document>
 ---------------------------------- page 3 ----------------------------------
+#### FlowablesContainer('background')
+  StaticGroupedFlowables()
 #### FootnoteContainer('footnotes')
   StaticGroupedFlowables()
 #### DownExpandingContainer('floats')
   StaticGroupedFlowables()
 #### ChainedContainer('column1')
   (continued) StaticGroupedFlowables()
-    (continued) DocumentTree()
-      Section(id='section-1')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_figures.rst:12 <section>
-           > (0,0,0,1,2) chapter
-        Heading('1 Section 1')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_figures.rst:12 <title>
-             > (0,0,0,1,2) heading level 1
-               (0,0,0,0,2) other heading levels
-            MixedStyledText('1 Section 1')
+    (continued) DocumentTree()   list_of_figures.rst   <document>
+      Section(id='section-1')   list_of_figures.rst:12   <section>
+           > (0,0,0,1,4) content chapter [Sphinx] > chapter
+             (0,0,0,1,2) chapter [Sphinx] > DEFAULT
+        Heading('1 Section 1')   list_of_figures.rst:12   <title>
+             > (0,0,0,1,2) heading level 1 [Sphinx] > DEFAULT
+               (0,0,0,0,2) other heading levels [Sphinx] > heading level 5
+            MixedStyledText('1 ', style='label')
+                 x (0,0,1,1,3) heading level 1 label
+              SingleStyledText('')
               SingleStyledText('1')
               SingleStyledText(' ')
-              SingleStyledText('Section 1')
-        ListOfFigures()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_figures.rst:14 <raw>
-             > (0,0,0,0,2) list of figures
-          ListOfEntry('Figure 1.1: second figure	3')
-               > (0,0,0,0,4) list of figures entry
-              ReferenceField('Figure 1.1')
-                   > (0,0,0,1,1) linked reference
-                SingleStyledText('Figure 1.1')
+            MixedStyledText('Section 1')
+              MixedStyledText('Section 1')
+                SingleStyledText('Section 1')
+        ListOfFigures()   list_of_figures.rst:14   <raw>
+             > (0,0,0,0,2) list of figures [Sphinx] > table of contents
+          ListOfEntry('Figure 1.1: second figure	3')
+               > (0,0,0,0,4) list of figures entry [Sphinx] > list of figures
+              ReferenceField('Figure 1.1')
+                   > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                MixedStyledText('Figure 1.1')
+                  StringField('Figure')
+                    SingleStyledText('Figure')
+                  SingleStyledText(' ')
+                  SingleStyledText('1.1')
               SingleStyledText(': ')
               ReferenceField('second figure')
-                   > (0,0,0,1,1) linked reference
-                SingleStyledText('second figure')
+                   > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                MixedStyledText('second figure')
+                  MixedStyledText('second figure')
+                    SingleStyledText('second figure')
               Tab('	')
               ReferenceField('3')
-                   > (0,0,0,1,1) linked reference
+                   > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
                 SingleStyledText('3')
-          ListOfEntry('Figure 1.2: third figure	3')
-               > (0,0,0,0,4) list of figures entry
-              ReferenceField('Figure 1.2')
-                   > (0,0,0,1,1) linked reference
-                SingleStyledText('Figure 1.2')
+          ListOfEntry('Figure 1.2: third figure	3')
+               > (0,0,0,0,4) list of figures entry [Sphinx] > list of figures
+              ReferenceField('Figure 1.2')
+                   > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                MixedStyledText('Figure 1.2')
+                  StringField('Figure')
+                    SingleStyledText('Figure')
+                  SingleStyledText(' ')
+                  SingleStyledText('1.2')
               SingleStyledText(': ')
               ReferenceField('third figure')
-                   > (0,0,0,1,1) linked reference
-                SingleStyledText('third figure')
+                   > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                MixedStyledText('third figure')
+                  MixedStyledText('third figure')
+                    SingleStyledText('third figure')
               Tab('	')
               ReferenceField('3')
-                   > (0,0,0,1,1) linked reference
+                   > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
                 SingleStyledText('3')
-          ListOfEntry('Figure 1.3: fourth figure	3')
-               > (0,0,0,0,4) list of figures entry
-              ReferenceField('Figure 1.3')
-                   > (0,0,0,1,1) linked reference
-                SingleStyledText('Figure 1.3')
+          ListOfEntry('Figure 1.3: fourth figure	3')
+               > (0,0,0,0,4) list of figures entry [Sphinx] > list of figures
+              ReferenceField('Figure 1.3')
+                   > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                MixedStyledText('Figure 1.3')
+                  StringField('Figure')
+                    SingleStyledText('Figure')
+                  SingleStyledText(' ')
+                  SingleStyledText('1.3')
               SingleStyledText(': ')
               ReferenceField('fourth figure')
-                   > (0,0,0,1,1) linked reference
-                SingleStyledText('fourth figure')
+                   > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                MixedStyledText('fourth figure')
+                  MixedStyledText('fourth figure')
+                    SingleStyledText('fourth figure')
               Tab('	')
               ReferenceField('3')
-                   > (0,0,0,1,1) linked reference
+                   > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
                 SingleStyledText('3')
-          ListOfEntry('Figure 1.4: fifth figure	4')
-               > (0,0,0,0,4) list of figures entry
-              ReferenceField('Figure 1.4')
-                   > (0,0,0,1,1) linked reference
-                SingleStyledText('Figure 1.4')
+          ListOfEntry('Figure 1.4: fifth figure	4')
+               > (0,0,0,0,4) list of figures entry [Sphinx] > list of figures
+              ReferenceField('Figure 1.4')
+                   > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                MixedStyledText('Figure 1.4')
+                  StringField('Figure')
+                    SingleStyledText('Figure')
+                  SingleStyledText(' ')
+                  SingleStyledText('1.4')
               SingleStyledText(': ')
               ReferenceField('fifth figure')
-                   > (0,0,0,1,1) linked reference
-                SingleStyledText('fifth figure')
+                   > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                MixedStyledText('fifth figure')
+                  MixedStyledText('fifth figure')
+                    SingleStyledText('fifth figure')
               Tab('	')
               ReferenceField('4')
-                   > (0,0,0,1,1) linked reference
+                   > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
                 SingleStyledText('4')
-        Figure()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_figures.rst:None <figure>
-             > (0,0,0,0,2) figure
-          Image('../images/title.png')   None:None <image>
-               > (0,0,0,0,4) figure image
-                 (0,0,0,0,2) image
-          Caption('Figure 1.1. second figure')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_figures.rst:21 <caption>
-               > (0,0,0,0,4) figure caption
-              MixedStyledText('Figure 1.1. second figure')
-                SingleStyledText('Figure ')
-                MixedStyledText('1.1. ')
-                  SingleStyledText('1.1')
-                  SingleStyledText('. ')
-                SingleStyledText('second figure')
-        Section(id='subsection-1')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_figures.rst:24 <section>
-          Heading('1.1 Subsection 1')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_figures.rst:24 <title>
-               > (0,0,0,1,2) heading level 2
-                 (0,0,0,0,2) other heading levels
-              MixedStyledText('1.1 Subsection 1')
+        Figure()   list_of_figures.rst:19   <figure>
+             > (0,0,0,0,2) figure [Sphinx] > DEFAULT
+          Image('../images/title.png')   list_of_figures.rst:19   <image>
+               > (0,0,0,0,4) figure image [Sphinx] > image
+                 (0,0,0,0,2) image [Sphinx] > DEFAULT
+          Caption('Figure 1.1. second figure')   list_of_figures.rst:21   <caption>
+               > (0,0,0,0,4) figure caption [Sphinx] > caption
+              StringField('Figure')
+                SingleStyledText('Figure')
+              SingleStyledText(' ')
+              MixedStyledText('1.1. ', style='label')
+                SingleStyledText('')
+                SingleStyledText('1.1')
+                SingleStyledText('. ')
+              MixedStyledText('second figure')
+                MixedStyledText('second figure')
+                  SingleStyledText('second figure')
+        Section(id='subsection-1')   list_of_figures.rst:24   <section>
+          Heading('1.1 Subsection 1')   list_of_figures.rst:24   <title>
+               > (0,0,0,1,2) heading level 2 [Sphinx] > heading level 1
+                 (0,0,0,0,2) other heading levels [Sphinx] > heading level 5
+              MixedStyledText('1.1 ', style='label')
+                   x (0,0,1,1,3) heading level 2 label
+                SingleStyledText('')
                 SingleStyledText('1.1')
                 SingleStyledText(' ')
-                SingleStyledText('Subsection 1')
-          ListOfFigures()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_figures.rst:26 <raw>
-               > (0,0,0,0,2) list of figures
-            ListOfEntry('Figure 1.2: third figure	3')
-                 > (0,0,0,0,4) list of figures entry
-                ReferenceField('Figure 1.2')
-                     > (0,0,0,1,1) linked reference
-                  SingleStyledText('Figure 1.2')
+              MixedStyledText('Subsection 1')
+                MixedStyledText('Subsection 1')
+                  SingleStyledText('Subsection 1')
+          ListOfFigures()   list_of_figures.rst:26   <raw>
+               > (0,0,0,0,2) list of figures [Sphinx] > table of contents
+            ListOfEntry('Figure 1.2: third figure	3')
+                 > (0,0,0,0,4) list of figures entry [Sphinx] > list of figures
+                ReferenceField('Figure 1.2')
+                     > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                  MixedStyledText('Figure 1.2')
+                    StringField('Figure')
+                      SingleStyledText('Figure')
+                    SingleStyledText(' ')
+                    SingleStyledText('1.2')
                 SingleStyledText(': ')
                 ReferenceField('third figure')
-                     > (0,0,0,1,1) linked reference
-                  SingleStyledText('third figure')
+                     > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                  MixedStyledText('third figure')
+                    MixedStyledText('third figure')
+                      SingleStyledText('third figure')
                 Tab('	')
                 ReferenceField('3')
-                     > (0,0,0,1,1) linked reference
+                     > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
                   SingleStyledText('3')
-            ListOfEntry('Figure 1.3: fourth figure	3')
-                 > (0,0,0,0,4) list of figures entry
-                ReferenceField('Figure 1.3')
-                     > (0,0,0,1,1) linked reference
-                  SingleStyledText('Figure 1.3')
+            ListOfEntry('Figure 1.3: fourth figure	3')
+                 > (0,0,0,0,4) list of figures entry [Sphinx] > list of figures
+                ReferenceField('Figure 1.3')
+                     > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                  MixedStyledText('Figure 1.3')
+                    StringField('Figure')
+                      SingleStyledText('Figure')
+                    SingleStyledText(' ')
+                    SingleStyledText('1.3')
                 SingleStyledText(': ')
                 ReferenceField('fourth figure')
-                     > (0,0,0,1,1) linked reference
-                  SingleStyledText('fourth figure')
+                     > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                  MixedStyledText('fourth figure')
+                    MixedStyledText('fourth figure')
+                      SingleStyledText('fourth figure')
                 Tab('	')
                 ReferenceField('3')
-                     > (0,0,0,1,1) linked reference
+                     > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
                   SingleStyledText('3')
-          Figure()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_figures.rst:None <figure>
-               > (0,0,0,0,2) figure
-            Image('../images/biohazard.png')   None:None <image>
-                 > (0,0,0,0,4) figure image
-                   (0,0,0,0,2) image
-            Caption('Figure 1.2. third figure')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_figures.rst:33 <caption>
-                 > (0,0,0,0,4) figure caption
-                MixedStyledText('Figure 1.2. third figure')
-                  SingleStyledText('Figure ')
-                  MixedStyledText('1.2. ')
-                    SingleStyledText('1.2')
-                    SingleStyledText('. ')
-                  SingleStyledText('third figure')
-          Figure()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_figures.rst:None <figure>
-               > (0,0,0,0,2) figure
-            Image('../images/biohazard.png')   None:None <image>
-                 > (0,0,0,0,4) figure image
-                   (0,0,0,0,2) image
-            Caption('Figure 1.3. fourth figure')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_figures.rst:37 <caption>
-                 > (0,0,0,0,4) figure caption
-                MixedStyledText('Figure 1.3. fourth figure')
-                  SingleStyledText('Figure ')
-                  MixedStyledText('1.3. ')
-                    SingleStyledText('1.3')
-                    SingleStyledText('. ')
-                  SingleStyledText('fourth figure')
-        Section(id='subsection-2')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_figures.rst:41 <section>
-          Heading('1.2 Subsection 2')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_figures.rst:41 <title>
-               > (0,0,0,1,2) heading level 2
-                 (0,0,0,0,2) other heading levels
-              MixedStyledText('1.2 Subsection 2')
+          Figure()   list_of_figures.rst:31   <figure>
+               > (0,0,0,0,2) figure [Sphinx] > DEFAULT
+            Image('../images/biohazard.png')   list_of_figures.rst:31   <image>
+                 > (0,0,0,0,4) figure image [Sphinx] > image
+                   (0,0,0,0,2) image [Sphinx] > DEFAULT
+            Caption('Figure 1.2. third figure')   list_of_figures.rst:33   <caption>
+                 > (0,0,0,0,4) figure caption [Sphinx] > caption
+                StringField('Figure')
+                  SingleStyledText('Figure')
+                SingleStyledText(' ')
+                MixedStyledText('1.2. ', style='label')
+                  SingleStyledText('')
+                  SingleStyledText('1.2')
+                  SingleStyledText('. ')
+                MixedStyledText('third figure')
+                  MixedStyledText('third figure')
+                    SingleStyledText('third figure')
+          Figure()   list_of_figures.rst:35   <figure>
+               > (0,0,0,0,2) figure [Sphinx] > DEFAULT
+            Image('../images/biohazard.png')   list_of_figures.rst:35   <image>
+                 > (0,0,0,0,4) figure image [Sphinx] > image
+                   (0,0,0,0,2) image [Sphinx] > DEFAULT
+            Caption('Figure 1.3. fourth figure')   list_of_figures.rst:37   <caption>
+                 > (0,0,0,0,4) figure caption [Sphinx] > caption
+                StringField('Figure')
+                  SingleStyledText('Figure')
+                SingleStyledText(' ')
+                MixedStyledText('1.3. ', style='label')
+                  SingleStyledText('')
+                  SingleStyledText('1.3')
+                  SingleStyledText('. ')
+                MixedStyledText('fourth figure')
+                  MixedStyledText('fourth figure')
+                    SingleStyledText('fourth figure')
+        Section(id='subsection-2')   list_of_figures.rst:41   <section>
+          Heading('1.2 Subsection 2')   list_of_figures.rst:41   <title>
+               > (0,0,0,1,2) heading level 2 [Sphinx] > heading level 1
+                 (0,0,0,0,2) other heading levels [Sphinx] > heading level 5
+              MixedStyledText('1.2 ', style='label')
+                   x (0,0,1,1,3) heading level 2 label
+                SingleStyledText('')
                 SingleStyledText('1.2')
                 SingleStyledText(' ')
-                SingleStyledText('Subsection 2')
-          ListOfFigures()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_figures.rst:43 <raw>
-               > (0,0,0,0,2) list of figures
-            ListOfEntry('Figure 1.4: fifth figure	4')
-                 > (0,0,0,0,4) list of figures entry
-                ReferenceField('Figure 1.4')
-                     > (0,0,0,1,1) linked reference
-                  SingleStyledText('Figure 1.4')
+              MixedStyledText('Subsection 2')
+                MixedStyledText('Subsection 2')
+                  SingleStyledText('Subsection 2')
+          ListOfFigures()   list_of_figures.rst:43   <raw>
+               > (0,0,0,0,2) list of figures [Sphinx] > table of contents
+            ListOfEntry('Figure 1.4: fifth figure	4')
+                 > (0,0,0,0,4) list of figures entry [Sphinx] > list of figures
+                ReferenceField('Figure 1.4')
+                     > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                  MixedStyledText('Figure 1.4')
+                    StringField('Figure')
+                      SingleStyledText('Figure')
+                    SingleStyledText(' ')
+                    SingleStyledText('1.4')
                 SingleStyledText(': ')
                 ReferenceField('fifth figure')
-                     > (0,0,0,1,1) linked reference
-                  SingleStyledText('fifth figure')
+                     > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                  MixedStyledText('fifth figure')
+                    MixedStyledText('fifth figure')
+                      SingleStyledText('fifth figure')
                 Tab('	')
                 ReferenceField('4')
-                     > (0,0,0,1,1) linked reference
+                     > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
                   SingleStyledText('4')
 ---------------------------------- page 4 ----------------------------------
+#### FlowablesContainer('background')
+  StaticGroupedFlowables()
 #### FootnoteContainer('footnotes')
   StaticGroupedFlowables()
 #### DownExpandingContainer('floats')
   StaticGroupedFlowables()
 #### ChainedContainer('column1')
   (continued) StaticGroupedFlowables()
-    (continued) DocumentTree()
-      (continued) Section(id='section-1')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_figures.rst:12 <section>
-           > (0,0,0,1,2) chapter
-        (continued) Section(id='subsection-2')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_figures.rst:41 <section>
-          Figure()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_figures.rst:None <figure>
-               > (0,0,0,0,2) figure
-            Image('../images/title.png')   None:None <image>
-                 > (0,0,0,0,4) figure image
-                   (0,0,0,0,2) image
-            Caption('Figure 1.4. fifth figure')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_figures.rst:50 <caption>
-                 > (0,0,0,0,4) figure caption
-                MixedStyledText('Figure 1.4. fifth figure')
-                  SingleStyledText('Figure ')
-                  MixedStyledText('1.4. ')
-                    SingleStyledText('1.4')
-                    SingleStyledText('. ')
-                  SingleStyledText('fifth figure')
+    (continued) DocumentTree()   list_of_figures.rst   <document>
+      (continued) Section(id='section-1')   list_of_figures.rst:12   <section>
+           > (0,0,0,1,4) content chapter [Sphinx] > chapter
+             (0,0,0,1,2) chapter [Sphinx] > DEFAULT
+        (continued) Section(id='subsection-2')   list_of_figures.rst:41   <section>
+          Figure()   list_of_figures.rst:48   <figure>
+               > (0,0,0,0,2) figure [Sphinx] > DEFAULT
+            Image('../images/title.png')   list_of_figures.rst:48   <image>
+                 > (0,0,0,0,4) figure image [Sphinx] > image
+                   (0,0,0,0,2) image [Sphinx] > DEFAULT
+            Caption('Figure 1.4. fifth figure')   list_of_figures.rst:50   <caption>
+                 > (0,0,0,0,4) figure caption [Sphinx] > caption
+                StringField('Figure')
+                  SingleStyledText('Figure')
+                SingleStyledText(' ')
+                MixedStyledText('1.4. ', style='label')
+                  SingleStyledText('')
+                  SingleStyledText('1.4')
+                  SingleStyledText('. ')
+                MixedStyledText('fifth figure')
+                  MixedStyledText('fifth figure')
+                    SingleStyledText('fifth figure')
 ---------------------------------- page 5 ----------------------------------
+#### FlowablesContainer('background')
+  StaticGroupedFlowables()
 #### FootnoteContainer('footnotes')
   StaticGroupedFlowables()
 #### DownExpandingContainer('floats')
   StaticGroupedFlowables()
 #### ChainedContainer('column1')
   (continued) StaticGroupedFlowables()
-    (continued) DocumentTree()
-      Section(id='section-2')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_figures.rst:53 <section>
-           > (0,0,0,1,2) chapter
-        Heading('2 Section 2')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_figures.rst:53 <title>
-             > (0,0,0,1,2) heading level 1
-               (0,0,0,0,2) other heading levels
-            MixedStyledText('2 Section 2')
+    (continued) DocumentTree()   list_of_figures.rst   <document>
+      Section(id='section-2')   list_of_figures.rst:53   <section>
+           > (0,0,0,1,4) content chapter [Sphinx] > chapter
+             (0,0,0,1,2) chapter [Sphinx] > DEFAULT
+        Heading('2 Section 2')   list_of_figures.rst:53   <title>
+             > (0,0,0,1,2) heading level 1 [Sphinx] > DEFAULT
+               (0,0,0,0,2) other heading levels [Sphinx] > heading level 5
+            MixedStyledText('2 ', style='label')
+                 x (0,0,1,1,3) heading level 1 label
+              SingleStyledText('')
               SingleStyledText('2')
               SingleStyledText(' ')
-              SingleStyledText('Section 2')
-        ListOfFigures()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_figures.rst:55 <raw>
-             > (0,0,0,0,2) list of figures
-          ListOfEntry('Figure 2.1: sixth figure	5')
-               > (0,0,0,0,4) list of figures entry
-              ReferenceField('Figure 2.1')
-                   > (0,0,0,1,1) linked reference
-                SingleStyledText('Figure 2.1')
+            MixedStyledText('Section 2')
+              MixedStyledText('Section 2')
+                SingleStyledText('Section 2')
+        ListOfFigures()   list_of_figures.rst:55   <raw>
+             > (0,0,0,0,2) list of figures [Sphinx] > table of contents
+          ListOfEntry('Figure 2.1: sixth figure	5')
+               > (0,0,0,0,4) list of figures entry [Sphinx] > list of figures
+              ReferenceField('Figure 2.1')
+                   > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                MixedStyledText('Figure 2.1')
+                  StringField('Figure')
+                    SingleStyledText('Figure')
+                  SingleStyledText(' ')
+                  SingleStyledText('2.1')
               SingleStyledText(': ')
               ReferenceField('sixth figure')
-                   > (0,0,0,1,1) linked reference
-                SingleStyledText('sixth figure')
+                   > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                MixedStyledText('sixth figure')
+                  MixedStyledText('sixth figure')
+                    SingleStyledText('sixth figure')
               Tab('	')
               ReferenceField('5')
-                   > (0,0,0,1,1) linked reference
+                   > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
                 SingleStyledText('5')
-        Figure()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_figures.rst:None <figure>
-             > (0,0,0,0,2) figure
-          Image('../images/title.png')   None:None <image>
-               > (0,0,0,0,4) figure image
-                 (0,0,0,0,2) image
-          Caption('Figure 2.1. sixth figure')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_figures.rst:62 <caption>
-               > (0,0,0,0,4) figure caption
-              MixedStyledText('Figure 2.1. sixth figure')
-                SingleStyledText('Figure ')
-                MixedStyledText('2.1. ')
-                  SingleStyledText('2.1')
-                  SingleStyledText('. ')
-                SingleStyledText('sixth figure')
+        Figure()   list_of_figures.rst:60   <figure>
+             > (0,0,0,0,2) figure [Sphinx] > DEFAULT
+          Image('../images/title.png')   list_of_figures.rst:60   <image>
+               > (0,0,0,0,4) figure image [Sphinx] > image
+                 (0,0,0,0,2) image [Sphinx] > DEFAULT
+          Caption('Figure 2.1. sixth figure')   list_of_figures.rst:62   <caption>
+               > (0,0,0,0,4) figure caption [Sphinx] > caption
+              StringField('Figure')
+                SingleStyledText('Figure')
+              SingleStyledText(' ')
+              MixedStyledText('2.1. ', style='label')
+                SingleStyledText('')
+                SingleStyledText('2.1')
+                SingleStyledText('. ')
+              MixedStyledText('sixth figure')
+                MixedStyledText('sixth figure')
+                  SingleStyledText('sixth figure')

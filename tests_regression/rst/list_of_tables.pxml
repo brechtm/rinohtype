@@ -1,0 +1,131 @@
+<document rinoh_regression_test="True" source="/Users/brechtm/Code/rinohtype/tests_regression/rst/list_of_tables.rst">
+    <raw format="rinoh" xml:space="preserve">
+        ListOfTablesSection
+    <table>
+        <title>
+            first table
+        <tgroup cols="3">
+            <colspec colwidth="5">
+            <colspec colwidth="9">
+            <colspec colwidth="9">
+            <tbody>
+                <row>
+                    <entry>
+                        <paragraph>
+                            A
+                    <entry>
+                        <paragraph>
+                            Simple
+                    <entry>
+                        <paragraph>
+                            Table
+    <section ids="section-1" names="section\ 1">
+        <title>
+            Section 1
+        <raw format="rinoh" xml:space="preserve">
+            ListOfTables(local=True)
+        <table>
+            <title>
+                second table
+            <tgroup cols="3">
+                <colspec colwidth="5">
+                <colspec colwidth="9">
+                <colspec colwidth="9">
+                <tbody>
+                    <row>
+                        <entry>
+                            <paragraph>
+                                A
+                        <entry>
+                            <paragraph>
+                                Simple
+                        <entry>
+                            <paragraph>
+                                Table
+        <section ids="subsection-1" names="subsection\ 1">
+            <title>
+                Subsection 1
+            <raw format="rinoh" xml:space="preserve">
+                ListOfTables(local=True)
+            <table>
+                <title>
+                    third table
+                <tgroup cols="3">
+                    <colspec colwidth="5">
+                    <colspec colwidth="9">
+                    <colspec colwidth="9">
+                    <tbody>
+                        <row>
+                            <entry>
+                                <paragraph>
+                                    A
+                            <entry>
+                                <paragraph>
+                                    Simple
+                            <entry>
+                                <paragraph>
+                                    Table
+            <table>
+                <title>
+                    fourth table
+                <tgroup cols="3">
+                    <colspec colwidth="5">
+                    <colspec colwidth="9">
+                    <colspec colwidth="9">
+                    <tbody>
+                        <row>
+                            <entry>
+                                <paragraph>
+                                    A
+                            <entry>
+                                <paragraph>
+                                    Simple
+                            <entry>
+                                <paragraph>
+                                    Table
+        <section ids="subsection-2" names="subsection\ 2">
+            <title>
+                Subsection 2
+            <raw format="rinoh" xml:space="preserve">
+                ListOfTables(local=True)
+            <table>
+                <title>
+                    fifth table
+                <tgroup cols="3">
+                    <colspec colwidth="5">
+                    <colspec colwidth="9">
+                    <colspec colwidth="9">
+                    <tbody>
+                        <row>
+                            <entry>
+                                <paragraph>
+                                    A
+                            <entry>
+                                <paragraph>
+                                    Simple
+                            <entry>
+                                <paragraph>
+                                    Table
+    <section ids="section-2" names="section\ 2">
+        <title>
+            Section 2
+        <raw format="rinoh" xml:space="preserve">
+            ListOfTables(local=True)
+        <table>
+            <title>
+                sixth table
+            <tgroup cols="3">
+                <colspec colwidth="5">
+                <colspec colwidth="9">
+                <colspec colwidth="9">
+                <tbody>
+                    <row>
+                        <entry>
+                            <paragraph>
+                                A
+                        <entry>
+                            <paragraph>
+                                Simple
+                        <entry>
+                            <paragraph>
+                                Table

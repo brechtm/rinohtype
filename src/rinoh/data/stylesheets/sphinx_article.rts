@@ -19,3 +19,7 @@ space_above=6pt
 [abstract paragraph]
 base=default
 font_weight=bold
+
+[table of contents section]
+page_break=NONE
+show_in_toc=False

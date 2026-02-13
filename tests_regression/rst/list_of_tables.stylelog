@@ -1,553 +1,886 @@
 ---------------------------------- page 1 ----------------------------------
+#### FlowablesContainer('background')
+  StaticGroupedFlowables()
 #### FootnoteContainer('footnotes')
   StaticGroupedFlowables()
 #### DownExpandingContainer('floats')
   StaticGroupedFlowables()
 #### ChainedContainer('column1')
   StaticGroupedFlowables()
-    DocumentTree()
-      ListOfTablesSection(style='list of Chapter')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_tables.rst:2 <raw>
-           > (0,0,0,1,1) chapter
-             (0,0,0,0,2) list of tables section
+    DocumentTree()   list_of_tables.rst   <document>
+      ListOfTablesSection(style='list of table')   list_of_tables.rst:2   <raw>
+           > (1,0,0,0,2) list of tables section [Sphinx] > list of figures section
+             (0,0,0,1,3) content chapter [Sphinx] > chapter
+             (0,0,0,1,1) chapter [Sphinx] > DEFAULT
         Heading('List of Tables', style='unnumbered')
-             > (0,0,1,1,2) unnumbered heading level 1
-               (0,0,0,1,2) heading level 1
-               (0,0,0,0,2) other heading levels
-            MixedStyledText('List of Tables')
-              SingleStyledText('')
-              StringField('List of Tables')
-                SingleStyledText('List of Tables')
-        ListOfTables()   List of Tables
-             > (0,0,0,0,2) list of tables
-          ListOfEntry('Table 1: first table	1')
-               > (0,0,0,0,4) list of tables entry
-              ReferenceField('Table 1')
-                   > (0,0,0,1,1) linked reference
-                SingleStyledText('Table 1')
+             > (0,0,1,1,2) unnumbered heading level 1 [Sphinx] > heading level 1
+               (0,0,0,1,2) heading level 1 [Sphinx] > DEFAULT
+               (0,0,0,0,2) other heading levels [Sphinx] > heading level 5
+            StringField('List of Tables')
+              SingleStyledText('List of Tables')
+        ListOfTables()   List of tables
+             > (0,0,0,0,2) list of tables [Sphinx] > list of figures
+          ListOfEntry('Table 1: first table	1')
+               > (0,0,0,0,4) list of tables entry [Sphinx] > list of figures entry
+              ReferenceField('Table 1')
+                   > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                MixedStyledText('Table 1')
+                  StringField('Table')
+                    SingleStyledText('Table')
+                  SingleStyledText(' ')
+                  SingleStyledText('1')
               SingleStyledText(': ')
               ReferenceField('first table')
-                   > (0,0,0,1,1) linked reference
-                SingleStyledText('first table')
+                   > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                MixedStyledText('first table')
+                  MixedStyledText('first table')
+                    SingleStyledText('first table')
               Tab('	')
               ReferenceField('1')
-                   > (0,0,0,1,1) linked reference
+                   > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
                 SingleStyledText('1')
-          ListOfEntry('Table 1.1: second table	3')
-               > (0,0,0,0,4) list of tables entry
-              ReferenceField('Table 1.1')
-                   > (0,0,0,1,1) linked reference
-                SingleStyledText('Table 1.1')
+          ListOfEntry('Table 1.1: second table	3')
+               > (0,0,0,0,4) list of tables entry [Sphinx] > list of figures entry
+              ReferenceField('Table 1.1')
+                   > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                MixedStyledText('Table 1.1')
+                  StringField('Table')
+                    SingleStyledText('Table')
+                  SingleStyledText(' ')
+                  SingleStyledText('1.1')
               SingleStyledText(': ')
               ReferenceField('second table')
-                   > (0,0,0,1,1) linked reference
-                SingleStyledText('second table')
+                   > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                MixedStyledText('second table')
+                  MixedStyledText('second table')
+                    SingleStyledText('second table')
               Tab('	')
               ReferenceField('3')
-                   > (0,0,0,1,1) linked reference
+                   > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
                 SingleStyledText('3')
-          ListOfEntry('Table 1.2: third table	3')
-               > (0,0,0,0,4) list of tables entry
-              ReferenceField('Table 1.2')
-                   > (0,0,0,1,1) linked reference
-                SingleStyledText('Table 1.2')
+          ListOfEntry('Table 1.2: third table	3')
+               > (0,0,0,0,4) list of tables entry [Sphinx] > list of figures entry
+              ReferenceField('Table 1.2')
+                   > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                MixedStyledText('Table 1.2')
+                  StringField('Table')
+                    SingleStyledText('Table')
+                  SingleStyledText(' ')
+                  SingleStyledText('1.2')
               SingleStyledText(': ')
               ReferenceField('third table')
-                   > (0,0,0,1,1) linked reference
-                SingleStyledText('third table')
+                   > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                MixedStyledText('third table')
+                  MixedStyledText('third table')
+                    SingleStyledText('third table')
               Tab('	')
               ReferenceField('3')
-                   > (0,0,0,1,1) linked reference
+                   > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
                 SingleStyledText('3')
-          ListOfEntry('Table 1.3: fourth table	3')
-               > (0,0,0,0,4) list of tables entry
-              ReferenceField('Table 1.3')
-                   > (0,0,0,1,1) linked reference
-                SingleStyledText('Table 1.3')
+          ListOfEntry('Table 1.3: fourth table	3')
+               > (0,0,0,0,4) list of tables entry [Sphinx] > list of figures entry
+              ReferenceField('Table 1.3')
+                   > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                MixedStyledText('Table 1.3')
+                  StringField('Table')
+                    SingleStyledText('Table')
+                  SingleStyledText(' ')
+                  SingleStyledText('1.3')
               SingleStyledText(': ')
               ReferenceField('fourth table')
-                   > (0,0,0,1,1) linked reference
-                SingleStyledText('fourth table')
+                   > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                MixedStyledText('fourth table')
+                  MixedStyledText('fourth table')
+                    SingleStyledText('fourth table')
               Tab('	')
               ReferenceField('3')
-                   > (0,0,0,1,1) linked reference
+                   > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
                 SingleStyledText('3')
-          ListOfEntry('Table 1.4: fifth table	3')
-               > (0,0,0,0,4) list of tables entry
-              ReferenceField('Table 1.4')
-                   > (0,0,0,1,1) linked reference
-                SingleStyledText('Table 1.4')
+          ListOfEntry('Table 1.4: fifth table	3')
+               > (0,0,0,0,4) list of tables entry [Sphinx] > list of figures entry
+              ReferenceField('Table 1.4')
+                   > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                MixedStyledText('Table 1.4')
+                  StringField('Table')
+                    SingleStyledText('Table')
+                  SingleStyledText(' ')
+                  SingleStyledText('1.4')
               SingleStyledText(': ')
               ReferenceField('fifth table')
-                   > (0,0,0,1,1) linked reference
-                SingleStyledText('fifth table')
+                   > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                MixedStyledText('fifth table')
+                  MixedStyledText('fifth table')
+                    SingleStyledText('fifth table')
               Tab('	')
               ReferenceField('3')
-                   > (0,0,0,1,1) linked reference
+                   > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
                 SingleStyledText('3')
-          ListOfEntry('Table 2.1: sixth table	5')
-               > (0,0,0,0,4) list of tables entry
-              ReferenceField('Table 2.1')
-                   > (0,0,0,1,1) linked reference
-                SingleStyledText('Table 2.1')
+          ListOfEntry('Table 2.1: sixth table	5')
+               > (0,0,0,0,4) list of tables entry [Sphinx] > list of figures entry
+              ReferenceField('Table 2.1')
+                   > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                MixedStyledText('Table 2.1')
+                  StringField('Table')
+                    SingleStyledText('Table')
+                  SingleStyledText(' ')
+                  SingleStyledText('2.1')
               SingleStyledText(': ')
               ReferenceField('sixth table')
-                   > (0,0,0,1,1) linked reference
-                SingleStyledText('sixth table')
+                   > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                MixedStyledText('sixth table')
+                  MixedStyledText('sixth table')
+                    SingleStyledText('sixth table')
               Tab('	')
               ReferenceField('5')
-                   > (0,0,0,1,1) linked reference
+                   > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
                 SingleStyledText('5')
-      TableWithCaption()
+      TableWithCaption()   list_of_tables.rst   <table>
            x (0,0,0,0,2) table with caption
-           > fallback to default style
         Caption('Table 1. first table')
-             > (0,0,0,0,4) table caption
-            MixedStyledText('Table 1. first table')
-              SingleStyledText('Table ')
-              MixedStyledText('1. ')
-                SingleStyledText('1')
-                SingleStyledText('. ')
-              SingleStyledText('first table')
-        Table()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_tables.rst:None <table>
-             > (0,0,0,0,2) table
+             > (0,0,0,0,4) table caption [Sphinx] > caption
+            StringField('Table')
+              SingleStyledText('Table')
+            SingleStyledText(' ')
+            MixedStyledText('1. ', style='label')
+              SingleStyledText('')
+              SingleStyledText('1')
+              SingleStyledText('. ')
+            MixedStyledText('first table')
+              MixedStyledText('first table')
+                SingleStyledText('first table')
+        Table()
+             > (0,0,0,0,2) table [Sphinx] > DEFAULT
           TableBody()
             TableRow()
-              TableCell()   None:None <entry>
-                   > (0,0,0,0,7) table cell
-                Paragraph('A')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_tables.rst:10 <paragraph>
-                     > (0,0,0,1,8) table first column paragraph
-                       (0,0,0,0,9) table body cell paragraph
-                       (0,0,0,0,2) body
-                  MixedStyledText('A')
-                    SingleStyledText('A')
                 TableCellBackground()
                      x (0,0,0,2,8) table body cell background on odd row
-                     > fallback to default style
-              TableCell()   None:None <entry>
-                   > (0,0,0,0,7) table cell
-                Paragraph('Simple')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_tables.rst:10 <paragraph>
-                     > (0,0,0,0,9) table body cell paragraph
-                       (0,0,0,0,2) body
-                  MixedStyledText('Simple')
-                    SingleStyledText('Simple')
+                TableCellBorder('top')
+                     > (0,0,0,2,8) table body top border [Sphinx] > table head bottom border
+                       (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+                TableCellBorder('right')
+                     > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+                TableCellBorder('bottom')
+                     > (0,0,0,2,8) table bottom border [Sphinx] > table top border
+                       (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+                TableCellBorder('left')
+                     x (0,0,0,2,8) table body left border
+                     x (0,0,0,2,4) table left border
+                     > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Paragraph('A')   list_of_tables.rst:10   <paragraph>
+                     > (0,0,0,1,8) table first column paragraph [Sphinx] > table body cell paragraph
+                       (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                       (0,0,0,0,2) body [Sphinx] > default
+                    MixedStyledText('A')
+                      MixedStyledText('A')
+                        SingleStyledText('A')
                 TableCellBackground()
                      x (0,0,0,2,8) table body cell background on odd row
-                     > fallback to default style
-              TableCell()   None:None <entry>
-                   > (0,0,0,0,7) table cell
-                Paragraph('Table')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_tables.rst:10 <paragraph>
-                     > (0,0,0,0,9) table body cell paragraph
-                       (0,0,0,0,2) body
-                  MixedStyledText('Table')
-                    SingleStyledText('Table')
+                TableCellBorder('top')
+                     > (0,0,0,2,8) table body top border [Sphinx] > table head bottom border
+                       (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+                TableCellBorder('right')
+                     > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+                TableCellBorder('bottom')
+                     > (0,0,0,2,8) table bottom border [Sphinx] > table top border
+                       (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+                TableCellBorder('left')
+                     > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Paragraph('Simple')   list_of_tables.rst:10   <paragraph>
+                     > (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                       (0,0,0,0,2) body [Sphinx] > default
+                    MixedStyledText('Simple')
+                      MixedStyledText('Simple')
+                        SingleStyledText('Simple')
                 TableCellBackground()
                      x (0,0,0,2,8) table body cell background on odd row
-                     > fallback to default style
+                TableCellBorder('top')
+                     > (0,0,0,2,8) table body top border [Sphinx] > table head bottom border
+                       (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+                TableCellBorder('right')
+                     x (0,0,0,2,8) table body right border
+                     x (0,0,0,2,4) table right border
+                     > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+                TableCellBorder('bottom')
+                     > (0,0,0,2,8) table bottom border [Sphinx] > table top border
+                       (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+                TableCellBorder('left')
+                     > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
+              TableCell()   <entry>
+                   > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                Paragraph('Table')   list_of_tables.rst:10   <paragraph>
+                     > (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                       (0,0,0,0,2) body [Sphinx] > default
+                    MixedStyledText('Table')
+                      MixedStyledText('Table')
+                        SingleStyledText('Table')
 ---------------------------------- page 2 ----------------------------------
+#### FlowablesContainer('background')
+  StaticGroupedFlowables()
 #### FootnoteContainer('footnotes')
   StaticGroupedFlowables()
 #### DownExpandingContainer('floats')
   StaticGroupedFlowables()
 #### ChainedContainer('column1')
   (continued) StaticGroupedFlowables()
-    (continued) DocumentTree()
+    (continued) DocumentTree()   list_of_tables.rst   <document>
 ---------------------------------- page 3 ----------------------------------
+#### FlowablesContainer('background')
+  StaticGroupedFlowables()
 #### FootnoteContainer('footnotes')
   StaticGroupedFlowables()
 #### DownExpandingContainer('floats')
   StaticGroupedFlowables()
 #### ChainedContainer('column1')
   (continued) StaticGroupedFlowables()
-    (continued) DocumentTree()
-      Section(id='section-1')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_tables.rst:14 <section>
-           > (0,0,0,1,2) chapter
-        Heading('1 Section 1')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_tables.rst:14 <title>
-             > (0,0,0,1,2) heading level 1
-               (0,0,0,0,2) other heading levels
-            MixedStyledText('1 Section 1')
+    (continued) DocumentTree()   list_of_tables.rst   <document>
+      Section(id='section-1')   list_of_tables.rst:14   <section>
+           > (0,0,0,1,4) content chapter [Sphinx] > chapter
+             (0,0,0,1,2) chapter [Sphinx] > DEFAULT
+        Heading('1 Section 1')   list_of_tables.rst:14   <title>
+             > (0,0,0,1,2) heading level 1 [Sphinx] > DEFAULT
+               (0,0,0,0,2) other heading levels [Sphinx] > heading level 5
+            MixedStyledText('1 ', style='label')
+                 x (0,0,1,1,3) heading level 1 label
+              SingleStyledText('')
               SingleStyledText('1')
               SingleStyledText(' ')
-              SingleStyledText('Section 1')
-        ListOfTables()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_tables.rst:16 <raw>
-             > (0,0,0,0,2) list of tables
-          ListOfEntry('Table 1.1: second table	3')
-               > (0,0,0,0,4) list of tables entry
-              ReferenceField('Table 1.1')
-                   > (0,0,0,1,1) linked reference
-                SingleStyledText('Table 1.1')
+            MixedStyledText('Section 1')
+              MixedStyledText('Section 1')
+                SingleStyledText('Section 1')
+        ListOfTables()   list_of_tables.rst:16   <raw>
+             > (0,0,0,0,2) list of tables [Sphinx] > list of figures
+          ListOfEntry('Table 1.1: second table	3')
+               > (0,0,0,0,4) list of tables entry [Sphinx] > list of figures entry
+              ReferenceField('Table 1.1')
+                   > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                MixedStyledText('Table 1.1')
+                  StringField('Table')
+                    SingleStyledText('Table')
+                  SingleStyledText(' ')
+                  SingleStyledText('1.1')
               SingleStyledText(': ')
               ReferenceField('second table')
-                   > (0,0,0,1,1) linked reference
-                SingleStyledText('second table')
+                   > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                MixedStyledText('second table')
+                  MixedStyledText('second table')
+                    SingleStyledText('second table')
               Tab('	')
               ReferenceField('3')
-                   > (0,0,0,1,1) linked reference
+                   > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
                 SingleStyledText('3')
-          ListOfEntry('Table 1.2: third table	3')
-               > (0,0,0,0,4) list of tables entry
-              ReferenceField('Table 1.2')
-                   > (0,0,0,1,1) linked reference
-                SingleStyledText('Table 1.2')
+          ListOfEntry('Table 1.2: third table	3')
+               > (0,0,0,0,4) list of tables entry [Sphinx] > list of figures entry
+              ReferenceField('Table 1.2')
+                   > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                MixedStyledText('Table 1.2')
+                  StringField('Table')
+                    SingleStyledText('Table')
+                  SingleStyledText(' ')
+                  SingleStyledText('1.2')
               SingleStyledText(': ')
               ReferenceField('third table')
-                   > (0,0,0,1,1) linked reference
-                SingleStyledText('third table')
+                   > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                MixedStyledText('third table')
+                  MixedStyledText('third table')
+                    SingleStyledText('third table')
               Tab('	')
               ReferenceField('3')
-                   > (0,0,0,1,1) linked reference
+                   > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
                 SingleStyledText('3')
-          ListOfEntry('Table 1.3: fourth table	3')
-               > (0,0,0,0,4) list of tables entry
-              ReferenceField('Table 1.3')
-                   > (0,0,0,1,1) linked reference
-                SingleStyledText('Table 1.3')
+          ListOfEntry('Table 1.3: fourth table	3')
+               > (0,0,0,0,4) list of tables entry [Sphinx] > list of figures entry
+              ReferenceField('Table 1.3')
+                   > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                MixedStyledText('Table 1.3')
+                  StringField('Table')
+                    SingleStyledText('Table')
+                  SingleStyledText(' ')
+                  SingleStyledText('1.3')
               SingleStyledText(': ')
               ReferenceField('fourth table')
-                   > (0,0,0,1,1) linked reference
-                SingleStyledText('fourth table')
+                   > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                MixedStyledText('fourth table')
+                  MixedStyledText('fourth table')
+                    SingleStyledText('fourth table')
               Tab('	')
               ReferenceField('3')
-                   > (0,0,0,1,1) linked reference
+                   > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
                 SingleStyledText('3')
-          ListOfEntry('Table 1.4: fifth table	3')
-               > (0,0,0,0,4) list of tables entry
-              ReferenceField('Table 1.4')
-                   > (0,0,0,1,1) linked reference
-                SingleStyledText('Table 1.4')
+          ListOfEntry('Table 1.4: fifth table	3')
+               > (0,0,0,0,4) list of tables entry [Sphinx] > list of figures entry
+              ReferenceField('Table 1.4')
+                   > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                MixedStyledText('Table 1.4')
+                  StringField('Table')
+                    SingleStyledText('Table')
+                  SingleStyledText(' ')
+                  SingleStyledText('1.4')
               SingleStyledText(': ')
               ReferenceField('fifth table')
-                   > (0,0,0,1,1) linked reference
-                SingleStyledText('fifth table')
+                   > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                MixedStyledText('fifth table')
+                  MixedStyledText('fifth table')
+                    SingleStyledText('fifth table')
               Tab('	')
               ReferenceField('3')
-                   > (0,0,0,1,1) linked reference
+                   > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
                 SingleStyledText('3')
-        TableWithCaption()
+        TableWithCaption()   list_of_tables.rst   <table>
              x (0,0,0,0,2) table with caption
-             > fallback to default style
           Caption('Table 1.1. second table')
-               > (0,0,0,0,4) table caption
-              MixedStyledText('Table 1.1. second table')
-                SingleStyledText('Table ')
-                MixedStyledText('1.1. ')
-                  SingleStyledText('1.1')
-                  SingleStyledText('. ')
-                SingleStyledText('second table')
-          Table()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_tables.rst:None <table>
-               > (0,0,0,0,2) table
+               > (0,0,0,0,4) table caption [Sphinx] > caption
+              StringField('Table')
+                SingleStyledText('Table')
+              SingleStyledText(' ')
+              MixedStyledText('1.1. ', style='label')
+                SingleStyledText('')
+                SingleStyledText('1.1')
+                SingleStyledText('. ')
+              MixedStyledText('second table')
+                MixedStyledText('second table')
+                  SingleStyledText('second table')
+          Table()
+               > (0,0,0,0,2) table [Sphinx] > DEFAULT
             TableBody()
               TableRow()
-                TableCell()   None:None <entry>
-                     > (0,0,0,0,7) table cell
-                  Paragraph('A')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_tables.rst:24 <paragraph>
-                       > (0,0,0,1,8) table first column paragraph
-                         (0,0,0,0,9) table body cell paragraph
-                         (0,0,0,0,2) body
-                    MixedStyledText('A')
-                      SingleStyledText('A')
                   TableCellBackground()
                        x (0,0,0,2,8) table body cell background on odd row
-                       > fallback to default style
-                TableCell()   None:None <entry>
-                     > (0,0,0,0,7) table cell
-                  Paragraph('Simple')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_tables.rst:24 <paragraph>
-                       > (0,0,0,0,9) table body cell paragraph
-                         (0,0,0,0,2) body
-                    MixedStyledText('Simple')
-                      SingleStyledText('Simple')
+                  TableCellBorder('top')
+                       > (0,0,0,2,8) table body top border [Sphinx] > table head bottom border
+                         (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+                  TableCellBorder('right')
+                       > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+                  TableCellBorder('bottom')
+                       > (0,0,0,2,8) table bottom border [Sphinx] > table top border
+                         (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+                  TableCellBorder('left')
+                       x (0,0,0,2,8) table body left border
+                       x (0,0,0,2,4) table left border
+                       > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
+                TableCell()   <entry>
+                     > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                  Paragraph('A')   list_of_tables.rst:24   <paragraph>
+                       > (0,0,0,1,8) table first column paragraph [Sphinx] > table body cell paragraph
+                         (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                         (0,0,0,0,2) body [Sphinx] > default
+                      MixedStyledText('A')
+                        MixedStyledText('A')
+                          SingleStyledText('A')
                   TableCellBackground()
                        x (0,0,0,2,8) table body cell background on odd row
-                       > fallback to default style
-                TableCell()   None:None <entry>
-                     > (0,0,0,0,7) table cell
-                  Paragraph('Table')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_tables.rst:24 <paragraph>
-                       > (0,0,0,0,9) table body cell paragraph
-                         (0,0,0,0,2) body
-                    MixedStyledText('Table')
-                      SingleStyledText('Table')
+                  TableCellBorder('top')
+                       > (0,0,0,2,8) table body top border [Sphinx] > table head bottom border
+                         (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+                  TableCellBorder('right')
+                       > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+                  TableCellBorder('bottom')
+                       > (0,0,0,2,8) table bottom border [Sphinx] > table top border
+                         (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+                  TableCellBorder('left')
+                       > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
+                TableCell()   <entry>
+                     > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                  Paragraph('Simple')   list_of_tables.rst:24   <paragraph>
+                       > (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                         (0,0,0,0,2) body [Sphinx] > default
+                      MixedStyledText('Simple')
+                        MixedStyledText('Simple')
+                          SingleStyledText('Simple')
                   TableCellBackground()
                        x (0,0,0,2,8) table body cell background on odd row
-                       > fallback to default style
-        Section(id='subsection-1')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_tables.rst:28 <section>
-          Heading('1.1 Subsection 1')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_tables.rst:28 <title>
-               > (0,0,0,1,2) heading level 2
-                 (0,0,0,0,2) other heading levels
-              MixedStyledText('1.1 Subsection 1')
+                  TableCellBorder('top')
+                       > (0,0,0,2,8) table body top border [Sphinx] > table head bottom border
+                         (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+                  TableCellBorder('right')
+                       x (0,0,0,2,8) table body right border
+                       x (0,0,0,2,4) table right border
+                       > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+                  TableCellBorder('bottom')
+                       > (0,0,0,2,8) table bottom border [Sphinx] > table top border
+                         (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+                  TableCellBorder('left')
+                       > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
+                TableCell()   <entry>
+                     > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                  Paragraph('Table')   list_of_tables.rst:24   <paragraph>
+                       > (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                         (0,0,0,0,2) body [Sphinx] > default
+                      MixedStyledText('Table')
+                        MixedStyledText('Table')
+                          SingleStyledText('Table')
+        Section(id='subsection-1')   list_of_tables.rst:28   <section>
+          Heading('1.1 Subsection 1')   list_of_tables.rst:28   <title>
+               > (0,0,0,1,2) heading level 2 [Sphinx] > heading level 1
+                 (0,0,0,0,2) other heading levels [Sphinx] > heading level 5
+              MixedStyledText('1.1 ', style='label')
+                   x (0,0,1,1,3) heading level 2 label
+                SingleStyledText('')
                 SingleStyledText('1.1')
                 SingleStyledText(' ')
-                SingleStyledText('Subsection 1')
-          ListOfTables()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_tables.rst:30 <raw>
-               > (0,0,0,0,2) list of tables
-            ListOfEntry('Table 1.2: third table	3')
-                 > (0,0,0,0,4) list of tables entry
-                ReferenceField('Table 1.2')
-                     > (0,0,0,1,1) linked reference
-                  SingleStyledText('Table 1.2')
+              MixedStyledText('Subsection 1')
+                MixedStyledText('Subsection 1')
+                  SingleStyledText('Subsection 1')
+          ListOfTables()   list_of_tables.rst:30   <raw>
+               > (0,0,0,0,2) list of tables [Sphinx] > list of figures
+            ListOfEntry('Table 1.2: third table	3')
+                 > (0,0,0,0,4) list of tables entry [Sphinx] > list of figures entry
+                ReferenceField('Table 1.2')
+                     > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                  MixedStyledText('Table 1.2')
+                    StringField('Table')
+                      SingleStyledText('Table')
+                    SingleStyledText(' ')
+                    SingleStyledText('1.2')
                 SingleStyledText(': ')
                 ReferenceField('third table')
-                     > (0,0,0,1,1) linked reference
-                  SingleStyledText('third table')
+                     > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                  MixedStyledText('third table')
+                    MixedStyledText('third table')
+                      SingleStyledText('third table')
                 Tab('	')
                 ReferenceField('3')
-                     > (0,0,0,1,1) linked reference
+                     > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
                   SingleStyledText('3')
-            ListOfEntry('Table 1.3: fourth table	3')
-                 > (0,0,0,0,4) list of tables entry
-                ReferenceField('Table 1.3')
-                     > (0,0,0,1,1) linked reference
-                  SingleStyledText('Table 1.3')
+            ListOfEntry('Table 1.3: fourth table	3')
+                 > (0,0,0,0,4) list of tables entry [Sphinx] > list of figures entry
+                ReferenceField('Table 1.3')
+                     > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                  MixedStyledText('Table 1.3')
+                    StringField('Table')
+                      SingleStyledText('Table')
+                    SingleStyledText(' ')
+                    SingleStyledText('1.3')
                 SingleStyledText(': ')
                 ReferenceField('fourth table')
-                     > (0,0,0,1,1) linked reference
-                  SingleStyledText('fourth table')
+                     > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                  MixedStyledText('fourth table')
+                    MixedStyledText('fourth table')
+                      SingleStyledText('fourth table')
                 Tab('	')
                 ReferenceField('3')
-                     > (0,0,0,1,1) linked reference
+                     > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
                   SingleStyledText('3')
-          TableWithCaption()
+          TableWithCaption()   list_of_tables.rst   <table>
                x (0,0,0,0,2) table with caption
-               > fallback to default style
             Caption('Table 1.2. third table')
-                 > (0,0,0,0,4) table caption
-                MixedStyledText('Table 1.2. third table')
-                  SingleStyledText('Table ')
-                  MixedStyledText('1.2. ')
-                    SingleStyledText('1.2')
-                    SingleStyledText('. ')
-                  SingleStyledText('third table')
-            Table()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_tables.rst:None <table>
-                 > (0,0,0,0,2) table
+                 > (0,0,0,0,4) table caption [Sphinx] > caption
+                StringField('Table')
+                  SingleStyledText('Table')
+                SingleStyledText(' ')
+                MixedStyledText('1.2. ', style='label')
+                  SingleStyledText('')
+                  SingleStyledText('1.2')
+                  SingleStyledText('. ')
+                MixedStyledText('third table')
+                  MixedStyledText('third table')
+                    SingleStyledText('third table')
+            Table()
+                 > (0,0,0,0,2) table [Sphinx] > DEFAULT
               TableBody()
                 TableRow()
-                  TableCell()   None:None <entry>
-                       > (0,0,0,0,7) table cell
-                    Paragraph('A')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_tables.rst:38 <paragraph>
-                         > (0,0,0,1,8) table first column paragraph
-                           (0,0,0,0,9) table body cell paragraph
-                           (0,0,0,0,2) body
-                      MixedStyledText('A')
-                        SingleStyledText('A')
                     TableCellBackground()
                          x (0,0,0,2,8) table body cell background on odd row
-                         > fallback to default style
-                  TableCell()   None:None <entry>
-                       > (0,0,0,0,7) table cell
-                    Paragraph('Simple')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_tables.rst:38 <paragraph>
-                         > (0,0,0,0,9) table body cell paragraph
-                           (0,0,0,0,2) body
-                      MixedStyledText('Simple')
-                        SingleStyledText('Simple')
+                    TableCellBorder('top')
+                         > (0,0,0,2,8) table body top border [Sphinx] > table head bottom border
+                           (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+                    TableCellBorder('right')
+                         > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+                    TableCellBorder('bottom')
+                         > (0,0,0,2,8) table bottom border [Sphinx] > table top border
+                           (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+                    TableCellBorder('left')
+                         x (0,0,0,2,8) table body left border
+                         x (0,0,0,2,4) table left border
+                         > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
+                  TableCell()   <entry>
+                       > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                    Paragraph('A')   list_of_tables.rst:38   <paragraph>
+                         > (0,0,0,1,8) table first column paragraph [Sphinx] > table body cell paragraph
+                           (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                           (0,0,0,0,2) body [Sphinx] > default
+                        MixedStyledText('A')
+                          MixedStyledText('A')
+                            SingleStyledText('A')
                     TableCellBackground()
                          x (0,0,0,2,8) table body cell background on odd row
-                         > fallback to default style
-                  TableCell()   None:None <entry>
-                       > (0,0,0,0,7) table cell
-                    Paragraph('Table')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_tables.rst:38 <paragraph>
-                         > (0,0,0,0,9) table body cell paragraph
-                           (0,0,0,0,2) body
-                      MixedStyledText('Table')
-                        SingleStyledText('Table')
+                    TableCellBorder('top')
+                         > (0,0,0,2,8) table body top border [Sphinx] > table head bottom border
+                           (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+                    TableCellBorder('right')
+                         > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+                    TableCellBorder('bottom')
+                         > (0,0,0,2,8) table bottom border [Sphinx] > table top border
+                           (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+                    TableCellBorder('left')
+                         > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
+                  TableCell()   <entry>
+                       > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                    Paragraph('Simple')   list_of_tables.rst:38   <paragraph>
+                         > (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                           (0,0,0,0,2) body [Sphinx] > default
+                        MixedStyledText('Simple')
+                          MixedStyledText('Simple')
+                            SingleStyledText('Simple')
                     TableCellBackground()
                          x (0,0,0,2,8) table body cell background on odd row
-                         > fallback to default style
-          TableWithCaption()
+                    TableCellBorder('top')
+                         > (0,0,0,2,8) table body top border [Sphinx] > table head bottom border
+                           (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+                    TableCellBorder('right')
+                         x (0,0,0,2,8) table body right border
+                         x (0,0,0,2,4) table right border
+                         > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+                    TableCellBorder('bottom')
+                         > (0,0,0,2,8) table bottom border [Sphinx] > table top border
+                           (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+                    TableCellBorder('left')
+                         > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
+                  TableCell()   <entry>
+                       > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                    Paragraph('Table')   list_of_tables.rst:38   <paragraph>
+                         > (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                           (0,0,0,0,2) body [Sphinx] > default
+                        MixedStyledText('Table')
+                          MixedStyledText('Table')
+                            SingleStyledText('Table')
+          TableWithCaption()   list_of_tables.rst   <table>
                x (0,0,0,0,2) table with caption
-               > fallback to default style
             Caption('Table 1.3. fourth table')
-                 > (0,0,0,0,4) table caption
-                MixedStyledText('Table 1.3. fourth table')
-                  SingleStyledText('Table ')
-                  MixedStyledText('1.3. ')
-                    SingleStyledText('1.3')
-                    SingleStyledText('. ')
-                  SingleStyledText('fourth table')
-            Table()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_tables.rst:None <table>
-                 > (0,0,0,0,2) table
+                 > (0,0,0,0,4) table caption [Sphinx] > caption
+                StringField('Table')
+                  SingleStyledText('Table')
+                SingleStyledText(' ')
+                MixedStyledText('1.3. ', style='label')
+                  SingleStyledText('')
+                  SingleStyledText('1.3')
+                  SingleStyledText('. ')
+                MixedStyledText('fourth table')
+                  MixedStyledText('fourth table')
+                    SingleStyledText('fourth table')
+            Table()
+                 > (0,0,0,0,2) table [Sphinx] > DEFAULT
               TableBody()
                 TableRow()
-                  TableCell()   None:None <entry>
-                       > (0,0,0,0,7) table cell
-                    Paragraph('A')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_tables.rst:44 <paragraph>
-                         > (0,0,0,1,8) table first column paragraph
-                           (0,0,0,0,9) table body cell paragraph
-                           (0,0,0,0,2) body
-                      MixedStyledText('A')
-                        SingleStyledText('A')
                     TableCellBackground()
                          x (0,0,0,2,8) table body cell background on odd row
-                         > fallback to default style
-                  TableCell()   None:None <entry>
-                       > (0,0,0,0,7) table cell
-                    Paragraph('Simple')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_tables.rst:44 <paragraph>
-                         > (0,0,0,0,9) table body cell paragraph
-                           (0,0,0,0,2) body
-                      MixedStyledText('Simple')
-                        SingleStyledText('Simple')
+                    TableCellBorder('top')
+                         > (0,0,0,2,8) table body top border [Sphinx] > table head bottom border
+                           (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+                    TableCellBorder('right')
+                         > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+                    TableCellBorder('bottom')
+                         > (0,0,0,2,8) table bottom border [Sphinx] > table top border
+                           (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+                    TableCellBorder('left')
+                         x (0,0,0,2,8) table body left border
+                         x (0,0,0,2,4) table left border
+                         > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
+                  TableCell()   <entry>
+                       > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                    Paragraph('A')   list_of_tables.rst:44   <paragraph>
+                         > (0,0,0,1,8) table first column paragraph [Sphinx] > table body cell paragraph
+                           (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                           (0,0,0,0,2) body [Sphinx] > default
+                        MixedStyledText('A')
+                          MixedStyledText('A')
+                            SingleStyledText('A')
                     TableCellBackground()
                          x (0,0,0,2,8) table body cell background on odd row
-                         > fallback to default style
-                  TableCell()   None:None <entry>
-                       > (0,0,0,0,7) table cell
-                    Paragraph('Table')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_tables.rst:44 <paragraph>
-                         > (0,0,0,0,9) table body cell paragraph
-                           (0,0,0,0,2) body
-                      MixedStyledText('Table')
-                        SingleStyledText('Table')
+                    TableCellBorder('top')
+                         > (0,0,0,2,8) table body top border [Sphinx] > table head bottom border
+                           (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+                    TableCellBorder('right')
+                         > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+                    TableCellBorder('bottom')
+                         > (0,0,0,2,8) table bottom border [Sphinx] > table top border
+                           (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+                    TableCellBorder('left')
+                         > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
+                  TableCell()   <entry>
+                       > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                    Paragraph('Simple')   list_of_tables.rst:44   <paragraph>
+                         > (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                           (0,0,0,0,2) body [Sphinx] > default
+                        MixedStyledText('Simple')
+                          MixedStyledText('Simple')
+                            SingleStyledText('Simple')
                     TableCellBackground()
                          x (0,0,0,2,8) table body cell background on odd row
-                         > fallback to default style
-        Section(id='subsection-2')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_tables.rst:48 <section>
-          Heading('1.2 Subsection 2')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_tables.rst:48 <title>
-               > (0,0,0,1,2) heading level 2
-                 (0,0,0,0,2) other heading levels
-              MixedStyledText('1.2 Subsection 2')
+                    TableCellBorder('top')
+                         > (0,0,0,2,8) table body top border [Sphinx] > table head bottom border
+                           (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+                    TableCellBorder('right')
+                         x (0,0,0,2,8) table body right border
+                         x (0,0,0,2,4) table right border
+                         > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+                    TableCellBorder('bottom')
+                         > (0,0,0,2,8) table bottom border [Sphinx] > table top border
+                           (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+                    TableCellBorder('left')
+                         > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
+                  TableCell()   <entry>
+                       > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                    Paragraph('Table')   list_of_tables.rst:44   <paragraph>
+                         > (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                           (0,0,0,0,2) body [Sphinx] > default
+                        MixedStyledText('Table')
+                          MixedStyledText('Table')
+                            SingleStyledText('Table')
+        Section(id='subsection-2')   list_of_tables.rst:48   <section>
+          Heading('1.2 Subsection 2')   list_of_tables.rst:48   <title>
+               > (0,0,0,1,2) heading level 2 [Sphinx] > heading level 1
+                 (0,0,0,0,2) other heading levels [Sphinx] > heading level 5
+              MixedStyledText('1.2 ', style='label')
+                   x (0,0,1,1,3) heading level 2 label
+                SingleStyledText('')
                 SingleStyledText('1.2')
                 SingleStyledText(' ')
-                SingleStyledText('Subsection 2')
-          ListOfTables()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_tables.rst:50 <raw>
-               > (0,0,0,0,2) list of tables
-            ListOfEntry('Table 1.4: fifth table	3')
-                 > (0,0,0,0,4) list of tables entry
-                ReferenceField('Table 1.4')
-                     > (0,0,0,1,1) linked reference
-                  SingleStyledText('Table 1.4')
+              MixedStyledText('Subsection 2')
+                MixedStyledText('Subsection 2')
+                  SingleStyledText('Subsection 2')
+          ListOfTables()   list_of_tables.rst:50   <raw>
+               > (0,0,0,0,2) list of tables [Sphinx] > list of figures
+            ListOfEntry('Table 1.4: fifth table	3')
+                 > (0,0,0,0,4) list of tables entry [Sphinx] > list of figures entry
+                ReferenceField('Table 1.4')
+                     > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                  MixedStyledText('Table 1.4')
+                    StringField('Table')
+                      SingleStyledText('Table')
+                    SingleStyledText(' ')
+                    SingleStyledText('1.4')
                 SingleStyledText(': ')
                 ReferenceField('fifth table')
-                     > (0,0,0,1,1) linked reference
-                  SingleStyledText('fifth table')
+                     > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                  MixedStyledText('fifth table')
+                    MixedStyledText('fifth table')
+                      SingleStyledText('fifth table')
                 Tab('	')
                 ReferenceField('3')
-                     > (0,0,0,1,1) linked reference
+                     > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
                   SingleStyledText('3')
-          TableWithCaption()
+          TableWithCaption()   list_of_tables.rst   <table>
                x (0,0,0,0,2) table with caption
-               > fallback to default style
             Caption('Table 1.4. fifth table')
-                 > (0,0,0,0,4) table caption
-                MixedStyledText('Table 1.4. fifth table')
-                  SingleStyledText('Table ')
-                  MixedStyledText('1.4. ')
-                    SingleStyledText('1.4')
-                    SingleStyledText('. ')
-                  SingleStyledText('fifth table')
-            Table()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_tables.rst:None <table>
-                 > (0,0,0,0,2) table
+                 > (0,0,0,0,4) table caption [Sphinx] > caption
+                StringField('Table')
+                  SingleStyledText('Table')
+                SingleStyledText(' ')
+                MixedStyledText('1.4. ', style='label')
+                  SingleStyledText('')
+                  SingleStyledText('1.4')
+                  SingleStyledText('. ')
+                MixedStyledText('fifth table')
+                  MixedStyledText('fifth table')
+                    SingleStyledText('fifth table')
+            Table()
+                 > (0,0,0,0,2) table [Sphinx] > DEFAULT
               TableBody()
                 TableRow()
-                  TableCell()   None:None <entry>
-                       > (0,0,0,0,7) table cell
-                    Paragraph('A')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_tables.rst:58 <paragraph>
-                         > (0,0,0,1,8) table first column paragraph
-                           (0,0,0,0,9) table body cell paragraph
-                           (0,0,0,0,2) body
-                      MixedStyledText('A')
-                        SingleStyledText('A')
                     TableCellBackground()
                          x (0,0,0,2,8) table body cell background on odd row
-                         > fallback to default style
-                  TableCell()   None:None <entry>
-                       > (0,0,0,0,7) table cell
-                    Paragraph('Simple')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_tables.rst:58 <paragraph>
-                         > (0,0,0,0,9) table body cell paragraph
-                           (0,0,0,0,2) body
-                      MixedStyledText('Simple')
-                        SingleStyledText('Simple')
+                    TableCellBorder('top')
+                         > (0,0,0,2,8) table body top border [Sphinx] > table head bottom border
+                           (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+                    TableCellBorder('right')
+                         > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+                    TableCellBorder('bottom')
+                         > (0,0,0,2,8) table bottom border [Sphinx] > table top border
+                           (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+                    TableCellBorder('left')
+                         x (0,0,0,2,8) table body left border
+                         x (0,0,0,2,4) table left border
+                         > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
+                  TableCell()   <entry>
+                       > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                    Paragraph('A')   list_of_tables.rst:58   <paragraph>
+                         > (0,0,0,1,8) table first column paragraph [Sphinx] > table body cell paragraph
+                           (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                           (0,0,0,0,2) body [Sphinx] > default
+                        MixedStyledText('A')
+                          MixedStyledText('A')
+                            SingleStyledText('A')
                     TableCellBackground()
                          x (0,0,0,2,8) table body cell background on odd row
-                         > fallback to default style
-                  TableCell()   None:None <entry>
-                       > (0,0,0,0,7) table cell
-                    Paragraph('Table')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_tables.rst:58 <paragraph>
-                         > (0,0,0,0,9) table body cell paragraph
-                           (0,0,0,0,2) body
-                      MixedStyledText('Table')
-                        SingleStyledText('Table')
+                    TableCellBorder('top')
+                         > (0,0,0,2,8) table body top border [Sphinx] > table head bottom border
+                           (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+                    TableCellBorder('right')
+                         > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+                    TableCellBorder('bottom')
+                         > (0,0,0,2,8) table bottom border [Sphinx] > table top border
+                           (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+                    TableCellBorder('left')
+                         > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
+                  TableCell()   <entry>
+                       > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                    Paragraph('Simple')   list_of_tables.rst:58   <paragraph>
+                         > (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                           (0,0,0,0,2) body [Sphinx] > default
+                        MixedStyledText('Simple')
+                          MixedStyledText('Simple')
+                            SingleStyledText('Simple')
                     TableCellBackground()
                          x (0,0,0,2,8) table body cell background on odd row
-                         > fallback to default style
+                    TableCellBorder('top')
+                         > (0,0,0,2,8) table body top border [Sphinx] > table head bottom border
+                           (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+                    TableCellBorder('right')
+                         x (0,0,0,2,8) table body right border
+                         x (0,0,0,2,4) table right border
+                         > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+                    TableCellBorder('bottom')
+                         > (0,0,0,2,8) table bottom border [Sphinx] > table top border
+                           (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+                    TableCellBorder('left')
+                         > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
+                  TableCell()   <entry>
+                       > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                    Paragraph('Table')   list_of_tables.rst:58   <paragraph>
+                         > (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                           (0,0,0,0,2) body [Sphinx] > default
+                        MixedStyledText('Table')
+                          MixedStyledText('Table')
+                            SingleStyledText('Table')
 ---------------------------------- page 4 ----------------------------------
+#### FlowablesContainer('background')
+  StaticGroupedFlowables()
 #### FootnoteContainer('footnotes')
   StaticGroupedFlowables()
 #### DownExpandingContainer('floats')
   StaticGroupedFlowables()
 #### ChainedContainer('column1')
   (continued) StaticGroupedFlowables()
-    (continued) DocumentTree()
+    (continued) DocumentTree()   list_of_tables.rst   <document>
 ---------------------------------- page 5 ----------------------------------
+#### FlowablesContainer('background')
+  StaticGroupedFlowables()
 #### FootnoteContainer('footnotes')
   StaticGroupedFlowables()
 #### DownExpandingContainer('floats')
   StaticGroupedFlowables()
 #### ChainedContainer('column1')
   (continued) StaticGroupedFlowables()
-    (continued) DocumentTree()
-      Section(id='section-2')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_tables.rst:62 <section>
-           > (0,0,0,1,2) chapter
-        Heading('2 Section 2')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_tables.rst:62 <title>
-             > (0,0,0,1,2) heading level 1
-               (0,0,0,0,2) other heading levels
-            MixedStyledText('2 Section 2')
+    (continued) DocumentTree()   list_of_tables.rst   <document>
+      Section(id='section-2')   list_of_tables.rst:62   <section>
+           > (0,0,0,1,4) content chapter [Sphinx] > chapter
+             (0,0,0,1,2) chapter [Sphinx] > DEFAULT
+        Heading('2 Section 2')   list_of_tables.rst:62   <title>
+             > (0,0,0,1,2) heading level 1 [Sphinx] > DEFAULT
+               (0,0,0,0,2) other heading levels [Sphinx] > heading level 5
+            MixedStyledText('2 ', style='label')
+                 x (0,0,1,1,3) heading level 1 label
+              SingleStyledText('')
               SingleStyledText('2')
               SingleStyledText(' ')
-              SingleStyledText('Section 2')
-        ListOfTables()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_tables.rst:64 <raw>
-             > (0,0,0,0,2) list of tables
-          ListOfEntry('Table 2.1: sixth table	5')
-               > (0,0,0,0,4) list of tables entry
-              ReferenceField('Table 2.1')
-                   > (0,0,0,1,1) linked reference
-                SingleStyledText('Table 2.1')
+            MixedStyledText('Section 2')
+              MixedStyledText('Section 2')
+                SingleStyledText('Section 2')
+        ListOfTables()   list_of_tables.rst:64   <raw>
+             > (0,0,0,0,2) list of tables [Sphinx] > list of figures
+          ListOfEntry('Table 2.1: sixth table	5')
+               > (0,0,0,0,4) list of tables entry [Sphinx] > list of figures entry
+              ReferenceField('Table 2.1')
+                   > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                MixedStyledText('Table 2.1')
+                  StringField('Table')
+                    SingleStyledText('Table')
+                  SingleStyledText(' ')
+                  SingleStyledText('2.1')
               SingleStyledText(': ')
               ReferenceField('sixth table')
-                   > (0,0,0,1,1) linked reference
-                SingleStyledText('sixth table')
+                   > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                MixedStyledText('sixth table')
+                  MixedStyledText('sixth table')
+                    SingleStyledText('sixth table')
               Tab('	')
               ReferenceField('5')
-                   > (0,0,0,1,1) linked reference
+                   > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
                 SingleStyledText('5')
-        TableWithCaption()
+        TableWithCaption()   list_of_tables.rst   <table>
              x (0,0,0,0,2) table with caption
-             > fallback to default style
           Caption('Table 2.1. sixth table')
-               > (0,0,0,0,4) table caption
-              MixedStyledText('Table 2.1. sixth table')
-                SingleStyledText('Table ')
-                MixedStyledText('2.1. ')
-                  SingleStyledText('2.1')
-                  SingleStyledText('. ')
-                SingleStyledText('sixth table')
-          Table()   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_tables.rst:None <table>
-               > (0,0,0,0,2) table
+               > (0,0,0,0,4) table caption [Sphinx] > caption
+              StringField('Table')
+                SingleStyledText('Table')
+              SingleStyledText(' ')
+              MixedStyledText('2.1. ', style='label')
+                SingleStyledText('')
+                SingleStyledText('2.1')
+                SingleStyledText('. ')
+              MixedStyledText('sixth table')
+                MixedStyledText('sixth table')
+                  SingleStyledText('sixth table')
+          Table()
+               > (0,0,0,0,2) table [Sphinx] > DEFAULT
             TableBody()
               TableRow()
-                TableCell()   None:None <entry>
-                     > (0,0,0,0,7) table cell
-                  Paragraph('A')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_tables.rst:72 <paragraph>
-                       > (0,0,0,1,8) table first column paragraph
-                         (0,0,0,0,9) table body cell paragraph
-                         (0,0,0,0,2) body
-                    MixedStyledText('A')
-                      SingleStyledText('A')
                   TableCellBackground()
                        x (0,0,0,2,8) table body cell background on odd row
-                       > fallback to default style
-                TableCell()   None:None <entry>
-                     > (0,0,0,0,7) table cell
-                  Paragraph('Simple')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_tables.rst:72 <paragraph>
-                       > (0,0,0,0,9) table body cell paragraph
-                         (0,0,0,0,2) body
-                    MixedStyledText('Simple')
-                      SingleStyledText('Simple')
+                  TableCellBorder('top')
+                       > (0,0,0,2,8) table body top border [Sphinx] > table head bottom border
+                         (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+                  TableCellBorder('right')
+                       > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+                  TableCellBorder('bottom')
+                       > (0,0,0,2,8) table bottom border [Sphinx] > table top border
+                         (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+                  TableCellBorder('left')
+                       x (0,0,0,2,8) table body left border
+                       x (0,0,0,2,4) table left border
+                       > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
+                TableCell()   <entry>
+                     > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                  Paragraph('A')   list_of_tables.rst:72   <paragraph>
+                       > (0,0,0,1,8) table first column paragraph [Sphinx] > table body cell paragraph
+                         (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                         (0,0,0,0,2) body [Sphinx] > default
+                      MixedStyledText('A')
+                        MixedStyledText('A')
+                          SingleStyledText('A')
                   TableCellBackground()
                        x (0,0,0,2,8) table body cell background on odd row
-                       > fallback to default style
-                TableCell()   None:None <entry>
-                     > (0,0,0,0,7) table cell
-                  Paragraph('Table')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/list_of_tables.rst:72 <paragraph>
-                       > (0,0,0,0,9) table body cell paragraph
-                         (0,0,0,0,2) body
-                    MixedStyledText('Table')
-                      SingleStyledText('Table')
+                  TableCellBorder('top')
+                       > (0,0,0,2,8) table body top border [Sphinx] > table head bottom border
+                         (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+                  TableCellBorder('right')
+                       > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+                  TableCellBorder('bottom')
+                       > (0,0,0,2,8) table bottom border [Sphinx] > table top border
+                         (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+                  TableCellBorder('left')
+                       > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
+                TableCell()   <entry>
+                     > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                  Paragraph('Simple')   list_of_tables.rst:72   <paragraph>
+                       > (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                         (0,0,0,0,2) body [Sphinx] > default
+                      MixedStyledText('Simple')
+                        MixedStyledText('Simple')
+                          SingleStyledText('Simple')
                   TableCellBackground()
                        x (0,0,0,2,8) table body cell background on odd row
-                       > fallback to default style
+                  TableCellBorder('top')
+                       > (0,0,0,2,8) table body top border [Sphinx] > table head bottom border
+                         (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+                  TableCellBorder('right')
+                       x (0,0,0,2,8) table body right border
+                       x (0,0,0,2,4) table right border
+                       > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+                  TableCellBorder('bottom')
+                       > (0,0,0,2,8) table bottom border [Sphinx] > table top border
+                         (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+                  TableCellBorder('left')
+                       > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
+                TableCell()   <entry>
+                     > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+                  Paragraph('Table')   list_of_tables.rst:72   <paragraph>
+                       > (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                         (0,0,0,0,2) body [Sphinx] > default
+                      MixedStyledText('Table')
+                        MixedStyledText('Table')
+                          SingleStyledText('Table')

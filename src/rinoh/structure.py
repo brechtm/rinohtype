@@ -321,7 +321,7 @@ class ListOfSection(Section):
         self.list_of = self.list_class()
         super().__init__([Heading(section_title, style='unnumbered'),
                           self.list_of],
-                         style='list of {}'.format(self.category))
+                         style='list of {}'.format(self.list_class.category))
 
     def __repr__(self):
         return '{}()'.format(type(self).__name__)

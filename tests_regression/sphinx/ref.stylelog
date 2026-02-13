@@ -34,36 +34,6 @@
            (0,0,0,1,1) chapter [Sphinx] > DEFAULT
       TableOfContents()   table of contents
            > (0,0,0,0,2) table of contents [Sphinx] > default
-        TableOfContentsEntry('	List of Figures	iii')
-             > (0,0,0,1,2) toc level 1 [Sphinx] > table of contents
-            ReferenceField('')
-                 > (0,0,0,1,4) toc entry number reference field [Sphinx] > linked reference
-                   (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
-              SingleStyledText('')
-            Tab('	')
-            ReferenceField('List of Figures')
-                 > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
-              StringField('List of Figures')
-                SingleStyledText('List of Figures')
-            Tab('	')
-            ReferenceField('iii')
-                 > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
-              SingleStyledText('iii')
-        TableOfContentsEntry('	List of Tables	v')
-             > (0,0,0,1,2) toc level 1 [Sphinx] > table of contents
-            ReferenceField('')
-                 > (0,0,0,1,4) toc entry number reference field [Sphinx] > linked reference
-                   (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
-              SingleStyledText('')
-            Tab('	')
-            ReferenceField('List of Tables')
-                 > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
-              StringField('List of Tables')
-                SingleStyledText('List of Tables')
-            Tab('	')
-            ReferenceField('v')
-                 > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
-              SingleStyledText('v')
         TableOfContentsEntry('1	One	1-1')
              > (0,0,0,1,2) toc level 1 [Sphinx] > table of contents
             ReferenceField('1')
@@ -215,9 +185,9 @@
           SingleStyledText('List of Figures')
 #### ChainedContainer('column1')
   (continued) StaticGroupedFlowables()
-    ListOfFiguresSection(style='list of chapter')
-         > (0,0,0,1,1) chapter [Sphinx] > DEFAULT
-           (0,0,0,0,2) list of figures section [Sphinx] > table of contents section
+    ListOfFiguresSection(style='list of figure')
+         > (1,0,0,0,2) list of figures section [Sphinx] > table of contents section
+           (0,0,0,1,1) chapter [Sphinx] > DEFAULT
       ListOfFigures()   List of figures
            > (0,0,0,0,2) list of figures [Sphinx] > table of contents
         ListOfEntry('Figure 1.1: Biohazard!	1-1')
@@ -297,9 +267,9 @@
           SingleStyledText('List of Tables')
 #### ChainedContainer('column1')
   (continued) StaticGroupedFlowables()
-    ListOfTablesSection(style='list of chapter')
-         > (0,0,0,1,1) chapter [Sphinx] > DEFAULT
-           (0,0,0,0,2) list of tables section [Sphinx] > list of figures section
+    ListOfTablesSection(style='list of table')
+         > (1,0,0,0,2) list of tables section [Sphinx] > list of figures section
+           (0,0,0,1,1) chapter [Sphinx] > DEFAULT
       ListOfTables()   List of tables
            > (0,0,0,0,2) list of tables [Sphinx] > list of figures
         ListOfEntry('Table 1.1: Input-output	1-1')
