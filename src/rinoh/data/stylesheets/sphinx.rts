@@ -567,12 +567,24 @@ font_slant=ITALIC
 
 [admonition]
 inline_title=false
+label_min_width=0
+label_max_width=0
+label_spacing=0
+align_baselines=false
 space_above=9pt
 space_below=5pt
 padding_top=0
 padding_bottom=4pt
 border_top=$(thin_black_stroke)
 border_bottom=$(thin_black_stroke)
+width=fill
+
+[admonition content]
+;inline_title=false
+space_above=0
+space_below=0
+padding_top=0
+padding_bottom=0
 
 [admonition title]
 base=body

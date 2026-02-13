@@ -13,7 +13,6 @@ from contextlib import suppress
 from functools import partial
 from itertools import chain
 
-from . import styleds, reference
 from .attribute import (Bool, Integer, Attribute, AttributesDictionary,
                         RuleSet, RuleSetFile, WithAttributes, AttributeType,
                         OptionSet, AcceptNoneAttributeType, OverrideDefault,
@@ -24,7 +23,7 @@ from .document import (Document, Page, PageOrientation, PageType,
                        PageNumberFormat)
 from .element import create_destination
 from .image import BackgroundImage, Image
-from .flowable import Flowable, StaticGroupedFlowables
+from .flowable import Flowable, FlowablesList, StaticGroupedFlowables
 from .language import Language, EN
 from .layout import (Container, DownExpandingContainer, UpExpandingContainer,
                      FlowablesContainer, FootnoteContainer, ChainedContainer,
@@ -113,27 +112,6 @@ class PageTemplateBase(Template):
 
     def new_chapter_page(self, document_part, page_number, chain):
         return self.page(document_part, page_number, chain)
-
-
-class FlowablesList(AcceptNoneAttributeType):
-    @classmethod
-    def check_type(cls, value):
-        if not (super().check_type(value) or isinstance(value, (list, tuple))):
-            return False
-        return value is None or all(isinstance(val, Flowable) for val in value)
-
-    @classmethod
-    def parse_string(cls, string, source):
-        locals = {}
-        locals.update(reference.__dict__)
-        locals.update(styleds.__dict__)
-        flowables = eval(string, {'__builtins__':{}}, locals)    # TODO: parse!
-        return [StaticGroupedFlowables(flowables, source=source)]
-
-    @classmethod
-    def doc_format(cls):
-        return ('Python source code that represents a list of '
-                ':class:`.Flowable`\\ s')
 
 
 class BodyPageTemplateBase(PageTemplateBase):

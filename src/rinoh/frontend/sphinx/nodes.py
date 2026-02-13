@@ -20,13 +20,13 @@ from pygments.util import ClassNotFound
 from sphinx.ext.graphviz import render_dot
 
 from ...annotation import HyperLink
-from ...flowable import LabeledFlowable, StaticGroupedFlowables
+from ...flowable import DummyFlowable, LabeledFlowable, StaticGroupedFlowables
 from ...glossary import GlossaryTerm
-from ...image import Image, Figure
+from ...image import Image
 from ...index import IndexTerm, IndexTarget, InlineIndexTarget
 from ...paragraph import Paragraph
 from ...reference import Reference
-from ...structure import DefinitionList, List
+from ...structure import Admonition, AdmonitionFlowables, DefinitionList, List
 from ...text import SingleStyledText, MixedStyledText
 from ...util import intersperse
 from ...warnings import warn
@@ -248,8 +248,9 @@ class VersionModified(rst.Admonition):
         children = self.children_flowables()
         first_paragraph = children[0]
         custom_title = pop_title(first_paragraph.content)
-        return self.grouped_flowables_class(children, title=custom_title,
-                                            style=subtype)
+        content = AdmonitionFlowables(children)
+        return Admonition(DummyFlowable(), content, title=custom_title,
+                          style=subtype)
 
 
 # special nodes

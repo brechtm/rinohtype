@@ -13,7 +13,8 @@ from typing import Iterable
 from .attribute import Attribute, Bool, Integer, OverrideDefault
 from .draw import Line, LineStyle
 from .element import create_destination
-from .flowable import GroupedFlowables, StaticGroupedFlowables, WarnFlowable
+from .flowable import (GroupedFlowables, LabeledFlowableStyle,
+                       StaticGroupedFlowables, WarnFlowable)
 from .flowable import LabeledFlowable, GroupedLabeledFlowables
 from .flowable import Flowable, FlowableStyle, GroupedFlowablesStyle
 from .layout import PageBreakException
@@ -26,13 +27,14 @@ from .text import StyledText, SingleStyledText, MixedStyledText, Tab
 from .strings import StringField
 from .util import NotImplementedAttribute, itemcount
 
+
 __all__ = ['Section', 'Heading', 'ListStyle', 'List', 'ListItem',
            'ListItemLabel', 'ListItemLabelStyle', 'DefinitionList',
            'Header', 'Footer',
            'TableOfContentsSection', 'TableOfContents', 'TableOfContentsStyle',
            'ListOfStyle', 'ListOfEntry', 'ListOfEntryStyle',
            'TableOfContentsEntry', 'Admonition', 'AdmonitionStyle',
-           'AdmonitionTitleParagraph',
+           'AdmonitionFlowables', 'AdmonitionTitleParagraph',
            'HorizontalRule', 'HorizontalRuleStyle', 'OutOfLineFlowables']
 
 
@@ -400,17 +402,17 @@ class ListOfEntry(ReferencingParagraph):
     style_class = ListOfEntryStyle
 
 
-class AdmonitionStyle(GroupedFlowablesStyle):
+class AdmonitionStyle(LabeledFlowableStyle):
     inline_title = Attribute(Bool, True, "Show the admonition's title inline "
                                          "with the body text, if possible")
 
 
-class Admonition(StaticGroupedFlowables):
+class Admonition(LabeledFlowable):
     style_class = AdmonitionStyle
 
-    def __init__(self, flowables, title=None, type=None,
+    def __init__(self, label, flowable, title=None, type=None,
                  id=None, style=None, parent=None):
-        super().__init__(flowables, id=id, style=style, parent=parent)
+        super().__init__(label, flowable, id=id, style=style, parent=parent)
         self.custom_title = title
         self.admonition_type = type
 
@@ -421,13 +423,16 @@ class Admonition(StaticGroupedFlowables):
     def title(self, document):
         return self.custom_title or document.get_string(self.admonition_type)
 
+
+class AdmonitionFlowables(StaticGroupedFlowables):
+
     def flowables(self, container):
-        title = self.title(container.document)
+        title = self.parent.title(container.document)
         with suppress(AttributeError):
             title = title.copy()
         flowables = super().flowables(container)
         first_flowable = next(flowables)
-        inline_title = self.get_style('inline_title', container)
+        inline_title = self.parent.get_style('inline_title', container)
         if inline_title and isinstance(first_flowable, Paragraph):
             title = MixedStyledText(title, style='inline title')
             kwargs = dict(id=first_flowable.id, style=first_flowable.style,

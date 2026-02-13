@@ -260,8 +260,6 @@ class Math_Block(DocutilsBodyNode):
 
 
 class Admonition(DocutilsGroupingNode):
-    grouped_flowables_class = rt.Admonition
-
     def children_flowables(self, skip_first=0):
         try:
             self.title
@@ -275,7 +273,9 @@ class Admonition(DocutilsGroupingNode):
             custom_title = self.title.styled_text()
         except AttributeError:
             custom_title = None
-        return super().build_flowable(type=admonition_type, title=custom_title)
+        content = rt.AdmonitionFlowables(self.children_flowables())
+        return rt.Admonition(rt.DummyFlowable(), content,
+                             type=admonition_type, title=custom_title)
 
 
 class Attention(Admonition):

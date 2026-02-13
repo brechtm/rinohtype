@@ -53,6 +53,10 @@ New Features:
 
 Changed:
 
+* Admonition is a LabeledFlowable subclass now; this makes it possible to show
+  an icon to the left/right of the admonition text. This change will however
+  require adjustments to the admonition styles in custom stylesheets. Also,
+  the admonition style definitions in the 'sphinx' stylesheet needs more work.
 * The default for BodyPageTemplate.chapter_title_height is now ``None``, which
   creates a DownExpaningContainer for the chapter title flowables instead of
   one with a fixed height.  

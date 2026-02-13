@@ -195,6 +195,7 @@ class StyledText(InlineStyled, AcceptNoneAttributeType):
         items = []
         while tokens.next.type:
             if tokens.next.type == NAME:
+                from .inline import InlineFlowable
                 items.append(InlineFlowable.from_tokens(tokens, source))
             elif tokens.next.type == STRING:
                 items.append(cls.text_from_tokens(tokens))
@@ -245,6 +246,7 @@ class StyledText(InlineStyled, AcceptNoneAttributeType):
 
     @classmethod
     def _substitute_variables(cls, text, style):
+        from .reference import Field
         def substitute_controlchars_htmlentities(string, style=None):
             try:
                 return ControlCharacter.all[string]()
@@ -714,7 +716,3 @@ ERROR_STYLE = TextStyle(font_color=RED)
 class ErrorText(SingleStyledText):
     def __init__(self, text, style=ERROR_STYLE, parent=None, source=None):
         super().__init__(text, style=style, parent=parent, source=source)
-
-
-from .reference import Field
-from .inline import InlineFlowable

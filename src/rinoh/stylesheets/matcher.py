@@ -296,21 +296,28 @@ matcher('option string', MixedStyledText.like('option_string'))
 matcher('option argument', MixedStyledText.like('option_arg'))
 
 matcher('admonition', Admonition)
-matcher('admonition title', 'admonition' / Paragraph.like('title'))
-matcher('admonition title paragraph', 'admonition' / +AdmonitionTitleParagraph)
-matcher('admonition inline title', SelectorByName('admonition')
+matcher('admonition label', 'admonition' / Flowable.like('label'))
+matcher('admonition content', 'admonition' / AdmonitionFlowables)
+matcher('admonition title', 'admonition content' / Paragraph.like('title'))
+matcher('admonition title paragraph', 'admonition content' / +AdmonitionTitleParagraph)
+matcher('admonition paragraph', 'admonition content' / Paragraph)
+matcher('admonition inline title', SelectorByName('admonition content')
                                    / ... / StyledText.like('inline title'))
 
 for admonition_type in ('attention', 'caution', 'danger', 'error', 'hint',
                         'important', 'note', 'tip', 'warning', 'seealso'):
     admonition_selector = Admonition.like(admonition_type=admonition_type)
     matcher(admonition_type + ' admonition', admonition_selector)
-    selector = admonition_selector / Paragraph.like('title')
+    matcher(admonition_type + ' admonition label', admonition_selector / Flowable.like('label'))
+    admonition_content_selector = admonition_selector / AdmonitionFlowables
+    matcher(admonition_type + ' admonition content', admonition_content_selector)
+    selector = admonition_content_selector / Paragraph.like('title')
     matcher(admonition_type + ' admonition title', selector)
     matcher(admonition_type + ' admonition title paragraph',
-            admonition_selector / +AdmonitionTitleParagraph)
+            admonition_content_selector / +AdmonitionTitleParagraph)
+    matcher(admonition_type + ' admonition paragraph', admonition_content_selector / Paragraph)
     matcher(admonition_type + ' admonition inline title',
-            admonition_selector / ... / StyledText.like('inline title'))
+            admonition_content_selector / ... / StyledText.like('inline title'))
 
 # page header and footer
 

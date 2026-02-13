@@ -21,7 +21,8 @@ from copy import copy
 from itertools import chain
 from token import NAME
 
-from .attribute import Attribute, OptionSet, Bool, OverrideDefault
+from .attribute import (AcceptNoneAttributeType, Attribute, OptionSet, Bool,
+                        OverrideDefault)
 from .color import Color
 from .dimension import Dimension, PT, DimensionBase
 from .draw import ShapeStyle, Rectangle, Line, LineStyle, Stroke
@@ -513,6 +514,7 @@ class GroupedFlowables(Flowable):
         flowables_iter = self.flowables(container)
         title_text = self.get_style('title', container)
         if title_text:
+            from .paragraph import Paragraph
             title = Paragraph(title_text.copy(), style='title')
             flowables_iter = chain((title, ), flowables_iter)
         return GroupedFlowablesState(self, flowables_iter)
@@ -646,11 +648,35 @@ class StaticGroupedFlowables(GroupedFlowables):
         return not self.children
 
 
+class FlowablesList(AcceptNoneAttributeType):
+    @classmethod
+    def check_type(cls, value):
+        if not (super().check_type(value) or isinstance(value, (list, tuple))):
+            return False
+        return value is None or all(isinstance(val, Flowable) for val in value)
+
+    @classmethod
+    def parse_string(cls, string, source):
+        from . import styleds, reference
+
+        locals = {}
+        locals.update(reference.__dict__)
+        locals.update(styleds.__dict__)
+        flowables = eval(string, {'__builtins__':{}}, locals)    # TODO: parse!
+        return [StaticGroupedFlowables(flowables, source=source)]
+
+    @classmethod
+    def doc_format(cls):
+        return ('Python source code that represents a list of '
+                ':class:`.Flowable`\\ s')
+
+
 class LabelPosition(OptionSet):
     values = ('left', 'right')
 
 
 class LabeledFlowableStyle(FlowableStyle):
+    label = Attribute(FlowablesList, None, 'Custom label to override the default')
     label_position = Attribute(LabelPosition, 'left', 'Where to place the label')
     label_min_width = Attribute(Dimension, 12*PT, 'Minimum label width')
     label_max_width = Attribute(Dimension, 80*PT, 'Maximum label width')
@@ -693,12 +719,19 @@ class LabeledFlowable(Flowable):
 
     def __init__(self, label, flowable, id=None, style=None, parent=None):
         super().__init__(id=id, style=style, parent=parent)
-        self.label = label
+        self._label = label     # parent is set in prepare()
         self.flowable = flowable
-        label.parent = flowable.parent = self
+        flowable.parent = self
 
     def prepare(self, flowable_target):
         super().prepare(flowable_target)
+        custom_label = self.get_style('label', flowable_target)
+        if custom_label:
+            self.label = StaticGroupedFlowables(copy(custom_label),
+                                                style='label')
+        else:
+            self.label = self._label
+        self.label.parent = self
         self.label.prepare(flowable_target)
         self.flowable.prepare(flowable_target)
 
@@ -911,6 +944,3 @@ class PageBreak(Flowable):
 
     def render(self, container, last_descender, state=None, **kwargs):
         return 0, 0, last_descender
-
-
-from .paragraph import Paragraph
