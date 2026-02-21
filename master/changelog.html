@@ -42,7 +42,7 @@
         <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
       
     
-        <link rel="stylesheet" type="text/css" href="_static/sphinx_immaterial_theme.acf80fe7f4d9ef9e2.min.css?v=9e56d0d2" />
+        <link rel="stylesheet" type="text/css" href="_static/sphinx_immaterial_theme.74c816e3f9967dd6e.min.css?v=6cfe2491" />
         <link rel="stylesheet" type="text/css" href="_static/tweaks.css?v=ac567af0" />
     <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -1292,8 +1292,8 @@ section:</p>
 does not accept sections as child elements. (to be documented)</p>
 </li>
 <li><p>Equation rendering (thanks to <a class="reference external" href="https://ziamath.readthedocs.io">ziamath</a>)</p></li>
-<li><p>TemplateConfigurations are now also Resources, that can referenced by entry
-point name</p></li>
+<li><p>TemplateConfigurations are now also Resources, that can be referenced by
+entry point name</p></li>
 <li><p>Stylesheets can now also be registered by name at runtime. This makes them
 referencable from other style sheet files to inherit from them.</p></li>
 <li><p>Sphinx &lt; 7.2: handle superfluous space in desc_sig_space</p></li>
@@ -1316,6 +1316,7 @@ one with a fixed height.</p></li>
 </ul>
 <p>Fixed:</p>
 <ul class="simple">
+<li><p>OpenType: handle optional subtables (e.g. Liberation Sans Narrow now loads)</p></li>
 <li><p>Fix the selectors for list of tables/figures sections</p></li>
 <li><p>Fix crash when other installed packages define stylesheet entry points</p></li>
 <li><p>Fix infinite loop on long words in literal block (#453)</p></li>
