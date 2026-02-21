@@ -6,7 +6,8 @@
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
 
-import hashlib, math, io, struct
+import math, io, struct
+
 from datetime import datetime, timedelta
 from collections import OrderedDict
 
@@ -78,6 +79,8 @@ def context_array(reader, count_key, *indirect_args, multiplier=1):
 def indirect(reader, *indirect_args, offset_reader=offset):
     def indirect_reader(file, base, table, **kwargs):
         indirect_offset = offset_reader(file)
+        if indirect_offset == 0:    # no table present
+            return None
         restore_position = file.tell()
         args = [table[key] for key in indirect_args]
         result = reader(file, base + indirect_offset, *args, **kwargs)

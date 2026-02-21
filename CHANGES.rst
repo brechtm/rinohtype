@@ -42,8 +42,8 @@ New Features:
   ``.. container::`` directive with the 'out-of-line' class, but this directive
   does not accept sections as child elements. (to be documented)
 * Equation rendering (thanks to `ziamath <https://ziamath.readthedocs.io>`_)
-* TemplateConfigurations are now also Resources, that can referenced by entry
-  point name
+* TemplateConfigurations are now also Resources, that can be referenced by
+  entry point name
 * Stylesheets can now also be registered by name at runtime. This makes them
   referencable from other style sheet files to inherit from them.
 * Sphinx < 7.2: handle superfluous space in desc_sig_space
@@ -66,6 +66,7 @@ Changed:
 
 Fixed:
 
+* OpenType: handle optional subtables (e.g. Liberation Sans Narrow now loads)
 * Fix the selectors for list of tables/figures sections
 * Fix crash when other installed packages define stylesheet entry points
 * Fix infinite loop on long words in literal block (#453)
