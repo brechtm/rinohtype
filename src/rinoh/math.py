@@ -1,14 +1,14 @@
 
 from io import BytesIO
 
+from .attribute import OverrideDefault
 from .dimension import PT
 from .flowable import LabeledFlowable
 from .image import InlineImage
 from .inline import InlineFlowable
-from .number import Label, NumberStyle, format_number
-from .paragraph import Paragraph, ParagraphBase, ParagraphStyle, StaticParagraph
-from .reference import Reference
-from .text import MixedStyledText, SingleStyledText, Tab
+from .number import Label, NumberFormat, NumberStyle
+from .paragraph import Paragraph, ParagraphBase, ParagraphStyle
+from .text import MixedStyledText, Tab
 
 
 __all__ = ['Equation', 'EquationLabel', 'InlineEquation']
@@ -25,7 +25,7 @@ MATH_ENABLED = None not in (ziamath, cairosvg)
 
 
 class EquationLabelStyle(ParagraphStyle, NumberStyle):
-    pass
+    number_format = OverrideDefault(NumberFormat.NUMBER)
 
 
 class EquationLabel(ParagraphBase, Label):
@@ -36,7 +36,11 @@ class EquationLabel(ParagraphBase, Label):
         return self.parent
 
     def text(self, container):
-        return MixedStyledText(self.number(container), parent=self)
+        try:
+            label = [self.number(container)]
+        except KeyError:
+            label = []
+        return MixedStyledText(label, parent=self)
 
 
 class Equation(LabeledFlowable):
