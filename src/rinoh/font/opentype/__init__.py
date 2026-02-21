@@ -129,22 +129,21 @@ class OpenTypeFont(Font, OpenTypeParser):
             script_table = self[table]['ScriptList'].by_tag[script][0]
         except KeyError:
             if script != 'DFLT':
-                warn('{} does not support the script "{}". Trying default '
-                     'script.'.format(self.name, script, RinohWarning))
+                warn(f'{self.name} does not support the script "{script}". '
+                     'Trying default script.', RinohWarning)
                 try:
                     return self._get_lookup_tables(table, feature)
                 except KeyError:
                     return []
             else:
-                warn('{} has no default script defined.'
-                     .format(self.name, RinohWarning))
+                warn(f'{self.name} has no default script defined.', RinohWarning)
                 raise
         if language:
             try:
                 lang_sys_table = script_table.by_tag[language][0]
             except KeyError:
-                warn('{} does not support the language "{}". Falling back to '
-                     'defaults.'.format(self.name, language, RinohWarning))
+                warn(f'{self.name} does not support the language "{language}". '
+                     'Falling back to defaults.', RinohWarning)
                 lang_sys_table = script_table['DefaultLangSys']
         else:
             lang_sys_table = script_table['DefaultLangSys']
