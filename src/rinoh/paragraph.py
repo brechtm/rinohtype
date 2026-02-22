@@ -572,15 +572,13 @@ class ParagraphState(FlowableState):
     # (return InlineFlowableSpan that raises InlineFlowableException later)
     @consumer
     def _spans_to_words(self, spans):
+        # FIXME: this is an incomprehensible mess; refactor (with next_word)
+        # There's a lot going on here: missing glyphs fallback, footnotes, ...
         missing_glyphs_spans = None
         container = yield
         word = Word()
-        group_index = 0
         self.span_index -= 1
         while True:
-            if group_index:
-                self.group_index = 0
-            group_index = 0
             if missing_glyphs_spans:
                 try:
                     span = next(missing_glyphs_spans)
@@ -603,7 +601,7 @@ class ParagraphState(FlowableState):
                 groups = groupby(iter(span.text(container)), WHITESPACE.get)
                 for _ in range(self.group_index):
                     next(groups)
-                    group_index += 1
+                group_index = self.group_index
                 for special, chars in groups:
                     group_index += 1
                     if special is ForwardSlash:
@@ -640,6 +638,7 @@ class ParagraphState(FlowableState):
                     glyphs = lig_kern(part, glyphs)
                     glyphs_span = GlyphsSpan(span, lig_kern, glyphs)
                     word.append(glyphs_span)
+                self.group_index = 0
             except InlineFlowableException:
                 glyphs_span = span.flow_inline(container, 0)
                 word.append(glyphs_span)
