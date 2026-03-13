@@ -19,6 +19,8 @@ Release 0.5.6 (in development)
 
 New Features:
 
+* Character spacing can be in/decreased by setting the *character_spacing*
+  style property to a positive/negative value (e.g. 1pt) in the stylesheet.
 * Section selectors can now select based on the local section number. For
   Example::
 

@@ -339,7 +339,7 @@ class TextStyle(InlineStyle):
     position = Attribute(TextPosition, 'normal', 'Vertical text position')
     kerning = Attribute(Bool, True, 'Improve inter-letter spacing')
     ligatures = Attribute(Bool, True, 'Run letters together where possible')
-    # TODO: character spacing
+    character_spacing = Attribute(Dimension, 0*PT, 'Additional spacing between characters')
     hyphenate = Attribute(Bool, True, 'Allow words to be broken over two lines')
     hyphen_chars = Attribute(Integer, 2, 'Minimum number of characters in a '
                                          'hyphenated part of a word')

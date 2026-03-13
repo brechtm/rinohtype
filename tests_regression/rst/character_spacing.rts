@@ -1,0 +1,10 @@
+[STYLESHEET]
+base = sphinx_base14
+
+[increased spacing paragraph : Paragraph(has_class='increased-spacing')]
+base = NEXT_STYLE
+character_spacing=2pt
+
+[decreased spacing paragraph : Paragraph(has_class='decreased-spacing')]
+base = NEXT_STYLE
+character_spacing=-0.2pt

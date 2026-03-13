@@ -1,0 +1,7 @@
+<document rinoh_regression_test="True" source="/Users/brechtm/Code/rinohtype/tests_regression/rst/character_spacing.rst">
+    <paragraph>
+        This paragraph uses the default character spacing.
+    <paragraph classes="increased-spacing">
+        This paragraph has increased character spacing.
+    <paragraph classes="decreased-spacing">
+        This paragraph has decreased character spacing.
