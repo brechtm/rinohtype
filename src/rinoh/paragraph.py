@@ -28,7 +28,7 @@ from .dimension import Dimension, PT
 from .flowable import Flowable, FlowableStyle, FlowableState, FlowableWidth
 from .font import MissingGlyphException
 from .hyphenator import Hyphenator
-from .inline import InlineFlowableException
+from .inline import InlineFlowable, InlineFlowableException
 from .layout import EndOfContainer, ContainerOverflow
 from .number import NumberStyle, Label, format_number
 from .strings import StringField
@@ -427,21 +427,29 @@ def create_lig_kern(span, flowable_target):
     return get_glyph_metrics, lig_kern
 
 
+FALLBACK_STYLE = '_fallback_'
+
+
 def handle_missing_glyphs(span, container):
+    if isinstance(span, InlineFlowable):
+        yield span
+        return
     get_glyph, _ = create_lig_kern(span, container)
     string = []
     for char in span.text(container):
         try:
-            get_glyph(char)
+            if char not in '\n\t':
+                get_glyph(char)
             string.append(char)
         except MissingGlyphException:
             if string:
                 yield SingleStyledText(''.join(string), parent=span)
                 string.clear()
-            if span.parent.style == '_fallback_':
+            if span.parent.style == FALLBACK_STYLE:
                 yield SingleStyledText('?', parent=span)
             else:
-                yield SingleStyledText(char, style='_fallback_', parent=span)
+                fallback_span = SingleStyledText(char, style=FALLBACK_STYLE, parent=span)
+                yield from handle_missing_glyphs(fallback_span, container)
     if string:
         yield SingleStyledText(''.join(string), parent=span)
 
@@ -563,8 +571,10 @@ class ParagraphState(FlowableState):
         else:
             if not self._words:
                 spans = self.paragraph.text(container).wrapped_spans(container)
-                for _ in islice(spans, 0, self.span_index): pass
-                self._words = self._spans_to_words(spans)
+                fixed_spans = (fixed_span for span in spans
+                               for fixed_span in handle_missing_glyphs(span, container))
+                for _ in islice(fixed_spans, 0, self.span_index): pass
+                self._words = self._spans_to_words(fixed_spans)
             word = self._words.send(container)
         return word
 
@@ -574,22 +584,16 @@ class ParagraphState(FlowableState):
     def _spans_to_words(self, spans):
         # FIXME: this is an incomprehensible mess; refactor (with next_word)
         # There's a lot going on here: missing glyphs fallback, footnotes, ...
-        missing_glyphs_spans = None
+        # e.g. first split spans into smaller spans if missing glyphs are encountered
         container = yield
         word = Word()
         self.span_index -= 1
         while True:
-            if missing_glyphs_spans:
-                try:
-                    span = next(missing_glyphs_spans)
-                except StopIteration:
-                    missing_glyphs_spans = None
-            if not missing_glyphs_spans:
-                try:
-                    span = next(spans)
-                    self.span_index += 1
-                except StopIteration:
-                    break
+            try:
+                span = next(spans)
+                self.span_index += 1
+            except StopIteration:
+                break
             try:
                 no_break_after = span.get_style('no_break_after', container)
             except KeyError:  # InlineFlowable
@@ -626,15 +630,7 @@ class ParagraphState(FlowableState):
                     if word and word[-1].span is span:
                         prev_glyphs_span = word.pop()
                         part = str(prev_glyphs_span) + part
-                    try:
-                        glyphs = [get_glyph_metrics(char) for char in part]
-                    except MissingGlyphException:
-                        # FIXME: span annotations are lost here
-                        rest = ''.join(char for _, group in groups
-                                       for char in group)
-                        rest_of_span = SingleStyledText(part + rest, parent=span)
-                        missing_glyphs_spans = handle_missing_glyphs(rest_of_span, container)
-                        break
+                    glyphs = [get_glyph_metrics(char) for char in part]
                     glyphs = lig_kern(part, glyphs)
                     glyphs_span = GlyphsSpan(span, lig_kern, glyphs)
                     word.append(glyphs_span)

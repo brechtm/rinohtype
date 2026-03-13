@@ -66,10 +66,12 @@ Changed:
 
 Fixed:
 
+* Glyphs missing from a font (rendered by the fallback font) resulted in
+  duplicated words when line wrapping
 * OpenType: handle optional subtables (e.g. Liberation Sans Narrow now loads)
 * Fix the selectors for list of tables/figures sections
-* Fix crash when other installed packages define stylesheet entry points
-* Fix infinite loop on long words in literal block (#453)
+* Crash when other installed packages define stylesheet entry points
+* Infinite loop on long words in literal block (#453)
 * Sphinx frontend: support the desc_sig_keyword_type, desc_sig_literal_number,
   desc_sig_literal_string, desc_sig_literal_char and desc_inline document nodes
   (#450)
@@ -238,7 +240,7 @@ Fixed:
 * Line-wrapped section headings without hyphenation are missing from the page
   header.
 * Sphinx frontend: inline text marked with the :menuselection: role is not
-  styled (now mapped to the *menu cascade style*).
+  styled (now mapped to the *menu cascade* style).
 * Typos in code and documentation (PR #277 by Tim Gates, PR #281 by Filipe
   Tavares)
 * Handle deprecation of importlib SelectableGroups dict interface (Python 3.10
