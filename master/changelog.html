@@ -1316,10 +1316,12 @@ one with a fixed height.</p></li>
 </ul>
 <p>Fixed:</p>
 <ul class="simple">
+<li><p>Glyphs missing from a font (rendered by the fallback font) resulted in
+duplicated words when line wrapping</p></li>
 <li><p>OpenType: handle optional subtables (e.g. Liberation Sans Narrow now loads)</p></li>
 <li><p>Fix the selectors for list of tables/figures sections</p></li>
-<li><p>Fix crash when other installed packages define stylesheet entry points</p></li>
-<li><p>Fix infinite loop on long words in literal block (#453)</p></li>
+<li><p>Crash when other installed packages define stylesheet entry points</p></li>
+<li><p>Infinite loop on long words in literal block (#453)</p></li>
 <li><p>Sphinx frontend: support the desc_sig_keyword_type, desc_sig_literal_number,
 desc_sig_literal_string, desc_sig_literal_char and desc_inline document nodes
 (#450)</p></li>
@@ -1489,7 +1491,7 @@ loop when placing a footnote.</p></li>
 <li><p>Line-wrapped section headings without hyphenation are missing from the page
 header.</p></li>
 <li><p>Sphinx frontend: inline text marked with the :menuselection: role is not
-styled (now mapped to the <em>menu cascade style</em>).</p></li>
+styled (now mapped to the <em>menu cascade</em> style).</p></li>
 <li><p>Typos in code and documentation (PR #277 by Tim Gates, PR #281 by Filipe
 Tavares)</p></li>
 <li><p>Handle deprecation of importlib SelectableGroups dict interface (Python 3.10
