@@ -14,7 +14,7 @@
             MixedStyledText('This paragraph uses the default ...')
               SingleStyledText('This paragraph uses the default ...')
       Paragraph('This paragraph has increased cha...')   character_spacing.rst:8   <paragraph classes='increased-spacing'>
-           > (1,0,0,1,2) increased spacing paragraph [character_spacing.rts] > NEXT_STYLE
+           > (0,0,0,1,2) increased spacing paragraph [character_spacing.rts] > NEXT_STYLE
              (0,0,0,0,2) body [Sphinx] > default
           MixedStyledText('This paragraph has increased cha...')
             MixedStyledText('This paragraph has increased cha...')
@@ -23,7 +23,7 @@
             MixedStyledText('This paragraph has increased cha...')
               SingleStyledText('This paragraph has increased cha...')
       Paragraph('This paragraph has decreased cha...')   character_spacing.rst:13   <paragraph classes='decreased-spacing'>
-           > (1,0,0,1,2) decreased spacing paragraph [character_spacing.rts] > NEXT_STYLE
+           > (0,0,0,1,2) decreased spacing paragraph [character_spacing.rts] > NEXT_STYLE
              (0,0,0,0,2) body [Sphinx] > default
           MixedStyledText('This paragraph has decreased cha...')
             MixedStyledText('This paragraph has decreased cha...')

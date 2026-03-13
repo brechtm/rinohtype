@@ -406,7 +406,7 @@ def create_lig_kern(span, flowable_target):
     variant = span.get_style('font_variant', flowable_target)
     kerning = span.get_style('kerning', flowable_target)
     ligatures = span.get_style('ligatures', flowable_target)
-    character_spacing = span.get_style('character_spacing', flowable_target)
+    char_spacing = float(span.get_style('character_spacing', flowable_target))
     get_glyph_metrics = partial(font.get_glyph_metrics, variant=variant)
     # TODO: handle ligatures at span borders
     def lig_kern(chars, glyph_metrics=None):
@@ -421,9 +421,9 @@ def create_lig_kern(span, flowable_target):
         else:
             glyphs_kern = [(char, glyph, 0.0)
                            for char, glyph in chars_and_glyph_metrics]
-        spacing_adjustment = float(character_spacing) / scale
         return [Glyph(glyph_metrics, scale * (glyph_metrics.width
-                                              + kern_adjust + spacing_adjustment), char)
+                                              + kern_adjust)
+                                     + char_spacing, char)
                 for char, glyph_metrics, kern_adjust in glyphs_kern]
 
     return get_glyph_metrics, lig_kern
