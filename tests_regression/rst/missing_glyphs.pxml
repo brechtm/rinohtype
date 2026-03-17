@@ -1,0 +1,375 @@
+<document rinoh_regression_test="True" source="/Users/brechtm/Code/rinohtype/tests_regression/rst/missing_glyphs.rst">
+    <docinfo>
+        <field classes="warnings">
+            <field_name>
+                warnings
+            <field_body>
+                <paragraph>
+                    Don't know how to map unicode index 0x232d
+                    Times-Roman does not contain glyph for unicode index 0x232d
+                    DejaVuSerif does not contain glyph for unicode index 0x232d
+                    Times-Roman does not contain glyph for unicode index 0x2207
+    <comment xml:space="preserve">
+        This data file has been placed in the public domain.
+    <comment xml:space="preserve">
+        Derived from the Unicode character mappings available from
+        <http://www.w3.org/2003/entities/xml/>.
+        Processed by unicode2rstsubs.py, part of Docutils:
+        <https://docutils.sourceforge.io>.
+    <substitution_definition names="acd">
+        ∿
+    <substitution_definition names="aleph">
+        ℵ
+    <substitution_definition names="And">
+        ⩓
+    <substitution_definition names="and">
+        ∧
+    <substitution_definition names="andand">
+        ⩕
+    <substitution_definition names="andd">
+        ⩜
+    <substitution_definition names="andslope">
+        ⩘
+    <substitution_definition names="andv">
+        ⩚
+    <substitution_definition names="ang90">
+        ∟
+    <substitution_definition names="angrt">
+        ∟
+    <substitution_definition names="angsph">
+        ∢
+    <substitution_definition names="angst">
+        Å
+    <substitution_definition names="ap">
+        ≈
+    <substitution_definition names="apacir">
+        ⩯
+    <substitution_definition names="awconint">
+        ∳
+    <substitution_definition names="awint">
+        ⨑
+    <substitution_definition names="becaus">
+        ∵
+    <substitution_definition names="bernou">
+        ℬ
+    <substitution_definition names="bne">
+        =
+        ⃥
+    <substitution_definition names="bnequiv">
+        ≡
+        ⃥
+    <substitution_definition names="bNot">
+        ⫭
+    <substitution_definition names="bnot">
+        ⌐
+    <substitution_definition names="bottom">
+        ⊥
+    <substitution_definition names="cap">
+        ∩
+    <substitution_definition names="Cconint">
+        ∰
+    <substitution_definition names="cirfnint">
+        ⨐
+    <substitution_definition names="compfn">
+        ∘
+    <substitution_definition names="cong">
+        ≅
+    <substitution_definition names="Conint">
+        ∯
+    <substitution_definition names="conint">
+        ∮
+    <substitution_definition names="ctdot">
+        ⋯
+    <substitution_definition names="cup">
+        ∪
+    <substitution_definition names="cwconint">
+        ∲
+    <substitution_definition names="cwint">
+        ∱
+    <substitution_definition names="cylcty">
+        ⌭
+    <substitution_definition names="disin">
+        ⋲
+    <substitution_definition names="Dot">
+        ¨
+    <substitution_definition names="DotDot">
+        ⃜
+    <substitution_definition names="dsol">
+        ⧶
+    <substitution_definition names="dtdot">
+        ⋱
+    <substitution_definition names="dwangle">
+        ⦦
+    <substitution_definition names="elinters">
+        �
+    <substitution_definition names="epar">
+        ⋕
+    <substitution_definition names="eparsl">
+        ⧣
+    <substitution_definition names="equiv">
+        ≡
+    <substitution_definition names="eqvparsl">
+        ⧥
+    <substitution_definition names="exist">
+        ∃
+    <substitution_definition names="fltns">
+        ▱
+    <substitution_definition names="fnof">
+        ƒ
+    <substitution_definition names="forall">
+        ∀
+    <substitution_definition names="fpartint">
+        ⨍
+    <substitution_definition names="ge">
+        ≥
+    <substitution_definition names="hamilt">
+        ℋ
+    <substitution_definition names="iff">
+        ⇔
+    <substitution_definition names="iinfin">
+        ⧜
+    <substitution_definition names="imped">
+        Ƶ
+    <substitution_definition names="infin">
+        ∞
+    <substitution_definition names="infintie">
+        ⧝
+    <substitution_definition names="Int">
+        ∬
+    <substitution_definition names="int">
+        ∫
+    <substitution_definition names="intlarhk">
+        ⨗
+    <substitution_definition names="isin">
+        ∈
+    <substitution_definition names="isindot">
+        ⋵
+    <substitution_definition names="isinE">
+        ⋹
+    <substitution_definition names="isins">
+        ⋴
+    <substitution_definition names="isinsv">
+        ⋳
+    <substitution_definition names="isinv">
+        ∈
+    <substitution_definition names="lagran">
+        ℒ
+    <substitution_definition names="Lang">
+        《
+    <substitution_definition names="lang">
+        〈
+    <substitution_definition names="lArr">
+        ⇐
+    <substitution_definition names="lbbrk">
+        〔
+    <substitution_definition names="le">
+        ≤
+    <substitution_definition names="loang">
+        〘
+    <substitution_definition names="lobrk">
+        〚
+    <substitution_definition names="lopar">
+        ⦅
+    <substitution_definition names="lowast">
+        ∗
+    <substitution_definition names="minus">
+        −
+    <substitution_definition names="mnplus">
+        ∓
+    <substitution_definition names="nabla">
+        ∇
+    <substitution_definition names="ne">
+        ≠
+    <substitution_definition names="nedot">
+        ≐
+        ̸
+    <substitution_definition names="nhpar">
+        ⫲
+    <substitution_definition names="ni">
+        ∋
+    <substitution_definition names="nis">
+        ⋼
+    <substitution_definition names="nisd">
+        ⋺
+    <substitution_definition names="niv">
+        ∋
+    <substitution_definition names="Not">
+        ⫬
+    <substitution_definition names="notin">
+        ∉
+    <substitution_definition names="notindot">
+        ⋵
+        ̸
+    <substitution_definition names="notinE">
+        ⋹
+        ̸
+    <substitution_definition names="notinva">
+        ∉
+    <substitution_definition names="notinvb">
+        ⋷
+    <substitution_definition names="notinvc">
+        ⋶
+    <substitution_definition names="notni">
+        ∌
+    <substitution_definition names="notniva">
+        ∌
+    <substitution_definition names="notnivb">
+        ⋾
+    <substitution_definition names="notnivc">
+        ⋽
+    <substitution_definition names="nparsl">
+        ⫽
+        ⃥
+    <substitution_definition names="npart">
+        ∂
+        ̸
+    <substitution_definition names="npolint">
+        ⨔
+    <substitution_definition names="nvinfin">
+        ⧞
+    <substitution_definition names="olcross">
+        ⦻
+    <substitution_definition names="Or">
+        ⩔
+    <substitution_definition names="or">
+        ∨
+    <substitution_definition names="ord">
+        ⩝
+    <substitution_definition names="order">
+        ℴ
+    <substitution_definition names="oror">
+        ⩖
+    <substitution_definition names="orslope">
+        ⩗
+    <substitution_definition names="orv">
+        ⩛
+    <substitution_definition names="par">
+        ∥
+    <substitution_definition names="parsl">
+        ⫽
+    <substitution_definition names="part">
+        ∂
+    <substitution_definition names="permil">
+        ‰
+    <substitution_definition names="perp">
+        ⊥
+    <substitution_definition names="pertenk">
+        ‱
+    <substitution_definition names="phmmat">
+        ℳ
+    <substitution_definition names="pointint">
+        ⨕
+    <substitution_definition names="Prime">
+        ″
+    <substitution_definition names="prime">
+        ′
+    <substitution_definition names="profalar">
+        ⌮
+    <substitution_definition names="profline">
+        ⌒
+    <substitution_definition names="profsurf">
+        ⌓
+    <substitution_definition names="prop">
+        ∝
+    <substitution_definition names="qint">
+        ⨌
+    <substitution_definition names="qprime">
+        ⁗
+    <substitution_definition names="quatint">
+        ⨖
+    <substitution_definition names="radic">
+        √
+    <substitution_definition names="Rang">
+        》
+    <substitution_definition names="rang">
+        〉
+    <substitution_definition names="rArr">
+        ⇒
+    <substitution_definition names="rbbrk">
+        〕
+    <substitution_definition names="roang">
+        〙
+    <substitution_definition names="robrk">
+        〛
+    <substitution_definition names="ropar">
+        ⦆
+    <substitution_definition names="rppolint">
+        ⨒
+    <substitution_definition names="scpolint">
+        ⨓
+    <substitution_definition names="sim">
+        ∼
+    <substitution_definition names="simdot">
+        ⩪
+    <substitution_definition names="sime">
+        ≃
+    <substitution_definition names="smeparsl">
+        ⧤
+    <substitution_definition names="square">
+        □
+    <substitution_definition names="squarf">
+        ▪
+    <substitution_definition names="strns">
+        ¯
+    <substitution_definition names="sub">
+        ⊂
+    <substitution_definition names="sube">
+        ⊆
+    <substitution_definition names="sup">
+        ⊃
+    <substitution_definition names="supe">
+        ⊇
+    <substitution_definition names="tdot">
+        ⃛
+    <substitution_definition names="there4">
+        ∴
+    <substitution_definition names="tint">
+        ∭
+    <substitution_definition names="top">
+        ⊤
+    <substitution_definition names="topbot">
+        ⌶
+    <substitution_definition names="topcir">
+        ⫱
+    <substitution_definition names="tprime">
+        ‴
+    <substitution_definition names="utdot">
+        ⋰
+    <substitution_definition names="uwangle">
+        ⦧
+    <substitution_definition names="vangrt">
+        ⦜
+    <substitution_definition names="veeeq">
+        ≚
+    <substitution_definition names="Verbar">
+        ‖
+    <substitution_definition names="wedgeq">
+        ≙
+    <substitution_definition names="xnis">
+        ⋻
+    <paragraph>
+        Missing glyphs: 
+        ⌭
+         and 
+        ∇
+        .
+    <paragraph>
+        Without surrounding whitespace:
+        ⌭
+        and
+        ∇
+        .
+    <substitution_definition names=">">
+        ‣
+    <paragraph>
+        Test for word wrapping of a line with missing glyph: Menu 
+        ‣
+         Item
+    <paragraph>
+        And Menu 
+        ‣
+         Item, Utility Functions 
+        ‣
+         System Status 
+        ‣
+         Sys Ctrl

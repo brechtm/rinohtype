@@ -7,3 +7,12 @@
 .. include:: <isotech.txt>
 
 Missing glyphs: |cylcty| and |nabla|.
+
+Without surrounding whitespace:\ |cylcty|\ and\ |nabla|.
+
+
+.. |>| unicode:: 0x2023
+
+Test for word wrapping of a line with missing glyph: Menu |>| Item
+
+And Menu |>| Item, Utility Functions |>| System Status |>| Sys Ctrl
