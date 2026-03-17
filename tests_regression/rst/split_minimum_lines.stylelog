@@ -1,0 +1,44 @@
+---------------------------------- page 1 ----------------------------------
+#### FlowablesContainer('background')
+  StaticGroupedFlowables()
+#### FootnoteContainer('footnotes')
+  StaticGroupedFlowables()
+#### DownExpandingContainer('floats')
+  StaticGroupedFlowables()
+#### ChainedContainer('column1')
+  StaticGroupedFlowables()
+    DocumentTree()   split_minimum_lines.rst   <document>
+      Paragraph('spacer')   split_minimum_lines.rst:5   <paragraph classes='spacer'>
+           > (0,0,0,1,2) spacer [split_minimum_lines.rts] > DEFAULT
+             (0,0,0,0,2) body [Sphinx] > default
+          MixedStyledText('spacer')
+            MixedStyledText('spacer')
+              SingleStyledText('spacer')
+---------------------------------- page 2 ----------------------------------
+#### FlowablesContainer('background')
+  StaticGroupedFlowables()
+#### FootnoteContainer('footnotes')
+  StaticGroupedFlowables()
+#### DownExpandingContainer('floats')
+  StaticGroupedFlowables()
+#### ChainedContainer('column1')
+  (continued) StaticGroupedFlowables()
+    (continued) DocumentTree()   split_minimum_lines.rst   <document>
+      Paragraph('Alice was beginning to get very ...')   split_minimum_lines.rst:10   <paragraph classes='split-constraint'>
+           > (0,0,0,1,2) split-constraint paragraph [split_minimum_lines.rts] > NEXT_STYLE
+             (0,0,0,0,2) body [Sphinx] > default
+          MixedStyledText('Alice was beginning to get very ...')
+            MixedStyledText('Alice was beginning to get very ...')
+              SingleStyledText('Alice was beginning to get very ...')
+          MixedStyledText('Alice was beginning to get very ...')
+            MixedStyledText('Alice was beginning to get very ...')
+              SingleStyledText('Alice was beginning to get very ...')
+          MixedStyledText('Alice was beginning to get very ...')
+            MixedStyledText('Alice was beginning to get very ...')
+              SingleStyledText('Alice was beginning to get very ...')
+          MixedStyledText('Alice was beginning to get very ...')
+            MixedStyledText('Alice was beginning to get very ...')
+              SingleStyledText('Alice was beginning to get very ...')
+          MixedStyledText('Alice was beginning to get very ...')
+            MixedStyledText('Alice was beginning to get very ...')
+              SingleStyledText('Alice was beginning to get very ...')

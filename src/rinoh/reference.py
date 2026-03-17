@@ -11,8 +11,7 @@ from itertools import chain, zip_longest
 
 from .annotation import NamedDestinationLink
 from .attribute import Attribute, Bool, OptionSet, OverrideDefault
-from .flowable import (Flowable, LabeledFlowable, DummyFlowable,
-                       LabeledFlowableStyle)
+from .flowable import Flowable, LabeledFlowable, LabeledFlowableStyle
 from .layout import ContainerOverflow
 from .number import NumberStyle, Label, format_number
 from .paragraph import Paragraph, ParagraphStyle, ParagraphBase

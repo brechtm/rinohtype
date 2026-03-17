@@ -19,10 +19,13 @@ Release 0.5.6 (in development)
 
 New Features:
 
+* The *split_minimum_lines* style property for paragraphs specifies the minimum
+  number of lines to keep together (in the first container) when splitting a
+  paragraph across two containers/pages.
 * Character spacing can be in/decreased by setting the *character_spacing*
   style property to a positive/negative value (e.g. 1pt) in the stylesheet.
 * Section selectors can now select based on the local section number. For
-  Example::
+  example::
 
       [first level 2 section : Section(level=2, number=1)]
       break = ANY

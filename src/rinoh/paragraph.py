@@ -359,6 +359,9 @@ class ParagraphStyle(FlowableStyle, NumberStyle, TextStyle):
     text_align = Attribute(TextAlign, 'justify', 'Alignment of text to the '
                                                  'margins')
     tab_stops = Attribute(TabStopList, TabStopList(), 'List of tab positions')
+    split_minimum_lines = Attribute(Integer, 0,
+                                    'Minimum number of lines to keep together'
+                                    ' when splitting a paragraph across pages')
     number_format = OverrideDefault(None)
     number_separator = Attribute(StyledText, '.',
                                  "Characters inserted between the number label"
@@ -792,11 +795,14 @@ class ParagraphBase(Flowable, Label):
             tab_width = 2 * self.get_style('font_size', container)
             tab_stops = DefaultTabStops(tab_width)
 
+        initial_state = copy(state)
         # `saved_state` is updated after successfully rendering each line, so
         # that when `container` overflows on rendering a line, the words in that
         # line are yielded again on the next typeset() call.
         saved_state = copy(state)
         max_line_width = 0
+        lines_typeset = 0
+        split_minimum_lines = self.get_style('split_minimum_lines', container)
 
         def typeset_line(line, wrapped_line=True, last_line=False):
             """Typeset `line` and, if no exception is raised, update the
@@ -807,12 +813,13 @@ class ParagraphBase(Flowable, Label):
                 wrapped_line (bool): True if this line is wrapped
                 last_line (bool): True if this is the paragraph's last line or
                   a line explicitly ended by a newline character
-                  
+
             Returns:
                 Line: a new, empty line
 
             """
             nonlocal state, saved_state, max_line_width, descender, space_below
+            nonlocal lines_typeset
             max_line_width = max(max_line_width, line.cursor)
             # descender is None when this is the first line in the container
             advance = (line.ascender(container) if descender is None
@@ -821,6 +828,8 @@ class ParagraphBase(Flowable, Label):
             line.advance = advance
             total_advance = advance + (space_below if last_line else 0) - descender
             if container.remaining_height < total_advance:
+                if lines_typeset < split_minimum_lines:
+                    raise EndOfContainer(initial_state)
                 raise EndOfContainer(saved_state)
             assert container.advance2(advance)
             try:
@@ -829,14 +838,14 @@ class ParagraphBase(Flowable, Label):
                 raise EndOfContainer(saved_state)
             assert container.advance2(- descender)
             state.initial = False
+            lines_typeset += 1
             saved_state = copy(state)
             return Line(tab_stops, line_width, container,
                         significant_whitespace=self.significant_whitespace,
                         continued=wrapped_line)
 
-        first_line = line = Line(tab_stops, line_width, container,
-                                 indent_first, self.significant_whitespace,
-                                 continued=False)
+        first_line = line = Line(tab_stops, line_width, container, indent_first,
+                                 self.significant_whitespace, continued=False)
         state.save()
         wrapped = False
         while True:
