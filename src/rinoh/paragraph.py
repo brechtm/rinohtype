@@ -443,7 +443,7 @@ def handle_missing_glyphs(span, container):
     string = []
     for char in span.text(container):
         try:
-            if char not in '\n\t':
+            if char not in '\n\t\N{ZERO WIDTH SPACE}\N{NO-BREAK SPACE}':
                 get_glyph(char)
             string.append(char)
         except MissingGlyphException:
