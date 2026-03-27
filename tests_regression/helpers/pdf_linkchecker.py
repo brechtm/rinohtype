@@ -60,7 +60,7 @@ if __name__ == '__main__':
     fname = sys.argv[1]
     print('Checking %s' % fname)
     (anchors, links, superfluous_anchors,
-     badlinks, urls, badurls, outlines) = check_pdf_links(fname)
+     badlinks, badoutlinelinks, urls, badurls, outlines) = check_pdf_links(fname)
     print('urls: ', ', '.join(urls))
     print
     print('anchors: ', ', '.join(anchors))
@@ -70,6 +70,8 @@ if __name__ == '__main__':
     print('links: ', ', '.join(links))
     print
     print('bad links: ', ', '.join(badlinks))
+    print
+    print('bad outline links: ', ', '.join(badoutlinelinks))
     print
     print('bad urls:')
     for item in badurls:

@@ -162,11 +162,14 @@ def render_doctree(doctree, out_dir, out_filename, reference_path,
 
 def verify_output(out_filename, output_dir, reference_path):
     pdf_filename = '{}.pdf'.format(out_filename)
-    _, _, _, _, _, _, _, ref_outlines = \
+    (ref_anchors, ref_links, ref_superfluous_anchors,
+     ref_badlinks, ref_badoutlinelinks, ref_urls, ref_badurls, ref_outlines) = \
         check_pdf_links(reference_path / pdf_filename)
     with in_directory(output_dir):
-        _, _, _, badlinks, badoutlinelinks, _, _, outlines = \
+        (anchors, links, superfluous_anchors,
+         badlinks, badoutlinelinks, urls, badurls, outlines) = \
             check_pdf_links(pdf_filename)
+        pytest.assume(links == ref_links, (links, ref_links))
         pytest.assume(badlinks == [], badlinks)
         pytest.assume(badoutlinelinks == [], badoutlinelinks)
         pytest.assume(diff_outlines(ref_outlines, outlines),
