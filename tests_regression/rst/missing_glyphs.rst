@@ -10,6 +10,19 @@ Missing glyphs: |cylcty| and |nabla|.
 
 Without surrounding whitespace:\ |cylcty|\ and\ |nabla|.
 
+Missing glyph in a linked reference: |solo|_, |after|_, |before|_.
+
+.. [#f1] Footnote one!
+.. [#f2] Footnote two!
+
+.. |solo| replace:: |nabla|
+.. _solo: http://www.python.org
+
+.. |after| replace:: |nabla| after
+.. _after: http://www.python.org
+
+.. |before| replace:: after |nabla|
+.. _before: http://www.python.org
 
 .. |>| unicode:: 0x2023
 

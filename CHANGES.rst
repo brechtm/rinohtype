@@ -71,6 +71,7 @@ Changed:
 
 Fixed:
 
+* Handling of hyperlinks with missing characters
 * Glyphs missing from a font (rendered by the fallback font) resulted in
   duplicated words when line wrapping
 * OpenType: handle optional subtables (e.g. Liberation Sans Narrow now loads)

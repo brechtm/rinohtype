@@ -359,6 +359,40 @@
         and
         ∇
         .
+    <paragraph>
+        Missing glyph in a linked reference: 
+        <reference refuri="http://www.python.org">
+            ∇
+        , 
+        <reference refuri="http://www.python.org">
+            ∇
+             after
+        , 
+        <reference refuri="http://www.python.org">
+            after 
+            ∇
+        .
+    <footnote auto="1" ids="f1" names="f1">
+        <label>
+            1
+        <paragraph>
+            Footnote one!
+    <footnote auto="1" ids="f2" names="f2">
+        <label>
+            2
+        <paragraph>
+            Footnote two!
+    <substitution_definition names="solo">
+        ∇
+    <target ids="solo" names="solo" refuri="http://www.python.org">
+    <substitution_definition names="after">
+        ∇
+         after
+    <target ids="after" names="after" refuri="http://www.python.org">
+    <substitution_definition names="before">
+        after 
+        ∇
+    <target ids="before" names="before" refuri="http://www.python.org">
     <substitution_definition names=">">
         ‣
     <paragraph>

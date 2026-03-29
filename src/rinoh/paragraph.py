@@ -439,6 +439,14 @@ def handle_missing_glyphs(span, container):
     if isinstance(span, InlineFlowable):
         yield span
         return
+
+    def annotate(styled_text):
+        if isinstance(span, AnnotatedSpan):
+            return AnnotatedSpan(styled_text, anchor=span.anchor_annotation,
+                                 link=span.link_annotation)
+        else:
+            return styled_text
+
     get_glyph, _ = create_lig_kern(span, container)
     string = []
     has_missing_glyphs = False
@@ -450,18 +458,21 @@ def handle_missing_glyphs(span, container):
         except MissingGlyphException:
             has_missing_glyphs = True
             if string:
-                yield SingleStyledText(''.join(string), parent=span)
+                text = SingleStyledText(''.join(string), parent=span)
+                yield annotate(text)
                 string.clear()
-            if span.parent.style == FALLBACK_STYLE:
-                yield SingleStyledText('?', parent=span)
+            if span.parent.style is FALLBACK_STYLE:
+                text = SingleStyledText('?', parent=span)
+                yield annotate(text)
             else:
                 fallback_span = SingleStyledText(char, style=FALLBACK_STYLE, parent=span)
-                yield from handle_missing_glyphs(fallback_span, container)
+                yield from handle_missing_glyphs(annotate(fallback_span), container)
     if not has_missing_glyphs:
         yield span
         return
     if string:
-        yield SingleStyledText(''.join(string), parent=span)
+        text = SingleStyledText(''.join(string), parent=span)
+        yield annotate(text)
 
 
 class LinePart(object):

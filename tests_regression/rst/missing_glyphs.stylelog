@@ -26,7 +26,26 @@
               SingleStyledText('and')
               SingleStyledText('∇')
               SingleStyledText('.')
-      Paragraph('Test for word wrapping of a line...')   missing_glyphs.rst:17   <paragraph>
+      Paragraph('Missing glyph in a linked refere...')   missing_glyphs.rst:13   <paragraph>
+           > (0,0,0,0,2) body [Sphinx] > default
+          MixedStyledText('Missing glyph in a linked refere...')
+            MixedStyledText('Missing glyph in a linked refere...')
+              SingleStyledText('Missing glyph in a linked refere...')
+              MixedStyledText('∇', style='external link')   <reference>
+                   > (0,0,1,0,1) external hyperlink [Sphinx] > DEFAULT
+                SingleStyledText('∇')
+              SingleStyledText(', ')
+              MixedStyledText('∇ after', style='external link')   <reference>
+                   > (0,0,1,0,1) external hyperlink [Sphinx] > DEFAULT
+                SingleStyledText('∇')
+                SingleStyledText(' after')
+              SingleStyledText(', ')
+              MixedStyledText('after ∇', style='external link')   <reference>
+                   > (0,0,1,0,1) external hyperlink [Sphinx] > DEFAULT
+                SingleStyledText('after ')
+                SingleStyledText('∇')
+              SingleStyledText('.')
+      Paragraph('Test for word wrapping of a line...')   missing_glyphs.rst:29   <paragraph>
            > (0,0,0,0,2) body [Sphinx] > default
           MixedStyledText('Test for word wrapping of a line...')
             MixedStyledText('Test for word wrapping of a line...')
@@ -38,7 +57,7 @@
               SingleStyledText('Test for word wrapping of a line...')
               SingleStyledText('‣')
               SingleStyledText(' Item')
-      Paragraph('And Menu ‣ Item, Utility Functio...')   missing_glyphs.rst:19   <paragraph>
+      Paragraph('And Menu ‣ Item, Utility Functio...')   missing_glyphs.rst:31   <paragraph>
            > (0,0,0,0,2) body [Sphinx] > default
           MixedStyledText('And Menu ‣ Item, Utility Functio...')
             MixedStyledText('And Menu ‣ Item, Utility Functio...')
