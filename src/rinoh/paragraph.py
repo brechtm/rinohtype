@@ -441,12 +441,14 @@ def handle_missing_glyphs(span, container):
         return
     get_glyph, _ = create_lig_kern(span, container)
     string = []
+    has_missing_glyphs = False
     for char in span.text(container):
         try:
             if char not in '\n\t\N{ZERO WIDTH SPACE}\N{NO-BREAK SPACE}':
                 get_glyph(char)
             string.append(char)
         except MissingGlyphException:
+            has_missing_glyphs = True
             if string:
                 yield SingleStyledText(''.join(string), parent=span)
                 string.clear()
@@ -455,6 +457,9 @@ def handle_missing_glyphs(span, container):
             else:
                 fallback_span = SingleStyledText(char, style=FALLBACK_STYLE, parent=span)
                 yield from handle_missing_glyphs(fallback_span, container)
+    if not has_missing_glyphs:
+        yield span
+        return
     if string:
         yield SingleStyledText(''.join(string), parent=span)
 
