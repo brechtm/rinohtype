@@ -5,14 +5,12 @@ import sys
 
 _, github_python_version = sys.argv
 
-mapping = {'3.9':                 '3.9',
-           '3.10':                '3.10',
+mapping = {'3.10':                '3.10',
            '3.11':                '3.11',
            '3.12':                '3.12',
            '3.13':                '3.13',
-           '3.14.0-alpha - 3.14': '3.14',
-           'pypy-3.9':            'pypy3',
-           'pypy-3.10':           'pypy3',
+           '3.14':                '3.14',
+           '3.15.0-alpha - 3.15': '3.15',
            'pypy-3.11':           'pypy3'}
 
 noxenv = os.getenv('NOXENV')

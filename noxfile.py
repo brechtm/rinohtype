@@ -19,7 +19,7 @@ nox.options.sessions = ['check', 'check_docs',
                         f'regression-{CURRENT_PYTHON}(wheel)']
 
 
-PYTHONS = ['3.9', '3.10', '3.11', '3.12', '3.13', '3.14']
+PYTHONS = ['3.10', '3.11', '3.12', '3.13', '3.14', '3.15']
 PYTHONS += ['pypy3'] if os.getenv('CI') else ['pypy3.11']
 
 DEPENDENCIES = ['pytest', 'pytest-xdist', 'pytest-cov', 'coverage', 'Sphinx']
@@ -81,12 +81,6 @@ def unit_sphinx(session, sphinx):
     _unit(session, sphinx=sphinx, ignore_deprecation_warnings=True)
 
 
-@nox_poetry.session(python='3.9')
-@parametrize('sphinx', python='3.9')
-def unit_sphinx_py39(session, sphinx):
-    _unit(session, sphinx=sphinx, ignore_deprecation_warnings=True)
-
-
 @nox_poetry.session(python=PYTHONS)
 @parametrize_dist()
 def regression(session, dist):
@@ -102,12 +96,6 @@ def regression_docutils(session, docutils):
 @nox_poetry.session
 @parametrize('sphinx')
 def regression_sphinx(session, sphinx):
-    _regression(session, sphinx=sphinx, ignore_deprecation_warnings=True)
-
-
-@nox_poetry.session(python='3.9')
-@parametrize('sphinx', python='3.9')
-def regression_sphinx_py39(session, sphinx):
     _regression(session, sphinx=sphinx, ignore_deprecation_warnings=True)
 
 

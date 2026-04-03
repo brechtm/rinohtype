@@ -23,7 +23,7 @@
 
 ## Technology Stack
 
-- **Language:** Python (3.9+)
+- **Language:** Python (3.10+)
 - **Package Manager:** Poetry
 - **Task Runner:** Nox (with nox-poetry)
 - **Test Framework:** pytest (with pytest-xdist, pytest-cov, pytest-assume)
@@ -101,7 +101,7 @@ nox -e regression-3.11
 - **Unit tests:** Quick tests focusing on individual components
 - **Regression tests:** Render tiny documents and compare PDF output against known-good references
   - Requires: Graphviz, ImageMagick, and MuPDF's `mutool` or poppler's `pdftoppm`
-- Tests run against multiple Python versions (3.9, 3.10, 3.11, 3.12, 3.13) and PyPy
+- Tests run against multiple Python versions (3.10, 3.11, 3.12, 3.13, 3.14, 3.15) and PyPy
 
 ## Regression Test Structure
 
