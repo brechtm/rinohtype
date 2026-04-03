@@ -97,11 +97,15 @@ nox -e unit-3.11
 nox -e regression-3.11
 ```
 
+Run pytest directly. These Nox sessions are intended to be run during CI.
+
 ### Testing Details
 - **Unit tests:** Quick tests focusing on individual components
 - **Regression tests:** Render tiny documents and compare PDF output against known-good references
   - Requires: Graphviz, ImageMagick, and MuPDF's `mutool` or poppler's `pdftoppm`
 - Tests run against multiple Python versions (3.10, 3.11, 3.12, 3.13, 3.14, 3.15) and PyPy
+
+After making changes, first run the unit tests to verify functionality, then run the regression tests to ensure there are no unintended changes in PDF output. To speed up the loop, instruct pytest to abort on the first failure. Add new regression tests for any new features or bug fixes.
 
 ## Regression Test Structure
 
