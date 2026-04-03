@@ -97,15 +97,20 @@ nox -e unit-3.11
 nox -e regression-3.11
 ```
 
-Run pytest directly. These Nox sessions are intended to be run during CI.
+During development, run pytest directly. These Nox sessions are automatically run as part of CI.
 
 ### Testing Details
 - **Unit tests:** Quick tests focusing on individual components
 - **Regression tests:** Render tiny documents and compare PDF output against known-good references
+  - test_rst.py and test_sphinx.py are the primary regression tests
+  - test_rinoh.py tests the CLI interface
+  - all of these tests are parameterized; each .rst file in the respective `tests_regression/` subdirectories (`rst/`, `sphinx/`, `rinoh/`) is rendered and compared against a reference PDF (stored in the `*_output/` directories)
   - Requires: Graphviz, ImageMagick, and MuPDF's `mutool` or poppler's `pdftoppm`
 - Tests run against multiple Python versions (3.10, 3.11, 3.12, 3.13, 3.14, 3.15) and PyPy
 
-After making changes, first run the unit tests to verify functionality, then run the regression tests to ensure there are no unintended changes in PDF output. To speed up the loop, instruct pytest to abort on the first failure. Add new regression tests for any new features or bug fixes.
+After making changes, first run the unit tests to verify functionality, then run the regression tests to ensure there are no unintended changes in PDF output. To speed up the loop, instruct pytest to abort on the first failure. When fixing a bug, run only the failing regression test while debugging. Add new regression tests for any new features or bug fixes.
+
+If a regression test times out, the rendering process may be stuck in an infinite loop. In that case, kill the running test before continuing.
 
 ## Regression Test Structure
 
@@ -118,7 +123,6 @@ tests_regression/
 │   ├── diffpdf.py         # PDF comparison utilities
 │   ├── pdf_linkchecker.py # Link and outline verification
 │   └── util.py            # Utility functions
-├── reference/             # Reference PDFs for comparison
 ├── rst/                   # reStructuredText test sources (.rst, .rts, .rtt)
 ├── rst_output/            # Generated output (created during test runs)
 ├── sphinx/                # Sphinx test roots (test-* directories)
@@ -129,8 +133,7 @@ tests_regression/
 ├── conftest.py            # Pytest configuration and fixtures
 ├── test_rst.py            # reStructuredText frontend tests
 ├── test_sphinx.py         # Sphinx builder tests
-├── test_rinoh.py          # CLI interface tests
-└── test_rstdemo.py        # Demo document tests
+└── test_rinoh.py          # CLI interface tests
 ```
 
 **Test file conventions:**
@@ -259,9 +262,6 @@ across Python versions, continuous integration, and release processes, see
 
 ## Additional Notes
 
-- Single maintainer; welcomes contributions
-- Commercial DITA frontend available (development on hold)
-- Main development on macOS, but supports Linux and Windows
 - Symlinks in repository require special Windows Git configuration
 - CI uses GitHub Actions across Linux, macOS, and Windows
 - Use the `gh` command-line tool to query the GitHub API for issues, CI status and test results
