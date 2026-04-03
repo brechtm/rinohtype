@@ -71,6 +71,8 @@ Changed:
 
 Fixed:
 
+* Paragraph duplication occurring when the final word of a paragraph is
+  hyphenated across a page boundary (#443)
 * Handling of hyperlinks with missing characters
 * Glyphs missing from a font (rendered by the fallback font) resulted in
   duplicated words when line wrapping

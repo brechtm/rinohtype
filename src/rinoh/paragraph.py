@@ -609,11 +609,13 @@ class ParagraphState(FlowableState):
         container = yield
         word = Word()
         self.span_index -= 1
+        group_index = 0
         while True:
             try:
                 span = next(spans)
                 self.span_index += 1
             except StopIteration:
+                self.group_index = group_index
                 break
             try:
                 no_break_after = span.get_style('no_break_after', container)
