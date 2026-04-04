@@ -271,6 +271,7 @@ jobs:
       if: startsWith(runner.os, 'macOS')
       run: |
         brew install mupdf-tools imagemagick graphviz cairo libffi
+        echo "DYLD_FALLBACK_LIBRARY_PATH=/opt/homebrew/lib:${DYLD_FALLBACK_LIBRARY_PATH}" >> $GITHUB_ENV
     - name: Install tools required by the regression tests (Windows)
       if: startsWith(runner.os, 'Windows')
       run: |
