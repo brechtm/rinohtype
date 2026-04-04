@@ -14,6 +14,7 @@ from noxutil import get_versions, version_to_tuple
 CURRENT_PYTHON = (('pypy' if hasattr(sys, 'pypy_version_info') else '')
                   + f'{sys.version_info.major}.{sys.version_info.minor}')
 
+nox.options.default_venv_backend = 'venv'
 nox.options.sessions = ['check', 'check_docs',
                         f'unit-{CURRENT_PYTHON}(wheel)',
                         f'regression-{CURRENT_PYTHON}(wheel)']
