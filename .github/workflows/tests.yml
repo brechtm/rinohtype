@@ -251,12 +251,14 @@ jobs:
         echo "mupdftools=$(brew info --json mupdf-tools | jq -r '.[0].versions.stable')" >> $GITHUB_OUTPUT
         echo "imagemagick=$(brew info --json imagemagick | jq -r '.[0].versions.stable')" >> $GITHUB_OUTPUT
         echo "graphviz=$(brew info --json graphviz | jq -r '.[0].versions.stable')" >> $GITHUB_OUTPUT
+        echo "cairo=$(brew info --json cairo | jq -r '.[0].versions.stable')" >> $GITHUB_OUTPUT
+        echo "libffi=$(brew info --json libffi | jq -r '.[0].versions.stable')" >> $GITHUB_OUTPUT
     - name: Cache Homebrew downloads
       if: startsWith(runner.os, 'macOS')
       uses: actions/cache@v3
       with:
         path: ${{ steps.cache-dirs-macos.outputs.dir }}
-        key: ${{ runner.os }}-homebrew-mupdftools${{ steps.homebrew-versions.outputs.mupdftools }}-im${{ steps.homebrew-versions.outputs.imagemagick }}-graphviz${{ steps.homebrew-versions.outputs.graphviz }}
+        key: ${{ runner.os }}-homebrew-mupdftools${{ steps.homebrew-versions.outputs.mupdftools }}-im${{ steps.homebrew-versions.outputs.imagemagick }}-graphviz${{ steps.homebrew-versions.outputs.graphviz }}-cairo${{ steps.homebrew-versions.outputs.cairo }}-libffi${{ steps.homebrew-versions.outputs.libffi }}
 
     - name: Set up Homebrew
       if: startsWith(runner.os, 'Linux')
@@ -268,7 +270,7 @@ jobs:
     - name: Install tools required by the regression tests (macOS)
       if: startsWith(runner.os, 'macOS')
       run: |
-        brew install mupdf-tools imagemagick graphviz
+        brew install mupdf-tools imagemagick graphviz cairo libffi
     - name: Install tools required by the regression tests (Windows)
       if: startsWith(runner.os, 'Windows')
       run: |
