@@ -13,11 +13,7 @@
 import os
 
 from importlib import import_module
-
-try:
-    import importlib.metadata as importlib_metadata
-except ModuleNotFoundError:
-    import importlib_metadata
+from importlib.metadata import version
 
 
 CORE_MODULES = ['annotation', 'attribute', 'color', 'dimension', 'document',
@@ -34,7 +30,7 @@ __all__ = CORE_MODULES + ['font', 'fonts', 'frontend', 'backend', 'resource',
 DATA_PATH = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'data')
 
 
-__version__ = importlib_metadata.version('rinohtype')
+__version__ = version('rinohtype')
 __release_date__ = 'in development'
 
 

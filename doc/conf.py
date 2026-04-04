@@ -17,11 +17,7 @@
 import os
 import time
 
-try:
-    import importlib.metadata as importlib_metadata
-except ModuleNotFoundError:
-    import importlib_metadata
-
+from importlib.metadata import distribution
 from subprocess import run, PIPE, DEVNULL
 
 # If extensions (or modules to document with autodoc) are in another directory,
@@ -29,7 +25,7 @@ from subprocess import run, PIPE, DEVNULL
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #sys.path.insert(0, os.path.abspath('..'))
 
-distribution = importlib_metadata.distribution('rinohtype')
+dist = distribution('rinohtype')
 
 # -- General configuration ------------------------------------------------
 
@@ -66,8 +62,8 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = distribution.metadata['Name']
-author = distribution.metadata['Author']
+project = dist.metadata['Name']
+author = dist.metadata['Author']
 copyright = '{}, {} and contributors'.format(time.strftime('%Y'), author)
 
 # The version info for the project you're documenting, acts as replacement for
@@ -75,7 +71,7 @@ copyright = '{}, {} and contributors'.format(time.strftime('%Y'), author)
 # built documents.
 #
 # The short X.Y version.
-version = distribution.version
+version = dist.version
 # The full version, including alpha/beta/rc tags.
 release = version
 

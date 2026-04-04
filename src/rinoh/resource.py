@@ -5,15 +5,11 @@
 # Use of this source code is subject to the terms of the GNU Affero General
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
+import importlib.metadata as ilm
 import string
 import sys
 
 from subprocess import Popen, PIPE
-
-try:         # required on Python < 3.8, but always used if available
-    import importlib_metadata as ilm
-except ImportError:
-    from importlib import metadata as ilm
 from warnings import warn
 
 from .attribute import AttributeType
@@ -51,10 +47,7 @@ class Resource(AttributeType):
 
     @class_property
     def installed_resources(cls):
-        try:    # Python >= 3.10 and importlib_metadata >= 3.6
-            entry_points = ilm.entry_points(group=cls.entry_point_group)
-        except TypeError:
-            entry_points = ilm.entry_points()[cls.entry_point_group]
+        entry_points = ilm.entry_points(group=cls.entry_point_group)
         for entry_point in entry_points:
             yield entry_point.name, entry_point
 
