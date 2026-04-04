@@ -2232,4 +2232,4 @@ math = ["cairosvg", "ziamath"]
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.10.0"
-content-hash = "c56e8e9418c959ba2d7f6d8f19e8f705f51b1d75df9364141f54841d1940142e"
+content-hash = "8c78da632606bc8bb1e26e356e968d4952190b5736b6616b47b41f95ea8f9289"

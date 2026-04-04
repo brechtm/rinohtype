@@ -93,7 +93,7 @@ rinoh = "rinoh.frontend.sphinx"
 [tool.poetry.dependencies]
 python = "^3.10.0"
 appdirs = "^1.4.3"
-docutils = ">=0.15"
+docutils = ">=0.18"
 myst-parser = ">=0.18.1"
 packaging = ">=14.0"
 rinoh-typeface-dejavuserif = "^0.1.3"
