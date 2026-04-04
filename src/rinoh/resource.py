@@ -6,6 +6,7 @@
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
 import importlib.metadata as ilm
+import operator
 import string
 import sys
 
@@ -117,8 +118,17 @@ _installed_entry_points = {(ep.group, ep.name): dist
                            if ep.group in GROUPS}
 
 
-class DynamicEntryPoint(ilm.EntryPoint):
+class DynamicEntryPoint:
     """An entry point defined by value instead of by module:attribute"""
+
+    def __init__(self, name: str, value, group: str) -> None:
+        self.name = name
+        self.value = value
+        self.group = group
+
+    def matches(self, **params):
+        attrs = (getattr(self, param) for param in params)
+        return all(map(operator.eq, params.values(), attrs))
 
     def load(self):
         return self.value
