@@ -276,6 +276,7 @@ jobs:
       if: startsWith(runner.os, 'Windows')
       run: |
         choco install mupdf --version=1.26.0
+        Add-Content $env:GITHUB_PATH "C:\Program Files\Unity Hub\resources\app.asar.unpacked\node_modules\canvas\build\Release"   # cairo.dll
 
     - name: Run Nox
       run: ${{ env.nox_cmd }} ${{ env.NOXENV }} -- -s
