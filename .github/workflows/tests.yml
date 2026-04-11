@@ -266,6 +266,8 @@ jobs:
     - name: Install tools required by the regression tests (Linux)
       if: startsWith(runner.os, 'Linux')
       run: |
+        sudo apt-get update
+        sudo apt-get install -y libjpeg-dev zlib1g-dev  # required for building Pillow wheel
         brew install mupdf-tools imagemagick
     - name: Install tools required by the regression tests (macOS)
       if: startsWith(runner.os, 'macOS')
