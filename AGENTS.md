@@ -2,10 +2,8 @@
 
 ## Overview
 
-**rinohtype** is a Python-based batch-mode document processor that renders structured documents to PDF based on document templates and style sheets. It's designed with a focus on user-friendly document layout and style customization.
+**rinohtype** is a Python-based batch-mode document processor that renders structured documents to PDF based on document templates and style sheets.
 
-**License:** AGPL-3.0-only (Affero GPL 3.0)  
-**Author:** Brecht Machiels <brecht@opqode.com>  
 **Repository:** https://github.com/brechtm/rinohtype  
 **Documentation:** http://www.mos6581.org/rinohtype/master/
 
@@ -21,15 +19,6 @@
 - Built-in support for 1000+ Google Fonts
 - PDF, PNG, and JPEG image embedding
 
-## Technology Stack
-
-- **Language:** Python (3.10+)
-- **Package Manager:** Poetry
-- **Task Runner:** Nox (with nox-poetry)
-- **Test Framework:** pytest (with pytest-xdist, pytest-cov, pytest-assume)
-- **Dependencies:** docutils, myst-parser, packaging, various typeface packages
-- **Optional:** ziamath, cairosvg (for math rendering)
-
 ## Project Structure
 
 ```
@@ -41,7 +30,8 @@ src/
     ├── fonts/          # Font definitions (Adobe 14, Google Fonts)
     ├── language/       # Language-specific processing
     ├── stylesheets/    # Built-in style sheets
-    ├── templates/      # Document templates (article, book)
+    ├── templates/      # Built-in document templates (article, book)
+    ├── data/           # Data files and resources
     └── [core modules]  # document.py, layout.py, paragraph.py, table.py, etc.
 
 doc/                    # Documentation source
@@ -50,161 +40,65 @@ tests_regression/       # Regression/integration tests
 examples/               # Example documents
 ```
 
-## Building and Running
+## Development Workflow
 
-### Installation from source
-```bash
-poetry install
-```
-
-### Activation
-```bash
-source .venv/bin/activate
-```
-
-### CLI Usage
-```bash
-# Render reStructuredText to PDF
-rinoh input.rst
-
-# Render with specific template
-rinoh -t book input.rst
-
-# Help
-rinoh --help
-```
-
-### Sphinx Integration
-```bash
-sphinx-build -b rinoh . _build/rinoh
-```
-
-### Nox Sessions (Development Tasks)
-
-```bash
-# Run all default checks and tests
-nox
-
-# Run specific sessions
-nox --session unit              # Unit tests only
-nox --session regression        # Regression tests only
-nox --session check             # Poetry validation
-nox --session check_docs        # Documentation checks
-nox --session build_docs        # Build documentation (HTML + PDF)
-
-# Run on specific Python version
-nox -e unit-3.11
-nox -e regression-3.11
-```
-
-During development, run pytest directly. These Nox sessions are automatically run as part of CI.
+- All development work makes use of a virtual environment in .venv/
+  - If the .venv/ directory doesn't exist, run `poetry install -E math` to create it and install dependencies
+  - Activate the virtual environment with `source .venv/bin/activate`
+- Run tests using `pytest` in this dev environment
+  - Unit tests in `tests/`; these cover only a small portion of the codebase
+  - Regression tests in `tests_regression/`
+- Do NOT run the nox sessions; these are for CI only
+- Add an entry to the changelog (`CHANGES.rst`) for significant changes
+- Update documentation if needed
 
 ### Testing Details
+
 - **Unit tests:** Quick tests focusing on individual components
+  - Unit test coverage is very limited; you should mainly use regression tests to verify that changes don't break existing functionality
 - **Regression tests:** Render tiny documents and compare PDF output against known-good references
-  - test_rst.py and test_sphinx.py are the primary regression tests
-  - test_rinoh.py tests the CLI interface
-  - all of these tests are parameterized; each .rst file in the respective `tests_regression/` subdirectories (`rst/`, `sphinx/`, `rinoh/`) is rendered and compared against a reference PDF (stored in the `*_output/` directories)
-  - Requires: Graphviz, ImageMagick, and MuPDF's `mutool` or poppler's `pdftoppm`
-- Tests run against multiple Python versions (3.10, 3.11, 3.12, 3.13, 3.14, 3.15) and PyPy
+  - `test_rst.py` tests the reStructuredText frontend
+    - Each .rst file in `tests_regression/rst/` makes for a separate test case
+    - Optional .rts style sheet and .rtt template config files can be added with the same basename as the .rst file
+    - Reference PDFs are stored alongside the .rst files (same basename)
+    - When a test is run, the generated PDF is saved in `rst_output/` and compared against the reference
+  - `test_sphinx.py` tests the Sphinx builder
+    - Each `test-*` directory in `tests_regression/sphinx/` makes for a separate test case; these directories contain a minimal Sphinx project with `conf.py` and `index.rst`
+    - Reference PDFs (`<name>.pdf`) are stored alongside the `test-<name>` directories
+    - When a test is run, the generated PDF is saved in `sphinx_output/` and compared against the reference
+  - `test_rinoh.py` tests the CLI interface (you can ignore these for most development work)
 
-After making changes, first run the unit tests to verify functionality, then run the regression tests to ensure there are no unintended changes in PDF output. To speed up the loop, instruct pytest to abort on the first failure. When fixing a bug, run only the failing regression test while debugging. Add new regression tests for any new features or bug fixes.
+If the PDF output differs from the reference, diff images for each page are written to a `pdfdiff/` directory next to the generated PDF. Matching content will be black, while differences will be highlighted in green (reference) and red (generated). Inspect the diff images to understand what changed and whether it's an expected change (e.g. due to a bug fix or new feature) or an unexpected change (e.g. due to a regression). If the change is expected, copy the generated PDF to the reference location to update the reference for future tests. This should always be verified by the user!
 
-If a regression test times out, the rendering process may be stuck in an infinite loop. In that case, kill the running test before continuing.
+If a regression test times out, the rendering process may be stuck in an infinite loop. In that case, kill the process. No PDF output will be generated in this case.
 
-## Regression Test Structure
+After making code changes, run the integration tests to verify that the changes work as expected and don't break existing functionality. Invoke `pytest` with the `--exitfirst` option to abort on the first failure, which speeds up the feedback loop. Regression tests can be slow to run, so when fixing a bug, run only the failing regression test while debugging. Once the bug is fixed, run the full regression test suite to ensure there are no unintended changes in PDF output.
 
-Regression tests verify that rendered PDF output matches reference PDFs. Tests are organized by input format:
+In addition to the PDF output, you can inspect the generated PseudoXML output (saved in `*.pxml` files) to ensure the doctree structure is what you expect. You can also check the generated style log (saved in `*.stylelog` files) to verify that the styles are being applied correctly.
 
-```
-tests_regression/
-├── helpers/
-│   ├── regression.py      # Core rendering and verification logic
-│   ├── diffpdf.py         # PDF comparison utilities
-│   ├── pdf_linkchecker.py # Link and outline verification
-│   └── util.py            # Utility functions
-├── rst/                   # reStructuredText test sources (.rst, .rts, .rtt)
-├── rst_output/            # Generated output (created during test runs)
-├── sphinx/                # Sphinx test roots (test-* directories)
-├── sphinx_output/         # Sphinx-generated output
-├── rinoh/                 # Direct rinoh CLI test sources
-├── rinoh_output/          # CLI test output
-├── images/                # Test image assets
-├── conftest.py            # Pytest configuration and fixtures
-├── test_rst.py            # reStructuredText frontend tests
-├── test_sphinx.py         # Sphinx builder tests
-└── test_rinoh.py          # CLI interface tests
-```
+### Bugfixing
 
-**Test file conventions:**
-- `.rst` - Input reStructuredText source files
-- `.rts` - Style sheet overrides (optional, same basename as .rst)
-- `.rtt` - Template configuration files (optional, same basename as .rst)
-- `.pdf` - Reference PDFs in `reference/` or alongside source files
-- `.pxml` - PseudoXML output (generated for debugging doctree structure)
-- `.stylelog` - Expected style warnings (optional)
+When fixing a bug, first write a regression test that demonstrates the bug if it does not already exist. This ensures that the bug is properly captured and prevents future changes from reintroducing it. To write a regression test for a bug, create a minimal `.rst` file (or Sphinx project) that reproduces the issue, run the test to generate the output PDF, inspect it to confirm the bug is present. Then fix the bug in the code, run the test again to verify that the output PDF is now correct, and copy it to the reference location.
 
-**How regression tests work:**
-1. Parse input file (reStructuredText, CommonMark, or Sphinx) into a doctree
-2. Render doctree to PDF using rinohtype
-3. Compare generated PDF against reference PDF using `diff_pdf()`
-4. Verify PDF links, anchors, and outlines match expected values
-5. Check for expected warnings in `.stylelog` files
+### New Features
 
-**Adding a regression test:**
-1. Create a minimal `.rst` file in `tests_regression/rst/` that demonstrates the feature/bug
-2. Add optional `.rts` style sheet or `.rtt` template config if needed
-3. Run the test to generate output in `tests_regression/rst_output/`
-4. Inspect the generated PDF to ensure it's correct
-5. Copy the generated PDF to the `rst/` directory as the new reference
-6. Commit the `.rst`, reference `.pdf`, and any `.rts`/`.rtt` files
+When adding new features, first implement the feature and verify it works as expected. Then add a regression test that demonstrates the new feature. This ensures that the feature is properly tested and prevents future changes from breaking it. When adding a regression test, create a minimal `.rst` file (or Sphinx project) that demonstrates the feature, run the test to generate the output PDF, inspect it to ensure it's correct, and then copy it to the reference location.
 
-**Sphinx tests:** Use `test-*` directory structure in `tests_regression/sphinx/` with `conf.py` and `index.rst` files.
+## GitHub
 
-## Development Conventions
+- Use the `gh` command-line tool to query the GitHub API for issues, CI status and test results
+- Regression test artifacts (PDFs, images) are available in CI for debugging test failures
 
-For comprehensive details on development workflows, Nox sessions, testing
-across Python versions, continuous integration, and release processes, see
-**[DEVELOPING.rst](DEVELOPING.rst)**.
+## Coding Style
 
-### Coding Style
-- Follow PEP 8
+- Follow existing conventions (PEP 8)
 - 80-column line wrapping
 - 4 spaces indentation (no tabs)
 - Descriptive variable/function/class names
 - Organize imports: standard library → external packages → rinohtype modules
 - Minimize external dependencies
-- Configuration in `setup.cfg` for pytest and doc8
-
-### Testing Practices
-- Use pytest for all tests
-- Unit tests focus on component functionality
-- Regression tests compare PDF output against reference PDFs
-- Tests parameterized across multiple Python versions and dependency versions
-
-### Python Version Management
-- `.python-version` file specifies target versions for pyenv
-- `pyenv_setup.py` script installs required Python versions
-- Tests run across supported Python versions via CI
-
-### Making Changes
-1. Code follows existing conventions
-2. Run `nox` to verify tests pass locally
-3. Add regression tests for new features/bug fixes when appropriate
-4. Add an entry to the changelog (`CHANGES.rst`) for significant changes
-5. Update documentation if needed
 
 ## Key Files
-
-### Configuration & Build
-- `pyproject.toml` - Poetry configuration, dependencies, entry points
-- `noxfile.py` - Nox session definitions
-- `noxutil.py` - Nox utility functions
-- `setup.cfg` - pytest and doc8 configuration
-- `poetry.lock` - Locked dependency versions
-- `.coveragerc` - Coverage configuration
-- `pyenv_setup.py` - Python version management script
-- `run_tests.py` - Test runner script
 
 ### Core Source Modules
 - `src/rinoh/__init__.py` - Package initialization with version/release info
@@ -241,28 +135,3 @@ across Python versions, continuous integration, and release processes, see
 - `src/rinoh/text.py` - Text rendering and formatting
 - `src/rinoh/util.py` - General utility functions
 - `src/rinoh/warnings.py` - Warning system
-
-### Subpackages
-- `src/rinoh/backend/` - PDF rendering backend
-- `src/rinoh/data/` - Data files and resources
-- `src/rinoh/font/` - Font handling
-- `src/rinoh/fonts/` - Font definitions (Adobe 14, Google Fonts)
-- `src/rinoh/frontend/` - Input format parsers (reStructuredText, CommonMark, Sphinx)
-- `src/rinoh/language/` - Language-specific processing
-- `src/rinoh/stylesheets/` - Built-in style sheets
-- `src/rinoh/templates/` - Document templates (article, book)
-
-### Documentation & CI
-- `README.rst` - Project overview and quick start
-- `DEVELOPING.rst` - Detailed development workflows and CI processes
-- `CONTRIBUTING.rst` - Contribution guidelines
-- `CHANGES.rst` - Changelog
-- `LICENSE` - AGPL-3.0 license text
-- `.github/` - GitHub Actions workflows
-
-## Additional Notes
-
-- Symlinks in repository require special Windows Git configuration
-- CI uses GitHub Actions across Linux, macOS, and Windows
-- Use the `gh` command-line tool to query the GitHub API for issues, CI status and test results
-- Regression test artifacts (PDFs, images) are available in CI for debugging test failures
