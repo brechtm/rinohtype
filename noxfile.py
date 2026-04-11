@@ -157,7 +157,8 @@ def _regression(session, docutils=None, sphinx=None, dist='wheel',
                 ignore_deprecation_warnings=False):
     _install(session, docutils=docutils, sphinx=sphinx, dist=dist, extras=['math'],
              dependencies=[*DEPENDENCIES, 'defusedxml', # for Sphinx>=7.3
-                           'pytest-assume', 'pytest-console-scripts'])
+                           'pytest-assume', 'pytest-console-scripts',
+                           'pytest-timeout'])
     mark_expr = ['-m', 'with_sphinx'] if sphinx else ['-m', 'not longrunning']
     if dist == 'sdist':
         session.env['WITH_COVERAGE'] = '0'
