@@ -28,6 +28,7 @@ from rinoh.dimension import CM
 from rinoh.frontend.commonmark import CommonMarkReader
 from rinoh.frontend.rst import ReStructuredTextReader, from_doctree
 from rinoh.frontend.sphinx import nodes    # load Sphinx docutils nodes
+from rinoh.math import MATH_ENABLED
 from rinoh.structure import TableOfContentsSection
 from rinoh.template import (DocumentTemplate, TemplateConfiguration,
                             ContentsPartTemplate, BodyPageTemplate,
@@ -40,6 +41,10 @@ __all__ = ['render_doctree', 'render_md_file', 'render_rst_file',
 
 
 TEST_DIR = Path(__file__).parent.parent.absolute()
+
+
+if not MATH_ENABLED:
+    raise RuntimeError('Math support is required to run the regression tests.')
 
 
 class MinimalTemplate(DocumentTemplate):
