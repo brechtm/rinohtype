@@ -1,3 +1,5 @@
+:timeout: 300
+
 Inline Markup
 =============
 

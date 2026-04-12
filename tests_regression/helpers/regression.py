@@ -41,6 +41,7 @@ __all__ = ['render_doctree', 'render_md_file', 'render_rst_file',
 
 
 TEST_DIR = Path(__file__).parent.parent.absolute()
+TIMEOUT = 30    # default timeout for tests that specify no timeout in the docinfo
 
 
 if not MATH_ENABLED:

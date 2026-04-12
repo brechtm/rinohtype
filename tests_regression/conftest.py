@@ -12,8 +12,6 @@ from .helpers.regression import verify_output
 
 ROOT_DIR = Path(__file__).parent / 'sphinx'
 
-TIMEOUT = 120 if os.environ.get('GITHUB_ACTIONS') == 'true' else 30 # seconds
-
 
 pytest_plugins = 'sphinx.testing.fixtures'
 collect_ignore = ['sphinx']
@@ -42,9 +40,3 @@ def disable_cache():
     os.environ['RINOH_NO_CACHE'] = '1'
     yield
     os.environ.update(old_environ)
-
-
-def pytest_collection_modifyitems(items):
-    for item in items:
-        if item.nodeid.startswith('tests_regression'):
-            item.add_marker(pytest.mark.timeout(TIMEOUT))

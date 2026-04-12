@@ -11,11 +11,13 @@ from pathlib import Path
 
 import sphinx
 
-from .helpers.regression import render_rst_file, render_sphinx_rst_file
+from docutils import nodes
+from docutils.core import publish_doctree
+
+from .helpers.regression import TIMEOUT, render_rst_file, render_sphinx_rst_file
 
 
 RST_PATH = Path(__file__).parent / 'rst'
-
 SPHINX_MIN_MAX_VERSION = {  # min=inclusive, max=exclusive
     'sphinx_admonition': ('7.3', None),
     'sphinx_collapsible': ('8.2', None),
@@ -28,9 +30,25 @@ def version_to_tuple(version):
     return tuple(int(v) for v in version.split('.'))
 
 
+def get_timeout(rst_path):
+    doctree = publish_doctree(rst_path.read_text(encoding='utf-8'),
+                              source_path=str(rst_path),
+                              settings_overrides={'report_level': 5})
+    index = doctree.first_child_matching_class(nodes.docinfo)
+    if index is not None:
+        for field in doctree[index]:
+            if isinstance(field, nodes.field):
+                name = field[0].astext().lower()
+                if name == 'timeout':
+                    return int(field[1].astext())
+    return None
+
+
 def collect_tests():
     for rst_path in sorted(RST_PATH.glob('*.rst')):
         marks = []
+        timeout = get_timeout(rst_path) or TIMEOUT
+        marks.append(pytest.mark.timeout(timeout))
         try:
             min_ver, max_ver = SPHINX_MIN_MAX_VERSION[rst_path.stem]
         except KeyError:

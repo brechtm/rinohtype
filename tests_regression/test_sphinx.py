@@ -15,7 +15,7 @@ from pathlib import Path
 
 import sphinx
 
-from .helpers.regression import verify_output, version_to_tuple
+from .helpers.regression import TIMEOUT, verify_output, version_to_tuple
 
 
 TESTS_PATH = Path(__file__).parent
@@ -37,7 +37,8 @@ SPHINX_MIN_VERSION = {
 def collect_tests():
     for root_path in sorted(ROOTS_PATH.glob('test-*')):
         test_name = root_path.stem.replace('test-', '')
-        marks = [pytest.mark.sphinx(buildername='rinoh', testroot=test_name)]
+        marks = [pytest.mark.sphinx(buildername='rinoh', testroot=test_name),
+                 pytest.mark.timeout(TIMEOUT)]
         with suppress(KeyError):
             platforms = PLATFORMS[test_name]
             marks.append(pytest.mark.skipif(sys.platform not in platforms,
