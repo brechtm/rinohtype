@@ -31,7 +31,7 @@ from token import PLUS, MINUS, NUMBER, NAME, OP
 
 
 __all__ = ['Dimension', 'PT', 'PICA', 'INCH', 'MM', 'CM',
-           'PERCENT', 'QUARTERS']
+           'PERCENT', 'HALVES', 'QUARTERS']
 
 
 class DimensionType(type):

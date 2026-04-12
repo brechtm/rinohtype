@@ -19,3 +19,4 @@ Automodule
 
 .. automodule:: rinoh.dimension
     :members:
+    :member-order: bysource

@@ -183,7 +183,7 @@
                       SingleStyledText('References')
               List(style='bulleted')   dimension.rst:13   <bullet_list>
                    > (0,0,1,0,2) bulleted list [Sphinx] > enumerated list
-                ListItem()   dimension.rst   <list_item>
+                ListItem()   dimension.rst:13   <list_item>
                      x (0,0,1,0,4) bulleted list item
                   ListItemLabel('•')
                        > (0,0,1,0,6) bulleted list item label [Sphinx] > list item label
@@ -212,7 +212,7 @@
                                 MixedStyledText('PERCENT', style='monospaced')   <literal>
                                      > (0,0,1,0,1) monospaced [Sphinx] > DEFAULT
                                   SingleStyledText('PERCENT')
-                ListItem()   dimension.rst   <list_item>
+                ListItem()   dimension.rst:14   <list_item>
                      x (0,0,1,0,4) bulleted list item
                   ListItemLabel('•')
                        > (0,0,1,0,6) bulleted list item label [Sphinx] > list item label
@@ -319,41 +319,6 @@
                            > (0,0,1,0,1) monospaced [Sphinx] > DEFAULT
                         SingleStyledText('Flowable')
                       SingleStyledText(' is evaluated with respect to th...')
-              LabeledFlowable(style='object description')   docstring of rinoh.dimension.CM   <desc classes='py data'>
-                   > (0,0,1,0,2) object description [Sphinx] > definition list item
-                StaticGroupedFlowables(style='signatures')
-                     > (0,0,2,0,3) object signatures [Sphinx] > definition term
-                  Paragraph('rinoh.dimension.CM = DimensionUn...', id='%dimension#rinoh.dimension.CM')   /Users/brechtm/Code/rinohtype/src/rinoh/dimension.py:1 (docstring of rinoh.dimension.CM)   <desc_signature classes='sig sig-object py'>
-                       > (0,0,2,0,5) object signature [Sphinx] > definition term paragraph
-                         (0,0,0,0,2) body [Sphinx] > default
-                      MixedStyledText('rinoh.dimension.CM = DimensionUn...')
-                        MixedStyledText('rinoh.dimension.CM = DimensionUn...')
-                          MixedStyledText('rinoh.dimension.', style='additional name part')   /Users/brechtm/Code/rinohtype/src/rinoh/dimension.py:1 (docstring of rinoh.dimension.CM)   <desc_addname classes='sig-prename descclassname'>
-                               > (0,0,3,0,6) additional name part [Sphinx] > monospaced
-                            SingleStyledText('rinoh.dimension.')
-                          MixedStyledText('CM', style='main object name')   /Users/brechtm/Code/rinohtype/src/rinoh/dimension.py:1 (docstring of rinoh.dimension.CM)   <desc_name classes='sig-name descname'>
-                               > (0,0,3,0,6) object name [Sphinx] > DEFAULT
-                            SingleStyledText('CM')
-                          MixedStyledText(' = DimensionUnit(28.346456692913...', style='annotation')   /Users/brechtm/Code/rinohtype/src/rinoh/dimension.py:1 (docstring of rinoh.dimension.CM)   <desc_annotation>
-                               > (0,0,3,0,6) object annotation [Sphinx] > DEFAULT
-                            MixedStyledText(' ', style='signature space')   <desc_sig_space classes='w'>
-                                 > (0,0,3,0,6) object signature space [Sphinx] > DEFAULT
-                              SingleStyledText(' ')
-                            MixedStyledText('=', style='signature punctuation')   <desc_sig_punctuation classes='p'>
-                                 > (0,0,3,0,6) object signature punctuation [Sphinx] > DEFAULT
-                              SingleStyledText('=')
-                            MixedStyledText(' ', style='signature space')   <desc_sig_space classes='w'>
-                                 > (0,0,3,0,6) object signature space [Sphinx] > DEFAULT
-                              SingleStyledText(' ')
-                            SingleStyledText('DimensionUnit(28.346456692913385...')
-                StaticGroupedFlowables(style='content')   docstring of rinoh.dimension.CM   <desc_content>
-                     > (0,0,2,0,3) object description content [Sphinx] > definition
-                  Paragraph('centimeter')   docstring of rinoh.dimension.CM:1   <paragraph>
-                       > (0,0,2,0,5) object description content paragraph [Sphinx] > body
-                         (0,0,0,0,2) body [Sphinx] > default
-                      MixedStyledText('centimeter')
-                        MixedStyledText('centimeter')
-                          SingleStyledText('centimeter')
               LabeledFlowable(style='object description')   <desc classes='py class'>
                    > (0,0,1,0,2) object description [Sphinx] > definition list item
                 StaticGroupedFlowables(style='signatures')
@@ -605,172 +570,6 @@
                                         MixedStyledText('Dimension', style='monospaced')   <literal>
                                              > (0,0,1,0,1) monospaced [Sphinx] > DEFAULT
                                           SingleStyledText('Dimension')
-              LabeledFlowable(style='object description')   docstring of rinoh.dimension.INCH   <desc classes='py data'>
-                   > (0,0,1,0,2) object description [Sphinx] > definition list item
-                StaticGroupedFlowables(style='signatures')
-                     > (0,0,2,0,3) object signatures [Sphinx] > definition term
-                  Paragraph('rinoh.dimension.INCH = Dimension...', id='%dimension#rinoh.dimension.INCH')   /Users/brechtm/Code/rinohtype/src/rinoh/dimension.py:1 (docstring of rinoh.dimension.INCH)   <desc_signature classes='sig sig-object py'>
-                       > (0,0,2,0,5) object signature [Sphinx] > definition term paragraph
-                         (0,0,0,0,2) body [Sphinx] > default
-                      MixedStyledText('rinoh.dimension.INCH = Dimension...')
-                        MixedStyledText('rinoh.dimension.INCH = Dimension...')
-                          MixedStyledText('rinoh.dimension.', style='additional name part')   /Users/brechtm/Code/rinohtype/src/rinoh/dimension.py:1 (docstring of rinoh.dimension.INCH)   <desc_addname classes='sig-prename descclassname'>
-                               > (0,0,3,0,6) additional name part [Sphinx] > monospaced
-                            SingleStyledText('rinoh.dimension.')
-                          MixedStyledText('INCH', style='main object name')   /Users/brechtm/Code/rinohtype/src/rinoh/dimension.py:1 (docstring of rinoh.dimension.INCH)   <desc_name classes='sig-name descname'>
-                               > (0,0,3,0,6) object name [Sphinx] > DEFAULT
-                            SingleStyledText('INCH')
-                          MixedStyledText(' = DimensionUnit(72.0, 'in')', style='annotation')   /Users/brechtm/Code/rinohtype/src/rinoh/dimension.py:1 (docstring of rinoh.dimension.INCH)   <desc_annotation>
-                               > (0,0,3,0,6) object annotation [Sphinx] > DEFAULT
-                            MixedStyledText(' ', style='signature space')   <desc_sig_space classes='w'>
-                                 > (0,0,3,0,6) object signature space [Sphinx] > DEFAULT
-                              SingleStyledText(' ')
-                            MixedStyledText('=', style='signature punctuation')   <desc_sig_punctuation classes='p'>
-                                 > (0,0,3,0,6) object signature punctuation [Sphinx] > DEFAULT
-                              SingleStyledText('=')
-                            MixedStyledText(' ', style='signature space')   <desc_sig_space classes='w'>
-                                 > (0,0,3,0,6) object signature space [Sphinx] > DEFAULT
-                              SingleStyledText(' ')
-                            SingleStyledText('DimensionUnit(72.0, 'in')')
-                StaticGroupedFlowables(style='content')   docstring of rinoh.dimension.INCH   <desc_content>
-                     > (0,0,2,0,3) object description content [Sphinx] > definition
-                  Paragraph('imperial/US inch')   docstring of rinoh.dimension.INCH:1   <paragraph>
-                       > (0,0,2,0,5) object description content paragraph [Sphinx] > body
-                         (0,0,0,0,2) body [Sphinx] > default
-                      MixedStyledText('imperial/US inch')
-                        MixedStyledText('imperial/US inch')
-                          SingleStyledText('imperial/US inch')
-#### DownExpandingContainer('footer')
-  StaticGroupedFlowables()
-    Footer('		1-1')
-         > (0,0,0,0,2) footer [Sphinx] > header_footer
-        MixedStyledText('		1-1')
-          MixedStyledText('		1-1')
-            Tab('	')
-            Tab('	')
-            Field('1-1')
-              SingleStyledText('1-1')
----------------------------------- page 1-2 ----------------------------------
-#### FlowablesContainer('background')
-  StaticGroupedFlowables()
-#### FootnoteContainer('footnotes')
-  StaticGroupedFlowables()
-#### DownExpandingContainer('floats')
-  StaticGroupedFlowables()
-#### ChainedContainer('column1')
-  (continued) StaticGroupedFlowables()
-    (continued) DocumentTree()   index.rst   <document>
-      (continued) StaticGroupedFlowables()   index.rst   <compound classes='toctree-wrapper'>
-        (continued) StaticGroupedFlowables(id='%dimension')   index.rst   <start_of_file>
-          (continued) Section(id='%dimension#dimension')   dimension.rst:4   <section>
-               > (0,0,0,1,4) content chapter [Sphinx ref] > DEFAULT
-                 (0,0,0,1,2) chapter [Sphinx ref] > DEFAULT
-            (continued) Section(id='%dimension#automodule')   dimension.rst:18   <section>
-              LabeledFlowable(style='object description')   docstring of rinoh.dimension.MM   <desc classes='py data'>
-                   > (0,0,1,0,2) object description [Sphinx] > definition list item
-                StaticGroupedFlowables(style='signatures')
-                     > (0,0,2,0,3) object signatures [Sphinx] > definition term
-                  Paragraph('rinoh.dimension.MM = DimensionUn...', id='%dimension#rinoh.dimension.MM')   /Users/brechtm/Code/rinohtype/src/rinoh/dimension.py:1 (docstring of rinoh.dimension.MM)   <desc_signature classes='sig sig-object py'>
-                       > (0,0,2,0,5) object signature [Sphinx] > definition term paragraph
-                         (0,0,0,0,2) body [Sphinx] > default
-                      MixedStyledText('rinoh.dimension.MM = DimensionUn...')
-                        MixedStyledText('rinoh.dimension.MM = DimensionUn...')
-                          MixedStyledText('rinoh.dimension.', style='additional name part')   /Users/brechtm/Code/rinohtype/src/rinoh/dimension.py:1 (docstring of rinoh.dimension.MM)   <desc_addname classes='sig-prename descclassname'>
-                               > (0,0,3,0,6) additional name part [Sphinx] > monospaced
-                            SingleStyledText('rinoh.dimension.')
-                          MixedStyledText('MM', style='main object name')   /Users/brechtm/Code/rinohtype/src/rinoh/dimension.py:1 (docstring of rinoh.dimension.MM)   <desc_name classes='sig-name descname'>
-                               > (0,0,3,0,6) object name [Sphinx] > DEFAULT
-                            SingleStyledText('MM')
-                          MixedStyledText(' = DimensionUnit(2.8346456692913...', style='annotation')   /Users/brechtm/Code/rinohtype/src/rinoh/dimension.py:1 (docstring of rinoh.dimension.MM)   <desc_annotation>
-                               > (0,0,3,0,6) object annotation [Sphinx] > DEFAULT
-                            MixedStyledText(' ', style='signature space')   <desc_sig_space classes='w'>
-                                 > (0,0,3,0,6) object signature space [Sphinx] > DEFAULT
-                              SingleStyledText(' ')
-                            MixedStyledText('=', style='signature punctuation')   <desc_sig_punctuation classes='p'>
-                                 > (0,0,3,0,6) object signature punctuation [Sphinx] > DEFAULT
-                              SingleStyledText('=')
-                            MixedStyledText(' ', style='signature space')   <desc_sig_space classes='w'>
-                                 > (0,0,3,0,6) object signature space [Sphinx] > DEFAULT
-                              SingleStyledText(' ')
-                            SingleStyledText('DimensionUnit(2.8346456692913384...')
-                StaticGroupedFlowables(style='content')   docstring of rinoh.dimension.MM   <desc_content>
-                     > (0,0,2,0,3) object description content [Sphinx] > definition
-                  Paragraph('millimeter')   docstring of rinoh.dimension.MM:1   <paragraph>
-                       > (0,0,2,0,5) object description content paragraph [Sphinx] > body
-                         (0,0,0,0,2) body [Sphinx] > default
-                      MixedStyledText('millimeter')
-                        MixedStyledText('millimeter')
-                          SingleStyledText('millimeter')
-              LabeledFlowable(style='object description')   docstring of rinoh.dimension.PERCENT   <desc classes='py data'>
-                   > (0,0,1,0,2) object description [Sphinx] > definition list item
-                StaticGroupedFlowables(style='signatures')
-                     > (0,0,2,0,3) object signatures [Sphinx] > definition term
-                  Paragraph('rinoh.dimension.PERCENT = Fracti...', id='%dimension#rinoh.dimension.PERCENT')   /Users/brechtm/Code/rinohtype/src/rinoh/dimension.py:1 (docstring of rinoh.dimension.PERCENT)   <desc_signature classes='sig sig-object py'>
-                       > (0,0,2,0,5) object signature [Sphinx] > definition term paragraph
-                         (0,0,0,0,2) body [Sphinx] > default
-                      MixedStyledText('rinoh.dimension.PERCENT = Fracti...')
-                        MixedStyledText('rinoh.dimension.PERCENT = Fracti...')
-                          MixedStyledText('rinoh.dimension.', style='additional name part')   /Users/brechtm/Code/rinohtype/src/rinoh/dimension.py:1 (docstring of rinoh.dimension.PERCENT)   <desc_addname classes='sig-prename descclassname'>
-                               > (0,0,3,0,6) additional name part [Sphinx] > monospaced
-                            SingleStyledText('rinoh.dimension.')
-                          MixedStyledText('PERCENT', style='main object name')   /Users/brechtm/Code/rinohtype/src/rinoh/dimension.py:1 (docstring of rinoh.dimension.PERCENT)   <desc_name classes='sig-name descname'>
-                               > (0,0,3,0,6) object name [Sphinx] > DEFAULT
-                            SingleStyledText('PERCENT')
-                          MixedStyledText(' = FractionUnit(100, '%')', style='annotation')   /Users/brechtm/Code/rinohtype/src/rinoh/dimension.py:1 (docstring of rinoh.dimension.PERCENT)   <desc_annotation>
-                               > (0,0,3,0,6) object annotation [Sphinx] > DEFAULT
-                            MixedStyledText(' ', style='signature space')   <desc_sig_space classes='w'>
-                                 > (0,0,3,0,6) object signature space [Sphinx] > DEFAULT
-                              SingleStyledText(' ')
-                            MixedStyledText('=', style='signature punctuation')   <desc_sig_punctuation classes='p'>
-                                 > (0,0,3,0,6) object signature punctuation [Sphinx] > DEFAULT
-                              SingleStyledText('=')
-                            MixedStyledText(' ', style='signature space')   <desc_sig_space classes='w'>
-                                 > (0,0,3,0,6) object signature space [Sphinx] > DEFAULT
-                              SingleStyledText(' ')
-                            SingleStyledText('FractionUnit(100, '%')')
-                StaticGroupedFlowables(style='content')   docstring of rinoh.dimension.PERCENT   <desc_content>
-                     > (0,0,2,0,3) object description content [Sphinx] > definition
-                  Paragraph('fraction of 100')   docstring of rinoh.dimension.PERCENT:1   <paragraph>
-                       > (0,0,2,0,5) object description content paragraph [Sphinx] > body
-                         (0,0,0,0,2) body [Sphinx] > default
-                      MixedStyledText('fraction of 100')
-                        MixedStyledText('fraction of 100')
-                          SingleStyledText('fraction of 100')
-              LabeledFlowable(style='object description')   docstring of rinoh.dimension.PICA   <desc classes='py data'>
-                   > (0,0,1,0,2) object description [Sphinx] > definition list item
-                StaticGroupedFlowables(style='signatures')
-                     > (0,0,2,0,3) object signatures [Sphinx] > definition term
-                  Paragraph('rinoh.dimension.PICA = Dimension...', id='%dimension#rinoh.dimension.PICA')   /Users/brechtm/Code/rinohtype/src/rinoh/dimension.py:1 (docstring of rinoh.dimension.PICA)   <desc_signature classes='sig sig-object py'>
-                       > (0,0,2,0,5) object signature [Sphinx] > definition term paragraph
-                         (0,0,0,0,2) body [Sphinx] > default
-                      MixedStyledText('rinoh.dimension.PICA = Dimension...')
-                        MixedStyledText('rinoh.dimension.PICA = Dimension...')
-                          MixedStyledText('rinoh.dimension.', style='additional name part')   /Users/brechtm/Code/rinohtype/src/rinoh/dimension.py:1 (docstring of rinoh.dimension.PICA)   <desc_addname classes='sig-prename descclassname'>
-                               > (0,0,3,0,6) additional name part [Sphinx] > monospaced
-                            SingleStyledText('rinoh.dimension.')
-                          MixedStyledText('PICA', style='main object name')   /Users/brechtm/Code/rinohtype/src/rinoh/dimension.py:1 (docstring of rinoh.dimension.PICA)   <desc_name classes='sig-name descname'>
-                               > (0,0,3,0,6) object name [Sphinx] > DEFAULT
-                            SingleStyledText('PICA')
-                          MixedStyledText(' = DimensionUnit(12.0, 'pc')', style='annotation')   /Users/brechtm/Code/rinohtype/src/rinoh/dimension.py:1 (docstring of rinoh.dimension.PICA)   <desc_annotation>
-                               > (0,0,3,0,6) object annotation [Sphinx] > DEFAULT
-                            MixedStyledText(' ', style='signature space')   <desc_sig_space classes='w'>
-                                 > (0,0,3,0,6) object signature space [Sphinx] > DEFAULT
-                              SingleStyledText(' ')
-                            MixedStyledText('=', style='signature punctuation')   <desc_sig_punctuation classes='p'>
-                                 > (0,0,3,0,6) object signature punctuation [Sphinx] > DEFAULT
-                              SingleStyledText('=')
-                            MixedStyledText(' ', style='signature space')   <desc_sig_space classes='w'>
-                                 > (0,0,3,0,6) object signature space [Sphinx] > DEFAULT
-                              SingleStyledText(' ')
-                            SingleStyledText('DimensionUnit(12.0, 'pc')')
-                StaticGroupedFlowables(style='content')   docstring of rinoh.dimension.PICA   <desc_content>
-                     > (0,0,2,0,3) object description content [Sphinx] > definition
-                  Paragraph('computer pica')   docstring of rinoh.dimension.PICA:1   <paragraph>
-                       > (0,0,2,0,5) object description content paragraph [Sphinx] > body
-                         (0,0,0,0,2) body [Sphinx] > default
-                      MixedStyledText('computer pica')
-                        MixedStyledText('computer pica')
-                          SingleStyledText('computer pica')
               LabeledFlowable(style='object description')   docstring of rinoh.dimension.PT   <desc classes='py data'>
                    > (0,0,1,0,2) object description [Sphinx] > definition list item
                 StaticGroupedFlowables(style='signatures')
@@ -806,6 +605,242 @@
                       MixedStyledText('PostScript points')
                         MixedStyledText('PostScript points')
                           SingleStyledText('PostScript points')
+              LabeledFlowable(style='object description')   docstring of rinoh.dimension.PICA   <desc classes='py data'>
+                   > (0,0,1,0,2) object description [Sphinx] > definition list item
+                StaticGroupedFlowables(style='signatures')
+                     > (0,0,2,0,3) object signatures [Sphinx] > definition term
+                  Paragraph('rinoh.dimension.PICA = Dimension...', id='%dimension#rinoh.dimension.PICA')   /Users/brechtm/Code/rinohtype/src/rinoh/dimension.py:1 (docstring of rinoh.dimension.PICA)   <desc_signature classes='sig sig-object py'>
+                       > (0,0,2,0,5) object signature [Sphinx] > definition term paragraph
+                         (0,0,0,0,2) body [Sphinx] > default
+                      MixedStyledText('rinoh.dimension.PICA = Dimension...')
+                        MixedStyledText('rinoh.dimension.PICA = Dimension...')
+                          MixedStyledText('rinoh.dimension.', style='additional name part')   /Users/brechtm/Code/rinohtype/src/rinoh/dimension.py:1 (docstring of rinoh.dimension.PICA)   <desc_addname classes='sig-prename descclassname'>
+                               > (0,0,3,0,6) additional name part [Sphinx] > monospaced
+                            SingleStyledText('rinoh.dimension.')
+                          MixedStyledText('PICA', style='main object name')   /Users/brechtm/Code/rinohtype/src/rinoh/dimension.py:1 (docstring of rinoh.dimension.PICA)   <desc_name classes='sig-name descname'>
+                               > (0,0,3,0,6) object name [Sphinx] > DEFAULT
+                            SingleStyledText('PICA')
+                          MixedStyledText(' = DimensionUnit(12.0, 'pc')', style='annotation')   /Users/brechtm/Code/rinohtype/src/rinoh/dimension.py:1 (docstring of rinoh.dimension.PICA)   <desc_annotation>
+                               > (0,0,3,0,6) object annotation [Sphinx] > DEFAULT
+                            MixedStyledText(' ', style='signature space')   <desc_sig_space classes='w'>
+                                 > (0,0,3,0,6) object signature space [Sphinx] > DEFAULT
+                              SingleStyledText(' ')
+                            MixedStyledText('=', style='signature punctuation')   <desc_sig_punctuation classes='p'>
+                                 > (0,0,3,0,6) object signature punctuation [Sphinx] > DEFAULT
+                              SingleStyledText('=')
+                            MixedStyledText(' ', style='signature space')   <desc_sig_space classes='w'>
+                                 > (0,0,3,0,6) object signature space [Sphinx] > DEFAULT
+                              SingleStyledText(' ')
+                            SingleStyledText('DimensionUnit(12.0, 'pc')')
+                StaticGroupedFlowables(style='content')   docstring of rinoh.dimension.PICA   <desc_content>
+                     > (0,0,2,0,3) object description content [Sphinx] > definition
+                  Paragraph('computer pica')   docstring of rinoh.dimension.PICA:1   <paragraph>
+                       > (0,0,2,0,5) object description content paragraph [Sphinx] > body
+                         (0,0,0,0,2) body [Sphinx] > default
+                      MixedStyledText('computer pica')
+                        MixedStyledText('computer pica')
+                          SingleStyledText('computer pica')
+#### DownExpandingContainer('footer')
+  StaticGroupedFlowables()
+    Footer('		1-1')
+         > (0,0,0,0,2) footer [Sphinx] > header_footer
+        MixedStyledText('		1-1')
+          MixedStyledText('		1-1')
+            Tab('	')
+            Tab('	')
+            Field('1-1')
+              SingleStyledText('1-1')
+---------------------------------- page 1-2 ----------------------------------
+#### FlowablesContainer('background')
+  StaticGroupedFlowables()
+#### FootnoteContainer('footnotes')
+  StaticGroupedFlowables()
+#### DownExpandingContainer('floats')
+  StaticGroupedFlowables()
+#### ChainedContainer('column1')
+  (continued) StaticGroupedFlowables()
+    (continued) DocumentTree()   index.rst   <document>
+      (continued) StaticGroupedFlowables()   index.rst   <compound classes='toctree-wrapper'>
+        (continued) StaticGroupedFlowables(id='%dimension')   index.rst   <start_of_file>
+          (continued) Section(id='%dimension#dimension')   dimension.rst:4   <section>
+               > (0,0,0,1,4) content chapter [Sphinx ref] > DEFAULT
+                 (0,0,0,1,2) chapter [Sphinx ref] > DEFAULT
+            (continued) Section(id='%dimension#automodule')   dimension.rst:18   <section>
+              LabeledFlowable(style='object description')   docstring of rinoh.dimension.INCH   <desc classes='py data'>
+                   > (0,0,1,0,2) object description [Sphinx] > definition list item
+                StaticGroupedFlowables(style='signatures')
+                     > (0,0,2,0,3) object signatures [Sphinx] > definition term
+                  Paragraph('rinoh.dimension.INCH = Dimension...', id='%dimension#rinoh.dimension.INCH')   /Users/brechtm/Code/rinohtype/src/rinoh/dimension.py:1 (docstring of rinoh.dimension.INCH)   <desc_signature classes='sig sig-object py'>
+                       > (0,0,2,0,5) object signature [Sphinx] > definition term paragraph
+                         (0,0,0,0,2) body [Sphinx] > default
+                      MixedStyledText('rinoh.dimension.INCH = Dimension...')
+                        MixedStyledText('rinoh.dimension.INCH = Dimension...')
+                          MixedStyledText('rinoh.dimension.', style='additional name part')   /Users/brechtm/Code/rinohtype/src/rinoh/dimension.py:1 (docstring of rinoh.dimension.INCH)   <desc_addname classes='sig-prename descclassname'>
+                               > (0,0,3,0,6) additional name part [Sphinx] > monospaced
+                            SingleStyledText('rinoh.dimension.')
+                          MixedStyledText('INCH', style='main object name')   /Users/brechtm/Code/rinohtype/src/rinoh/dimension.py:1 (docstring of rinoh.dimension.INCH)   <desc_name classes='sig-name descname'>
+                               > (0,0,3,0,6) object name [Sphinx] > DEFAULT
+                            SingleStyledText('INCH')
+                          MixedStyledText(' = DimensionUnit(72.0, 'in')', style='annotation')   /Users/brechtm/Code/rinohtype/src/rinoh/dimension.py:1 (docstring of rinoh.dimension.INCH)   <desc_annotation>
+                               > (0,0,3,0,6) object annotation [Sphinx] > DEFAULT
+                            MixedStyledText(' ', style='signature space')   <desc_sig_space classes='w'>
+                                 > (0,0,3,0,6) object signature space [Sphinx] > DEFAULT
+                              SingleStyledText(' ')
+                            MixedStyledText('=', style='signature punctuation')   <desc_sig_punctuation classes='p'>
+                                 > (0,0,3,0,6) object signature punctuation [Sphinx] > DEFAULT
+                              SingleStyledText('=')
+                            MixedStyledText(' ', style='signature space')   <desc_sig_space classes='w'>
+                                 > (0,0,3,0,6) object signature space [Sphinx] > DEFAULT
+                              SingleStyledText(' ')
+                            SingleStyledText('DimensionUnit(72.0, 'in')')
+                StaticGroupedFlowables(style='content')   docstring of rinoh.dimension.INCH   <desc_content>
+                     > (0,0,2,0,3) object description content [Sphinx] > definition
+                  Paragraph('imperial/US inch')   docstring of rinoh.dimension.INCH:1   <paragraph>
+                       > (0,0,2,0,5) object description content paragraph [Sphinx] > body
+                         (0,0,0,0,2) body [Sphinx] > default
+                      MixedStyledText('imperial/US inch')
+                        MixedStyledText('imperial/US inch')
+                          SingleStyledText('imperial/US inch')
+              LabeledFlowable(style='object description')   docstring of rinoh.dimension.MM   <desc classes='py data'>
+                   > (0,0,1,0,2) object description [Sphinx] > definition list item
+                StaticGroupedFlowables(style='signatures')
+                     > (0,0,2,0,3) object signatures [Sphinx] > definition term
+                  Paragraph('rinoh.dimension.MM = DimensionUn...', id='%dimension#rinoh.dimension.MM')   /Users/brechtm/Code/rinohtype/src/rinoh/dimension.py:1 (docstring of rinoh.dimension.MM)   <desc_signature classes='sig sig-object py'>
+                       > (0,0,2,0,5) object signature [Sphinx] > definition term paragraph
+                         (0,0,0,0,2) body [Sphinx] > default
+                      MixedStyledText('rinoh.dimension.MM = DimensionUn...')
+                        MixedStyledText('rinoh.dimension.MM = DimensionUn...')
+                          MixedStyledText('rinoh.dimension.', style='additional name part')   /Users/brechtm/Code/rinohtype/src/rinoh/dimension.py:1 (docstring of rinoh.dimension.MM)   <desc_addname classes='sig-prename descclassname'>
+                               > (0,0,3,0,6) additional name part [Sphinx] > monospaced
+                            SingleStyledText('rinoh.dimension.')
+                          MixedStyledText('MM', style='main object name')   /Users/brechtm/Code/rinohtype/src/rinoh/dimension.py:1 (docstring of rinoh.dimension.MM)   <desc_name classes='sig-name descname'>
+                               > (0,0,3,0,6) object name [Sphinx] > DEFAULT
+                            SingleStyledText('MM')
+                          MixedStyledText(' = DimensionUnit(2.8346456692913...', style='annotation')   /Users/brechtm/Code/rinohtype/src/rinoh/dimension.py:1 (docstring of rinoh.dimension.MM)   <desc_annotation>
+                               > (0,0,3,0,6) object annotation [Sphinx] > DEFAULT
+                            MixedStyledText(' ', style='signature space')   <desc_sig_space classes='w'>
+                                 > (0,0,3,0,6) object signature space [Sphinx] > DEFAULT
+                              SingleStyledText(' ')
+                            MixedStyledText('=', style='signature punctuation')   <desc_sig_punctuation classes='p'>
+                                 > (0,0,3,0,6) object signature punctuation [Sphinx] > DEFAULT
+                              SingleStyledText('=')
+                            MixedStyledText(' ', style='signature space')   <desc_sig_space classes='w'>
+                                 > (0,0,3,0,6) object signature space [Sphinx] > DEFAULT
+                              SingleStyledText(' ')
+                            SingleStyledText('DimensionUnit(2.8346456692913384...')
+                StaticGroupedFlowables(style='content')   docstring of rinoh.dimension.MM   <desc_content>
+                     > (0,0,2,0,3) object description content [Sphinx] > definition
+                  Paragraph('millimeter')   docstring of rinoh.dimension.MM:1   <paragraph>
+                       > (0,0,2,0,5) object description content paragraph [Sphinx] > body
+                         (0,0,0,0,2) body [Sphinx] > default
+                      MixedStyledText('millimeter')
+                        MixedStyledText('millimeter')
+                          SingleStyledText('millimeter')
+              LabeledFlowable(style='object description')   docstring of rinoh.dimension.CM   <desc classes='py data'>
+                   > (0,0,1,0,2) object description [Sphinx] > definition list item
+                StaticGroupedFlowables(style='signatures')
+                     > (0,0,2,0,3) object signatures [Sphinx] > definition term
+                  Paragraph('rinoh.dimension.CM = DimensionUn...', id='%dimension#rinoh.dimension.CM')   /Users/brechtm/Code/rinohtype/src/rinoh/dimension.py:1 (docstring of rinoh.dimension.CM)   <desc_signature classes='sig sig-object py'>
+                       > (0,0,2,0,5) object signature [Sphinx] > definition term paragraph
+                         (0,0,0,0,2) body [Sphinx] > default
+                      MixedStyledText('rinoh.dimension.CM = DimensionUn...')
+                        MixedStyledText('rinoh.dimension.CM = DimensionUn...')
+                          MixedStyledText('rinoh.dimension.', style='additional name part')   /Users/brechtm/Code/rinohtype/src/rinoh/dimension.py:1 (docstring of rinoh.dimension.CM)   <desc_addname classes='sig-prename descclassname'>
+                               > (0,0,3,0,6) additional name part [Sphinx] > monospaced
+                            SingleStyledText('rinoh.dimension.')
+                          MixedStyledText('CM', style='main object name')   /Users/brechtm/Code/rinohtype/src/rinoh/dimension.py:1 (docstring of rinoh.dimension.CM)   <desc_name classes='sig-name descname'>
+                               > (0,0,3,0,6) object name [Sphinx] > DEFAULT
+                            SingleStyledText('CM')
+                          MixedStyledText(' = DimensionUnit(28.346456692913...', style='annotation')   /Users/brechtm/Code/rinohtype/src/rinoh/dimension.py:1 (docstring of rinoh.dimension.CM)   <desc_annotation>
+                               > (0,0,3,0,6) object annotation [Sphinx] > DEFAULT
+                            MixedStyledText(' ', style='signature space')   <desc_sig_space classes='w'>
+                                 > (0,0,3,0,6) object signature space [Sphinx] > DEFAULT
+                              SingleStyledText(' ')
+                            MixedStyledText('=', style='signature punctuation')   <desc_sig_punctuation classes='p'>
+                                 > (0,0,3,0,6) object signature punctuation [Sphinx] > DEFAULT
+                              SingleStyledText('=')
+                            MixedStyledText(' ', style='signature space')   <desc_sig_space classes='w'>
+                                 > (0,0,3,0,6) object signature space [Sphinx] > DEFAULT
+                              SingleStyledText(' ')
+                            SingleStyledText('DimensionUnit(28.346456692913385...')
+                StaticGroupedFlowables(style='content')   docstring of rinoh.dimension.CM   <desc_content>
+                     > (0,0,2,0,3) object description content [Sphinx] > definition
+                  Paragraph('centimeter')   docstring of rinoh.dimension.CM:1   <paragraph>
+                       > (0,0,2,0,5) object description content paragraph [Sphinx] > body
+                         (0,0,0,0,2) body [Sphinx] > default
+                      MixedStyledText('centimeter')
+                        MixedStyledText('centimeter')
+                          SingleStyledText('centimeter')
+              LabeledFlowable(style='object description')   docstring of rinoh.dimension.PERCENT   <desc classes='py data'>
+                   > (0,0,1,0,2) object description [Sphinx] > definition list item
+                StaticGroupedFlowables(style='signatures')
+                     > (0,0,2,0,3) object signatures [Sphinx] > definition term
+                  Paragraph('rinoh.dimension.PERCENT = Fracti...', id='%dimension#rinoh.dimension.PERCENT')   /Users/brechtm/Code/rinohtype/src/rinoh/dimension.py:1 (docstring of rinoh.dimension.PERCENT)   <desc_signature classes='sig sig-object py'>
+                       > (0,0,2,0,5) object signature [Sphinx] > definition term paragraph
+                         (0,0,0,0,2) body [Sphinx] > default
+                      MixedStyledText('rinoh.dimension.PERCENT = Fracti...')
+                        MixedStyledText('rinoh.dimension.PERCENT = Fracti...')
+                          MixedStyledText('rinoh.dimension.', style='additional name part')   /Users/brechtm/Code/rinohtype/src/rinoh/dimension.py:1 (docstring of rinoh.dimension.PERCENT)   <desc_addname classes='sig-prename descclassname'>
+                               > (0,0,3,0,6) additional name part [Sphinx] > monospaced
+                            SingleStyledText('rinoh.dimension.')
+                          MixedStyledText('PERCENT', style='main object name')   /Users/brechtm/Code/rinohtype/src/rinoh/dimension.py:1 (docstring of rinoh.dimension.PERCENT)   <desc_name classes='sig-name descname'>
+                               > (0,0,3,0,6) object name [Sphinx] > DEFAULT
+                            SingleStyledText('PERCENT')
+                          MixedStyledText(' = FractionUnit(100, '%')', style='annotation')   /Users/brechtm/Code/rinohtype/src/rinoh/dimension.py:1 (docstring of rinoh.dimension.PERCENT)   <desc_annotation>
+                               > (0,0,3,0,6) object annotation [Sphinx] > DEFAULT
+                            MixedStyledText(' ', style='signature space')   <desc_sig_space classes='w'>
+                                 > (0,0,3,0,6) object signature space [Sphinx] > DEFAULT
+                              SingleStyledText(' ')
+                            MixedStyledText('=', style='signature punctuation')   <desc_sig_punctuation classes='p'>
+                                 > (0,0,3,0,6) object signature punctuation [Sphinx] > DEFAULT
+                              SingleStyledText('=')
+                            MixedStyledText(' ', style='signature space')   <desc_sig_space classes='w'>
+                                 > (0,0,3,0,6) object signature space [Sphinx] > DEFAULT
+                              SingleStyledText(' ')
+                            SingleStyledText('FractionUnit(100, '%')')
+                StaticGroupedFlowables(style='content')   docstring of rinoh.dimension.PERCENT   <desc_content>
+                     > (0,0,2,0,3) object description content [Sphinx] > definition
+                  Paragraph('fraction of 100')   docstring of rinoh.dimension.PERCENT:1   <paragraph>
+                       > (0,0,2,0,5) object description content paragraph [Sphinx] > body
+                         (0,0,0,0,2) body [Sphinx] > default
+                      MixedStyledText('fraction of 100')
+                        MixedStyledText('fraction of 100')
+                          SingleStyledText('fraction of 100')
+              LabeledFlowable(style='object description')   docstring of rinoh.dimension.HALVES   <desc classes='py data'>
+                   > (0,0,1,0,2) object description [Sphinx] > definition list item
+                StaticGroupedFlowables(style='signatures')
+                     > (0,0,2,0,3) object signatures [Sphinx] > definition term
+                  Paragraph('rinoh.dimension.HALVES = Fractio...', id='%dimension#rinoh.dimension.HALVES')   /Users/brechtm/Code/rinohtype/src/rinoh/dimension.py:1 (docstring of rinoh.dimension.HALVES)   <desc_signature classes='sig sig-object py'>
+                       > (0,0,2,0,5) object signature [Sphinx] > definition term paragraph
+                         (0,0,0,0,2) body [Sphinx] > default
+                      MixedStyledText('rinoh.dimension.HALVES = Fractio...')
+                        MixedStyledText('rinoh.dimension.HALVES = Fractio...')
+                          MixedStyledText('rinoh.dimension.', style='additional name part')   /Users/brechtm/Code/rinohtype/src/rinoh/dimension.py:1 (docstring of rinoh.dimension.HALVES)   <desc_addname classes='sig-prename descclassname'>
+                               > (0,0,3,0,6) additional name part [Sphinx] > monospaced
+                            SingleStyledText('rinoh.dimension.')
+                          MixedStyledText('HALVES', style='main object name')   /Users/brechtm/Code/rinohtype/src/rinoh/dimension.py:1 (docstring of rinoh.dimension.HALVES)   <desc_name classes='sig-name descname'>
+                               > (0,0,3,0,6) object name [Sphinx] > DEFAULT
+                            SingleStyledText('HALVES')
+                          MixedStyledText(' = FractionUnit(2, '/2')', style='annotation')   /Users/brechtm/Code/rinohtype/src/rinoh/dimension.py:1 (docstring of rinoh.dimension.HALVES)   <desc_annotation>
+                               > (0,0,3,0,6) object annotation [Sphinx] > DEFAULT
+                            MixedStyledText(' ', style='signature space')   <desc_sig_space classes='w'>
+                                 > (0,0,3,0,6) object signature space [Sphinx] > DEFAULT
+                              SingleStyledText(' ')
+                            MixedStyledText('=', style='signature punctuation')   <desc_sig_punctuation classes='p'>
+                                 > (0,0,3,0,6) object signature punctuation [Sphinx] > DEFAULT
+                              SingleStyledText('=')
+                            MixedStyledText(' ', style='signature space')   <desc_sig_space classes='w'>
+                                 > (0,0,3,0,6) object signature space [Sphinx] > DEFAULT
+                              SingleStyledText(' ')
+                            SingleStyledText('FractionUnit(2, '/2')')
+                StaticGroupedFlowables(style='content')   docstring of rinoh.dimension.HALVES   <desc_content>
+                     > (0,0,2,0,3) object description content [Sphinx] > definition
+                  Paragraph('fraction of 2')   docstring of rinoh.dimension.HALVES:1   <paragraph>
+                       > (0,0,2,0,5) object description content paragraph [Sphinx] > body
+                         (0,0,0,0,2) body [Sphinx] > default
+                      MixedStyledText('fraction of 2')
+                        MixedStyledText('fraction of 2')
+                          SingleStyledText('fraction of 2')
               LabeledFlowable(style='object description')   docstring of rinoh.dimension.QUARTERS   <desc classes='py data'>
                    > (0,0,1,0,2) object description [Sphinx] > definition list item
                 StaticGroupedFlowables(style='signatures')
@@ -947,10 +982,10 @@
             MixedStyledText('CM (in module rinoh.dimension), ...')
               MixedStyledText('CM (in module rinoh.dimension), ...')
                 SingleStyledText('CM (in module rinoh.dimension), ')
-                MixedStyledText('1-1')
-                  Reference('1-1')
+                MixedStyledText('1-2')
+                  Reference('1-2')
                        > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
-                    SingleStyledText('1-1')
+                    SingleStyledText('1-2')
         IndexLabel('D')
              > (0,0,0,0,2) index section label [Sphinx] > DEFAULT
                (0,0,0,0,1) body [Sphinx] > default
@@ -979,6 +1014,20 @@
                   Reference('1-1')
                        > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
                     SingleStyledText('1-1')
+        IndexLabel('H')
+             > (0,0,0,0,2) index section label [Sphinx] > DEFAULT
+               (0,0,0,0,1) body [Sphinx] > default
+            SingleStyledText('H')
+        IndexEntry('HALVES (in module rinoh.dimensio...')
+             > (0,0,0,1,2) level 1 index entry [Sphinx] > default
+               (0,0,0,0,1) body [Sphinx] > default
+            MixedStyledText('HALVES (in module rinoh.dimensio...')
+              MixedStyledText('HALVES (in module rinoh.dimensio...')
+                SingleStyledText('HALVES (in module rinoh.dimensio...')
+                MixedStyledText('1-2')
+                  Reference('1-2')
+                       > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                    SingleStyledText('1-2')
         IndexLabel('I')
              > (0,0,0,0,2) index section label [Sphinx] > DEFAULT
                (0,0,0,0,1) body [Sphinx] > default
@@ -989,10 +1038,10 @@
             MixedStyledText('INCH (in module rinoh.dimension)...')
               MixedStyledText('INCH (in module rinoh.dimension)...')
                 SingleStyledText('INCH (in module rinoh.dimension)...')
-                MixedStyledText('1-1')
-                  Reference('1-1')
+                MixedStyledText('1-2')
+                  Reference('1-2')
                        > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
-                    SingleStyledText('1-1')
+                    SingleStyledText('1-2')
         IndexLabel('M')
              > (0,0,0,0,2) index section label [Sphinx] > DEFAULT
                (0,0,0,0,1) body [Sphinx] > default
@@ -1041,20 +1090,20 @@
             MixedStyledText('PICA (in module rinoh.dimension)...')
               MixedStyledText('PICA (in module rinoh.dimension)...')
                 SingleStyledText('PICA (in module rinoh.dimension)...')
-                MixedStyledText('1-2')
-                  Reference('1-2')
+                MixedStyledText('1-1')
+                  Reference('1-1')
                        > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
-                    SingleStyledText('1-2')
+                    SingleStyledText('1-1')
         IndexEntry('PT (in module rinoh.dimension), ...')
              > (0,0,0,1,2) level 1 index entry [Sphinx] > default
                (0,0,0,0,1) body [Sphinx] > default
             MixedStyledText('PT (in module rinoh.dimension), ...')
               MixedStyledText('PT (in module rinoh.dimension), ...')
                 SingleStyledText('PT (in module rinoh.dimension), ')
-                MixedStyledText('1-2')
-                  Reference('1-2')
+                MixedStyledText('1-1')
+                  Reference('1-1')
                        > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
-                    SingleStyledText('1-2')
+                    SingleStyledText('1-1')
         IndexLabel('Q')
              > (0,0,0,0,2) index section label [Sphinx] > DEFAULT
                (0,0,0,0,1) body [Sphinx] > default
