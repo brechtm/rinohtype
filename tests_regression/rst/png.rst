@@ -1,3 +1,4 @@
+:timeout: 120
 
 Basic formats
 =============
