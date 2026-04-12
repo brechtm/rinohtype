@@ -12,7 +12,7 @@ from .helpers.regression import verify_output
 
 ROOT_DIR = Path(__file__).parent / 'sphinx'
 
-TIMEOUT = 30    # seconds
+TIMEOUT = 120 if os.environ.get('GITHUB_ACTIONS') == 'true' else 30 # seconds
 
 
 pytest_plugins = 'sphinx.testing.fixtures'
