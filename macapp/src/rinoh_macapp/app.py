@@ -1,4 +1,5 @@
 import os
+import shlex
 import subprocess
 
 
@@ -28,6 +29,9 @@ if __name__ == '__main__':
         rinoh_path = os.path.join(script_dir, 'rinoh.sh')
         link_path = os.path.join(TARGET_DIR, 'rinoh')
         create_link = ('mkdir -p {} && ln -sfh {} {}'
-                       .format(TARGET_DIR, rinoh_path, link_path))
+                       .format(shlex.quote(TARGET_DIR),
+                               shlex.quote(rinoh_path),
+                               shlex.quote(link_path)))
         run_apple_script('do shell script "{}" with administrator privileges'
-                         .format(create_link))
+                         .format(create_link.replace('\\', '\\\\')
+                                            .replace('"', '\\"')))
