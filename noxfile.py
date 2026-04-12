@@ -52,7 +52,8 @@ def check_docs(session):
     _install(session, dependencies=['doc8', 'sphinx-immaterial',
                                     'sphinxcontrib-autoprogram'])
     session.run('doc8', 'README.rst', 'CHANGES.rst', 'CONTRIBUTING.rst',
-                'DEVELOPING.rst', 'doc')
+                'DEVELOPING.rst',
+                os.path.abspath('doc'))   # workaround for https://github.com/PyCQA/doc8/issues/162
     session.run('python', 'doc/build.py', 'doctest')
 
 
