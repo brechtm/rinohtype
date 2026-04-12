@@ -33,6 +33,14 @@ SPHINX_MIN_VERSION = {
     'pyref': '6.2'
 }
 
+SPHINX_ALT_REFERENCE = {
+    'pyref': {  # these versions omit the DimensionUnits for some reason
+        '6.2.1': 'alt',
+        '7.0.1': 'alt',
+        '7.1.2': 'alt'
+    }
+}
+
 
 def collect_tests():
     for root_path in sorted(ROOTS_PATH.glob('test-*')):
@@ -60,8 +68,12 @@ def test_sphinx(test_name, app, verify):
     if output_dir.exists():
         shutil.rmtree(output_dir)
     shutil.copytree(app.outdir, output_dir)
-    if test_name == 'twotargets':
-        verify_output('manual', output_dir, ROOTS_PATH)
-        verify_output('reference', output_dir, ROOTS_PATH)
+    if test_name in SPHINX_ALT_REFERENCE:
+        alt_reference = SPHINX_ALT_REFERENCE[test_name].get(sphinx.__version__)
     else:
-        verify_output(test_name, output_dir, ROOTS_PATH)
+        alt_reference = None
+    if test_name == 'twotargets':
+        verify_output('manual', output_dir, ROOTS_PATH, alt=alt_reference)
+        verify_output('reference', output_dir, ROOTS_PATH, alt=alt_reference)
+    else:
+        verify_output(test_name, output_dir, ROOTS_PATH, alt=alt_reference)
