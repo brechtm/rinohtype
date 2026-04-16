@@ -8,3 +8,6 @@ character_spacing=2pt
 [decreased spacing paragraph : Paragraph(has_class='decreased-spacing')]
 base = NEXT_STYLE
 character_spacing=-0.2pt
+
+[code block]
+character_spacing = 0.7pt

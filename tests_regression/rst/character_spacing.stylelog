@@ -28,3 +28,10 @@
           MixedStyledText('This paragraph has decreased cha...')
             MixedStyledText('This paragraph has decreased cha...')
               SingleStyledText('This paragraph has decreased cha...')
+      CodeBlock('a         b         c\na_________...')   character_spacing.rst:24   <literal_block classes='code'>
+           > (1,0,0,0,2) code block [character_spacing.rts] > DEFAULT
+             (0,0,0,0,1) body [Sphinx] > default
+          MixedStyledText('a         b         c\na_________...')
+            MixedStyledText('a         b         c\na_________...')
+              Token('a         b         c\na_________...', type=Token.Text)
+                   > (0,0,0,1,2) (pygments)Token.Text [FriendlyStyle (pygments)] > DEFAULT

@@ -5,3 +5,11 @@
         This paragraph has increased character spacing.
     <paragraph classes="decreased-spacing">
         This paragraph has decreased character spacing.
+    <literal_block classes="code" xml:space="preserve">
+        a         b         c
+        a_________b_________c
+        
+        __abcd       kl               abcdefg
+        __abcd_______kl_______________abcdefg
+        _efghij    mnopq    rstuvwxy networking
+        _efghij____mnopq____rstuvwxy_networking
