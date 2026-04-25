@@ -1,4 +1,11 @@
-<document source="/Users/brechtm/Code/rinohtype/tests_regression/rst/google_fonts.rst">
+<document rinoh_regression_test="True" source="/Users/brechtm/Code/rinohtype/tests_regression/rst/google_fonts.rst">
+    <docinfo>
+        <field classes="timeout">
+            <field_name>
+                timeout
+            <field_body>
+                <paragraph>
+                    300
     <section ids="inline-markup" names="inline\ markup">
         <title>
             Inline Markup

@@ -28,7 +28,7 @@ class GlyphMetrics(object):
 
     Args:
         name (str):
-        width (float):
+        width (int): the advance width of the glyph in font units
         bounding_box (4-tuple of floats):
         code (int):
 

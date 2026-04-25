@@ -71,6 +71,8 @@ Changed:
 
 Fixed:
 
+* Incorrect kerning/character spacing for (OTF) fonts where unitsPerEm != 1000
+  (for example, the DejaVu fonts)
 * Paragraph duplication occurring when the final word of a paragraph is
   hyphenated across a page boundary (#443)
 * Handling of hyperlinks with missing characters

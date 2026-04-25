@@ -77,8 +77,9 @@ class Document(object):
             elif isinstance(font, OpenTypeFont):
                 cid_system_info = cos.CIDSystemInfo('Identity', 'Adobe', 0)
                 widths = font['hmtx']['advanceWidth']
+                scale = 1000 / font.units_per_em
                 w = cos.Array([cos.Integer(0),
-                               cos.Array(map(cos.Integer, widths))])
+                               cos.Array(cos.Integer(round(w * scale)) for w in widths)])
                 cf_cls = cos.CIDFontType0 if 'CFF' in font else cos.CIDFontType2
                 cid_font = cf_cls(font.name, cid_system_info, font_desc, w=w)
                 mapping = font['cmap'][font._encoding].mapping
@@ -272,17 +273,18 @@ class Canvas(BytesIO):
         current_string = ''
         total_width = 0
         for glyph in glyphs:
-            glyph, width = glyph.metrics, glyph.width
+            glyph_metrics, width = glyph.metrics, glyph.width
             total_width += width
-            displ = (1000 * width) / size
+            default_advance = 1000 * glyph_metrics.width / font.units_per_em
+            adjusted_advance = 1000 * width / size  # w kerning & char spacing
+            adjust = int(default_advance - adjusted_advance)
             if font.encoding:
-                code = font_rsc.get_code(glyph)
+                code = font_rsc.get_code(glyph_metrics)
                 char = CODE_TO_CHAR[code]
             else:
-                code = glyph.code
+                code = glyph_metrics.code
                 high, low = code >> 8, code & 0xFF
                 char = CODE_TO_CHAR[high] + CODE_TO_CHAR[low]
-            adjust = int(glyph.width - displ)
             if adjust:
                 string += '({}{}) {} '.format(current_string, char, adjust)
                 current_string = ''
