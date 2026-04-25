@@ -1,0 +1,330 @@
+<document rinoh_regression_test="True" source="/Users/brechtm/Code/rinohtype/tests_regression/rst/table.rst">
+    <table>
+        <title>
+            automatic column widths (default)
+        <tgroup cols="4">
+            <colspec colwidth="24">
+            <colspec colwidth="12">
+            <colspec colwidth="10">
+            <colspec colwidth="10">
+            <thead>
+                <row>
+                    <entry>
+                        <paragraph>
+                            Header row, column 1
+                            (header rows optional)
+                    <entry>
+                        <paragraph>
+                            Header 2
+                    <entry>
+                        <paragraph>
+                            Header 3
+                    <entry>
+                        <paragraph>
+                            Header 4
+            <tbody>
+                <row>
+                    <entry>
+                        <paragraph>
+                            body row 1, column 1
+                    <entry>
+                        <paragraph>
+                            column 2
+                    <entry>
+                        <paragraph>
+                            column 3
+                    <entry>
+                        <paragraph>
+                            column 4
+                <row>
+                    <entry>
+                        <paragraph>
+                            body row 2
+                    <entry morecols="2">
+                        <paragraph>
+                            Cells may span columns.
+                <row>
+                    <entry>
+                        <paragraph>
+                            body row 3
+                    <entry morerows="1">
+                        <paragraph>
+                            Cells may
+                            span rows.
+                    <entry morecols="1" morerows="1">
+                        <bullet_list bullet="-">
+                            <list_item>
+                                <paragraph>
+                                    Table cells
+                            <list_item>
+                                <paragraph>
+                                    contain
+                            <list_item>
+                                <paragraph>
+                                    body elements.
+                <row>
+                    <entry>
+                        <paragraph>
+                            body row 4
+                <row>
+                    <entry>
+                        <paragraph>
+                            body row 5
+                    <entry morecols="1">
+                        <paragraph>
+                            Cells may also be
+                            empty: 
+                            <literal>
+                                -->
+                    <entry>
+    <table classes="colwidths-given">
+        <title>
+            grid-based column widths (24, 12, 10, 10)
+        <tgroup cols="4">
+            <colspec colwidth="24">
+            <colspec colwidth="12">
+            <colspec colwidth="10">
+            <colspec colwidth="10">
+            <thead>
+                <row>
+                    <entry>
+                        <paragraph>
+                            Header row, column 1
+                            (header rows optional)
+                    <entry>
+                        <paragraph>
+                            Header 2
+                    <entry>
+                        <paragraph>
+                            Header 3
+                    <entry>
+                        <paragraph>
+                            Header 4
+            <tbody>
+                <row>
+                    <entry>
+                        <paragraph>
+                            body row 1, column 1
+                    <entry>
+                        <paragraph>
+                            column 2
+                    <entry>
+                        <paragraph>
+                            column 3
+                    <entry>
+                        <paragraph>
+                            column 4
+                <row>
+                    <entry>
+                        <paragraph>
+                            body row 2
+                    <entry morecols="2">
+                        <paragraph>
+                            Cells may span columns.
+                <row>
+                    <entry>
+                        <paragraph>
+                            body row 3
+                    <entry morerows="1">
+                        <paragraph>
+                            Cells may
+                            span rows.
+                    <entry morecols="1" morerows="1">
+                        <bullet_list bullet="-">
+                            <list_item>
+                                <paragraph>
+                                    Table cells
+                            <list_item>
+                                <paragraph>
+                                    contain
+                            <list_item>
+                                <paragraph>
+                                    body elements.
+                <row>
+                    <entry>
+                        <paragraph>
+                            body row 4
+                <row>
+                    <entry>
+                        <paragraph>
+                            body row 5
+                    <entry morecols="1">
+                        <paragraph>
+                            Cells may also be
+                            empty: 
+                            <literal>
+                                -->
+                    <entry>
+    <table classes="colwidths-given">
+        <title>
+            relative column widths (10, 5, 5, 10)
+        <tgroup cols="4">
+            <colspec colwidth="10">
+            <colspec colwidth="5">
+            <colspec colwidth="5">
+            <colspec colwidth="10">
+            <thead>
+                <row>
+                    <entry>
+                        <paragraph>
+                            Header row, column 1
+                            (header rows optional)
+                    <entry>
+                        <paragraph>
+                            Header 2
+                    <entry>
+                        <paragraph>
+                            Header 3
+                    <entry>
+                        <paragraph>
+                            Header 4
+            <tbody>
+                <row>
+                    <entry>
+                        <paragraph>
+                            body row 1, column 1
+                    <entry>
+                        <paragraph>
+                            column 2
+                    <entry>
+                        <paragraph>
+                            column 3
+                    <entry>
+                        <paragraph>
+                            column 4
+                <row>
+                    <entry>
+                        <paragraph>
+                            body row 2
+                    <entry morecols="2">
+                        <paragraph>
+                            Cells may span columns.
+                <row>
+                    <entry>
+                        <paragraph>
+                            body row 3
+                    <entry morerows="1">
+                        <paragraph>
+                            Cells may
+                            span rows.
+                    <entry morecols="1" morerows="1">
+                        <bullet_list bullet="-">
+                            <list_item>
+                                <paragraph>
+                                    Table cells
+                            <list_item>
+                                <paragraph>
+                                    contain
+                            <list_item>
+                                <paragraph>
+                                    body elements.
+                <row>
+                    <entry>
+                        <paragraph>
+                            body row 4
+                <row>
+                    <entry>
+                        <paragraph>
+                            body row 5
+                    <entry morecols="1">
+                        <paragraph>
+                            Cells may also be
+                            empty: 
+                            <literal>
+                                -->
+                    <entry>
+    <paragraph>
+        No caption:
+    <table>
+        <tgroup cols="3">
+            <colspec colwidth="5">
+            <colspec colwidth="5">
+            <colspec colwidth="6">
+            <thead>
+                <row>
+                    <entry morecols="1">
+                        <paragraph>
+                            Inputs
+                    <entry>
+                        <paragraph>
+                            Output
+                <row>
+                    <entry>
+                        <paragraph>
+                            A
+                    <entry>
+                        <paragraph>
+                            B
+                    <entry>
+                        <paragraph>
+                            A or B
+            <tbody>
+                <row>
+                    <entry>
+                        <paragraph>
+                            False
+                    <entry>
+                        <paragraph>
+                            False
+                    <entry>
+                        <paragraph>
+                            False
+                <row>
+                    <entry>
+                        <paragraph>
+                            True
+                    <entry>
+                        <paragraph>
+                            False
+                    <entry>
+                        <paragraph>
+                            True
+                <row>
+                    <entry>
+                        <paragraph>
+                            False
+                    <entry>
+                        <paragraph>
+                            True
+                    <entry>
+                        <paragraph>
+                            True
+                <row>
+                    <entry>
+                        <paragraph>
+                            True
+                    <entry>
+                        <paragraph>
+                            True
+                    <entry>
+                        <paragraph>
+                            True
+    <table classes="colwidths-auto">
+        <title>
+            Truth table for "not"
+        <tgroup cols="2">
+            <colspec colwidth="5">
+            <colspec colwidth="5">
+            <thead>
+                <row>
+                    <entry>
+                        <paragraph>
+                            A
+                    <entry>
+                        <paragraph>
+                            not A
+            <tbody>
+                <row>
+                    <entry>
+                        <paragraph>
+                            False
+                    <entry>
+                        <paragraph>
+                            True
+                <row>
+                    <entry>
+                        <paragraph>
+                            True
+                    <entry>
+                        <paragraph>
+                            False

@@ -1,4 +1,6 @@
 ---------------------------------- page 1 ----------------------------------
+#### FlowablesContainer('background')
+  StaticGroupedFlowables()
 #### FootnoteContainer('footnotes')
   StaticGroupedFlowables()
 #### DownExpandingContainer('floats')
@@ -10,9 +12,11 @@
            x (0,0,0,0,2) table with caption
         Caption('Table 1. 80% width')
              > (0,0,0,0,4) table caption [Sphinx] > caption
-            SingleStyledText('Table')
+            StringField('Table')
+              SingleStyledText('Table')
             SingleStyledText(' ')
-            MixedStyledText('1. ')
+            MixedStyledText('1. ', style='label')
+              SingleStyledText('')
               SingleStyledText('1')
               SingleStyledText('. ')
             MixedStyledText('80% width')
@@ -22,6 +26,20 @@
              > (0,0,0,0,2) table [Sphinx] > DEFAULT
           TableBody()
             TableRow()
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+                TableCellBorder('top')
+                     > (0,0,0,2,8) table body top border [Sphinx] > table head bottom border
+                       (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+                TableCellBorder('right')
+                     > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+                TableCellBorder('bottom')
+                     > (0,0,0,2,8) table bottom border [Sphinx] > table top border
+                       (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+                TableCellBorder('left')
+                     x (0,0,0,2,8) table body left border
+                     x (0,0,0,2,4) table left border
+                     > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
               TableCell()   <entry>
                    > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
                 Paragraph('short')   table_auto_column_widths.rst:5   <paragraph>
@@ -33,6 +51,16 @@
                         SingleStyledText('short')
                 TableCellBackground()
                      x (0,0,0,2,8) table body cell background on odd row
+                TableCellBorder('top')
+                     > (0,0,0,2,8) table body top border [Sphinx] > table head bottom border
+                       (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+                TableCellBorder('right')
+                     > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+                TableCellBorder('bottom')
+                     > (0,0,0,2,8) table bottom border [Sphinx] > table top border
+                       (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+                TableCellBorder('left')
+                     > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
               TableCell()   <entry>
                    > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
                 Paragraph('a bit longer')   table_auto_column_widths.rst:6   <paragraph>
@@ -43,6 +71,18 @@
                         SingleStyledText('a bit longer')
                 TableCellBackground()
                      x (0,0,0,2,8) table body cell background on odd row
+                TableCellBorder('top')
+                     > (0,0,0,2,8) table body top border [Sphinx] > table head bottom border
+                       (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+                TableCellBorder('right')
+                     x (0,0,0,2,8) table body right border
+                     x (0,0,0,2,4) table right border
+                     > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+                TableCellBorder('bottom')
+                     > (0,0,0,2,8) table bottom border [Sphinx] > table top border
+                       (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+                TableCellBorder('left')
+                     > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
               TableCell()   <entry>
                    > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
                 Paragraph('much, much longer')   table_auto_column_widths.rst:7   <paragraph>
@@ -51,15 +91,15 @@
                     MixedStyledText('much, much longer')
                       MixedStyledText('much, much longer')
                         SingleStyledText('much, much longer')
-                TableCellBackground()
-                     x (0,0,0,2,8) table body cell background on odd row
       TableWithCaption()   <table>
            x (0,0,0,0,2) table with caption
         Caption('Table 2. 70% width')
              > (0,0,0,0,4) table caption [Sphinx] > caption
-            SingleStyledText('Table')
+            StringField('Table')
+              SingleStyledText('Table')
             SingleStyledText(' ')
-            MixedStyledText('2. ')
+            MixedStyledText('2. ', style='label')
+              SingleStyledText('')
               SingleStyledText('2')
               SingleStyledText('. ')
             MixedStyledText('70% width')
@@ -69,6 +109,20 @@
              > (0,0,0,0,2) table [Sphinx] > DEFAULT
           TableBody()
             TableRow()
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+                TableCellBorder('top')
+                     > (0,0,0,2,8) table body top border [Sphinx] > table head bottom border
+                       (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+                TableCellBorder('right')
+                     > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+                TableCellBorder('bottom')
+                     > (0,0,0,2,8) table bottom border [Sphinx] > table top border
+                       (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+                TableCellBorder('left')
+                     x (0,0,0,2,8) table body left border
+                     x (0,0,0,2,4) table left border
+                     > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
               TableCell()   <entry>
                    > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
                 Paragraph('short')   table_auto_column_widths.rst:13   <paragraph>
@@ -80,6 +134,16 @@
                         SingleStyledText('short')
                 TableCellBackground()
                      x (0,0,0,2,8) table body cell background on odd row
+                TableCellBorder('top')
+                     > (0,0,0,2,8) table body top border [Sphinx] > table head bottom border
+                       (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+                TableCellBorder('right')
+                     > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+                TableCellBorder('bottom')
+                     > (0,0,0,2,8) table bottom border [Sphinx] > table top border
+                       (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+                TableCellBorder('left')
+                     > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
               TableCell()   <entry>
                    > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
                 Paragraph('a bit longer')   table_auto_column_widths.rst:14   <paragraph>
@@ -90,6 +154,18 @@
                         SingleStyledText('a bit longer')
                 TableCellBackground()
                      x (0,0,0,2,8) table body cell background on odd row
+                TableCellBorder('top')
+                     > (0,0,0,2,8) table body top border [Sphinx] > table head bottom border
+                       (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+                TableCellBorder('right')
+                     x (0,0,0,2,8) table body right border
+                     x (0,0,0,2,4) table right border
+                     > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+                TableCellBorder('bottom')
+                     > (0,0,0,2,8) table bottom border [Sphinx] > table top border
+                       (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+                TableCellBorder('left')
+                     > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
               TableCell()   <entry>
                    > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
                 Paragraph('much, much longer')   table_auto_column_widths.rst:15   <paragraph>
@@ -98,15 +174,15 @@
                     MixedStyledText('much, much longer')
                       MixedStyledText('much, much longer')
                         SingleStyledText('much, much longer')
-                TableCellBackground()
-                     x (0,0,0,2,8) table body cell background on odd row
       TableWithCaption()   <table>
            x (0,0,0,0,2) table with caption
         Caption('Table 3. auto width')
              > (0,0,0,0,4) table caption [Sphinx] > caption
-            SingleStyledText('Table')
+            StringField('Table')
+              SingleStyledText('Table')
             SingleStyledText(' ')
-            MixedStyledText('3. ')
+            MixedStyledText('3. ', style='label')
+              SingleStyledText('')
               SingleStyledText('3')
               SingleStyledText('. ')
             MixedStyledText('auto width')
@@ -119,6 +195,20 @@
              > (0,0,0,0,2) table [Sphinx] > DEFAULT
           TableBody()
             TableRow()
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+                TableCellBorder('top')
+                     > (0,0,0,2,8) table body top border [Sphinx] > table head bottom border
+                       (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+                TableCellBorder('right')
+                     > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+                TableCellBorder('bottom')
+                     > (0,0,0,2,8) table bottom border [Sphinx] > table top border
+                       (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+                TableCellBorder('left')
+                     x (0,0,0,2,8) table body left border
+                     x (0,0,0,2,4) table left border
+                     > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
               TableCell()   <entry>
                    > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
                 Paragraph('short')   table_auto_column_widths.rst:20   <paragraph>
@@ -130,6 +220,16 @@
                         SingleStyledText('short')
                 TableCellBackground()
                      x (0,0,0,2,8) table body cell background on odd row
+                TableCellBorder('top')
+                     > (0,0,0,2,8) table body top border [Sphinx] > table head bottom border
+                       (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+                TableCellBorder('right')
+                     > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+                TableCellBorder('bottom')
+                     > (0,0,0,2,8) table bottom border [Sphinx] > table top border
+                       (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+                TableCellBorder('left')
+                     > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
               TableCell()   <entry>
                    > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
                 Paragraph('a bit longer')   table_auto_column_widths.rst:21   <paragraph>
@@ -140,6 +240,18 @@
                         SingleStyledText('a bit longer')
                 TableCellBackground()
                      x (0,0,0,2,8) table body cell background on odd row
+                TableCellBorder('top')
+                     > (0,0,0,2,8) table body top border [Sphinx] > table head bottom border
+                       (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+                TableCellBorder('right')
+                     x (0,0,0,2,8) table body right border
+                     x (0,0,0,2,4) table right border
+                     > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+                TableCellBorder('bottom')
+                     > (0,0,0,2,8) table bottom border [Sphinx] > table top border
+                       (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+                TableCellBorder('left')
+                     > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
               TableCell()   <entry>
                    > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
                 Paragraph('much, much longer')   table_auto_column_widths.rst:22   <paragraph>
@@ -148,15 +260,15 @@
                     MixedStyledText('much, much longer')
                       MixedStyledText('much, much longer')
                         SingleStyledText('much, much longer')
-                TableCellBackground()
-                     x (0,0,0,2,8) table body cell background on odd row
       TableWithCaption()   <table>
            x (0,0,0,0,2) table with caption
         Caption('Table 4. 65% width')
              > (0,0,0,0,4) table caption [Sphinx] > caption
-            SingleStyledText('Table')
+            StringField('Table')
+              SingleStyledText('Table')
             SingleStyledText(' ')
-            MixedStyledText('4. ')
+            MixedStyledText('4. ', style='label')
+              SingleStyledText('')
               SingleStyledText('4')
               SingleStyledText('. ')
             MixedStyledText('65% width')
@@ -166,6 +278,20 @@
              > (0,0,0,0,2) table [Sphinx] > DEFAULT
           TableBody()
             TableRow()
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+                TableCellBorder('top')
+                     > (0,0,0,2,8) table body top border [Sphinx] > table head bottom border
+                       (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+                TableCellBorder('right')
+                     > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+                TableCellBorder('bottom')
+                     > (0,0,0,2,8) table bottom border [Sphinx] > table top border
+                       (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+                TableCellBorder('left')
+                     x (0,0,0,2,8) table body left border
+                     x (0,0,0,2,4) table left border
+                     > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
               TableCell()   <entry>
                    > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
                 Paragraph('short')   table_auto_column_widths.rst:28   <paragraph>
@@ -177,6 +303,16 @@
                         SingleStyledText('short')
                 TableCellBackground()
                      x (0,0,0,2,8) table body cell background on odd row
+                TableCellBorder('top')
+                     > (0,0,0,2,8) table body top border [Sphinx] > table head bottom border
+                       (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+                TableCellBorder('right')
+                     > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+                TableCellBorder('bottom')
+                     > (0,0,0,2,8) table bottom border [Sphinx] > table top border
+                       (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+                TableCellBorder('left')
+                     > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
               TableCell()   <entry>
                    > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
                 Paragraph('a bit longer')   table_auto_column_widths.rst:29   <paragraph>
@@ -187,6 +323,18 @@
                         SingleStyledText('a bit longer')
                 TableCellBackground()
                      x (0,0,0,2,8) table body cell background on odd row
+                TableCellBorder('top')
+                     > (0,0,0,2,8) table body top border [Sphinx] > table head bottom border
+                       (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+                TableCellBorder('right')
+                     x (0,0,0,2,8) table body right border
+                     x (0,0,0,2,4) table right border
+                     > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+                TableCellBorder('bottom')
+                     > (0,0,0,2,8) table bottom border [Sphinx] > table top border
+                       (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+                TableCellBorder('left')
+                     > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
               TableCell()   <entry>
                    > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
                 Paragraph('much, much longer')   table_auto_column_widths.rst:30   <paragraph>
@@ -195,15 +343,18 @@
                     MixedStyledText('much, much longer')
                       MixedStyledText('much, much longer')
                         SingleStyledText('much, much longer')
-                TableCellBackground()
-                     x (0,0,0,2,8) table body cell background on odd row
+                    MixedStyledText('much, much longer')
+                      MixedStyledText('much, much longer')
+                        SingleStyledText('much, much longer')
       TableWithCaption()   <table>
            x (0,0,0,0,2) table with caption
         Caption('Table 5. 50% width')
              > (0,0,0,0,4) table caption [Sphinx] > caption
-            SingleStyledText('Table')
+            StringField('Table')
+              SingleStyledText('Table')
             SingleStyledText(' ')
-            MixedStyledText('5. ')
+            MixedStyledText('5. ', style='label')
+              SingleStyledText('')
               SingleStyledText('5')
               SingleStyledText('. ')
             MixedStyledText('50% width')
@@ -213,6 +364,20 @@
              > (0,0,0,0,2) table [Sphinx] > DEFAULT
           TableBody()
             TableRow()
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+                TableCellBorder('top')
+                     > (0,0,0,2,8) table body top border [Sphinx] > table head bottom border
+                       (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+                TableCellBorder('right')
+                     > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+                TableCellBorder('bottom')
+                     > (0,0,0,2,8) table bottom border [Sphinx] > table top border
+                       (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+                TableCellBorder('left')
+                     x (0,0,0,2,8) table body left border
+                     x (0,0,0,2,4) table left border
+                     > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
               TableCell()   <entry>
                    > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
                 Paragraph('short')   table_auto_column_widths.rst:35   <paragraph>
@@ -224,6 +389,16 @@
                         SingleStyledText('short')
                 TableCellBackground()
                      x (0,0,0,2,8) table body cell background on odd row
+                TableCellBorder('top')
+                     > (0,0,0,2,8) table body top border [Sphinx] > table head bottom border
+                       (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+                TableCellBorder('right')
+                     > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+                TableCellBorder('bottom')
+                     > (0,0,0,2,8) table bottom border [Sphinx] > table top border
+                       (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+                TableCellBorder('left')
+                     > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
               TableCell()   <entry>
                    > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
                 Paragraph('a bit longer')   table_auto_column_widths.rst:36   <paragraph>
@@ -232,8 +407,23 @@
                     MixedStyledText('a bit longer')
                       MixedStyledText('a bit longer')
                         SingleStyledText('a bit longer')
+                    MixedStyledText('a bit longer')
+                      MixedStyledText('a bit longer')
+                        SingleStyledText('a bit longer')
                 TableCellBackground()
                      x (0,0,0,2,8) table body cell background on odd row
+                TableCellBorder('top')
+                     > (0,0,0,2,8) table body top border [Sphinx] > table head bottom border
+                       (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+                TableCellBorder('right')
+                     x (0,0,0,2,8) table body right border
+                     x (0,0,0,2,4) table right border
+                     > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+                TableCellBorder('bottom')
+                     > (0,0,0,2,8) table bottom border [Sphinx] > table top border
+                       (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+                TableCellBorder('left')
+                     > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
               TableCell()   <entry>
                    > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
                 Paragraph('much, much longer')   table_auto_column_widths.rst:37   <paragraph>
@@ -242,15 +432,21 @@
                     MixedStyledText('much, much longer')
                       MixedStyledText('much, much longer')
                         SingleStyledText('much, much longer')
-                TableCellBackground()
-                     x (0,0,0,2,8) table body cell background on odd row
+                    MixedStyledText('much, much longer')
+                      MixedStyledText('much, much longer')
+                        SingleStyledText('much, much longer')
+                    MixedStyledText('much, much longer')
+                      MixedStyledText('much, much longer')
+                        SingleStyledText('much, much longer')
       TableWithCaption()   <table>
            x (0,0,0,0,2) table with caption
         Caption('Table 6. 40% width')
              > (0,0,0,0,4) table caption [Sphinx] > caption
-            SingleStyledText('Table')
+            StringField('Table')
+              SingleStyledText('Table')
             SingleStyledText(' ')
-            MixedStyledText('6. ')
+            MixedStyledText('6. ', style='label')
+              SingleStyledText('')
               SingleStyledText('6')
               SingleStyledText('. ')
             MixedStyledText('40% width')
@@ -260,6 +456,20 @@
              > (0,0,0,0,2) table [Sphinx] > DEFAULT
           TableBody()
             TableRow()
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+                TableCellBorder('top')
+                     > (0,0,0,2,8) table body top border [Sphinx] > table head bottom border
+                       (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+                TableCellBorder('right')
+                     > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+                TableCellBorder('bottom')
+                     > (0,0,0,2,8) table bottom border [Sphinx] > table top border
+                       (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+                TableCellBorder('left')
+                     x (0,0,0,2,8) table body left border
+                     x (0,0,0,2,4) table left border
+                     > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
               TableCell()   <entry>
                    > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
                 Paragraph('short')   table_auto_column_widths.rst:43   <paragraph>
@@ -271,6 +481,16 @@
                         SingleStyledText('short')
                 TableCellBackground()
                      x (0,0,0,2,8) table body cell background on odd row
+                TableCellBorder('top')
+                     > (0,0,0,2,8) table body top border [Sphinx] > table head bottom border
+                       (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+                TableCellBorder('right')
+                     > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+                TableCellBorder('bottom')
+                     > (0,0,0,2,8) table bottom border [Sphinx] > table top border
+                       (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+                TableCellBorder('left')
+                     > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
               TableCell()   <entry>
                    > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
                 Paragraph('a bit longer')   table_auto_column_widths.rst:44   <paragraph>
@@ -279,8 +499,23 @@
                     MixedStyledText('a bit longer')
                       MixedStyledText('a bit longer')
                         SingleStyledText('a bit longer')
+                    MixedStyledText('a bit longer')
+                      MixedStyledText('a bit longer')
+                        SingleStyledText('a bit longer')
                 TableCellBackground()
                      x (0,0,0,2,8) table body cell background on odd row
+                TableCellBorder('top')
+                     > (0,0,0,2,8) table body top border [Sphinx] > table head bottom border
+                       (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+                TableCellBorder('right')
+                     x (0,0,0,2,8) table body right border
+                     x (0,0,0,2,4) table right border
+                     > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+                TableCellBorder('bottom')
+                     > (0,0,0,2,8) table bottom border [Sphinx] > table top border
+                       (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+                TableCellBorder('left')
+                     > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
               TableCell()   <entry>
                    > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
                 Paragraph('much, much longer')   table_auto_column_widths.rst:45   <paragraph>
@@ -289,15 +524,21 @@
                     MixedStyledText('much, much longer')
                       MixedStyledText('much, much longer')
                         SingleStyledText('much, much longer')
-                TableCellBackground()
-                     x (0,0,0,2,8) table body cell background on odd row
+                    MixedStyledText('much, much longer')
+                      MixedStyledText('much, much longer')
+                        SingleStyledText('much, much longer')
+                    MixedStyledText('much, much longer')
+                      MixedStyledText('much, much longer')
+                        SingleStyledText('much, much longer')
       TableWithCaption()   <table>
            x (0,0,0,0,2) table with caption
         Caption('Table 7. 35% width')
              > (0,0,0,0,4) table caption [Sphinx] > caption
-            SingleStyledText('Table')
+            StringField('Table')
+              SingleStyledText('Table')
             SingleStyledText(' ')
-            MixedStyledText('7. ')
+            MixedStyledText('7. ', style='label')
+              SingleStyledText('')
               SingleStyledText('7')
               SingleStyledText('. ')
             MixedStyledText('35% width')
@@ -307,6 +548,20 @@
              > (0,0,0,0,2) table [Sphinx] > DEFAULT
           TableBody()
             TableRow()
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+                TableCellBorder('top')
+                     > (0,0,0,2,8) table body top border [Sphinx] > table head bottom border
+                       (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+                TableCellBorder('right')
+                     > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+                TableCellBorder('bottom')
+                     > (0,0,0,2,8) table bottom border [Sphinx] > table top border
+                       (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+                TableCellBorder('left')
+                     x (0,0,0,2,8) table body left border
+                     x (0,0,0,2,4) table left border
+                     > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
               TableCell()   <entry>
                    > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
                 Paragraph('short')   table_auto_column_widths.rst:51   <paragraph>
@@ -318,6 +573,16 @@
                         SingleStyledText('short')
                 TableCellBackground()
                      x (0,0,0,2,8) table body cell background on odd row
+                TableCellBorder('top')
+                     > (0,0,0,2,8) table body top border [Sphinx] > table head bottom border
+                       (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+                TableCellBorder('right')
+                     > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+                TableCellBorder('bottom')
+                     > (0,0,0,2,8) table bottom border [Sphinx] > table top border
+                       (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+                TableCellBorder('left')
+                     > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
               TableCell()   <entry>
                    > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
                 Paragraph('a bit longer')   table_auto_column_widths.rst:52   <paragraph>
@@ -326,8 +591,23 @@
                     MixedStyledText('a bit longer')
                       MixedStyledText('a bit longer')
                         SingleStyledText('a bit longer')
+                    MixedStyledText('a bit longer')
+                      MixedStyledText('a bit longer')
+                        SingleStyledText('a bit longer')
                 TableCellBackground()
                      x (0,0,0,2,8) table body cell background on odd row
+                TableCellBorder('top')
+                     > (0,0,0,2,8) table body top border [Sphinx] > table head bottom border
+                       (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+                TableCellBorder('right')
+                     x (0,0,0,2,8) table body right border
+                     x (0,0,0,2,4) table right border
+                     > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+                TableCellBorder('bottom')
+                     > (0,0,0,2,8) table bottom border [Sphinx] > table top border
+                       (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+                TableCellBorder('left')
+                     > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
               TableCell()   <entry>
                    > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
                 Paragraph('much, much longer')   table_auto_column_widths.rst:53   <paragraph>
@@ -336,15 +616,15 @@
                     MixedStyledText('much, much longer')
                       MixedStyledText('much, much longer')
                         SingleStyledText('much, much longer')
-                TableCellBackground()
-                     x (0,0,0,2,8) table body cell background on odd row
       TableWithCaption()   <table>
            x (0,0,0,0,2) table with caption
         Caption('Table 8. 30% width')
              > (0,0,0,0,4) table caption [Sphinx] > caption
-            SingleStyledText('Table')
+            StringField('Table')
+              SingleStyledText('Table')
             SingleStyledText(' ')
-            MixedStyledText('8. ')
+            MixedStyledText('8. ', style='label')
+              SingleStyledText('')
               SingleStyledText('8')
               SingleStyledText('. ')
             MixedStyledText('30% width')
@@ -354,6 +634,20 @@
              > (0,0,0,0,2) table [Sphinx] > DEFAULT
           TableBody()
             TableRow()
+                TableCellBackground()
+                     x (0,0,0,2,8) table body cell background on odd row
+                TableCellBorder('top')
+                     > (0,0,0,2,8) table body top border [Sphinx] > table head bottom border
+                       (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+                TableCellBorder('right')
+                     > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+                TableCellBorder('bottom')
+                     > (0,0,0,2,8) table bottom border [Sphinx] > table top border
+                       (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+                TableCellBorder('left')
+                     x (0,0,0,2,8) table body left border
+                     x (0,0,0,2,4) table left border
+                     > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
               TableCell()   <entry>
                    > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
                 Paragraph('short')   table_auto_column_widths.rst:59   <paragraph>
@@ -365,6 +659,16 @@
                         SingleStyledText('short')
                 TableCellBackground()
                      x (0,0,0,2,8) table body cell background on odd row
+                TableCellBorder('top')
+                     > (0,0,0,2,8) table body top border [Sphinx] > table head bottom border
+                       (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+                TableCellBorder('right')
+                     > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+                TableCellBorder('bottom')
+                     > (0,0,0,2,8) table bottom border [Sphinx] > table top border
+                       (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+                TableCellBorder('left')
+                     > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
               TableCell()   <entry>
                    > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
                 Paragraph('a bit longer')   table_auto_column_widths.rst:60   <paragraph>
@@ -375,6 +679,18 @@
                         SingleStyledText('a bit longer')
                 TableCellBackground()
                      x (0,0,0,2,8) table body cell background on odd row
+                TableCellBorder('top')
+                     > (0,0,0,2,8) table body top border [Sphinx] > table head bottom border
+                       (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+                TableCellBorder('right')
+                     x (0,0,0,2,8) table body right border
+                     x (0,0,0,2,4) table right border
+                     > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+                TableCellBorder('bottom')
+                     > (0,0,0,2,8) table bottom border [Sphinx] > table top border
+                       (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+                TableCellBorder('left')
+                     > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
               TableCell()   <entry>
                    > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
                 Paragraph('much, much longer')   table_auto_column_widths.rst:61   <paragraph>
@@ -383,5 +699,3 @@
                     MixedStyledText('much, much longer')
                       MixedStyledText('much, much longer')
                         SingleStyledText('much, much longer')
-                TableCellBackground()
-                     x (0,0,0,2,8) table body cell background on odd row

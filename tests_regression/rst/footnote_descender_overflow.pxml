@@ -1,0 +1,13 @@
+<document rinoh_regression_test="True" source="/Users/brechtm/Code/rinohtype/tests_regression/rst/footnote_descender_overflow.rst">
+    <paragraph classes="spacer">
+        spacer
+    <paragraph>
+        A Paragraph with a footnote
+        <footnote_reference auto="1" ids="footnote-reference-1" refid="f1">
+            1
+         at the very bottom of the page.
+    <footnote auto="1" backrefs="footnote-reference-1" ids="f1" names="f1">
+        <label>
+            1
+        <paragraph>
+            Text of the footnote.

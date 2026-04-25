@@ -1,44 +1,46 @@
 ---------------------------------- page 1 ----------------------------------
+#### FlowablesContainer('background')
+  StaticGroupedFlowables()
 #### FootnoteContainer('footnotes')
   StaticGroupedFlowables()
 #### DownExpandingContainer('floats')
   StaticGroupedFlowables()
 #### ChainedContainer('column1')
   StaticGroupedFlowables()
-    DocumentTree()   None:None <document>
-      Paragraph('Default: InlineImage')   inline_image.rst:2 <paragraph>
+    DocumentTree()   inline_image.rst   <document>
+      Paragraph('Default: InlineImage')   inline_image.rst:2   <paragraph>
            > (0,0,0,0,2) body [Sphinx] > default
-              InlineImage('../images/biohazard.png')   None:None <image>
-                   x (0,0,0,0,2) inline image
           MixedStyledText('Default: InlineImage')
             MixedStyledText('Default: InlineImage')
               SingleStyledText('Default: ')
-              InlineImage('../images/biohazard.png')   None:None <image>
+              InlineImage('../images/biohazard.png')   inline_image.rst:11   <image>
                    x (0,0,0,0,2) inline image
-      Paragraph('Width, top: InlineImage')   inline_image.rst:4 <paragraph>
+              InlineImage('../images/biohazard.png')   inline_image.rst:11   <image>
+                   x (0,0,0,0,2) inline image
+      Paragraph('Width, top: InlineImage')   inline_image.rst:4   <paragraph>
            > (0,0,0,0,2) body [Sphinx] > default
-              InlineImage('../images/biohazard.png')   None:None <image>
-                   x (0,0,0,0,2) inline image
           MixedStyledText('Width, top: InlineImage')
             MixedStyledText('Width, top: InlineImage')
               SingleStyledText('Width, top: ')
-              InlineImage('../images/biohazard.png')   None:None <image>
+              InlineImage('../images/biohazard.png')   inline_image.rst:13   <image>
                    x (0,0,0,0,2) inline image
-      Paragraph('Height, bottom: InlineImage')   inline_image.rst:6 <paragraph>
+              InlineImage('../images/biohazard.png')   inline_image.rst:13   <image>
+                   x (0,0,0,0,2) inline image
+      Paragraph('Height, bottom: InlineImage')   inline_image.rst:6   <paragraph>
            > (0,0,0,0,2) body [Sphinx] > default
-              InlineImage('../images/biohazard.png')   None:None <image>
-                   x (0,0,0,0,2) inline image
           MixedStyledText('Height, bottom: InlineImage')
             MixedStyledText('Height, bottom: InlineImage')
               SingleStyledText('Height, bottom: ')
-              InlineImage('../images/biohazard.png')   None:None <image>
+              InlineImage('../images/biohazard.png')   inline_image.rst:17   <image>
                    x (0,0,0,0,2) inline image
-      Paragraph('Scale, middle: InlineImage')   inline_image.rst:8 <paragraph>
+              InlineImage('../images/biohazard.png')   inline_image.rst:17   <image>
+                   x (0,0,0,0,2) inline image
+      Paragraph('Scale, middle: InlineImage')   inline_image.rst:8   <paragraph>
            > (0,0,0,0,2) body [Sphinx] > default
-              InlineImage('../images/biohazard.png')   None:None <image>
-                   x (0,0,0,0,2) inline image
           MixedStyledText('Scale, middle: InlineImage')
             MixedStyledText('Scale, middle: InlineImage')
               SingleStyledText('Scale, middle: ')
-              InlineImage('../images/biohazard.png')   None:None <image>
+              InlineImage('../images/biohazard.png')   inline_image.rst:21   <image>
+                   x (0,0,0,0,2) inline image
+              InlineImage('../images/biohazard.png')   inline_image.rst:21   <image>
                    x (0,0,0,0,2) inline image

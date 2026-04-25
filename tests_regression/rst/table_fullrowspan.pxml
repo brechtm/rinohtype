@@ -1,0 +1,34 @@
+<document rinoh_regression_test="True" source="/Users/brechtm/Code/rinohtype/tests_regression/rst/table_fullrowspan.rst">
+    <substitution_definition names="+-">
+        ±
+    <table>
+        <tgroup cols="2">
+            <colspec colwidth="22">
+            <colspec colwidth="54">
+            <tbody>
+                <row>
+                    <entry>
+                        <paragraph>
+                            System name
+                    <entry>
+                        <paragraph>
+                            Product X
+                <row>
+                    <entry morerows="1">
+                        <paragraph>
+                            Nominal dimensions
+                        <paragraph>
+                            Nominal weight
+                    <entry morerows="1">
+                        <paragraph>
+                            Refer to the Prepare section of this manual
+                <row>
+                <row>
+                    <entry>
+                        <paragraph>
+                            Electrical supply
+                    <entry>
+                        <paragraph>
+                            400 / 208 V AC 
+                            ±
+                             5 % three phrase 50 / 60 Hz

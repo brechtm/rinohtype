@@ -66,7 +66,7 @@
             MixedStyledText('Lorem ipsum dolor sit amet, cons...')
               SingleStyledText('Lorem ipsum dolor sit amet, cons...')
     TableOfContentsSection(style='table of contents')
-         > (0,0,1,0,1) table of contents section [Sphinx] > DEFAULT
+         > (0,0,1,0,1) table of contents section [Sphinx (article)] > DEFAULT
            (0,0,0,1,1) chapter [Sphinx (article)] > DEFAULT
       Heading('Table of Contents', style='unnumbered')
            x (0,0,1,1,3) table of contents title

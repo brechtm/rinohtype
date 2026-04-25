@@ -1,4 +1,6 @@
 ---------------------------------- page 1 ----------------------------------
+#### FlowablesContainer('background')
+  StaticGroupedFlowables()
 #### DownExpandingContainer('title')
   StaticGroupedFlowables()
     Paragraph('Reference', style='title page title')
@@ -14,9 +16,9 @@
            (0,0,0,0,2) body [Sphinx] > default
         SingleStyledText('Author')
 ---------------------------------- page i ----------------------------------
-#### FootnoteContainer('footnotes')
+#### FlowablesContainer('background')
   StaticGroupedFlowables()
-#### DownExpandingContainer('floats')
+#### FootnoteContainer('footnotes')
   StaticGroupedFlowables()
 #### FlowablesContainer('chapter title')
   Paragraph('Table of Contents', style='front matter section title')
@@ -75,9 +77,9 @@
             Field('i')
               SingleStyledText('i')
 ---------------------------------- page 1 ----------------------------------
-#### FootnoteContainer('footnotes')
+#### FlowablesContainer('background')
   StaticGroupedFlowables()
-#### DownExpandingContainer('floats')
+#### FootnoteContainer('footnotes')
   StaticGroupedFlowables()
 #### FlowablesContainer('chapter title')
   Paragraph('Chapter 1', style='body matter chapter label')
@@ -102,8 +104,8 @@
 #### ChainedContainer('column1')
   StaticGroupedFlowables()
     DocumentTree()   reference.rst   <document>
-      StaticGroupedFlowables()   reference.rst   <compound>
-        StaticGroupedFlowables(id='%command')   <start_of_file>
+      StaticGroupedFlowables()   reference.rst   <compound classes='toctree-wrapper'>
+        StaticGroupedFlowables(id='%command')   reference.rst   <start_of_file>
           Section(id='%command#command-line')   command.rst:4   <section>
                > (0,0,0,1,4) content chapter [Sphinx] > chapter
                  (0,0,0,1,2) chapter [Sphinx] > DEFAULT
@@ -117,7 +119,7 @@
                 MixedStyledText('Link to intro.')
                   MixedStyledText('Link to intro.')
                     SingleStyledText('Link to ')
-                    MixedStyledText('intro')   <inline>
+                    MixedStyledText('intro')   <inline classes='xref std std-doc'>
                       SingleStyledText('intro')
                     SingleStyledText('.')
             Paragraph('Link to installation.')   command.rst:10   <paragraph>
@@ -125,7 +127,7 @@
                 MixedStyledText('Link to installation.')
                   MixedStyledText('Link to installation.')
                     SingleStyledText('Link to ')
-                    MixedStyledText('installation')   <inline>
+                    MixedStyledText('installation')   <inline classes='xref std std-ref'>
                       SingleStyledText('installation')
                     SingleStyledText('.')
 #### DownExpandingContainer('footer')
@@ -139,6 +141,8 @@
             Field('1')
               SingleStyledText('1')
 ---------------------------------- page 2 ----------------------------------
+#### FlowablesContainer('background')
+  StaticGroupedFlowables()
 #### FootnoteContainer('footnotes')
   StaticGroupedFlowables()
 #### DownExpandingContainer('floats')
@@ -146,7 +150,7 @@
 #### ChainedContainer('column1')
   (continued) StaticGroupedFlowables()
     (continued) DocumentTree()   reference.rst   <document>
-      (continued) StaticGroupedFlowables()   reference.rst   <compound>
+      (continued) StaticGroupedFlowables()   reference.rst   <compound classes='toctree-wrapper'>
 #### UpExpandingContainer('header')
   StaticGroupedFlowables()
     Header('Reference, Release ')
@@ -179,9 +183,9 @@
                 MixedStyledText('Command Line')
                   SingleStyledText('Command Line')
 ---------------------------------- page 3 ----------------------------------
-#### FootnoteContainer('footnotes')
+#### FlowablesContainer('background')
   StaticGroupedFlowables()
-#### DownExpandingContainer('floats')
+#### FootnoteContainer('footnotes')
   StaticGroupedFlowables()
 #### FlowablesContainer('chapter title')
   Paragraph('Chapter 2', style='body matter chapter label')
@@ -206,8 +210,8 @@
 #### ChainedContainer('column1')
   (continued) StaticGroupedFlowables()
     (continued) DocumentTree()   reference.rst   <document>
-      (continued) StaticGroupedFlowables()   reference.rst   <compound>
-        StaticGroupedFlowables(id='%api')   <start_of_file>
+      (continued) StaticGroupedFlowables()   reference.rst   <compound classes='toctree-wrapper'>
+        StaticGroupedFlowables(id='%api')   reference.rst   <start_of_file>
           Section(id='%api#api')   api.rst:2   <section>
                > (0,0,0,1,4) content chapter [Sphinx] > chapter
                  (0,0,0,1,2) chapter [Sphinx] > DEFAULT
@@ -227,9 +231,9 @@
             Field('3')
               SingleStyledText('3')
 ---------------------------------- page 5 ----------------------------------
-#### FootnoteContainer('footnotes')
+#### FlowablesContainer('background')
   StaticGroupedFlowables()
-#### DownExpandingContainer('floats')
+#### FootnoteContainer('footnotes')
   StaticGroupedFlowables()
 #### ChainedContainer('column1')
   StaticGroupedFlowables()

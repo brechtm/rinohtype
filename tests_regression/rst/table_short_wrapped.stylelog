@@ -1,62 +1,126 @@
 ---------------------------------- page 1 ----------------------------------
+#### FlowablesContainer('background')
+  StaticGroupedFlowables()
 #### FootnoteContainer('footnotes')
   StaticGroupedFlowables()
 #### DownExpandingContainer('floats')
   StaticGroupedFlowables()
 #### ChainedContainer('column1')
   StaticGroupedFlowables()
-    DocumentTree()
-      Table()   None:None <table>
-           > (0,0,0,0,2) table
+    DocumentTree()   table_short_wrapped.rst   <document>
+      Table()   <table>
+           > (0,0,0,0,2) table [Sphinx] > DEFAULT
         TableBody()
           TableRow()
-            TableCell()   None:None <entry>
-                 > (0,0,0,0,7) table cell
-              Paragraph('short')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table_short_wrapped.rst:4 <paragraph>
-                   > (0,0,0,1,8) table first column paragraph
-                     (0,0,0,0,9) table body cell paragraph
-                     (0,0,0,0,2) body
+              TableCellBackground()
+                   x (0,0,0,2,8) table body cell background on odd row
+              TableCellBorder('top')
+                   > (0,0,0,2,8) table body top border [Sphinx] > table head bottom border
+                     (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+              TableCellBorder('right')
+                   > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+              TableCellBorder('bottom')
+                   > (0,0,0,2,8) table bottom border [Sphinx] > table top border
+                     (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+              TableCellBorder('left')
+                   x (0,0,0,2,8) table body left border
+                   x (0,0,0,2,4) table left border
+                   > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
+            TableCell()   <entry>
+                 > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+              Paragraph('short')   table_short_wrapped.rst:4   <paragraph>
+                   > (0,0,0,1,8) table first column paragraph [Sphinx] > table body cell paragraph
+                     (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                     (0,0,0,0,2) body [Sphinx] > default
                   MixedStyledText('short')
                     MixedStyledText('short')
                       SingleStyledText('short')
               TableCellBackground()
                    x (0,0,0,2,8) table body cell background on odd row
-                   > fallback to default style
-            TableCell()   None:None <entry>
-                 > (0,0,0,0,7) table cell
-              Paragraph('One two three four five six seve...')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table_short_wrapped.rst:5 <paragraph>
-                   > (0,0,0,0,9) table body cell paragraph
-                     (0,0,0,0,2) body
+              TableCellBorder('top')
+                   > (0,0,0,2,8) table body top border [Sphinx] > table head bottom border
+                     (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+              TableCellBorder('right')
+                   x (0,0,0,2,8) table body right border
+                   x (0,0,0,2,4) table right border
+                   > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+              TableCellBorder('bottom')
+                   > (0,0,0,2,8) table bottom border [Sphinx] > table top border
+                     (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+              TableCellBorder('left')
+                   > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
+            TableCell()   <entry>
+                 > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+              Paragraph('One two three four five six seve...')   table_short_wrapped.rst:5   <paragraph>
+                   > (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                     (0,0,0,0,2) body [Sphinx] > default
                   MixedStyledText('One two three four five six seve...')
                     MixedStyledText('One two three four five six seve...')
                       SingleStyledText('One two three four five six seve...')
-              TableCellBackground()
-                   x (0,0,0,2,8) table body cell background on odd row
-                   > fallback to default style
-      Table()   None:None <table>
-           > (0,0,0,0,2) table
+                  MixedStyledText('One two three four five six seve...')
+                    MixedStyledText('One two three four five six seve...')
+                      SingleStyledText('One two three four five six seve...')
+      Table()   <table>
+           > (0,0,0,0,2) table [Sphinx] > DEFAULT
         TableBody()
           TableRow()
-            TableCell()   None:None <entry>
-                 > (0,0,0,0,7) table cell
-              Paragraph('short')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table_short_wrapped.rst:11 <paragraph>
-                   > (0,0,0,1,8) table first column paragraph
-                     (0,0,0,0,9) table body cell paragraph
-                     (0,0,0,0,2) body
+              TableCellBackground()
+                   x (0,0,0,2,8) table body cell background on odd row
+              TableCellBorder('top')
+                   > (0,0,0,2,8) table body top border [Sphinx] > table head bottom border
+                     (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+              TableCellBorder('right')
+                   > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+              TableCellBorder('bottom')
+                   > (0,0,0,2,8) table bottom border [Sphinx] > table top border
+                     (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+              TableCellBorder('left')
+                   x (0,0,0,2,8) table body left border
+                   x (0,0,0,2,4) table left border
+                   > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
+            TableCell()   <entry>
+                 > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+              Paragraph('short')   table_short_wrapped.rst:11   <paragraph>
+                   > (0,0,0,1,8) table first column paragraph [Sphinx] > table body cell paragraph
+                     (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                     (0,0,0,0,2) body [Sphinx] > default
                   MixedStyledText('short')
                     MixedStyledText('short')
                       SingleStyledText('short')
               TableCellBackground()
                    x (0,0,0,2,8) table body cell background on odd row
-                   > fallback to default style
-            TableCell()   None:None <entry>
-                 > (0,0,0,0,7) table cell
-              Paragraph('One two three four five six seve...')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/table_short_wrapped.rst:12 <paragraph>
-                   > (0,0,0,0,9) table body cell paragraph
-                     (0,0,0,0,2) body
+              TableCellBorder('top')
+                   > (0,0,0,2,8) table body top border [Sphinx] > table head bottom border
+                     (0,0,0,1,2) table cell top border [Sphinx] > table cell border
+              TableCellBorder('right')
+                   x (0,0,0,2,8) table body right border
+                   x (0,0,0,2,4) table right border
+                   > (0,0,0,1,2) table cell right border [Sphinx] > table cell border
+              TableCellBorder('bottom')
+                   > (0,0,0,2,8) table bottom border [Sphinx] > table top border
+                     (0,0,0,1,2) table cell bottom border [Sphinx] > table cell border
+              TableCellBorder('left')
+                   > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
+            TableCell()   <entry>
+                 > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
+              Paragraph('One two three four five six seve...')   table_short_wrapped.rst:12   <paragraph>
+                   > (0,0,0,0,9) table body cell paragraph [Sphinx] > default
+                     (0,0,0,0,2) body [Sphinx] > default
                   MixedStyledText('One two three four five six seve...')
                     MixedStyledText('One two three four five six seve...')
                       SingleStyledText('One two three four five six seve...')
-              TableCellBackground()
-                   x (0,0,0,2,8) table body cell background on odd row
-                   > fallback to default style
+                  MixedStyledText('One two three four five six seve...')
+                    MixedStyledText('One two three four five six seve...')
+                      SingleStyledText('One two three four five six seve...')
+                  MixedStyledText('One two three four five six seve...')
+                    MixedStyledText('One two three four five six seve...')
+                      SingleStyledText('One two three four five six seve...')
+                  MixedStyledText('One two three four five six seve...')
+                    MixedStyledText('One two three four five six seve...')
+                      SingleStyledText('One two three four five six seve...')
+                  MixedStyledText('One two three four five six seve...')
+                    MixedStyledText('One two three four five six seve...')
+                      SingleStyledText('One two three four five six seve...')
+                  MixedStyledText('One two three four five six seve...')
+                    MixedStyledText('One two three four five six seve...')
+                      SingleStyledText('One two three four five six seve...')

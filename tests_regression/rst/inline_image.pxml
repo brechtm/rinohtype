@@ -1,0 +1,21 @@
+<document rinoh_regression_test="True" source="/Users/brechtm/Code/rinohtype/tests_regression/rst/inline_image.rst">
+    <paragraph>
+        Default: 
+        <image alt="biohazard" uri="../images/biohazard.png">
+    <paragraph>
+        Width, top: 
+        <image align="top" alt="biowidth" uri="../images/biohazard.png" width="40px">
+    <paragraph>
+        Height, bottom: 
+        <image align="bottom" alt="bioheight" height="30px" uri="../images/biohazard.png">
+    <paragraph>
+        Scale, middle: 
+        <image align="middle" alt="bioscaled" scale="70" uri="../images/biohazard.png">
+    <substitution_definition names="biohazard">
+        <image alt="biohazard" uri="../images/biohazard.png">
+    <substitution_definition names="biowidth">
+        <image align="top" alt="biowidth" uri="../images/biohazard.png" width="40px">
+    <substitution_definition names="bioheight">
+        <image align="bottom" alt="bioheight" height="30px" uri="../images/biohazard.png">
+    <substitution_definition names="bioscaled">
+        <image align="middle" alt="bioscaled" scale="70" uri="../images/biohazard.png">

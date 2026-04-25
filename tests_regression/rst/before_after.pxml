@@ -1,0 +1,9 @@
+<document rinoh_regression_test="True" source="/Users/brechtm/Code/rinohtype/tests_regression/rst/before_after.rst">
+    <paragraph>
+        We'll be wrapping 
+        <inline classes="wrap">
+            this
+         with styled text configured in the
+        stylesheet.
+    <paragraph classes="parwrap">
+        Wrapped paragraph.

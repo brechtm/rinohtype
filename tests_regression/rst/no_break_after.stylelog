@@ -19,7 +19,7 @@
           MixedStyledText('Všichni lidé se rodí svobodní a ...')
             MixedStyledText('Všichni lidé se rodí svobodní a ...')
               SingleStyledText('Všichni lidé se rodí svobodní a ...')
-      Paragraph('Všichni lidé se rodí svobodní a ...')   no_break_after.rst:8   <paragraph>
+      Paragraph('Všichni lidé se rodí svobodní a ...')   no_break_after.rst:8   <paragraph classes='empty'>
            > (1,0,0,1,2) empty [no_break_after.rts] > body
              (0,0,0,0,2) body [Sphinx] > default
           MixedStyledText('Všichni lidé se rodí svobodní a ...')
@@ -31,7 +31,7 @@
           MixedStyledText('Všichni lidé se rodí svobodní a ...')
             MixedStyledText('Všichni lidé se rodí svobodní a ...')
               SingleStyledText('Všichni lidé se rodí svobodní a ...')
-      Paragraph('Všichni lidé se rodí svobodní a ...')   no_break_after.rst:14   <paragraph>
+      Paragraph('Všichni lidé se rodí svobodní a ...')   no_break_after.rst:14   <paragraph classes='a'>
            > (1,0,0,1,2) a [no_break_after.rts] > body
              (0,0,0,0,2) body [Sphinx] > default
           MixedStyledText('Všichni lidé se rodí svobodní a ...')
@@ -43,7 +43,7 @@
           MixedStyledText('Všichni lidé se rodí svobodní a ...')
             MixedStyledText('Všichni lidé se rodí svobodní a ...')
               SingleStyledText('Všichni lidé se rodí svobodní a ...')
-      Paragraph('Všichni lidé se rodí svobodní a ...')   no_break_after.rst:20   <paragraph>
+      Paragraph('Všichni lidé se rodí svobodní a ...')   no_break_after.rst:20   <paragraph classes='s-v-do'>
            > (1,0,0,1,2) s_v_do [no_break_after.rts] > body
              (0,0,0,0,2) body [Sphinx] > default
           MixedStyledText('Všichni lidé se rodí svobodní a ...')

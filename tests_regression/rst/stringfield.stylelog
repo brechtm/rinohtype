@@ -35,7 +35,7 @@
             MixedStyledText('A paragraph.')
               MixedStyledText('A paragraph.')
                 SingleStyledText('A paragraph.')
-        TableWithCaption()   stringfield.rst   <table>
+        TableWithCaption()   stringfield.rst   <table classes='colwidths-auto'>
              x (0,0,0,0,2) table with caption
           Caption('Table 1.1. Truth table for "not"')
                > (0,0,0,0,4) table caption [Sphinx] > caption
@@ -194,9 +194,9 @@
                       MixedStyledText('False')
                         MixedStyledText('False')
                           SingleStyledText('False')
-        Figure()   stringfield.rst   <figure>
+        Figure()   stringfield.rst:21   <figure>
              > (0,0,0,0,2) figure [Sphinx] > DEFAULT
-          Image('../images/title.png')   <image>
+          Image('../images/title.png')   stringfield.rst:21   <image>
                > (0,0,0,0,4) figure image [Sphinx] > image
                  (0,0,0,0,2) image [Sphinx] > DEFAULT
           Caption('Figure 1.1. Figure caption')   stringfield.rst:23   <caption>
@@ -295,22 +295,27 @@
       Section(id='second-chapter')   stringfield.rst:27   <section>
            > (0,0,0,1,4) content chapter [Sphinx] > chapter
              (0,0,0,1,2) chapter [Sphinx] > DEFAULT
-        Admonition()   stringfield.rst   <warning>
+        Admonition()   stringfield.rst:29   <warning>
              > (0,0,0,1,2) warning admonition [Sphinx] > boxed builtin admonition
                (0,0,0,0,2) admonition [Sphinx] > DEFAULT
-          AdmonitionTitleParagraph('Be warned!Wipe your feet.')   stringfield.rst:29   <paragraph>
-               x (1,0,0,1,4) warning admonition title paragraph
-               x (1,0,0,0,4) admonition title paragraph
-               > (0,0,0,0,1) body [Sphinx] > default
-              MixedStyledText('Be warned!Wipe your feet.')
+          AdmonitionFlowables()
+               x (0,0,0,1,4) warning admonition content
+               > (0,0,0,0,4) admonition content [Sphinx] > DEFAULT
+            AdmonitionTitleParagraph('Be warned!Wipe your feet.')   stringfield.rst:29   <paragraph>
+                 x (1,0,0,1,6) warning admonition title paragraph
+                 x (1,0,0,0,6) admonition title paragraph
+                 x (0,0,0,1,5) warning admonition paragraph
+                 x (0,0,0,0,5) admonition paragraph
+                 > (0,0,0,0,1) body [Sphinx] > default
                 MixedStyledText('Be warned!Wipe your feet.')
-                  MixedStyledText('Be warned!', style='inline title')
-                       x (0,0,1,1,3) warning admonition inline title
-                       > (0,0,1,0,3) admonition inline title [Sphinx] > admonition title
-                    SingleStyledText('Be warned!')
-                  MixedStyledText('Wipe your feet.')
+                  MixedStyledText('Be warned!Wipe your feet.')
+                    MixedStyledText('Be warned!', style='inline title')
+                         x (0,0,1,1,5) warning admonition inline title
+                         > (0,0,1,0,5) admonition inline title [Sphinx] > admonition title
+                      SingleStyledText('Be warned!')
                     MixedStyledText('Wipe your feet.')
-                      SingleStyledText('Wipe your feet.')
+                      MixedStyledText('Wipe your feet.')
+                        SingleStyledText('Wipe your feet.')
         Paragraph('A paragraph in the second sectio...')   stringfield.rst:31   <paragraph>
              > (0,0,0,0,2) body [Sphinx] > default
             MixedStyledText('A paragraph in the second sectio...')

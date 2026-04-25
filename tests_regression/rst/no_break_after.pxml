@@ -1,0 +1,13 @@
+<document rinoh_regression_test="True" source="/Users/brechtm/Code/rinohtype/tests_regression/rst/no_break_after.rst">
+    <paragraph>
+        Všichni lidé se rodí svobodní a sobě rovní co do důstojnosti a práv. Jsou
+        nadáni rozumem a svědomím mají spolu jednat v duchu bratrství.
+    <paragraph classes="empty">
+        Všichni lidé se rodí svobodní a sobě rovní co do důstojnosti a práv. Jsou
+        nadáni rozumem a svědomím mají spolu jednat s v duchu bratrství.
+    <paragraph classes="a">
+        Všichni lidé se rodí svobodní a sobě rovní co do důstojnosti A práv. Jsou
+        nadáni rozumem a svědomím mají spolu jednat v duchu bratrství.
+    <paragraph classes="s-v-do">
+        Všichni lidé se rodí svobodní a sobě rovní co do důstojnosti a práv. Jsou
+        nadáni rozumem a svědomím mají spolu jednat s v duchu bratrství.

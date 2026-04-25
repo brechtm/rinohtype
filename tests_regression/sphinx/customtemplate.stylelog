@@ -24,8 +24,8 @@
 #### ChainedContainer('column1')
   StaticGroupedFlowables()
     DocumentTree()   index.rst   <document>
-      StaticGroupedFlowables()   index.rst   <compound>
-        StaticGroupedFlowables(id='%chapter1')   <start_of_file>
+      StaticGroupedFlowables()   index.rst   <compound classes='toctree-wrapper'>
+        StaticGroupedFlowables(id='%chapter1')   index.rst   <start_of_file>
           Section(id='%chapter1#one')   chapter1.rst:4   <section>
                > (0,0,0,1,4) content chapter [Sphinx] > chapter
                  (0,0,0,1,2) chapter [Sphinx] > DEFAULT
@@ -47,7 +47,7 @@
                 MixedStyledText('Paragraph in chapter 1.')
                   MixedStyledText('Paragraph in chapter 1.')
                     SingleStyledText('Paragraph in chapter 1.')
-        StaticGroupedFlowables(id='%chapter2')   <start_of_file>
+        StaticGroupedFlowables(id='%chapter2')   index.rst   <start_of_file>
 #### UpExpandingContainer('header')
   StaticGroupedFlowables()
     Header('1 One')
@@ -85,8 +85,8 @@
 #### ChainedContainer('column1')
   (continued) StaticGroupedFlowables()
     (continued) DocumentTree()   index.rst   <document>
-      (continued) StaticGroupedFlowables()   index.rst   <compound>
-        (continued) StaticGroupedFlowables(id='%chapter2')   <start_of_file>
+      (continued) StaticGroupedFlowables()   index.rst   <compound classes='toctree-wrapper'>
+        (continued) StaticGroupedFlowables(id='%chapter2')   index.rst   <start_of_file>
 #### UpExpandingContainer('header')
   StaticGroupedFlowables()
     Header('1 One')
@@ -124,8 +124,8 @@
 #### ChainedContainer('column1')
   (continued) StaticGroupedFlowables()
     (continued) DocumentTree()   index.rst   <document>
-      (continued) StaticGroupedFlowables()   index.rst   <compound>
-        (continued) StaticGroupedFlowables(id='%chapter2')   <start_of_file>
+      (continued) StaticGroupedFlowables()   index.rst   <compound classes='toctree-wrapper'>
+        (continued) StaticGroupedFlowables(id='%chapter2')   index.rst   <start_of_file>
           Section(id='%chapter2#two')   chapter2.rst:4   <section>
                > (0,0,0,1,4) content chapter [Sphinx] > chapter
                  (0,0,0,1,2) chapter [Sphinx] > DEFAULT

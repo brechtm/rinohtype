@@ -1,0 +1,335 @@
+<document rinoh_regression_test="True" source="/Users/brechtm/Code/rinohtype/tests_regression/rst/table_sideways.rst">
+    <section ids="first-section" names="first\ section">
+        <title>
+            First Section
+        <paragraph>
+            Paragraph preceding the first sideways table.
+        <table classes="sideways">
+            <title>
+                Sideways table
+            <tgroup cols="4">
+                <colspec colwidth="24">
+                <colspec colwidth="12">
+                <colspec colwidth="10">
+                <colspec colwidth="10">
+                <thead>
+                    <row>
+                        <entry>
+                            <paragraph>
+                                Header row, column 1
+                                (header rows optional)
+                        <entry>
+                            <paragraph>
+                                Header 2
+                        <entry>
+                            <paragraph>
+                                Header 3
+                        <entry>
+                            <paragraph>
+                                Header 4
+                <tbody>
+                    <row>
+                        <entry>
+                            <paragraph>
+                                body row 1, column 1
+                        <entry>
+                            <paragraph>
+                                column 2
+                        <entry>
+                            <paragraph>
+                                column 3
+                        <entry>
+                            <paragraph>
+                                column 4
+                    <row>
+                        <entry>
+                            <paragraph>
+                                body row 2
+                        <entry morecols="2">
+                            <paragraph>
+                                Cells may span columns.
+                    <row>
+                        <entry>
+                            <paragraph>
+                                body row 3
+                                <footnote_reference auto="1" ids="footnote-reference-1" refid="f1">
+                                    1
+                        <entry morerows="1">
+                            <paragraph>
+                                Cells may
+                                span rows.
+                        <entry morecols="1" morerows="1">
+                            <bullet_list bullet="-">
+                                <list_item>
+                                    <paragraph>
+                                        Table cells
+                                <list_item>
+                                    <paragraph>
+                                        contain
+                                <list_item>
+                                    <paragraph>
+                                        body elements.
+                    <row>
+                        <entry>
+                            <paragraph>
+                                body row 4
+                    <row>
+                        <entry>
+                            <paragraph>
+                                body row 5
+                        <entry morecols="1">
+                            <paragraph>
+                                Cells may also be
+                                empty: 
+                                <literal>
+                                    -->
+                        <entry>
+        <footnote auto="1" backrefs="footnote-reference-1" ids="f1" names="f1">
+            <label>
+                1
+            <paragraph>
+                Footnote text should also rotate.
+        <paragraph>
+            Paragraph following the first sideways table and preceding the second sideways
+            table.
+        <table classes="sideways-break">
+            <title>
+                Another sideways table
+            <tgroup cols="2">
+                <colspec colwidth="5">
+                <colspec colwidth="5">
+                <thead>
+                    <row>
+                        <entry>
+                            <paragraph>
+                                A
+                        <entry>
+                            <paragraph>
+                                not A
+                <tbody>
+                    <row>
+                        <entry>
+                            <paragraph>
+                                False
+                        <entry>
+                            <paragraph>
+                                True
+                    <row>
+                        <entry>
+                            <paragraph>
+                                True
+                        <entry>
+                            <paragraph>
+                                False
+    <section ids="second-section" names="second\ section">
+        <title>
+            Second Section
+        <paragraph>
+            Paragraph preceding the third sideways table which spans two pages.
+        <table classes="sideways-break">
+            <title>
+                Sideways table spanning two pages
+            <tgroup cols="4">
+                <colspec colwidth="24">
+                <colspec colwidth="12">
+                <colspec colwidth="10">
+                <colspec colwidth="10">
+                <thead>
+                    <row>
+                        <entry>
+                            <paragraph>
+                                Header row, column 1
+                                (header rows optional)
+                        <entry>
+                            <paragraph>
+                                Header 2
+                        <entry>
+                            <paragraph>
+                                Header 3
+                        <entry>
+                            <paragraph>
+                                Header 4
+                <tbody>
+                    <row>
+                        <entry>
+                            <paragraph>
+                                body row 1, column 1
+                        <entry>
+                            <paragraph>
+                                column 2
+                        <entry>
+                            <paragraph>
+                                column 3
+                        <entry>
+                            <paragraph>
+                                column 4
+                    <row>
+                        <entry>
+                            <paragraph>
+                                body row 2
+                        <entry morecols="2">
+                            <paragraph>
+                                Cells may span columns.
+                    <row>
+                        <entry>
+                            <paragraph>
+                                body row 3
+                                <footnote_reference auto="1" ids="footnote-reference-2" refid="f2">
+                                    2
+                        <entry morerows="1">
+                            <paragraph>
+                                Cells may
+                                span rows.
+                        <entry morecols="1" morerows="1">
+                            <bullet_list bullet="-">
+                                <list_item>
+                                    <paragraph>
+                                        Table cells
+                                <list_item>
+                                    <paragraph>
+                                        contain
+                                <list_item>
+                                    <paragraph>
+                                        body elements.
+                    <row>
+                        <entry>
+                            <paragraph>
+                                body row 4
+                    <row>
+                        <entry>
+                            <paragraph>
+                                body row 5
+                        <entry morecols="1">
+                            <paragraph>
+                                Cells may also be
+                                empty: 
+                                <literal>
+                                    -->
+                        <entry>
+                    <row>
+                        <entry>
+                            <paragraph>
+                                body row 6, column 1
+                        <entry>
+                            <paragraph>
+                                column 2
+                        <entry>
+                            <paragraph>
+                                column 3
+                        <entry>
+                            <paragraph>
+                                column 4
+                    <row>
+                        <entry>
+                            <paragraph>
+                                body row 7
+                        <entry morecols="2">
+                            <paragraph>
+                                Cells may span columns.
+                    <row>
+                        <entry>
+                            <paragraph>
+                                body row 8
+                                <footnote_reference auto="1" ids="footnote-reference-3" refid="f3">
+                                    3
+                        <entry morerows="1">
+                            <paragraph>
+                                Cells may
+                                span rows.
+                        <entry morecols="1" morerows="1">
+                            <bullet_list bullet="-">
+                                <list_item>
+                                    <paragraph>
+                                        Table cells
+                                <list_item>
+                                    <paragraph>
+                                        contain
+                                <list_item>
+                                    <paragraph>
+                                        body elements.
+                    <row>
+                        <entry>
+                            <paragraph>
+                                body row 9
+                    <row>
+                        <entry>
+                            <paragraph>
+                                body row 10
+                        <entry morecols="1">
+                            <paragraph>
+                                Cells may also be
+                                empty: 
+                                <literal>
+                                    -->
+                        <entry>
+                    <row>
+                        <entry>
+                            <paragraph>
+                                body row 11, column 1
+                        <entry>
+                            <paragraph>
+                                column 2
+                        <entry>
+                            <paragraph>
+                                column 3
+                        <entry>
+                            <paragraph>
+                                column 4
+                    <row>
+                        <entry>
+                            <paragraph>
+                                body row 12
+                        <entry morecols="2">
+                            <paragraph>
+                                Cells may span columns.
+                    <row>
+                        <entry>
+                            <paragraph>
+                                body row 13
+                                <footnote_reference auto="1" ids="footnote-reference-4" refid="f4">
+                                    4
+                        <entry morerows="1">
+                            <paragraph>
+                                Cells may
+                                span rows.
+                        <entry morecols="1" morerows="1">
+                            <bullet_list bullet="-">
+                                <list_item>
+                                    <paragraph>
+                                        Table cells
+                                <list_item>
+                                    <paragraph>
+                                        contain
+                                <list_item>
+                                    <paragraph>
+                                        body elements.
+                    <row>
+                        <entry>
+                            <paragraph>
+                                body row 14
+                    <row>
+                        <entry>
+                            <paragraph>
+                                body row 15
+                        <entry morecols="1">
+                            <paragraph>
+                                Cells may also be
+                                empty: 
+                                <literal>
+                                    -->
+                        <entry>
+        <footnote auto="1" backrefs="footnote-reference-2" ids="f2" names="f2">
+            <label>
+                2
+            <paragraph>
+                Footnote in a sideways table spanning multiple pages.
+        <footnote auto="1" backrefs="footnote-reference-3" ids="f3" names="f3">
+            <label>
+                3
+            <paragraph>
+                Another footnote.
+        <footnote auto="1" backrefs="footnote-reference-4" ids="f4" names="f4">
+            <label>
+                4
+            <paragraph>
+                And the last footnote.

@@ -1,18 +1,23 @@
 ---------------------------------- page 1 ----------------------------------
+#### FlowablesContainer('background')
+  StaticGroupedFlowables()
 #### DownExpandingContainer('title')
   StaticGroupedFlowables()
     Paragraph('Same Page Number Format', style='title page title')
-         > (0,0,1,0,2) title page title
-           (0,0,0,0,2) body
+         > (0,0,1,0,2) title page title [Sphinx] > DEFAULT
+           (0,0,0,0,2) body [Sphinx] > default
+        SingleStyledText('Same Page Number Format')
         SingleStyledText('Same Page Number Format')
     Paragraph('Release ', style='title page subtitle')
-         > (0,0,1,0,2) title page subtitle
-           (0,0,0,0,2) body
+         > (0,0,1,0,2) title page subtitle [Sphinx] > title page title
+           (0,0,0,0,2) body [Sphinx] > default
         SingleStyledText('Release ')
     Paragraph('Author', style='title page author')
-         > (0,0,1,0,2) title page author
-           (0,0,0,0,2) body
+         > (0,0,1,0,2) title page author [Sphinx] > DEFAULT
+           (0,0,0,0,2) body [Sphinx] > default
         SingleStyledText('Author')
+#### FlowablesContainer('background')
+  StaticGroupedFlowables()
 #### FootnoteContainer('footnotes')
   StaticGroupedFlowables()
 #### DownExpandingContainer('floats')
@@ -20,21 +25,21 @@
 #### ChainedContainer('column1')
   StaticGroupedFlowables()
     TableOfContentsSection(style='table of contents')
-         > (0,0,1,0,1) table of contents section
-           (0,0,0,1,1) chapter
+         > (0,0,1,0,1) table of contents section [Sphinx] > DEFAULT
+           (0,0,0,1,1) chapter [Sphinx] > DEFAULT
       Heading('Table of Contents', style='unnumbered')
            x (0,0,1,1,3) table of contents title
-           > (0,0,1,1,2) unnumbered heading level 1
-             (0,0,0,1,2) heading level 1
-             (0,0,0,0,2) other heading levels
+           > (0,0,1,1,2) unnumbered heading level 1 [Sphinx] > heading level 1
+             (0,0,0,1,2) heading level 1 [Sphinx] > DEFAULT
+             (0,0,0,0,2) other heading levels [Sphinx] > heading level 5
           StringField('Table of Contents')
             SingleStyledText('Table of Contents')
       TableOfContents()   table of contents
-           > (0,0,0,0,2) table of contents
+           > (0,0,0,0,2) table of contents [Sphinx] > default
 #### UpExpandingContainer('header')
   StaticGroupedFlowables()
     Header('​ Table of Contents')
-         > (0,0,0,0,2) header
+         > (0,0,0,0,2) header [Sphinx] > header_footer
         MixedStyledText('​ Table of Contents')
           MixedStyledText('​ Table of Contents')
             Field('​')
@@ -46,7 +51,7 @@
 #### DownExpandingContainer('footer')
   StaticGroupedFlowables()
     Footer('	1/1')
-         > (0,0,0,0,2) footer
+         > (0,0,0,0,2) footer [Sphinx] > header_footer
         MixedStyledText('	1/1')
           MixedStyledText('	1/1')
             Tab('	')
@@ -55,22 +60,24 @@
             SingleStyledText('/')
             Field('1')
               SingleStyledText('1')
+#### FlowablesContainer('background')
+  StaticGroupedFlowables()
 #### FootnoteContainer('footnotes')
   StaticGroupedFlowables()
 #### DownExpandingContainer('floats')
   StaticGroupedFlowables()
 #### ChainedContainer('column1')
   StaticGroupedFlowables()
-    DocumentTree()
-      Paragraph('Hello!')   /private/var/folders/cm/h_fnh5lx0b5b1b6wvnlc7qlw0000gn/T/pytest-of-brechtm/pytest-87/popen-gw5/samepagenumberformat/index.rst:4 <paragraph>
-           > (0,0,0,0,2) body
+    DocumentTree()   index.rst   <document>
+      Paragraph('Hello!')   index.rst:4   <paragraph>
+           > (0,0,0,0,2) body [Sphinx] > default
           MixedStyledText('Hello!')
             MixedStyledText('Hello!')
               SingleStyledText('Hello!')
 #### UpExpandingContainer('header')
   StaticGroupedFlowables()
     Header('​ ​')
-         > (0,0,0,0,2) header
+         > (0,0,0,0,2) header [Sphinx] > header_footer
         MixedStyledText('​ ​')
           MixedStyledText('​ ​')
             Field('​')
@@ -81,7 +88,7 @@
 #### DownExpandingContainer('footer')
   StaticGroupedFlowables()
     Footer('	1/1')
-         > (0,0,0,0,2) footer
+         > (0,0,0,0,2) footer [Sphinx] > header_footer
         MixedStyledText('	1/1')
           MixedStyledText('	1/1')
             Tab('	')

@@ -8,26 +8,26 @@
 #### ChainedContainer('column1')
   StaticGroupedFlowables()
     DocumentTree()   index.rst   <document>
-      LabeledFlowable(style='object description')   <desc>
+      LabeledFlowable(style='object description')   <desc classes='js function'>
            > (0,0,1,0,2) object description [Sphinx] > definition list item
         StaticGroupedFlowables(style='signatures')
              > (0,0,2,0,3) object signatures [Sphinx] > definition term
-          Paragraph('$.getJSON ( href, callback [, er...', id='getJSON')   index.rst:2   <desc_signature>
+          Paragraph('$.getJSON ( href, callback [, er...', id='getJSON')   index.rst:2   <desc_signature classes='sig sig-object'>
                > (0,0,2,0,5) object signature [Sphinx] > definition term paragraph
                  (0,0,0,0,2) body [Sphinx] > default
               MixedStyledText('$.getJSON ( href, callback [, er...')
                 MixedStyledText('$.getJSON ( href, callback [, er...')
-                  MixedStyledText('$.', style='additional name part')   index.rst:2   <desc_addname>
+                  MixedStyledText('$.', style='additional name part')   index.rst:2   <desc_addname classes='sig-prename descclassname'>
                        > (0,0,3,0,6) additional name part [Sphinx] > monospaced
-                    MixedStyledText('$', style='signature name')   <desc_sig_name>
+                    MixedStyledText('$', style='signature name')   <desc_sig_name classes='n'>
                          > (0,0,3,0,6) object signature name [Sphinx] > DEFAULT
                       SingleStyledText('$')
-                    MixedStyledText('.', style='signature punctuation')   <desc_sig_punctuation>
+                    MixedStyledText('.', style='signature punctuation')   <desc_sig_punctuation classes='p'>
                          > (0,0,3,0,6) object signature punctuation [Sphinx] > DEFAULT
                       SingleStyledText('.')
-                  MixedStyledText('getJSON', style='main object name')   index.rst:2   <desc_name>
+                  MixedStyledText('getJSON', style='main object name')   index.rst:2   <desc_name classes='sig-name descname'>
                        > (0,0,3,0,6) object name [Sphinx] > DEFAULT
-                    MixedStyledText('getJSON', style='signature name')   <desc_sig_name>
+                    MixedStyledText('getJSON', style='signature name')   <desc_sig_name classes='n'>
                          > (0,0,3,0,6) object signature name [Sphinx] > DEFAULT
                       SingleStyledText('getJSON')
                   MixedStyledText(' ( href, callback [, errback ]  ...')   index.rst:2   <desc_parameterlist>
@@ -38,13 +38,13 @@
                            > (0,0,3,0,6) object parameter list [Sphinx] > DEFAULT
                         MixedStyledText('href', style='parameter')   <desc_parameter>
                              > (0,0,3,0,6) object parameter [Sphinx] > object parameter (no emphasis)
-                          MixedStyledText('href', style='signature name')   <desc_sig_name>
+                          MixedStyledText('href', style='signature name')   <desc_sig_name classes='n'>
                                > (0,0,3,0,6) object signature name [Sphinx] > DEFAULT
                             SingleStyledText('href')
                         SingleStyledText(', ')
                         MixedStyledText('callback', style='parameter')   <desc_parameter>
                              > (0,0,3,0,6) object parameter [Sphinx] > object parameter (no emphasis)
-                          MixedStyledText('callback', style='signature name')   <desc_sig_name>
+                          MixedStyledText('callback', style='signature name')   <desc_sig_name classes='n'>
                                > (0,0,3,0,6) object signature name [Sphinx] > DEFAULT
                             SingleStyledText('callback')
                         MixedStyledText(' [, errback ] ')   <desc_optional>
@@ -55,7 +55,7 @@
                                  > (0,0,3,0,6) object optional parameter [Sphinx] > DEFAULT
                               MixedStyledText('errback', style='parameter')   <desc_parameter>
                                    > (0,0,3,0,6) object parameter [Sphinx] > object parameter (no emphasis)
-                                MixedStyledText('errback', style='signature name')   <desc_sig_name>
+                                MixedStyledText('errback', style='signature name')   <desc_sig_name classes='n'>
                                      > (0,0,3,0,6) object signature name [Sphinx] > DEFAULT
                                   SingleStyledText('errback')
                           SingleStyledText(' ] ', style='brackets')
@@ -64,17 +64,17 @@
                          > (0,0,3,0,6) object parentheses [Sphinx] > DEFAULT
               MixedStyledText('$.getJSON ( href, callback [, er...')
                 MixedStyledText('$.getJSON ( href, callback [, er...')
-                  MixedStyledText('$.', style='additional name part')   index.rst:2   <desc_addname>
+                  MixedStyledText('$.', style='additional name part')   index.rst:2   <desc_addname classes='sig-prename descclassname'>
                        > (0,0,3,0,6) additional name part [Sphinx] > monospaced
-                    MixedStyledText('$', style='signature name')   <desc_sig_name>
+                    MixedStyledText('$', style='signature name')   <desc_sig_name classes='n'>
                          > (0,0,3,0,6) object signature name [Sphinx] > DEFAULT
                       SingleStyledText('$')
-                    MixedStyledText('.', style='signature punctuation')   <desc_sig_punctuation>
+                    MixedStyledText('.', style='signature punctuation')   <desc_sig_punctuation classes='p'>
                          > (0,0,3,0,6) object signature punctuation [Sphinx] > DEFAULT
                       SingleStyledText('.')
-                  MixedStyledText('getJSON', style='main object name')   index.rst:2   <desc_name>
+                  MixedStyledText('getJSON', style='main object name')   index.rst:2   <desc_name classes='sig-name descname'>
                        > (0,0,3,0,6) object name [Sphinx] > DEFAULT
-                    MixedStyledText('getJSON', style='signature name')   <desc_sig_name>
+                    MixedStyledText('getJSON', style='signature name')   <desc_sig_name classes='n'>
                          > (0,0,3,0,6) object signature name [Sphinx] > DEFAULT
                       SingleStyledText('getJSON')
                   MixedStyledText(' ( href, callback [, errback ]  ...')   index.rst:2   <desc_parameterlist>
@@ -85,13 +85,13 @@
                            > (0,0,3,0,6) object parameter list [Sphinx] > DEFAULT
                         MixedStyledText('href', style='parameter')   <desc_parameter>
                              > (0,0,3,0,6) object parameter [Sphinx] > object parameter (no emphasis)
-                          MixedStyledText('href', style='signature name')   <desc_sig_name>
+                          MixedStyledText('href', style='signature name')   <desc_sig_name classes='n'>
                                > (0,0,3,0,6) object signature name [Sphinx] > DEFAULT
                             SingleStyledText('href')
                         SingleStyledText(', ')
                         MixedStyledText('callback', style='parameter')   <desc_parameter>
                              > (0,0,3,0,6) object parameter [Sphinx] > object parameter (no emphasis)
-                          MixedStyledText('callback', style='signature name')   <desc_sig_name>
+                          MixedStyledText('callback', style='signature name')   <desc_sig_name classes='n'>
                                > (0,0,3,0,6) object signature name [Sphinx] > DEFAULT
                             SingleStyledText('callback')
                         MixedStyledText(' [, errback ] ')   <desc_optional>
@@ -102,14 +102,14 @@
                                  > (0,0,3,0,6) object optional parameter [Sphinx] > DEFAULT
                               MixedStyledText('errback', style='parameter')   <desc_parameter>
                                    > (0,0,3,0,6) object parameter [Sphinx] > object parameter (no emphasis)
-                                MixedStyledText('errback', style='signature name')   <desc_sig_name>
+                                MixedStyledText('errback', style='signature name')   <desc_sig_name classes='n'>
                                      > (0,0,3,0,6) object signature name [Sphinx] > DEFAULT
                                   SingleStyledText('errback')
                           SingleStyledText(' ] ', style='brackets')
                                > (0,0,3,0,6) object brackets [Sphinx] > DEFAULT
                     SingleStyledText(' ) ', style='parentheses')
                          > (0,0,3,0,6) object parentheses [Sphinx] > DEFAULT
-        StaticGroupedFlowables(style='content')   index.rst:2   <desc_content>
+        StaticGroupedFlowables(style='content')   <desc_content>
              > (0,0,2,0,3) object description content [Sphinx] > definition
           DefinitionList(style='field list')   <field_list>
                > (0,0,1,0,2) field list [Sphinx] > DEFAULT
@@ -121,7 +121,7 @@
                    > (0,0,2,0,6) field name [Sphinx] > default
                      (0,0,0,0,2) body [Sphinx] > default
                   MixedStyledText('Arguments')
-                    MixedStyledText('Arguments')   index.rst   <field_name>
+                    MixedStyledText('Arguments')   <field_name>
                       SingleStyledText('Arguments')
               StaticGroupedFlowables()   <field_body>
                 List(style='bulleted')   <bullet_list>
@@ -224,7 +224,7 @@
                    > (0,0,2,0,6) field name [Sphinx] > default
                      (0,0,0,0,2) body [Sphinx] > default
                   MixedStyledText('Returns')
-                    MixedStyledText('Returns')   index.rst   <field_name>
+                    MixedStyledText('Returns')   <field_name>
                       SingleStyledText('Returns')
               StaticGroupedFlowables()   <field_body>
                 Paragraph('Something.')   <paragraph>

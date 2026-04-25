@@ -1,0 +1,25 @@
+<document rinoh_regression_test="True" source="/Users/brechtm/Code/rinohtype/tests_regression/rst/exceptional_style.rst">
+    <section ids="parent-style" names="parent_style">
+        <title>
+            PARENT_STYLE
+        <container classes="container">
+            <paragraph>
+                Paragraph 1.
+            <system_message level="2" line="11" source="/Users/brechtm/Code/rinohtype/tests_regression/rst/exceptional_style.rst" type="WARNING">
+                <paragraph>
+                    Explicit markup ends without a blank line; unexpected unindent.
+            <paragraph classes="base-parent">
+                Paragraph 2.
+    <section ids="next-style" names="next_style">
+        <title>
+            NEXT_STYLE
+        <system_message level="2" line="18" source="/Users/brechtm/Code/rinohtype/tests_regression/rst/exceptional_style.rst" type="WARNING">
+            <paragraph>
+                Explicit markup ends without a blank line; unexpected unindent.
+        <paragraph classes="custom">
+            Paragraph 3.
+        <system_message level="2" line="21" source="/Users/brechtm/Code/rinohtype/tests_regression/rst/exceptional_style.rst" type="WARNING">
+            <paragraph>
+                Explicit markup ends without a blank line; unexpected unindent.
+        <paragraph classes="base-next custom">
+            Paragraph 4.

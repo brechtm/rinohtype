@@ -1,177 +1,180 @@
 ---------------------------------- page 1 ----------------------------------
+#### FlowablesContainer('background')
+  StaticGroupedFlowables()
 #### FootnoteContainer('footnotes')
   StaticGroupedFlowables()
 #### DownExpandingContainer('floats')
   StaticGroupedFlowables()
 #### ChainedContainer('column1')
   StaticGroupedFlowables()
-    DocumentTree()
-      List(style='bulleted')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/bullet_list.rst:2 <bullet_list>
-           > (0,0,1,0,2) bulleted list
-        ListItem()   None:None <list_item>
+    DocumentTree()   bullet_list.rst   <document>
+      List(style='bulleted')   bullet_list.rst:2   <bullet_list>
+           > (0,0,1,0,2) bulleted list [Sphinx] > enumerated list
+        ListItem()   bullet_list.rst:2   <list_item>
              x (0,0,1,0,4) bulleted list item
-             > fallback to default style
           ListItemLabel('•')
-               > (0,0,1,0,6) bulleted list item label
-                 (0,0,0,0,2) list item label
+               > (0,0,1,0,6) bulleted list item label [Sphinx] > list item label
+                 (0,0,0,0,2) list item label [Sphinx] > default
               MixedStyledText('•')
                 SingleStyledText('')
                 SingleStyledText('•')
                 SingleStyledText('')
           StaticGroupedFlowables()
-               > (0,0,0,0,3) list item body
-            Paragraph('A bullet list')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/bullet_list.rst:2 <paragraph>
-                 > (0,0,0,0,5) list item paragraph
-                   (0,0,0,0,2) body
-              MixedStyledText('A bullet list')
-                SingleStyledText('A bullet list')
-            List(style='bulleted')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/bullet_list.rst:4 <bullet_list>
-                 > (0,0,1,0,5) nested bulleted list
-                   (0,0,1,0,2) bulleted list
-              ListItem()   None:None <list_item>
+               > (0,0,0,0,3) list item body [Sphinx] > DEFAULT
+            Paragraph('A bullet list')   bullet_list.rst:2   <paragraph>
+                 > (0,0,0,0,5) list item paragraph [Sphinx] > default
+                   (0,0,0,0,2) body [Sphinx] > default
+                MixedStyledText('A bullet list')
+                  MixedStyledText('A bullet list')
+                    SingleStyledText('A bullet list')
+            List(style='bulleted')   bullet_list.rst:4   <bullet_list>
+                 > (0,0,1,0,5) nested bulleted list [Sphinx] > bulleted list
+                   (0,0,1,0,2) bulleted list [Sphinx] > enumerated list
+              ListItem()   bullet_list.rst:4   <list_item>
                    x (0,0,1,0,4) bulleted list item
-                   > fallback to default style
                 ListItemLabel('•')
-                     > (0,0,1,0,6) bulleted list item label
-                       (0,0,0,0,2) list item label
+                     > (0,0,1,0,6) bulleted list item label [Sphinx] > list item label
+                       (0,0,0,0,2) list item label [Sphinx] > default
                     MixedStyledText('•')
                       SingleStyledText('')
                       SingleStyledText('•')
                       SingleStyledText('')
                 StaticGroupedFlowables()
-                     > (0,0,0,0,3) list item body
-                  Paragraph('Nested bullet list')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/bullet_list.rst:4 <paragraph>
-                       > (0,0,0,0,5) list item paragraph
-                         (0,0,0,0,2) body
-                    MixedStyledText('Nested bullet list')
-                      SingleStyledText('Nested bullet list')
-              ListItem()   None:None <list_item>
+                     > (0,0,0,0,3) list item body [Sphinx] > DEFAULT
+                  Paragraph('Nested bullet list')   bullet_list.rst:4   <paragraph>
+                       > (0,0,0,0,5) list item paragraph [Sphinx] > default
+                         (0,0,0,0,2) body [Sphinx] > default
+                      MixedStyledText('Nested bullet list')
+                        MixedStyledText('Nested bullet list')
+                          SingleStyledText('Nested bullet list')
+              ListItem()   bullet_list.rst:5   <list_item>
                    x (0,0,1,0,4) bulleted list item
-                   > fallback to default style
                 ListItemLabel('•')
-                     > (0,0,1,0,6) bulleted list item label
-                       (0,0,0,0,2) list item label
+                     > (0,0,1,0,6) bulleted list item label [Sphinx] > list item label
+                       (0,0,0,0,2) list item label [Sphinx] > default
                     MixedStyledText('•')
                       SingleStyledText('')
                       SingleStyledText('•')
                       SingleStyledText('')
                 StaticGroupedFlowables()
-                     > (0,0,0,0,3) list item body
-                  Paragraph('Nested item 2')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/bullet_list.rst:5 <paragraph>
-                       > (0,0,0,0,5) list item paragraph
-                         (0,0,0,0,2) body
-                    MixedStyledText('Nested item 2')
-                      SingleStyledText('Nested item 2')
-        ListItem()   None:None <list_item>
+                     > (0,0,0,0,3) list item body [Sphinx] > DEFAULT
+                  Paragraph('Nested item 2')   bullet_list.rst:5   <paragraph>
+                       > (0,0,0,0,5) list item paragraph [Sphinx] > default
+                         (0,0,0,0,2) body [Sphinx] > default
+                      MixedStyledText('Nested item 2')
+                        MixedStyledText('Nested item 2')
+                          SingleStyledText('Nested item 2')
+        ListItem()   bullet_list.rst:7   <list_item>
              x (0,0,1,0,4) bulleted list item
-             > fallback to default style
           ListItemLabel('•')
-               > (0,0,1,0,6) bulleted list item label
-                 (0,0,0,0,2) list item label
+               > (0,0,1,0,6) bulleted list item label [Sphinx] > list item label
+                 (0,0,0,0,2) list item label [Sphinx] > default
               MixedStyledText('•')
                 SingleStyledText('')
                 SingleStyledText('•')
                 SingleStyledText('')
           StaticGroupedFlowables()
-               > (0,0,0,0,3) list item body
-            Paragraph('Item 2')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/bullet_list.rst:7 <paragraph>
-                 > (0,0,0,0,5) list item paragraph
-                   (0,0,0,0,2) body
-              MixedStyledText('Item 2')
-                SingleStyledText('Item 2')
-            Paragraph('Paragraph 2 of item 2')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/bullet_list.rst:9 <paragraph>
-                 > (0,0,0,0,5) list item paragraph
-                   (0,0,0,0,2) body
-              MixedStyledText('Paragraph 2 of item 2')
-                SingleStyledText('Paragraph 2 of item 2')
-            List(style='bulleted')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/bullet_list.rst:11 <bullet_list>
-                 > (0,0,1,0,5) nested bulleted list
-                   (0,0,1,0,2) bulleted list
-              ListItem()   None:None <list_item>
+               > (0,0,0,0,3) list item body [Sphinx] > DEFAULT
+            Paragraph('Item 2')   bullet_list.rst:7   <paragraph>
+                 > (0,0,0,0,5) list item paragraph [Sphinx] > default
+                   (0,0,0,0,2) body [Sphinx] > default
+                MixedStyledText('Item 2')
+                  MixedStyledText('Item 2')
+                    SingleStyledText('Item 2')
+            Paragraph('Paragraph 2 of item 2')   bullet_list.rst:9   <paragraph>
+                 > (0,0,0,0,5) list item paragraph [Sphinx] > default
+                   (0,0,0,0,2) body [Sphinx] > default
+                MixedStyledText('Paragraph 2 of item 2')
+                  MixedStyledText('Paragraph 2 of item 2')
+                    SingleStyledText('Paragraph 2 of item 2')
+            List(style='bulleted')   bullet_list.rst:11   <bullet_list>
+                 > (0,0,1,0,5) nested bulleted list [Sphinx] > bulleted list
+                   (0,0,1,0,2) bulleted list [Sphinx] > enumerated list
+              ListItem()   bullet_list.rst:11   <list_item>
                    x (0,0,1,0,4) bulleted list item
-                   > fallback to default style
                 ListItemLabel('•')
-                     > (0,0,1,0,6) bulleted list item label
-                       (0,0,0,0,2) list item label
+                     > (0,0,1,0,6) bulleted list item label [Sphinx] > list item label
+                       (0,0,0,0,2) list item label [Sphinx] > default
                     MixedStyledText('•')
                       SingleStyledText('')
                       SingleStyledText('•')
                       SingleStyledText('')
                 StaticGroupedFlowables()
-                     > (0,0,0,0,3) list item body
-                  Paragraph('Nested bullet list')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/bullet_list.rst:11 <paragraph>
-                       > (0,0,0,0,5) list item paragraph
-                         (0,0,0,0,2) body
-                    MixedStyledText('Nested bullet list')
-                      SingleStyledText('Nested bullet list')
-              ListItem()   None:None <list_item>
+                     > (0,0,0,0,3) list item body [Sphinx] > DEFAULT
+                  Paragraph('Nested bullet list')   bullet_list.rst:11   <paragraph>
+                       > (0,0,0,0,5) list item paragraph [Sphinx] > default
+                         (0,0,0,0,2) body [Sphinx] > default
+                      MixedStyledText('Nested bullet list')
+                        MixedStyledText('Nested bullet list')
+                          SingleStyledText('Nested bullet list')
+              ListItem()   bullet_list.rst:12   <list_item>
                    x (0,0,1,0,4) bulleted list item
-                   > fallback to default style
                 ListItemLabel('•')
-                     > (0,0,1,0,6) bulleted list item label
-                       (0,0,0,0,2) list item label
+                     > (0,0,1,0,6) bulleted list item label [Sphinx] > list item label
+                       (0,0,0,0,2) list item label [Sphinx] > default
                     MixedStyledText('•')
                       SingleStyledText('')
                       SingleStyledText('•')
                       SingleStyledText('')
                 StaticGroupedFlowables()
-                     > (0,0,0,0,3) list item body
-                  Paragraph('Nested item 2')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/bullet_list.rst:12 <paragraph>
-                       > (0,0,0,0,5) list item paragraph
-                         (0,0,0,0,2) body
-                    MixedStyledText('Nested item 2')
-                      SingleStyledText('Nested item 2')
-                  List(style='bulleted')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/bullet_list.rst:14 <bullet_list>
-                       > (0,0,1,0,5) nested bulleted list
-                         (0,0,1,0,2) bulleted list
-                    ListItem()   None:None <list_item>
+                     > (0,0,0,0,3) list item body [Sphinx] > DEFAULT
+                  Paragraph('Nested item 2')   bullet_list.rst:12   <paragraph>
+                       > (0,0,0,0,5) list item paragraph [Sphinx] > default
+                         (0,0,0,0,2) body [Sphinx] > default
+                      MixedStyledText('Nested item 2')
+                        MixedStyledText('Nested item 2')
+                          SingleStyledText('Nested item 2')
+                  List(style='bulleted')   bullet_list.rst:14   <bullet_list>
+                       > (0,0,1,0,5) nested bulleted list [Sphinx] > bulleted list
+                         (0,0,1,0,2) bulleted list [Sphinx] > enumerated list
+                    ListItem()   bullet_list.rst:14   <list_item>
                          x (0,0,1,0,4) bulleted list item
-                         > fallback to default style
                       ListItemLabel('•')
-                           > (0,0,1,0,6) bulleted list item label
-                             (0,0,0,0,2) list item label
+                           > (0,0,1,0,6) bulleted list item label [Sphinx] > list item label
+                             (0,0,0,0,2) list item label [Sphinx] > default
                           MixedStyledText('•')
                             SingleStyledText('')
                             SingleStyledText('•')
                             SingleStyledText('')
                       StaticGroupedFlowables()
-                           > (0,0,0,0,3) list item body
-                        Paragraph('Third level')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/bullet_list.rst:14 <paragraph>
-                             > (0,0,0,0,5) list item paragraph
-                               (0,0,0,0,2) body
-                          MixedStyledText('Third level')
-                            SingleStyledText('Third level')
-                    ListItem()   None:None <list_item>
+                           > (0,0,0,0,3) list item body [Sphinx] > DEFAULT
+                        Paragraph('Third level')   bullet_list.rst:14   <paragraph>
+                             > (0,0,0,0,5) list item paragraph [Sphinx] > default
+                               (0,0,0,0,2) body [Sphinx] > default
+                            MixedStyledText('Third level')
+                              MixedStyledText('Third level')
+                                SingleStyledText('Third level')
+                    ListItem()   bullet_list.rst:15   <list_item>
                          x (0,0,1,0,4) bulleted list item
-                         > fallback to default style
                       ListItemLabel('•')
-                           > (0,0,1,0,6) bulleted list item label
-                             (0,0,0,0,2) list item label
+                           > (0,0,1,0,6) bulleted list item label [Sphinx] > list item label
+                             (0,0,0,0,2) list item label [Sphinx] > default
                           MixedStyledText('•')
                             SingleStyledText('')
                             SingleStyledText('•')
                             SingleStyledText('')
                       StaticGroupedFlowables()
-                           > (0,0,0,0,3) list item body
-                        Paragraph('Item 2')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/bullet_list.rst:15 <paragraph>
-                             > (0,0,0,0,5) list item paragraph
-                               (0,0,0,0,2) body
-                          MixedStyledText('Item 2')
-                            SingleStyledText('Item 2')
-              ListItem()   None:None <list_item>
+                           > (0,0,0,0,3) list item body [Sphinx] > DEFAULT
+                        Paragraph('Item 2')   bullet_list.rst:15   <paragraph>
+                             > (0,0,0,0,5) list item paragraph [Sphinx] > default
+                               (0,0,0,0,2) body [Sphinx] > default
+                            MixedStyledText('Item 2')
+                              MixedStyledText('Item 2')
+                                SingleStyledText('Item 2')
+              ListItem()   bullet_list.rst:17   <list_item>
                    x (0,0,1,0,4) bulleted list item
-                   > fallback to default style
                 ListItemLabel('•')
-                     > (0,0,1,0,6) bulleted list item label
-                       (0,0,0,0,2) list item label
+                     > (0,0,1,0,6) bulleted list item label [Sphinx] > list item label
+                       (0,0,0,0,2) list item label [Sphinx] > default
                     MixedStyledText('•')
                       SingleStyledText('')
                       SingleStyledText('•')
                       SingleStyledText('')
                 StaticGroupedFlowables()
-                     > (0,0,0,0,3) list item body
-                  Paragraph('Nested item 3')   /Users/brechtm/Documents/Code/rinohtype/tests_regression/rst/bullet_list.rst:17 <paragraph>
-                       > (0,0,0,0,5) list item paragraph
-                         (0,0,0,0,2) body
-                    MixedStyledText('Nested item 3')
-                      SingleStyledText('Nested item 3')
+                     > (0,0,0,0,3) list item body [Sphinx] > DEFAULT
+                  Paragraph('Nested item 3')   bullet_list.rst:17   <paragraph>
+                       > (0,0,0,0,5) list item paragraph [Sphinx] > default
+                         (0,0,0,0,2) body [Sphinx] > default
+                      MixedStyledText('Nested item 3')
+                        MixedStyledText('Nested item 3')
+                          SingleStyledText('Nested item 3')

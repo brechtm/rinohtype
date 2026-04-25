@@ -1,4 +1,6 @@
 ---------------------------------- page 1 ----------------------------------
+#### FlowablesContainer('background')
+  StaticGroupedFlowables()
 #### FootnoteContainer('footnotes')
   StaticGroupedFlowables()
 #### DownExpandingContainer('floats')
@@ -6,29 +8,17 @@
 #### ChainedContainer('column1')
   StaticGroupedFlowables()
     DocumentTree()   footnote_descender_overflow.rst   <document>
-      Paragraph('spacer')   footnote_descender_overflow.rst:5   <paragraph>
+      Paragraph('spacer')   footnote_descender_overflow.rst:5   <paragraph classes='spacer'>
            > (0,0,0,1,2) spacer [footnote_descender_overflow.rts] > DEFAULT
              (0,0,0,0,2) body [Sphinx] > default
           MixedStyledText('spacer')
             MixedStyledText('spacer')
               SingleStyledText('spacer')
 ---------------------------------- page 2 ----------------------------------
+#### FlowablesContainer('background')
+  StaticGroupedFlowables()
 #### FootnoteContainer('footnotes')
   StaticGroupedFlowables()
-  Note(id='f1')   footnote_descender_overflow.rst:11   <footnote>
-    Paragraph('1')
-         > (0,0,0,0,4) footnote label [Sphinx] > footnote paragraph
-           (0,0,0,0,2) body [Sphinx] > default
-        DirectReference('1')
-             > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
-          SingleStyledText('1')
-    StaticGroupedFlowables()
-      Paragraph('Text of the footnote.')   footnote_descender_overflow.rst:11   <paragraph>
-           > (0,0,0,0,5) footnote paragraph [Sphinx] > default
-             (0,0,0,0,2) body [Sphinx] > default
-          MixedStyledText('Text of the footnote.')
-            MixedStyledText('Text of the footnote.')
-              SingleStyledText('Text of the footnote.')
 #### DownExpandingContainer('floats')
   StaticGroupedFlowables()
 #### ChainedContainer('column1')
@@ -36,3 +26,14 @@
     (continued) DocumentTree()   footnote_descender_overflow.rst   <document>
       Paragraph('A Paragraph with a footnote1 at ...')   footnote_descender_overflow.rst:8   <paragraph>
            > (0,0,0,0,2) body [Sphinx] > default
+          MixedStyledText('A Paragraph with a footnote1 at ...')
+            MixedStyledText('A Paragraph with a footnote1 at ...')
+              SingleStyledText('A Paragraph with a footnote')
+              NoteMarkerByID('1', id='footnote-reference-1', style='footnote')   <footnote_reference>
+                   > (0,0,1,0,1) footnote marker [Sphinx] > linked reference
+                     (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                MixedStyledText('1')
+                  SingleStyledText('')
+                  SingleStyledText('1')
+                  SingleStyledText('')
+              SingleStyledText(' at the very bottom of the page.')

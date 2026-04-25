@@ -120,8 +120,8 @@
 #### ChainedContainer('column1')
   StaticGroupedFlowables()
     DocumentTree()   index.rst   <document>
-      StaticGroupedFlowables()   index.rst   <compound>
-        StaticGroupedFlowables(id='%chapter1')   <start_of_file>
+      StaticGroupedFlowables()   index.rst   <compound classes='toctree-wrapper'>
+        StaticGroupedFlowables(id='%chapter1')   index.rst   <start_of_file>
           Section(id='%chapter1#one')   chapter1.rst:2   <section>
                > (0,0,0,1,4) content chapter [Sphinx] > chapter
                  (0,0,0,1,2) chapter [Sphinx] > DEFAULT
@@ -196,7 +196,7 @@
 #### ChainedContainer('column1')
   (continued) StaticGroupedFlowables()
     (continued) DocumentTree()   index.rst   <document>
-      (continued) StaticGroupedFlowables()   index.rst   <compound>
+      (continued) StaticGroupedFlowables()   index.rst   <compound classes='toctree-wrapper'>
 #### UpExpandingContainer('header')
   StaticGroupedFlowables()
     Header('Citations, Release ')
@@ -256,8 +256,8 @@
 #### ChainedContainer('column1')
   (continued) StaticGroupedFlowables()
     (continued) DocumentTree()   index.rst   <document>
-      (continued) StaticGroupedFlowables()   index.rst   <compound>
-        StaticGroupedFlowables(id='%bibliography')   <start_of_file>
+      (continued) StaticGroupedFlowables()   index.rst   <compound classes='toctree-wrapper'>
+        StaticGroupedFlowables(id='%bibliography')   index.rst   <start_of_file>
           Section(id='%bibliography#bibliography')   bibliography.rst:2   <section>
                > (0,0,0,1,4) content chapter [Sphinx] > chapter
                  (0,0,0,1,2) chapter [Sphinx] > DEFAULT

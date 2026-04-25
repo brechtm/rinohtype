@@ -10,12 +10,13 @@
     DocumentTree()   enumerated_list.rst   <document>
       List(style='enumerated')   enumerated_list.rst:2   <enumerated_list>
            > (0,0,1,0,2) enumerated list [Sphinx] > DEFAULT
-        ListItem()   <list_item>
+        ListItem()   enumerated_list.rst:2   <list_item>
              x (0,0,1,0,4) enumerated list item
           ListItemLabel('1.')
                > (0,0,1,0,6) enumerated list item label [Sphinx] > list item label
                  (0,0,0,0,2) list item label [Sphinx] > default
               MixedStyledText('1.')
+                SingleStyledText('')
                 SingleStyledText('1')
                 SingleStyledText('.')
           StaticGroupedFlowables()
@@ -29,12 +30,13 @@
             List(style='enumerated')   <enumerated_list>
                  > (0,0,1,0,5) nested enumerated list [Sphinx] > enumerated list
                    (0,0,1,0,2) enumerated list [Sphinx] > DEFAULT
-              ListItem()   <list_item>
+              ListItem()   enumerated_list.rst:4   <list_item>
                    x (0,0,1,0,4) enumerated list item
                 ListItemLabel('1.')
                      > (0,0,1,0,6) enumerated list item label [Sphinx] > list item label
                        (0,0,0,0,2) list item label [Sphinx] > default
                     MixedStyledText('1.')
+                      SingleStyledText('')
                       SingleStyledText('1')
                       SingleStyledText('.')
                 StaticGroupedFlowables()
@@ -48,12 +50,13 @@
                   List(style='enumerated')   <enumerated_list>
                        > (0,0,1,0,5) nested enumerated list [Sphinx] > enumerated list
                          (0,0,1,0,2) enumerated list [Sphinx] > DEFAULT
-                    ListItem()   <list_item>
+                    ListItem()   enumerated_list.rst:6   <list_item>
                          x (0,0,1,0,4) enumerated list item
                       ListItemLabel('1.')
                            > (0,0,1,0,6) enumerated list item label [Sphinx] > list item label
                              (0,0,0,0,2) list item label [Sphinx] > default
                           MixedStyledText('1.')
+                            SingleStyledText('')
                             SingleStyledText('1')
                             SingleStyledText('.')
                       StaticGroupedFlowables()
@@ -67,12 +70,13 @@
                         List(style='enumerated')   <enumerated_list>
                              > (0,0,1,0,5) nested enumerated list [Sphinx] > enumerated list
                                (0,0,1,0,2) enumerated list [Sphinx] > DEFAULT
-                          ListItem()   <list_item>
+                          ListItem()   enumerated_list.rst:8   <list_item>
                                x (0,0,1,0,4) enumerated list item
                             ListItemLabel('1.')
                                  > (0,0,1,0,6) enumerated list item label [Sphinx] > list item label
                                    (0,0,0,0,2) list item label [Sphinx] > default
                                 MixedStyledText('1.')
+                                  SingleStyledText('')
                                   SingleStyledText('1')
                                   SingleStyledText('.')
                             StaticGroupedFlowables()
@@ -86,12 +90,13 @@
                               List(style='enumerated')   <enumerated_list>
                                    > (0,0,1,0,5) nested enumerated list [Sphinx] > enumerated list
                                      (0,0,1,0,2) enumerated list [Sphinx] > DEFAULT
-                                ListItem()   <list_item>
+                                ListItem()   enumerated_list.rst:10   <list_item>
                                      x (0,0,1,0,4) enumerated list item
                                   ListItemLabel('1.')
                                        > (0,0,1,0,6) enumerated list item label [Sphinx] > list item label
                                          (0,0,0,0,2) list item label [Sphinx] > default
                                       MixedStyledText('1.')
+                                        SingleStyledText('')
                                         SingleStyledText('1')
                                         SingleStyledText('.')
                                   StaticGroupedFlowables()
@@ -102,12 +107,13 @@
                                         MixedStyledText('upper roman)')
                                           MixedStyledText('upper roman)')
                                             SingleStyledText('upper roman)')
-        ListItem()   <list_item>
+        ListItem()   enumerated_list.rst:12   <list_item>
              x (0,0,1,0,4) enumerated list item
           ListItemLabel('2.')
                > (0,0,1,0,6) enumerated list item label [Sphinx] > list item label
                  (0,0,0,0,2) list item label [Sphinx] > default
               MixedStyledText('2.')
+                SingleStyledText('')
                 SingleStyledText('2')
                 SingleStyledText('.')
           StaticGroupedFlowables()
@@ -121,12 +127,13 @@
             List(style='enumerated')   <enumerated_list>
                  > (0,0,1,0,5) nested enumerated list [Sphinx] > enumerated list
                    (0,0,1,0,2) enumerated list [Sphinx] > DEFAULT
-              ListItem()   <list_item>
+              ListItem()   enumerated_list.rst:14   <list_item>
                    x (0,0,1,0,4) enumerated list item
                 ListItemLabel('3.')
                      > (0,0,1,0,6) enumerated list item label [Sphinx] > list item label
                        (0,0,0,0,2) list item label [Sphinx] > default
                     MixedStyledText('3.')
+                      SingleStyledText('')
                       SingleStyledText('3')
                       SingleStyledText('.')
                 StaticGroupedFlowables()
@@ -137,12 +144,13 @@
                       MixedStyledText('Three')
                         MixedStyledText('Three')
                           SingleStyledText('Three')
-              ListItem()   <list_item>
+              ListItem()   enumerated_list.rst:16   <list_item>
                    x (0,0,1,0,4) enumerated list item
                 ListItemLabel('4.')
                      > (0,0,1,0,6) enumerated list item label [Sphinx] > list item label
                        (0,0,0,0,2) list item label [Sphinx] > default
                     MixedStyledText('4.')
+                      SingleStyledText('')
                       SingleStyledText('4')
                       SingleStyledText('.')
                 StaticGroupedFlowables()
@@ -156,12 +164,13 @@
             List(style='enumerated')   <enumerated_list>
                  > (0,0,1,0,5) nested enumerated list [Sphinx] > enumerated list
                    (0,0,1,0,2) enumerated list [Sphinx] > DEFAULT
-              ListItem()   <list_item>
+              ListItem()   enumerated_list.rst:18   <list_item>
                    x (0,0,1,0,4) enumerated list item
                 ListItemLabel('3.')
                      > (0,0,1,0,6) enumerated list item label [Sphinx] > list item label
                        (0,0,0,0,2) list item label [Sphinx] > default
                     MixedStyledText('3.')
+                      SingleStyledText('')
                       SingleStyledText('3')
                       SingleStyledText('.')
                 StaticGroupedFlowables()
@@ -172,12 +181,13 @@
                       MixedStyledText('C')
                         MixedStyledText('C')
                           SingleStyledText('C')
-              ListItem()   <list_item>
+              ListItem()   enumerated_list.rst:20   <list_item>
                    x (0,0,1,0,4) enumerated list item
                 ListItemLabel('4.')
                      > (0,0,1,0,6) enumerated list item label [Sphinx] > list item label
                        (0,0,0,0,2) list item label [Sphinx] > default
                     MixedStyledText('4.')
+                      SingleStyledText('')
                       SingleStyledText('4')
                       SingleStyledText('.')
                 StaticGroupedFlowables()
@@ -191,12 +201,13 @@
             List(style='enumerated')   <enumerated_list>
                  > (0,0,1,0,5) nested enumerated list [Sphinx] > enumerated list
                    (0,0,1,0,2) enumerated list [Sphinx] > DEFAULT
-              ListItem()   <list_item>
+              ListItem()   enumerated_list.rst:22   <list_item>
                    x (0,0,1,0,4) enumerated list item
                 ListItemLabel('3.')
                      > (0,0,1,0,6) enumerated list item label [Sphinx] > list item label
                        (0,0,0,0,2) list item label [Sphinx] > default
                     MixedStyledText('3.')
+                      SingleStyledText('')
                       SingleStyledText('3')
                       SingleStyledText('.')
                 StaticGroupedFlowables()
@@ -207,12 +218,13 @@
                       MixedStyledText('iii')
                         MixedStyledText('iii')
                           SingleStyledText('iii')
-              ListItem()   <list_item>
+              ListItem()   enumerated_list.rst:24   <list_item>
                    x (0,0,1,0,4) enumerated list item
                 ListItemLabel('4.')
                      > (0,0,1,0,6) enumerated list item label [Sphinx] > list item label
                        (0,0,0,0,2) list item label [Sphinx] > default
                     MixedStyledText('4.')
+                      SingleStyledText('')
                       SingleStyledText('4')
                       SingleStyledText('.')
                 StaticGroupedFlowables()
@@ -223,12 +235,13 @@
                       MixedStyledText('iv')
                         MixedStyledText('iv')
                           SingleStyledText('iv')
-        ListItem()   enumerated_list.rst   <list_item>
+        ListItem()   enumerated_list.rst:26   <list_item>
              x (0,0,1,0,4) enumerated list item
           ListItemLabel('3.')
                > (0,0,1,0,6) enumerated list item label [Sphinx] > list item label
                  (0,0,0,0,2) list item label [Sphinx] > default
               MixedStyledText('3.')
+                SingleStyledText('')
                 SingleStyledText('3')
                 SingleStyledText('.')
           StaticGroupedFlowables()
@@ -246,12 +259,13 @@
               SingleStyledText('A list with numbers going into t...')
       List(style='enumerated')   enumerated_list.rst:31   <enumerated_list>
            > (0,0,1,0,2) enumerated list [Sphinx] > DEFAULT
-        ListItem()   enumerated_list.rst   <list_item>
+        ListItem()   enumerated_list.rst:31   <list_item>
              x (0,0,1,0,4) enumerated list item
           ListItemLabel('9.')
                > (0,0,1,0,6) enumerated list item label [Sphinx] > list item label
                  (0,0,0,0,2) list item label [Sphinx] > default
               MixedStyledText('9.')
+                SingleStyledText('')
                 SingleStyledText('9')
                 SingleStyledText('.')
           StaticGroupedFlowables()
@@ -262,12 +276,13 @@
                 MixedStyledText('nine')
                   MixedStyledText('nine')
                     SingleStyledText('nine')
-        ListItem()   enumerated_list.rst   <list_item>
+        ListItem()   enumerated_list.rst:32   <list_item>
              x (0,0,1,0,4) enumerated list item
           ListItemLabel('10.')
                > (0,0,1,0,6) enumerated list item label [Sphinx] > list item label
                  (0,0,0,0,2) list item label [Sphinx] > default
               MixedStyledText('10.')
+                SingleStyledText('')
                 SingleStyledText('10')
                 SingleStyledText('.')
           StaticGroupedFlowables()
@@ -278,12 +293,13 @@
                 MixedStyledText('ten')
                   MixedStyledText('ten')
                     SingleStyledText('ten')
-        ListItem()   enumerated_list.rst   <list_item>
+        ListItem()   enumerated_list.rst:33   <list_item>
              x (0,0,1,0,4) enumerated list item
           ListItemLabel('11.')
                > (0,0,1,0,6) enumerated list item label [Sphinx] > list item label
                  (0,0,0,0,2) list item label [Sphinx] > default
               MixedStyledText('11.')
+                SingleStyledText('')
                 SingleStyledText('11')
                 SingleStyledText('.')
           StaticGroupedFlowables()
@@ -299,10 +315,10 @@
           MixedStyledText('And the same with alternative st...')
             MixedStyledText('And the same with alternative st...')
               SingleStyledText('And the same with alternative st...')
-      List(style='enumerated')   enumerated_list.rst:40   <enumerated_list>
+      List(style='enumerated')   enumerated_list.rst:40   <enumerated_list classes='other-style'>
            > (0,0,1,1,2) alt enumerated list [enumerated_list.rts] > enumerated list
              (0,0,1,0,2) enumerated list [Sphinx] > DEFAULT
-        ListItem()   enumerated_list.rst   <list_item>
+        ListItem()   enumerated_list.rst:40   <list_item>
              > (0,0,1,1,4) alt enumerated list item [enumerated_list.rts] > DEFAULT
              x (0,0,1,0,4) enumerated list item
           ListItemLabel('9.')
@@ -310,6 +326,7 @@
                  (0,0,1,0,6) enumerated list item label [Sphinx] > list item label
                  (0,0,0,0,2) list item label [Sphinx] > default
               MixedStyledText('9.')
+                SingleStyledText('')
                 SingleStyledText('9')
                 SingleStyledText('.')
           StaticGroupedFlowables()
@@ -320,7 +337,7 @@
                 MixedStyledText('nine')
                   MixedStyledText('nine')
                     SingleStyledText('nine')
-        ListItem()   enumerated_list.rst   <list_item>
+        ListItem()   enumerated_list.rst:41   <list_item>
              > (0,0,1,1,4) alt enumerated list item [enumerated_list.rts] > DEFAULT
              x (0,0,1,0,4) enumerated list item
           ListItemLabel('10.')
@@ -328,6 +345,7 @@
                  (0,0,1,0,6) enumerated list item label [Sphinx] > list item label
                  (0,0,0,0,2) list item label [Sphinx] > default
               MixedStyledText('10.')
+                SingleStyledText('')
                 SingleStyledText('10')
                 SingleStyledText('.')
           StaticGroupedFlowables()
@@ -338,7 +356,7 @@
                 MixedStyledText('ten')
                   MixedStyledText('ten')
                     SingleStyledText('ten')
-        ListItem()   enumerated_list.rst   <list_item>
+        ListItem()   enumerated_list.rst:42   <list_item>
              > (0,0,1,1,4) alt enumerated list item [enumerated_list.rts] > DEFAULT
              x (0,0,1,0,4) enumerated list item
           ListItemLabel('11.')
@@ -346,6 +364,7 @@
                  (0,0,1,0,6) enumerated list item label [Sphinx] > list item label
                  (0,0,0,0,2) list item label [Sphinx] > default
               MixedStyledText('11.')
+                SingleStyledText('')
                 SingleStyledText('11')
                 SingleStyledText('.')
           StaticGroupedFlowables()
@@ -372,16 +391,17 @@
           MixedStyledText('Hierarchical list item numbers:')
             MixedStyledText('Hierarchical list item numbers:')
               SingleStyledText('Hierarchical list item numbers:')
-      List(style='enumerated')   enumerated_list.rst:54   <enumerated_list>
+      List(style='enumerated')   enumerated_list.rst:54   <enumerated_list classes='hierarchical'>
            > (0,0,1,1,2) hierarchical enumerated list [enumerated_list.rts] > enumerated list
              (0,0,1,0,2) enumerated list [Sphinx] > DEFAULT
-        ListItem()   <list_item>
+        ListItem()   enumerated_list.rst:54   <list_item>
              x (0,0,1,0,4) enumerated list item
           ListItemLabel('1.')
                > (0,0,1,1,6) hierarchical enumerated list item label [enumerated_list.rts] > enumerated list item label
                  (0,0,1,0,6) enumerated list item label [Sphinx] > list item label
                  (0,0,0,0,2) list item label [Sphinx] > default
               MixedStyledText('1.')
+                SingleStyledText('')
                 SingleStyledText('1')
                 SingleStyledText('.')
           StaticGroupedFlowables()
@@ -395,13 +415,14 @@
             List(style='enumerated')   <enumerated_list>
                  > (0,0,1,0,5) nested enumerated list [Sphinx] > enumerated list
                    (0,0,1,0,2) enumerated list [Sphinx] > DEFAULT
-              ListItem()   <list_item>
+              ListItem()   enumerated_list.rst:56   <list_item>
                    x (0,0,1,0,4) enumerated list item
                 ListItemLabel('1.1.')
                      > (0,0,1,1,6) hierarchical enumerated list item label [enumerated_list.rts] > enumerated list item label
                        (0,0,1,0,6) enumerated list item label [Sphinx] > list item label
                        (0,0,0,0,2) list item label [Sphinx] > default
                     MixedStyledText('1.1.')
+                      SingleStyledText('')
                       SingleStyledText('1.1')
                       SingleStyledText('.')
                 StaticGroupedFlowables()
@@ -415,13 +436,14 @@
                   List(style='enumerated')   <enumerated_list>
                        > (0,0,1,0,5) nested enumerated list [Sphinx] > enumerated list
                          (0,0,1,0,2) enumerated list [Sphinx] > DEFAULT
-                    ListItem()   <list_item>
+                    ListItem()   enumerated_list.rst:58   <list_item>
                          x (0,0,1,0,4) enumerated list item
                       ListItemLabel('1.1.1.')
                            > (0,0,1,1,6) hierarchical enumerated list item label [enumerated_list.rts] > enumerated list item label
                              (0,0,1,0,6) enumerated list item label [Sphinx] > list item label
                              (0,0,0,0,2) list item label [Sphinx] > default
                           MixedStyledText('1.1.1.')
+                            SingleStyledText('')
                             SingleStyledText('1.1.1')
                             SingleStyledText('.')
                       StaticGroupedFlowables()
@@ -432,13 +454,14 @@
                             MixedStyledText('sub-sub-item')
                               MixedStyledText('sub-sub-item')
                                 SingleStyledText('sub-sub-item')
-        ListItem()   <list_item>
+        ListItem()   enumerated_list.rst:60   <list_item>
              x (0,0,1,0,4) enumerated list item
           ListItemLabel('2.')
                > (0,0,1,1,6) hierarchical enumerated list item label [enumerated_list.rts] > enumerated list item label
                  (0,0,1,0,6) enumerated list item label [Sphinx] > list item label
                  (0,0,0,0,2) list item label [Sphinx] > default
               MixedStyledText('2.')
+                SingleStyledText('')
                 SingleStyledText('2')
                 SingleStyledText('.')
           StaticGroupedFlowables()
@@ -452,13 +475,14 @@
             List(style='enumerated')   <enumerated_list>
                  > (0,0,1,0,5) nested enumerated list [Sphinx] > enumerated list
                    (0,0,1,0,2) enumerated list [Sphinx] > DEFAULT
-              ListItem()   <list_item>
+              ListItem()   enumerated_list.rst:62   <list_item>
                    x (0,0,1,0,4) enumerated list item
                 ListItemLabel('2.1.')
                      > (0,0,1,1,6) hierarchical enumerated list item label [enumerated_list.rts] > enumerated list item label
                        (0,0,1,0,6) enumerated list item label [Sphinx] > list item label
                        (0,0,0,0,2) list item label [Sphinx] > default
                     MixedStyledText('2.1.')
+                      SingleStyledText('')
                       SingleStyledText('2.1')
                       SingleStyledText('.')
                 StaticGroupedFlowables()
@@ -472,13 +496,14 @@
                   List(style='enumerated')   <enumerated_list>
                        > (0,0,1,0,5) nested enumerated list [Sphinx] > enumerated list
                          (0,0,1,0,2) enumerated list [Sphinx] > DEFAULT
-                    ListItem()   <list_item>
+                    ListItem()   enumerated_list.rst:64   <list_item>
                          x (0,0,1,0,4) enumerated list item
                       ListItemLabel('2.1.1.')
                            > (0,0,1,1,6) hierarchical enumerated list item label [enumerated_list.rts] > enumerated list item label
                              (0,0,1,0,6) enumerated list item label [Sphinx] > list item label
                              (0,0,0,0,2) list item label [Sphinx] > default
                           MixedStyledText('2.1.1.')
+                            SingleStyledText('')
                             SingleStyledText('2.1.1')
                             SingleStyledText('.')
                       StaticGroupedFlowables()
@@ -489,13 +514,14 @@
                             MixedStyledText('sub-sub-item')
                               MixedStyledText('sub-sub-item')
                                 SingleStyledText('sub-sub-item')
-              ListItem()   <list_item>
+              ListItem()   enumerated_list.rst:66   <list_item>
                    x (0,0,1,0,4) enumerated list item
                 ListItemLabel('2.2.')
                      > (0,0,1,1,6) hierarchical enumerated list item label [enumerated_list.rts] > enumerated list item label
                        (0,0,1,0,6) enumerated list item label [Sphinx] > list item label
                        (0,0,0,0,2) list item label [Sphinx] > default
                     MixedStyledText('2.2.')
+                      SingleStyledText('')
                       SingleStyledText('2.2')
                       SingleStyledText('.')
                 StaticGroupedFlowables()
@@ -509,13 +535,14 @@
                   List(style='enumerated')   <enumerated_list>
                        > (0,0,1,0,5) nested enumerated list [Sphinx] > enumerated list
                          (0,0,1,0,2) enumerated list [Sphinx] > DEFAULT
-                    ListItem()   <list_item>
+                    ListItem()   enumerated_list.rst:68   <list_item>
                          x (0,0,1,0,4) enumerated list item
                       ListItemLabel('2.2.1.')
                            > (0,0,1,1,6) hierarchical enumerated list item label [enumerated_list.rts] > enumerated list item label
                              (0,0,1,0,6) enumerated list item label [Sphinx] > list item label
                              (0,0,0,0,2) list item label [Sphinx] > default
                           MixedStyledText('2.2.1.')
+                            SingleStyledText('')
                             SingleStyledText('2.2.1')
                             SingleStyledText('.')
                       StaticGroupedFlowables()

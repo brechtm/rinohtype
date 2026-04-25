@@ -1,0 +1,147 @@
+<document rinoh_regression_test="True" source="/Users/brechtm/Code/rinohtype/tests_regression/rst/table_auto_column_widths.rst">
+    <table width="80%">
+        <title>
+            80% width
+        <tgroup cols="3">
+            <colspec colwidth="33">
+            <colspec colwidth="33">
+            <colspec colwidth="33">
+            <tbody>
+                <row>
+                    <entry>
+                        <paragraph>
+                            short
+                    <entry>
+                        <paragraph>
+                            a bit longer
+                    <entry>
+                        <paragraph>
+                            much, much longer
+    <table width="70%">
+        <title>
+            70% width
+        <tgroup cols="3">
+            <colspec colwidth="33">
+            <colspec colwidth="33">
+            <colspec colwidth="33">
+            <tbody>
+                <row>
+                    <entry>
+                        <paragraph>
+                            short
+                    <entry>
+                        <paragraph>
+                            a bit longer
+                    <entry>
+                        <paragraph>
+                            much, much longer
+    <table>
+        <title>
+            <strong>
+                auto
+             width
+        <tgroup cols="3">
+            <colspec colwidth="33">
+            <colspec colwidth="33">
+            <colspec colwidth="33">
+            <tbody>
+                <row>
+                    <entry>
+                        <paragraph>
+                            short
+                    <entry>
+                        <paragraph>
+                            a bit longer
+                    <entry>
+                        <paragraph>
+                            much, much longer
+    <table width="65%">
+        <title>
+            65% width
+        <tgroup cols="3">
+            <colspec colwidth="33">
+            <colspec colwidth="33">
+            <colspec colwidth="33">
+            <tbody>
+                <row>
+                    <entry>
+                        <paragraph>
+                            short
+                    <entry>
+                        <paragraph>
+                            a bit longer
+                    <entry>
+                        <paragraph>
+                            much, much longer
+    <table width="50%">
+        <title>
+            50% width
+        <tgroup cols="3">
+            <colspec colwidth="33">
+            <colspec colwidth="33">
+            <colspec colwidth="33">
+            <tbody>
+                <row>
+                    <entry>
+                        <paragraph>
+                            short
+                    <entry>
+                        <paragraph>
+                            a bit longer
+                    <entry>
+                        <paragraph>
+                            much, much longer
+    <table width="40%">
+        <title>
+            40% width
+        <tgroup cols="3">
+            <colspec colwidth="33">
+            <colspec colwidth="33">
+            <colspec colwidth="33">
+            <tbody>
+                <row>
+                    <entry>
+                        <paragraph>
+                            short
+                    <entry>
+                        <paragraph>
+                            a bit longer
+                    <entry>
+                        <paragraph>
+                            much, much longer
+    <table width="35%">
+        <title>
+            35% width
+        <tgroup cols="3">
+            <colspec colwidth="33">
+            <colspec colwidth="33">
+            <colspec colwidth="33">
+            <tbody>
+                <row>
+                    <entry>
+                        <paragraph>
+                            short
+                    <entry>
+                        <paragraph>
+                            a bit longer
+                    <entry>
+                        <paragraph>
+                            much, much longer
+    <table width="30%">
+        <title>
+            30% width
+        <tgroup cols="3">
+            <colspec colwidth="33">
+            <colspec colwidth="33">
+            <colspec colwidth="33">
+            <tbody>
+                <row>
+                    <entry>
+                        <paragraph>
+                            short
+                    <entry>
+                        <paragraph>
+                            a bit longer
+                    <entry>
+                        <paragraph>
+                            much, much longer

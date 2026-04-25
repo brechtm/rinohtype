@@ -44,12 +44,13 @@
   StaticGroupedFlowables()
 #### ChainedContainer('content')
   StaticGroupedFlowables()
-    TableWithCaption()   table_sideways.rst   <table>
+    TableWithCaption()   table_sideways.rst   <table classes='sideways'>
          > (0,0,0,1,1) sideways float [Sphinx] > NEXT_MATCH
          x (0,0,0,0,2) table with caption
       Caption('Table 1.1. Sideways table')
            > (0,0,0,0,4) table caption [Sphinx] > caption
-          SingleStyledText('Table')
+          StringField('Table')
+            SingleStyledText('Table')
           SingleStyledText(' ')
           MixedStyledText('1.1. ', style='label')
             SingleStyledText('')
@@ -349,7 +350,7 @@
               List(style='bulleted')   table_sideways.rst:19   <bullet_list>
                    x (0,0,1,0,4) (table) bulleted list
                    > (0,0,1,0,2) bulleted list [Sphinx] > enumerated list
-                ListItem()   <list_item>
+                ListItem()   table_sideways.rst:19   <list_item>
                      x (0,0,1,0,6) (table) bulleted list item
                      x (0,0,1,0,4) bulleted list item
                   ListItemLabel('•')
@@ -369,7 +370,7 @@
                         MixedStyledText('Table cells')
                           MixedStyledText('Table cells')
                             SingleStyledText('Table cells')
-                ListItem()   <list_item>
+                ListItem()   table_sideways.rst:20   <list_item>
                      x (0,0,1,0,6) (table) bulleted list item
                      x (0,0,1,0,4) bulleted list item
                   ListItemLabel('•')
@@ -389,7 +390,7 @@
                         MixedStyledText('contain')
                           MixedStyledText('contain')
                             SingleStyledText('contain')
-                ListItem()   <list_item>
+                ListItem()   table_sideways.rst:21   <list_item>
                      x (0,0,1,0,6) (table) bulleted list item
                      x (0,0,1,0,4) bulleted list item
                   ListItemLabel('•')
@@ -500,12 +501,13 @@
   StaticGroupedFlowables()
 #### ChainedContainer('content')
   StaticGroupedFlowables()
-    TableWithCaption()   table_sideways.rst   <table>
+    TableWithCaption()   table_sideways.rst   <table classes='sideways-break'>
          > (0,0,0,1,1) sideways-break float [table_sideways.rts] > NEXT_MATCH
          x (0,0,0,0,2) table with caption
       Caption('Table 1.2. Another sideways tabl...')
            > (0,0,0,0,4) table caption [Sphinx] > caption
-          SingleStyledText('Table')
+          StringField('Table')
+            SingleStyledText('Table')
           SingleStyledText(' ')
           MixedStyledText('1.2. ', style='label')
             SingleStyledText('')
@@ -703,12 +705,13 @@
   StaticGroupedFlowables()
 #### ChainedContainer('content')
   StaticGroupedFlowables()
-    TableWithCaption()   table_sideways.rst   <table>
+    TableWithCaption()   table_sideways.rst   <table classes='sideways-break'>
          > (0,0,0,1,1) sideways-break float [table_sideways.rts] > NEXT_MATCH
          x (0,0,0,0,2) table with caption
       Caption('Table 2.1. Sideways table spanni...')
            > (0,0,0,0,4) table caption [Sphinx] > caption
-          SingleStyledText('Table')
+          StringField('Table')
+            SingleStyledText('Table')
           SingleStyledText(' ')
           MixedStyledText('2.1. ', style='label')
             SingleStyledText('')
@@ -1008,7 +1011,7 @@
               List(style='bulleted')   table_sideways.rst:61   <bullet_list>
                    x (0,0,1,0,4) (table) bulleted list
                    > (0,0,1,0,2) bulleted list [Sphinx] > enumerated list
-                ListItem()   <list_item>
+                ListItem()   table_sideways.rst:61   <list_item>
                      x (0,0,1,0,6) (table) bulleted list item
                      x (0,0,1,0,4) bulleted list item
                   ListItemLabel('•')
@@ -1028,7 +1031,7 @@
                         MixedStyledText('Table cells')
                           MixedStyledText('Table cells')
                             SingleStyledText('Table cells')
-                ListItem()   <list_item>
+                ListItem()   table_sideways.rst:62   <list_item>
                      x (0,0,1,0,6) (table) bulleted list item
                      x (0,0,1,0,4) bulleted list item
                   ListItemLabel('•')
@@ -1048,7 +1051,7 @@
                         MixedStyledText('contain')
                           MixedStyledText('contain')
                             SingleStyledText('contain')
-                ListItem()   <list_item>
+                ListItem()   table_sideways.rst:63   <list_item>
                      x (0,0,1,0,6) (table) bulleted list item
                      x (0,0,1,0,4) bulleted list item
                   ListItemLabel('•')
@@ -1329,7 +1332,7 @@
               List(style='bulleted')   table_sideways.rst:72   <bullet_list>
                    x (0,0,1,0,4) (table) bulleted list
                    > (0,0,1,0,2) bulleted list [Sphinx] > enumerated list
-                ListItem()   <list_item>
+                ListItem()   table_sideways.rst:72   <list_item>
                      x (0,0,1,0,6) (table) bulleted list item
                      x (0,0,1,0,4) bulleted list item
                   ListItemLabel('•')
@@ -1349,7 +1352,7 @@
                         MixedStyledText('Table cells')
                           MixedStyledText('Table cells')
                             SingleStyledText('Table cells')
-                ListItem()   <list_item>
+                ListItem()   table_sideways.rst:73   <list_item>
                      x (0,0,1,0,6) (table) bulleted list item
                      x (0,0,1,0,4) bulleted list item
                   ListItemLabel('•')
@@ -1369,7 +1372,7 @@
                         MixedStyledText('contain')
                           MixedStyledText('contain')
                             SingleStyledText('contain')
-                ListItem()   <list_item>
+                ListItem()   table_sideways.rst:74   <list_item>
                      x (0,0,1,0,6) (table) bulleted list item
                      x (0,0,1,0,4) bulleted list item
                   ListItemLabel('•')
@@ -1420,7 +1423,7 @@
   StaticGroupedFlowables()
 #### ChainedContainer('content')
   (continued) StaticGroupedFlowables()
-    (continued) TableWithCaption()   table_sideways.rst   <table>
+    (continued) TableWithCaption()   table_sideways.rst   <table classes='sideways-break'>
          > (0,0,0,1,1) sideways-break float [table_sideways.rts] > NEXT_MATCH
          x (0,0,0,0,2) table with caption
       (continued) Table()
@@ -1664,7 +1667,7 @@
               List(style='bulleted')   table_sideways.rst:83   <bullet_list>
                    x (0,0,1,0,4) (table) bulleted list
                    > (0,0,1,0,2) bulleted list [Sphinx] > enumerated list
-                ListItem()   <list_item>
+                ListItem()   table_sideways.rst:83   <list_item>
                      x (0,0,1,0,6) (table) bulleted list item
                      x (0,0,1,0,4) bulleted list item
                   ListItemLabel('•')
@@ -1684,7 +1687,7 @@
                         MixedStyledText('Table cells')
                           MixedStyledText('Table cells')
                             SingleStyledText('Table cells')
-                ListItem()   <list_item>
+                ListItem()   table_sideways.rst:84   <list_item>
                      x (0,0,1,0,6) (table) bulleted list item
                      x (0,0,1,0,4) bulleted list item
                   ListItemLabel('•')
@@ -1704,7 +1707,7 @@
                         MixedStyledText('contain')
                           MixedStyledText('contain')
                             SingleStyledText('contain')
-                ListItem()   <list_item>
+                ListItem()   table_sideways.rst:85   <list_item>
                      x (0,0,1,0,6) (table) bulleted list item
                      x (0,0,1,0,4) bulleted list item
                   ListItemLabel('•')

@@ -1,4 +1,6 @@
 ---------------------------------- page 1 ----------------------------------
+#### FlowablesContainer('background')
+  StaticGroupedFlowables()
 #### FootnoteContainer('footnotes')
   StaticGroupedFlowables()
 #### DownExpandingContainer('floats')
@@ -15,14 +17,14 @@
             MixedStyledText('PARENT_STYLE')
               MixedStyledText('PARENT_STYLE')
                 SingleStyledText('PARENT_STYLE')
-        StaticGroupedFlowables()   exceptional_style.rst   <container>
+        StaticGroupedFlowables()   exceptional_style.rst   <container classes='container'>
              > (0,0,0,1,1) container [exceptional_style.rts] > DEFAULT
           Paragraph('Paragraph 1.')   exceptional_style.rst:8   <paragraph>
                > (0,0,0,0,2) body [Sphinx] > default
               MixedStyledText('Paragraph 1.')
                 MixedStyledText('Paragraph 1.')
                   SingleStyledText('Paragraph 1.')
-          Paragraph('Paragraph 2.')   exceptional_style.rst:11   <paragraph>
+          Paragraph('Paragraph 2.')   exceptional_style.rst:11   <paragraph classes='base-parent'>
                > (0,0,0,1,2) base-parent paragraph [exceptional_style.rts] > PARENT_STYLE
                  (0,0,0,0,2) body [Sphinx] > default
               MixedStyledText('Paragraph 2.')
@@ -37,13 +39,13 @@
             MixedStyledText('NEXT_STYLE')
               MixedStyledText('NEXT_STYLE')
                 SingleStyledText('NEXT_STYLE')
-        Paragraph('Paragraph 3.')   exceptional_style.rst:18   <paragraph>
+        Paragraph('Paragraph 3.')   exceptional_style.rst:18   <paragraph classes='custom'>
              > (0,0,0,1,2) custom paragraph [exceptional_style.rts] > body
                (0,0,0,0,2) body [Sphinx] > default
             MixedStyledText('Paragraph 3.')
               MixedStyledText('Paragraph 3.')
                 SingleStyledText('Paragraph 3.')
-        Paragraph('Paragraph 4.')   exceptional_style.rst:21   <paragraph>
+        Paragraph('Paragraph 4.')   exceptional_style.rst:21   <paragraph classes='base-next custom'>
              > (1,0,0,1,2) base-next paragraph [exceptional_style.rts] > NEXT_STYLE
                (0,0,0,1,2) custom paragraph [exceptional_style.rts] > body
                (0,0,0,0,2) body [Sphinx] > default

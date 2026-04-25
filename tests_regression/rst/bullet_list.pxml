@@ -1,0 +1,34 @@
+<document rinoh_regression_test="True" source="/Users/brechtm/Code/rinohtype/tests_regression/rst/bullet_list.rst">
+    <bullet_list bullet="-">
+        <list_item>
+            <paragraph>
+                A bullet list
+            <bullet_list bullet="+">
+                <list_item>
+                    <paragraph>
+                        Nested bullet list
+                <list_item>
+                    <paragraph>
+                        Nested item 2
+        <list_item>
+            <paragraph>
+                Item 2
+            <paragraph>
+                Paragraph 2 of item 2
+            <bullet_list bullet="*">
+                <list_item>
+                    <paragraph>
+                        Nested bullet list
+                <list_item>
+                    <paragraph>
+                        Nested item 2
+                    <bullet_list bullet="-">
+                        <list_item>
+                            <paragraph>
+                                Third level
+                        <list_item>
+                            <paragraph>
+                                Item 2
+                <list_item>
+                    <paragraph>
+                        Nested item 3

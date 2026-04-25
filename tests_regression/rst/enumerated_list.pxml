@@ -1,0 +1,121 @@
+<document rinoh_regression_test="True" source="/Users/brechtm/Code/rinohtype/tests_regression/rst/enumerated_list.rst">
+    <enumerated_list enumtype="arabic" prefix="" suffix=".">
+        <list_item>
+            <paragraph>
+                Arabic numerals
+            <enumerated_list enumtype="loweralpha" prefix="" suffix=")">
+                <list_item>
+                    <paragraph>
+                        lower alpha)
+                    <enumerated_list enumtype="lowerroman" prefix="(" suffix=")">
+                        <list_item>
+                            <paragraph>
+                                (lower roman)
+                            <enumerated_list enumtype="upperalpha" prefix="" suffix=".">
+                                <list_item>
+                                    <paragraph>
+                                        upper alpha
+                                    <enumerated_list enumtype="upperroman" prefix="" suffix=")">
+                                        <list_item>
+                                            <paragraph>
+                                                upper roman)
+        <list_item>
+            <paragraph>
+                Lists that don't start at 1:
+            <enumerated_list enumtype="arabic" prefix="" start="3" suffix=".">
+                <list_item>
+                    <paragraph>
+                        Three
+                <list_item>
+                    <paragraph>
+                        Four
+            <system_message level="1" line="11" source="/Users/brechtm/Code/rinohtype/tests_regression/rst/enumerated_list.rst" type="INFO">
+                <paragraph>
+                    Enumerated list start value not ordinal-1: "3" (ordinal 3)
+            <enumerated_list enumtype="upperalpha" prefix="" start="3" suffix=".">
+                <list_item>
+                    <paragraph>
+                        C
+                <list_item>
+                    <paragraph>
+                        D
+            <system_message level="1" line="11" source="/Users/brechtm/Code/rinohtype/tests_regression/rst/enumerated_list.rst" type="INFO">
+                <paragraph>
+                    Enumerated list start value not ordinal-1: "C" (ordinal 3)
+            <enumerated_list enumtype="lowerroman" prefix="" start="3" suffix=".">
+                <list_item>
+                    <paragraph>
+                        iii
+                <list_item>
+                    <paragraph>
+                        iv
+            <system_message level="1" line="11" source="/Users/brechtm/Code/rinohtype/tests_regression/rst/enumerated_list.rst" type="INFO">
+                <paragraph>
+                    Enumerated list start value not ordinal-1: "iii" (ordinal 3)
+        <list_item>
+            <paragraph>
+                List items may also be auto-enumerated.
+    <paragraph>
+        A list with numbers going into two digits:
+    <enumerated_list enumtype="arabic" prefix="" start="9" suffix=".">
+        <list_item>
+            <paragraph>
+                nine
+        <list_item>
+            <paragraph>
+                ten
+        <list_item>
+            <paragraph>
+                eleven
+    <system_message level="1" line="31" source="/Users/brechtm/Code/rinohtype/tests_regression/rst/enumerated_list.rst" type="INFO">
+        <paragraph>
+            Enumerated list start value not ordinal-1: "9" (ordinal 9)
+    <paragraph>
+        And the same with alternative styling:
+    <enumerated_list classes="other-style" enumtype="arabic" prefix="" start="9" suffix=".">
+        <list_item>
+            <paragraph>
+                nine
+        <list_item>
+            <paragraph>
+                ten
+        <list_item>
+            <paragraph>
+                eleven
+    <system_message level="1" line="40" source="/Users/brechtm/Code/rinohtype/tests_regression/rst/enumerated_list.rst" type="INFO">
+        <paragraph>
+            Enumerated list start value not ordinal-1: "9" (ordinal 9)
+    <raw format="pdf" xml:space="preserve">
+        PageBreak
+    <paragraph>
+        Hierarchical list item numbers:
+    <enumerated_list classes="hierarchical" enumtype="arabic" prefix="" suffix=".">
+        <list_item>
+            <paragraph>
+                item
+            <enumerated_list enumtype="arabic" prefix="" suffix=".">
+                <list_item>
+                    <paragraph>
+                        sub-item
+                    <enumerated_list enumtype="arabic" prefix="" suffix=".">
+                        <list_item>
+                            <paragraph>
+                                sub-sub-item
+        <list_item>
+            <paragraph>
+                item
+            <enumerated_list enumtype="arabic" prefix="" suffix=".">
+                <list_item>
+                    <paragraph>
+                        sub-item
+                    <enumerated_list enumtype="arabic" prefix="" suffix=".">
+                        <list_item>
+                            <paragraph>
+                                sub-sub-item
+                <list_item>
+                    <paragraph>
+                        sub-item
+                    <enumerated_list enumtype="arabic" prefix="" suffix=".">
+                        <list_item>
+                            <paragraph>
+                                sub-sub-item

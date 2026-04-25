@@ -277,7 +277,7 @@ class Canvas(BytesIO):
             total_width += width
             default_advance = 1000 * glyph_metrics.width / font.units_per_em
             adjusted_advance = 1000 * width / size  # w kerning & char spacing
-            adjust = int(default_advance - adjusted_advance)
+            adjust = default_advance - adjusted_advance
             if font.encoding:
                 code = font_rsc.get_code(glyph_metrics)
                 char = CODE_TO_CHAR[code]
@@ -285,8 +285,9 @@ class Canvas(BytesIO):
                 code = glyph_metrics.code
                 high, low = code >> 8, code & 0xFF
                 char = CODE_TO_CHAR[high] + CODE_TO_CHAR[low]
-            if adjust:
-                string += '({}{}) {} '.format(current_string, char, adjust)
+            if abs(adjust) > 1e-3:
+                adjust_str = '{:.3f}'.format(adjust).rstrip('0').rstrip('.')
+                string += '({}{}) {} '.format(current_string, char, adjust_str)
                 current_string = ''
             else:
                 current_string += char

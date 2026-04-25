@@ -1,0 +1,3 @@
+<document rinoh_regression_test="True" source="/Users/brechtm/Code/rinohtype/tests_regression/rst/columns_one.rst">
+    <paragraph>
+        This content is so small that it doesn't reach the second column.

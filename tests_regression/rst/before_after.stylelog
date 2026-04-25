@@ -1,4 +1,6 @@
 ---------------------------------- page 1 ----------------------------------
+#### FlowablesContainer('background')
+  StaticGroupedFlowables()
 #### FootnoteContainer('footnotes')
   StaticGroupedFlowables()
 #### DownExpandingContainer('floats')
@@ -11,11 +13,11 @@
           MixedStyledText('We'll be wrapping this with styl...')
             MixedStyledText('We'll be wrapping this with styl...')
               SingleStyledText('We'll be wrapping ')
-              MixedStyledText('this')   <inline>
+              MixedStyledText('this')   <inline classes='wrap'>
                    > (0,0,0,1,1) wrap [before_after.rts] > DEFAULT
                 SingleStyledText('this')
               SingleStyledText(' with styled text configured in ...')
-      Paragraph('>>Wrapped paragraph.<<')   before_after.rst:10   <paragraph>
+      Paragraph('>>Wrapped paragraph.<<')   before_after.rst:10   <paragraph classes='parwrap'>
            > (0,0,0,1,2) wrapped paragraph [before_after.rts] > DEFAULT
              (0,0,0,0,2) body [Sphinx] > default
           SingleStyledText('>>', style='strong')

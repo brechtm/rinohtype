@@ -1,0 +1,29 @@
+<document rinoh_regression_test="True" source="/Users/brechtm/Code/rinohtype/tests_regression/rst/table_short_wrapped.rst">
+    <table>
+        <tgroup cols="2">
+            <colspec colwidth="50">
+            <colspec colwidth="50">
+            <tbody>
+                <row>
+                    <entry>
+                        <paragraph>
+                            short
+                    <entry>
+                        <paragraph>
+                            One two three four five six seven eight nine ten twelve eleven thirteen
+                            fourteen fifteen sixteen.
+    <table>
+        <tgroup cols="2">
+            <colspec colwidth="50">
+            <colspec colwidth="50">
+            <tbody>
+                <row>
+                    <entry>
+                        <paragraph>
+                            short
+                    <entry>
+                        <paragraph>
+                            One two three four five six seven eight nine ten twelve eleven thirteen
+                            fourteen fifteen sixteen seventeen eighteen nineteen twenty twenty-one
+                            twenty-two twenty-three twenty-four twenty-five twenty-six twenty-seven
+                            twenty-eight twenty-nine thirty.

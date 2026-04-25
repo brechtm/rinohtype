@@ -1,0 +1,28 @@
+<document rinoh_regression_test="True" source="/Users/brechtm/Code/rinohtype/tests_regression/rst/footnote.rst">
+    <paragraph classes="spacer1">
+        spacer 1
+    <paragraph>
+        A Paragraph with a footnote
+        <footnote_reference auto="1" ids="footnote-reference-1" refid="f1">
+            1
+         at the very bottom of the page.
+    <footnote auto="1" backrefs="footnote-reference-1" ids="f1" names="f1">
+        <label>
+            1
+        <paragraph>
+            Text of the first footnote.
+    <raw format="pdf" xml:space="preserve">
+        PageBreak
+    <paragraph classes="spacer2">
+        spacer 2
+    <target refid="par2">
+    <paragraph ids="par2" names="par2">
+        This paragraph
+        <footnote_reference auto="1" ids="footnote-reference-2" refid="f2">
+            2
+         is placed a little bit higher.
+    <footnote auto="1" backrefs="footnote-reference-2" ids="f2" names="f2">
+        <label>
+            2
+        <paragraph>
+            Text of the second footnote.

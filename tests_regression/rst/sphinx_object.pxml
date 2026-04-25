@@ -1,0 +1,55 @@
+<document rinoh_regression_test="True" source="/Users/brechtm/Code/rinohtype/tests_regression/rst/index.rst" translation_progress="{'total': 0, 'translated': 0}">
+    <index entries="('single',\ '$.getJSON()\ ($\ method)',\ 'getJSON',\ '',\ None)">
+    <desc classes="js function" desctype="function" domain="js" no-contents-entry="False" no-index="False" no-index-entry="False" no-typesetting="False" nocontentsentry="False" noindex="False" noindexentry="False" objtype="function">
+        <desc_signature _toc_name="$.getJSON()" _toc_parts="('$', 'getJSON')" classes="sig sig-object" fullname="$.getJSON" ids="getJSON" module="True" object="$">
+            <desc_addname classes="sig-prename descclassname" xml:space="preserve">
+                <desc_sig_name classes="n">
+                    $
+                <desc_sig_punctuation classes="p">
+                    .
+            <desc_name classes="sig-name descname" xml:space="preserve">
+                <desc_sig_name classes="n">
+                    getJSON
+            <desc_parameterlist multi_line_parameter_list="False" multi_line_trailing_comma="True" xml:space="preserve">
+                <desc_parameter xml:space="preserve">
+                    <desc_sig_name classes="n">
+                        href
+                <desc_parameter xml:space="preserve">
+                    <desc_sig_name classes="n">
+                        callback
+                <desc_optional xml:space="preserve">
+                    <desc_parameter xml:space="preserve">
+                        <desc_sig_name classes="n">
+                            errback
+        <desc_content>
+            <field_list>
+                <field>
+                    <field_name>
+                        Arguments
+                    <field_body>
+                        <bullet_list>
+                            <list_item>
+                                <paragraph>
+                                    <literal_strong>
+                                        href
+                                     -- 
+                                    An URI to the location of the resource.
+                            <list_item>
+                                <paragraph>
+                                    <literal_strong>
+                                        callback
+                                     -- 
+                                    Gets called with the object.
+                            <list_item>
+                                <paragraph>
+                                    <literal_strong>
+                                        errback
+                                     -- 
+                                    Gets called in case the request fails. And a lot of other
+                                    text so we need multiple lines.
+                <field>
+                    <field_name>
+                        Returns
+                    <field_body>
+                        <paragraph>
+                            Something.

@@ -1,0 +1,21 @@
+<document rinoh_regression_test="True" source="/Users/brechtm/Code/rinohtype/tests_regression/rst/nobreak_space.rst">
+    <substitution_definition ltrim="1" names="nbsp" rtrim="1">
+         
+    <paragraph>
+        One two three four five six seven eight nine ten eleven twelve thirteen.
+    <paragraph>
+        One two three four five six seven eight nine ten eleven twelve
+         
+        thirteen.
+    <substitution_definition names="12_13">
+        twelve
+         
+        thirteen
+    <target ids="target-1" names="12_13" refuri="http://www.python.org">
+    <paragraph>
+        One two three four five six seven eight nine ten eleven 
+        <reference refuri="http://www.python.org">
+            twelve
+             
+            thirteen
+        .

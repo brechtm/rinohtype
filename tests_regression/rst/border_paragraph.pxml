@@ -1,0 +1,34 @@
+<document rinoh_regression_test="True" source="/Users/brechtm/Code/rinohtype/tests_regression/rst/border_paragraph.rst">
+    <target refid="first">
+    <paragraph classes="fat-border" ids="first" names="first">
+        A short paragraph.
+    <paragraph classes="small-spacer">
+        spacer
+    <paragraph classes="fat-border">
+        A Paragraph split across two pages 1. A Paragraph split across two pages.
+        A Paragraph split across two pages 2. A Paragraph split across two pages.
+        A Paragraph split across two pages 3. A Paragraph split across two pages.
+        A Paragraph split across two pages 4. A Paragraph split across two pages.
+    <raw format="pdf" xml:space="preserve">
+        PageBreak
+    <paragraph classes="spacer">
+        spacer
+    <target refid="second">
+    <paragraph classes="fat-border" ids="second" names="second">
+        A Paragraph split across two pages 1. A Paragraph split across two pages.
+        A Paragraph split across two pages 2. A Paragraph split across two pages.
+        A Paragraph split across two pages 3. A Paragraph split across two pages.
+        A Paragraph split across two pages 4. A Paragraph split across two pages.
+    <paragraph classes="spacer">
+        spacer
+    <raw format="pdf" xml:space="preserve">
+        PageBreak
+    <paragraph classes="spacer">
+        spacer
+    <target refid="third">
+    <paragraph classes="fat-border" ids="third" names="third">
+        A Paragraph split across two pages 1. A Paragraph split across two pages.
+        A Paragraph split across two pages 2. A Paragraph split across two pages.
+        A Paragraph split across two pages 3.
+    <paragraph classes="spacer">
+        spacer

@@ -1,4 +1,6 @@
 ---------------------------------- page 1 ----------------------------------
+#### FlowablesContainer('background')
+  StaticGroupedFlowables()
 #### FootnoteContainer('footnotes')
   StaticGroupedFlowables()
 #### DownExpandingContainer('floats')
@@ -6,25 +8,42 @@
 #### ChainedContainer('column1')
   StaticGroupedFlowables()
     DocumentTree()   border_paragraph.rst   <document>
-      Paragraph('A short paragraph.', id='first')   border_paragraph.rst:5   <paragraph>
+      Paragraph('A short paragraph.', id='first')   border_paragraph.rst:5   <paragraph classes='fat-border'>
            > (0,0,0,1,1) flowable with fat border [border_paragraph.rts] > DEFAULT
              (0,0,0,0,2) body [Sphinx] > default
           MixedStyledText('A short paragraph.')
             MixedStyledText('A short paragraph.')
               SingleStyledText('A short paragraph.')
-      Paragraph('spacer')   border_paragraph.rst:10   <paragraph>
+      Paragraph('spacer')   border_paragraph.rst:10   <paragraph classes='small-spacer'>
            > (0,0,0,1,2) small spacer [border_paragraph.rts] > spacer
              (0,0,0,0,2) body [Sphinx] > default
           MixedStyledText('spacer')
             MixedStyledText('spacer')
               SingleStyledText('spacer')
-      Paragraph('A Paragraph split across two pag...')   border_paragraph.rst:15   <paragraph>
+      Paragraph('A Paragraph split across two pag...')   border_paragraph.rst:15   <paragraph classes='fat-border'>
            > (0,0,0,1,1) flowable with fat border [border_paragraph.rts] > DEFAULT
              (0,0,0,0,2) body [Sphinx] > default
           MixedStyledText('A Paragraph split across two pag...')
             MixedStyledText('A Paragraph split across two pag...')
               SingleStyledText('A Paragraph split across two pag...')
+          MixedStyledText('A Paragraph split across two pag...')
+            MixedStyledText('A Paragraph split across two pag...')
+              SingleStyledText('A Paragraph split across two pag...')
+          MixedStyledText('A Paragraph split across two pag...')
+            MixedStyledText('A Paragraph split across two pag...')
+              SingleStyledText('A Paragraph split across two pag...')
+          MixedStyledText('A Paragraph split across two pag...')
+            MixedStyledText('A Paragraph split across two pag...')
+              SingleStyledText('A Paragraph split across two pag...')
+          MixedStyledText('A Paragraph split across two pag...')
+            MixedStyledText('A Paragraph split across two pag...')
+              SingleStyledText('A Paragraph split across two pag...')
+          MixedStyledText('A Paragraph split across two pag...')
+            MixedStyledText('A Paragraph split across two pag...')
+              SingleStyledText('A Paragraph split across two pag...')
 ---------------------------------- page 2 ----------------------------------
+#### FlowablesContainer('background')
+  StaticGroupedFlowables()
 #### FootnoteContainer('footnotes')
   StaticGroupedFlowables()
 #### DownExpandingContainer('floats')
@@ -33,19 +52,30 @@
   (continued) StaticGroupedFlowables()
     (continued) DocumentTree()   border_paragraph.rst   <document>
       PageBreak(style=FlowableStyle)   border_paragraph.rst:21   <raw>
-      Paragraph('spacer')   border_paragraph.rst:28   <paragraph>
+      Paragraph('spacer')   border_paragraph.rst:28   <paragraph classes='spacer'>
            > (0,0,0,1,2) spacer [border_paragraph.rts] > DEFAULT
              (0,0,0,0,2) body [Sphinx] > default
           MixedStyledText('spacer')
             MixedStyledText('spacer')
               SingleStyledText('spacer')
-      Paragraph('A Paragraph split across two pag...', id='second')   border_paragraph.rst:35   <paragraph>
+      Paragraph('A Paragraph split across two pag...', id='second')   border_paragraph.rst:35   <paragraph classes='fat-border'>
            > (0,0,0,1,1) flowable with fat border [border_paragraph.rts] > DEFAULT
              (0,0,0,0,2) body [Sphinx] > default
           MixedStyledText('A Paragraph split across two pag...')
             MixedStyledText('A Paragraph split across two pag...')
               SingleStyledText('A Paragraph split across two pag...')
+          MixedStyledText('A Paragraph split across two pag...')
+            MixedStyledText('A Paragraph split across two pag...')
+              SingleStyledText('A Paragraph split across two pag...')
+          MixedStyledText('A Paragraph split across two pag...')
+            MixedStyledText('A Paragraph split across two pag...')
+              SingleStyledText('A Paragraph split across two pag...')
+          MixedStyledText('A Paragraph split across two pag...')
+            MixedStyledText('A Paragraph split across two pag...')
+              SingleStyledText('A Paragraph split across two pag...')
 ---------------------------------- page 3 ----------------------------------
+#### FlowablesContainer('background')
+  StaticGroupedFlowables()
 #### FootnoteContainer('footnotes')
   StaticGroupedFlowables()
 #### DownExpandingContainer('floats')
@@ -53,16 +83,27 @@
 #### ChainedContainer('column1')
   (continued) StaticGroupedFlowables()
     (continued) DocumentTree()   border_paragraph.rst   <document>
-      (continued) Paragraph('A Paragraph split across two pag...', id='second')   border_paragraph.rst:35   <paragraph>
+      (continued) Paragraph('A Paragraph split across two pag...', id='second')   border_paragraph.rst:35   <paragraph classes='fat-border'>
            > (0,0,0,1,1) flowable with fat border [border_paragraph.rts] > DEFAULT
              (0,0,0,0,2) body [Sphinx] > default
-      Paragraph('spacer')   border_paragraph.rst:43   <paragraph>
+          MixedStyledText('A Paragraph split across two pag...')
+            MixedStyledText('A Paragraph split across two pag...')
+              SingleStyledText('A Paragraph split across two pag...')
+          MixedStyledText('A Paragraph split across two pag...')
+            MixedStyledText('A Paragraph split across two pag...')
+              SingleStyledText('A Paragraph split across two pag...')
+          MixedStyledText('A Paragraph split across two pag...')
+            MixedStyledText('A Paragraph split across two pag...')
+              SingleStyledText('A Paragraph split across two pag...')
+      Paragraph('spacer')   border_paragraph.rst:43   <paragraph classes='spacer'>
            > (0,0,0,1,2) spacer [border_paragraph.rts] > DEFAULT
              (0,0,0,0,2) body [Sphinx] > default
           MixedStyledText('spacer')
             MixedStyledText('spacer')
               SingleStyledText('spacer')
 ---------------------------------- page 4 ----------------------------------
+#### FlowablesContainer('background')
+  StaticGroupedFlowables()
 #### FootnoteContainer('footnotes')
   StaticGroupedFlowables()
 #### DownExpandingContainer('floats')
@@ -71,19 +112,27 @@
   (continued) StaticGroupedFlowables()
     (continued) DocumentTree()   border_paragraph.rst   <document>
       PageBreak(style=FlowableStyle)   border_paragraph.rst:46   <raw>
-      Paragraph('spacer')   border_paragraph.rst:53   <paragraph>
+      Paragraph('spacer')   border_paragraph.rst:53   <paragraph classes='spacer'>
            > (0,0,0,1,2) spacer [border_paragraph.rts] > DEFAULT
              (0,0,0,0,2) body [Sphinx] > default
           MixedStyledText('spacer')
             MixedStyledText('spacer')
               SingleStyledText('spacer')
-      Paragraph('A Paragraph split across two pag...', id='third')   border_paragraph.rst:60   <paragraph>
+      Paragraph('A Paragraph split across two pag...', id='third')   border_paragraph.rst:60   <paragraph classes='fat-border'>
            > (0,0,0,1,1) flowable with fat border [border_paragraph.rts] > DEFAULT
              (0,0,0,0,2) body [Sphinx] > default
           MixedStyledText('A Paragraph split across two pag...')
             MixedStyledText('A Paragraph split across two pag...')
               SingleStyledText('A Paragraph split across two pag...')
+          MixedStyledText('A Paragraph split across two pag...')
+            MixedStyledText('A Paragraph split across two pag...')
+              SingleStyledText('A Paragraph split across two pag...')
+          MixedStyledText('A Paragraph split across two pag...')
+            MixedStyledText('A Paragraph split across two pag...')
+              SingleStyledText('A Paragraph split across two pag...')
 ---------------------------------- page 5 ----------------------------------
+#### FlowablesContainer('background')
+  StaticGroupedFlowables()
 #### FootnoteContainer('footnotes')
   StaticGroupedFlowables()
 #### DownExpandingContainer('floats')
@@ -91,10 +140,13 @@
 #### ChainedContainer('column1')
   (continued) StaticGroupedFlowables()
     (continued) DocumentTree()   border_paragraph.rst   <document>
-      (continued) Paragraph('A Paragraph split across two pag...', id='third')   border_paragraph.rst:60   <paragraph>
+      (continued) Paragraph('A Paragraph split across two pag...', id='third')   border_paragraph.rst:60   <paragraph classes='fat-border'>
            > (0,0,0,1,1) flowable with fat border [border_paragraph.rts] > DEFAULT
              (0,0,0,0,2) body [Sphinx] > default
-      Paragraph('spacer')   border_paragraph.rst:67   <paragraph>
+          MixedStyledText('A Paragraph split across two pag...')
+            MixedStyledText('A Paragraph split across two pag...')
+              SingleStyledText('A Paragraph split across two pag...')
+      Paragraph('spacer')   border_paragraph.rst:67   <paragraph classes='spacer'>
            > (0,0,0,1,2) spacer [border_paragraph.rts] > DEFAULT
              (0,0,0,0,2) body [Sphinx] > default
           MixedStyledText('spacer')

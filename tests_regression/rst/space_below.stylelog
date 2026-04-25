@@ -1,4 +1,6 @@
 ---------------------------------- page 1 ----------------------------------
+#### FlowablesContainer('background')
+  StaticGroupedFlowables()
 #### FootnoteContainer('footnotes')
   StaticGroupedFlowables()
 #### DownExpandingContainer('floats')
@@ -11,35 +13,117 @@
           MixedStyledText('Sed ut perspiciatis, unde omnis ...')
             MixedStyledText('Sed ut perspiciatis, unde omnis ...')
               SingleStyledText('Sed ut perspiciatis, unde omnis ...')
-      Admonition()   <important>
+          MixedStyledText('Sed ut perspiciatis, unde omnis ...')
+            MixedStyledText('Sed ut perspiciatis, unde omnis ...')
+              SingleStyledText('Sed ut perspiciatis, unde omnis ...')
+          MixedStyledText('Sed ut perspiciatis, unde omnis ...')
+            MixedStyledText('Sed ut perspiciatis, unde omnis ...')
+              SingleStyledText('Sed ut perspiciatis, unde omnis ...')
+          MixedStyledText('Sed ut perspiciatis, unde omnis ...')
+            MixedStyledText('Sed ut perspiciatis, unde omnis ...')
+              SingleStyledText('Sed ut perspiciatis, unde omnis ...')
+          MixedStyledText('Sed ut perspiciatis, unde omnis ...')
+            MixedStyledText('Sed ut perspiciatis, unde omnis ...')
+              SingleStyledText('Sed ut perspiciatis, unde omnis ...')
+          MixedStyledText('Sed ut perspiciatis, unde omnis ...')
+            MixedStyledText('Sed ut perspiciatis, unde omnis ...')
+              SingleStyledText('Sed ut perspiciatis, unde omnis ...')
+          MixedStyledText('Sed ut perspiciatis, unde omnis ...')
+            MixedStyledText('Sed ut perspiciatis, unde omnis ...')
+              SingleStyledText('Sed ut perspiciatis, unde omnis ...')
+          MixedStyledText('Sed ut perspiciatis, unde omnis ...')
+            MixedStyledText('Sed ut perspiciatis, unde omnis ...')
+              SingleStyledText('Sed ut perspiciatis, unde omnis ...')
+          MixedStyledText('Sed ut perspiciatis, unde omnis ...')
+            MixedStyledText('Sed ut perspiciatis, unde omnis ...')
+              SingleStyledText('Sed ut perspiciatis, unde omnis ...')
+          MixedStyledText('Sed ut perspiciatis, unde omnis ...')
+            MixedStyledText('Sed ut perspiciatis, unde omnis ...')
+              SingleStyledText('Sed ut perspiciatis, unde omnis ...')
+          MixedStyledText('Sed ut perspiciatis, unde omnis ...')
+            MixedStyledText('Sed ut perspiciatis, unde omnis ...')
+              SingleStyledText('Sed ut perspiciatis, unde omnis ...')
+          MixedStyledText('Sed ut perspiciatis, unde omnis ...')
+            MixedStyledText('Sed ut perspiciatis, unde omnis ...')
+              SingleStyledText('Sed ut perspiciatis, unde omnis ...')
+          MixedStyledText('Sed ut perspiciatis, unde omnis ...')
+            MixedStyledText('Sed ut perspiciatis, unde omnis ...')
+              SingleStyledText('Sed ut perspiciatis, unde omnis ...')
+          MixedStyledText('Sed ut perspiciatis, unde omnis ...')
+            MixedStyledText('Sed ut perspiciatis, unde omnis ...')
+              SingleStyledText('Sed ut perspiciatis, unde omnis ...')
+          MixedStyledText('Sed ut perspiciatis, unde omnis ...')
+            MixedStyledText('Sed ut perspiciatis, unde omnis ...')
+              SingleStyledText('Sed ut perspiciatis, unde omnis ...')
+          MixedStyledText('Sed ut perspiciatis, unde omnis ...')
+            MixedStyledText('Sed ut perspiciatis, unde omnis ...')
+              SingleStyledText('Sed ut perspiciatis, unde omnis ...')
+          MixedStyledText('Sed ut perspiciatis, unde omnis ...')
+            MixedStyledText('Sed ut perspiciatis, unde omnis ...')
+              SingleStyledText('Sed ut perspiciatis, unde omnis ...')
+          MixedStyledText('Sed ut perspiciatis, unde omnis ...')
+            MixedStyledText('Sed ut perspiciatis, unde omnis ...')
+              SingleStyledText('Sed ut perspiciatis, unde omnis ...')
+          MixedStyledText('Sed ut perspiciatis, unde omnis ...')
+            MixedStyledText('Sed ut perspiciatis, unde omnis ...')
+              SingleStyledText('Sed ut perspiciatis, unde omnis ...')
+          MixedStyledText('Sed ut perspiciatis, unde omnis ...')
+            MixedStyledText('Sed ut perspiciatis, unde omnis ...')
+              SingleStyledText('Sed ut perspiciatis, unde omnis ...')
+          MixedStyledText('Sed ut perspiciatis, unde omnis ...')
+            MixedStyledText('Sed ut perspiciatis, unde omnis ...')
+              SingleStyledText('Sed ut perspiciatis, unde omnis ...')
+          MixedStyledText('Sed ut perspiciatis, unde omnis ...')
+            MixedStyledText('Sed ut perspiciatis, unde omnis ...')
+              SingleStyledText('Sed ut perspiciatis, unde omnis ...')
+          MixedStyledText('Sed ut perspiciatis, unde omnis ...')
+            MixedStyledText('Sed ut perspiciatis, unde omnis ...')
+              SingleStyledText('Sed ut perspiciatis, unde omnis ...')
+          MixedStyledText('Sed ut perspiciatis, unde omnis ...')
+            MixedStyledText('Sed ut perspiciatis, unde omnis ...')
+              SingleStyledText('Sed ut perspiciatis, unde omnis ...')
+          MixedStyledText('Sed ut perspiciatis, unde omnis ...')
+            MixedStyledText('Sed ut perspiciatis, unde omnis ...')
+              SingleStyledText('Sed ut perspiciatis, unde omnis ...')
+          MixedStyledText('Sed ut perspiciatis, unde omnis ...')
+            MixedStyledText('Sed ut perspiciatis, unde omnis ...')
+              SingleStyledText('Sed ut perspiciatis, unde omnis ...')
+      Admonition()   space_below.rst:25   <important>
            > (0,0,0,1,2) important admonition [Sphinx] > builtin admonition
              (0,0,0,0,2) admonition [Sphinx] > DEFAULT
-        Paragraph('Important', style='title')
-             x (0,0,1,1,4) important admonition title
-             > (0,0,1,0,4) admonition title [Sphinx] > body
-               (0,0,1,0,2) title [Sphinx] > default
-               (0,0,0,0,2) body [Sphinx] > default
-            SingleStyledText('Important')
-        List(style='bulleted')   space_below.rst:26   <bullet_list>
-             > (0,0,1,0,2) bulleted list [Sphinx] > enumerated list
-          ListItem()   <list_item>
-               x (0,0,1,0,4) bulleted list item
-            ListItemLabel('•')
-                 > (0,0,1,0,6) bulleted list item label [Sphinx] > list item label
-                   (0,0,0,0,2) list item label [Sphinx] > default
-                MixedStyledText('•')
-                  SingleStyledText('')
-                  SingleStyledText('•')
-                  SingleStyledText('')
-            StaticGroupedFlowables()
-                 > (0,0,0,0,3) list item body [Sphinx] > DEFAULT
-              Paragraph('Wash behind your ears.')   space_below.rst:26   <paragraph>
-                   > (0,0,0,0,5) list item paragraph [Sphinx] > default
-                     (0,0,0,0,2) body [Sphinx] > default
-                  MixedStyledText('Wash behind your ears.')
+        AdmonitionFlowables()
+             x (0,0,0,1,4) important admonition content
+             > (0,0,0,0,4) admonition content [Sphinx] > DEFAULT
+          Paragraph('Important', style='title')
+               x (0,0,1,1,6) important admonition title
+               > (0,0,1,0,6) admonition title [Sphinx] > body
+                 (0,0,1,0,2) title [Sphinx] > default
+               x (0,0,0,1,6) important admonition paragraph
+               x (0,0,0,0,6) admonition paragraph
+                 (0,0,0,0,2) body [Sphinx] > default
+              SingleStyledText('Important')
+          List(style='bulleted')   space_below.rst:26   <bullet_list>
+               > (0,0,1,0,2) bulleted list [Sphinx] > enumerated list
+            ListItem()   space_below.rst:26   <list_item>
+                 x (0,0,1,0,4) bulleted list item
+              ListItemLabel('•')
+                   > (0,0,1,0,6) bulleted list item label [Sphinx] > list item label
+                     (0,0,0,0,2) list item label [Sphinx] > default
+                  MixedStyledText('•')
+                    SingleStyledText('')
+                    SingleStyledText('•')
+                    SingleStyledText('')
+              StaticGroupedFlowables()
+                   > (0,0,0,0,3) list item body [Sphinx] > DEFAULT
+                Paragraph('Wash behind your ears.')   space_below.rst:26   <paragraph>
+                     > (0,0,0,0,5) list item paragraph [Sphinx] > default
+                       (0,0,0,0,2) body [Sphinx] > default
                     MixedStyledText('Wash behind your ears.')
-                      SingleStyledText('Wash behind your ears.')
+                      MixedStyledText('Wash behind your ears.')
+                        SingleStyledText('Wash behind your ears.')
 ---------------------------------- page 2 ----------------------------------
+#### FlowablesContainer('background')
+  StaticGroupedFlowables()
 #### FootnoteContainer('footnotes')
   StaticGroupedFlowables()
 #### DownExpandingContainer('floats')
@@ -47,25 +131,28 @@
 #### ChainedContainer('column1')
   (continued) StaticGroupedFlowables()
     (continued) DocumentTree()   space_below.rst   <document>
-      (continued) Admonition()   <important>
+      (continued) Admonition()   space_below.rst:25   <important>
            > (0,0,0,1,2) important admonition [Sphinx] > builtin admonition
              (0,0,0,0,2) admonition [Sphinx] > DEFAULT
-        (continued) List(style='bulleted')   space_below.rst:26   <bullet_list>
-             > (0,0,1,0,2) bulleted list [Sphinx] > enumerated list
-          ListItem()   <list_item>
-               x (0,0,1,0,4) bulleted list item
-            ListItemLabel('•')
-                 > (0,0,1,0,6) bulleted list item label [Sphinx] > list item label
-                   (0,0,0,0,2) list item label [Sphinx] > default
-                MixedStyledText('•')
-                  SingleStyledText('')
-                  SingleStyledText('•')
-                  SingleStyledText('')
-            StaticGroupedFlowables()
-                 > (0,0,0,0,3) list item body [Sphinx] > DEFAULT
-              Paragraph('Clean up your room.')   space_below.rst:27   <paragraph>
-                   > (0,0,0,0,5) list item paragraph [Sphinx] > default
-                     (0,0,0,0,2) body [Sphinx] > default
-                  MixedStyledText('Clean up your room.')
+        (continued) AdmonitionFlowables()
+             x (0,0,0,1,4) important admonition content
+             > (0,0,0,0,4) admonition content [Sphinx] > DEFAULT
+          (continued) List(style='bulleted')   space_below.rst:26   <bullet_list>
+               > (0,0,1,0,2) bulleted list [Sphinx] > enumerated list
+            ListItem()   space_below.rst:27   <list_item>
+                 x (0,0,1,0,4) bulleted list item
+              ListItemLabel('•')
+                   > (0,0,1,0,6) bulleted list item label [Sphinx] > list item label
+                     (0,0,0,0,2) list item label [Sphinx] > default
+                  MixedStyledText('•')
+                    SingleStyledText('')
+                    SingleStyledText('•')
+                    SingleStyledText('')
+              StaticGroupedFlowables()
+                   > (0,0,0,0,3) list item body [Sphinx] > DEFAULT
+                Paragraph('Clean up your room.')   space_below.rst:27   <paragraph>
+                     > (0,0,0,0,5) list item paragraph [Sphinx] > default
+                       (0,0,0,0,2) body [Sphinx] > default
                     MixedStyledText('Clean up your room.')
-                      SingleStyledText('Clean up your room.')
+                      MixedStyledText('Clean up your room.')
+                        SingleStyledText('Clean up your room.')

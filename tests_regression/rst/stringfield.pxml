@@ -1,0 +1,54 @@
+<document rinoh_regression_test="True" source="/Users/brechtm/Code/rinohtype/tests_regression/rst/stringfield.rst">
+    <substitution_definition names="my_subst">
+        a 
+        <literal>
+            UserString
+         defined using a 
+        <emphasis>
+            substitition definition
+    <section ids="first-chapter" names="first\ chapter">
+        <title>
+            First Chapter
+        <paragraph>
+            A paragraph.
+        <table classes="colwidths-auto">
+            <title>
+                Truth table for "not"
+            <tgroup cols="2">
+                <colspec colwidth="5">
+                <colspec colwidth="5">
+                <thead>
+                    <row>
+                        <entry>
+                            <paragraph>
+                                A
+                        <entry>
+                            <paragraph>
+                                not A
+                <tbody>
+                    <row>
+                        <entry>
+                            <paragraph>
+                                False
+                        <entry>
+                            <paragraph>
+                                True
+                    <row>
+                        <entry>
+                            <paragraph>
+                                True
+                        <entry>
+                            <paragraph>
+                                False
+        <figure>
+            <image uri="../images/title.png">
+            <caption>
+                Figure caption
+    <section ids="second-chapter" names="second\ chapter">
+        <title>
+            Second Chapter
+        <warning>
+            <paragraph>
+                Wipe your feet.
+        <paragraph>
+            A paragraph in the second section.

@@ -15,7 +15,7 @@
   StaticGroupedFlowables()
     TableOfContentsSection(style='table of contents')
          > (0,0,1,0,1) table of contents section [Sphinx (article)] > DEFAULT
-           (0,0,0,1,1) chapter [install_resources.rts] > DEFAULT
+           (0,0,0,1,1) chapter [tests_regression/rinoh/install_resources.rts] > DEFAULT
       Heading('Table of Contents', style='unnumbered')
            x (0,0,1,1,3) table of contents title
            > (0,0,1,1,2) unnumbered heading level 1 [Sphinx] > heading level 1
@@ -57,11 +57,11 @@
             ReferenceField('1')
                  > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
               SingleStyledText('1')
-    DocumentTree(id='install-resources')   install_resources.rst   <document>
-      Section(id='inline-markup')   install_resources.rst:6   <section>
+    DocumentTree(id='install-resources')   tests_regression/rinoh/install_resources.rst   <document>
+      Section(id='inline-markup')   tests_regression/rinoh/install_resources.rst:6   <section>
            > (0,0,0,1,4) content chapter [Sphinx] > chapter
-             (0,0,0,1,2) chapter [install_resources.rts] > DEFAULT
-        Heading('1 Inline Markup')   install_resources.rst:6   <title>
+             (0,0,0,1,2) chapter [tests_regression/rinoh/install_resources.rts] > DEFAULT
+        Heading('1 Inline Markup')   tests_regression/rinoh/install_resources.rst:6   <title>
              > (0,0,0,1,2) heading level 1 [Sphinx] > DEFAULT
                (0,0,0,0,2) other heading levels [Sphinx] > heading level 5
             MixedStyledText('1 ', style='label')
@@ -72,7 +72,7 @@
             MixedStyledText('Inline Markup')
               MixedStyledText('Inline Markup')
                 SingleStyledText('Inline Markup')
-        Paragraph('Paragraphs contain text and may ...')   install_resources.rst:8   <paragraph>
+        Paragraph('Paragraphs contain text and may ...')   tests_regression/rinoh/install_resources.rst:8   <paragraph>
              > (0,0,0,0,2) body [Sphinx] > default
             MixedStyledText('Paragraphs contain text and may ...')
               MixedStyledText('Paragraphs contain text and may ...')
@@ -168,7 +168,7 @@
                      > (0,0,1,0,1) external hyperlink [Sphinx] > DEFAULT
                   SingleStyledText('Python web site')
                 SingleStyledText(').')
-        Paragraph('Literal blocks are indicated wit...')   install_resources.rst:16   <paragraph>
+        Paragraph('Literal blocks are indicated wit...')   tests_regression/rinoh/install_resources.rst:16   <paragraph>
              > (0,0,0,0,2) body [Sphinx] > default
             MixedStyledText('Literal blocks are indicated wit...')
               MixedStyledText('Literal blocks are indicated wit...')
@@ -180,17 +180,17 @@
                      > (0,0,1,0,1) monospaced [Sphinx] > DEFAULT
                   SingleStyledText('-->')
                 SingleStyledText(').  They can be indented:')
-        CodeBlock('if literal_block:\n    text = 'is...')   install_resources.rst:19   <literal_block>
+        CodeBlock('if literal_block:\n    text = 'is...')   tests_regression/rinoh/install_resources.rst:19   <literal_block>
              > (1,0,0,0,2) code block [Sphinx] > DEFAULT
                (0,0,0,0,1) body [Sphinx] > default
             MixedStyledText('if literal_block:\n    text = 'is...')
               MixedStyledText('if literal_block:\n    text = 'is...')
                 Token('if literal_block:\n    text = 'is...', type=Token.Text)
                      > (0,0,0,1,2) (pygments)Token.Text [FriendlyStyle (pygments)] > DEFAULT
-      Section(id='table')   install_resources.rst:28   <section>
+      Section(id='table')   tests_regression/rinoh/install_resources.rst:28   <section>
            > (0,0,0,1,4) content chapter [Sphinx] > chapter
-             (0,0,0,1,2) chapter [install_resources.rts] > DEFAULT
-        Heading('2 Table')   install_resources.rst:28   <title>
+             (0,0,0,1,2) chapter [tests_regression/rinoh/install_resources.rts] > DEFAULT
+        Heading('2 Table')   tests_regression/rinoh/install_resources.rst:28   <title>
              > (0,0,0,1,2) heading level 1 [Sphinx] > DEFAULT
                (0,0,0,0,2) other heading levels [Sphinx] > heading level 5
             MixedStyledText('2 ', style='label')
@@ -201,7 +201,7 @@
             MixedStyledText('Table')
               MixedStyledText('Table')
                 SingleStyledText('Table')
-        Table()   install_resources.rst   <table>
+        Table()   tests_regression/rinoh/install_resources.rst   <table>
              > (0,0,0,0,2) table [Sphinx] > DEFAULT
           TableHead()
             TableRow()
@@ -223,7 +223,7 @@
               TableCell()   <entry>
                    x (0,0,0,0,8) table head cell
                    > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
-                Paragraph('Inputs')   install_resources.rst:31   <paragraph>
+                Paragraph('Inputs')   tests_regression/rinoh/install_resources.rst:31   <paragraph>
                      > (0,0,0,0,10) table head cell paragraph [Sphinx] > table body cell paragraph
                        (0,0,0,0,9) table body cell paragraph [Sphinx] > default
                        (0,0,0,0,2) body [Sphinx] > default
@@ -248,7 +248,7 @@
               TableCell()   <entry>
                    x (0,0,0,0,8) table head cell
                    > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
-                Paragraph('Output')   install_resources.rst:31   <paragraph>
+                Paragraph('Output')   tests_regression/rinoh/install_resources.rst:31   <paragraph>
                      > (0,0,0,0,10) table head cell paragraph [Sphinx] > table body cell paragraph
                        (0,0,0,0,9) table body cell paragraph [Sphinx] > default
                        (0,0,0,0,2) body [Sphinx] > default
@@ -274,7 +274,7 @@
               TableCell()   <entry>
                    x (0,0,0,0,8) table head cell
                    > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
-                Paragraph('A')   install_resources.rst:33   <paragraph>
+                Paragraph('A')   tests_regression/rinoh/install_resources.rst:33   <paragraph>
                      > (0,0,0,0,10) table head cell paragraph [Sphinx] > table body cell paragraph
                        (0,0,0,0,9) table body cell paragraph [Sphinx] > default
                        (0,0,0,0,2) body [Sphinx] > default
@@ -297,7 +297,7 @@
               TableCell()   <entry>
                    x (0,0,0,0,8) table head cell
                    > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
-                Paragraph('B')   install_resources.rst:33   <paragraph>
+                Paragraph('B')   tests_regression/rinoh/install_resources.rst:33   <paragraph>
                      > (0,0,0,0,10) table head cell paragraph [Sphinx] > table body cell paragraph
                        (0,0,0,0,9) table body cell paragraph [Sphinx] > default
                        (0,0,0,0,2) body [Sphinx] > default
@@ -322,7 +322,7 @@
               TableCell()   <entry>
                    x (0,0,0,0,8) table head cell
                    > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
-                Paragraph('A or B')   install_resources.rst:33   <paragraph>
+                Paragraph('A or B')   tests_regression/rinoh/install_resources.rst:33   <paragraph>
                      > (0,0,0,0,10) table head cell paragraph [Sphinx] > table body cell paragraph
                        (0,0,0,0,9) table body cell paragraph [Sphinx] > default
                        (0,0,0,0,2) body [Sphinx] > default
@@ -346,7 +346,7 @@
                      > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
               TableCell()   <entry>
                    > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
-                Paragraph('False')   install_resources.rst:35   <paragraph>
+                Paragraph('False')   tests_regression/rinoh/install_resources.rst:35   <paragraph>
                      > (0,0,0,1,8) table first column paragraph [Sphinx] > table body cell paragraph
                        (0,0,0,0,9) table body cell paragraph [Sphinx] > default
                        (0,0,0,0,2) body [Sphinx] > default
@@ -366,7 +366,7 @@
                      > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
               TableCell()   <entry>
                    > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
-                Paragraph('False')   install_resources.rst:35   <paragraph>
+                Paragraph('False')   tests_regression/rinoh/install_resources.rst:35   <paragraph>
                      > (0,0,0,0,9) table body cell paragraph [Sphinx] > default
                        (0,0,0,0,2) body [Sphinx] > default
                     MixedStyledText('False')
@@ -387,7 +387,7 @@
                      > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
               TableCell()   <entry>
                    > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
-                Paragraph('False')   install_resources.rst:35   <paragraph>
+                Paragraph('False')   tests_regression/rinoh/install_resources.rst:35   <paragraph>
                      > (0,0,0,0,9) table body cell paragraph [Sphinx] > default
                        (0,0,0,0,2) body [Sphinx] > default
                     MixedStyledText('False')
@@ -408,7 +408,7 @@
                      > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
               TableCell()   <entry>
                    > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
-                Paragraph('True')   install_resources.rst:36   <paragraph>
+                Paragraph('True')   tests_regression/rinoh/install_resources.rst:36   <paragraph>
                      > (0,0,0,1,8) table first column paragraph [Sphinx] > table body cell paragraph
                        (0,0,0,0,9) table body cell paragraph [Sphinx] > default
                        (0,0,0,0,2) body [Sphinx] > default
@@ -427,7 +427,7 @@
                      > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
               TableCell()   <entry>
                    > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
-                Paragraph('False')   install_resources.rst:36   <paragraph>
+                Paragraph('False')   tests_regression/rinoh/install_resources.rst:36   <paragraph>
                      > (0,0,0,0,9) table body cell paragraph [Sphinx] > default
                        (0,0,0,0,2) body [Sphinx] > default
                     MixedStyledText('False')
@@ -447,7 +447,7 @@
                      > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
               TableCell()   <entry>
                    > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
-                Paragraph('True')   install_resources.rst:36   <paragraph>
+                Paragraph('True')   tests_regression/rinoh/install_resources.rst:36   <paragraph>
                      > (0,0,0,0,9) table body cell paragraph [Sphinx] > default
                        (0,0,0,0,2) body [Sphinx] > default
                     MixedStyledText('True')
@@ -468,7 +468,7 @@
                      > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
               TableCell()   <entry>
                    > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
-                Paragraph('False')   install_resources.rst:37   <paragraph>
+                Paragraph('False')   tests_regression/rinoh/install_resources.rst:37   <paragraph>
                      > (0,0,0,1,8) table first column paragraph [Sphinx] > table body cell paragraph
                        (0,0,0,0,9) table body cell paragraph [Sphinx] > default
                        (0,0,0,0,2) body [Sphinx] > default
@@ -487,7 +487,7 @@
                      > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
               TableCell()   <entry>
                    > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
-                Paragraph('True')   install_resources.rst:37   <paragraph>
+                Paragraph('True')   tests_regression/rinoh/install_resources.rst:37   <paragraph>
                      > (0,0,0,0,9) table body cell paragraph [Sphinx] > default
                        (0,0,0,0,2) body [Sphinx] > default
                     MixedStyledText('True')
@@ -507,7 +507,7 @@
                      > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
               TableCell()   <entry>
                    > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
-                Paragraph('True')   install_resources.rst:37   <paragraph>
+                Paragraph('True')   tests_regression/rinoh/install_resources.rst:37   <paragraph>
                      > (0,0,0,0,9) table body cell paragraph [Sphinx] > default
                        (0,0,0,0,2) body [Sphinx] > default
                     MixedStyledText('True')
@@ -529,7 +529,7 @@
                      > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
               TableCell()   <entry>
                    > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
-                Paragraph('True')   install_resources.rst:38   <paragraph>
+                Paragraph('True')   tests_regression/rinoh/install_resources.rst:38   <paragraph>
                      > (0,0,0,1,8) table first column paragraph [Sphinx] > table body cell paragraph
                        (0,0,0,0,9) table body cell paragraph [Sphinx] > default
                        (0,0,0,0,2) body [Sphinx] > default
@@ -549,7 +549,7 @@
                      > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
               TableCell()   <entry>
                    > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
-                Paragraph('True')   install_resources.rst:38   <paragraph>
+                Paragraph('True')   tests_regression/rinoh/install_resources.rst:38   <paragraph>
                      > (0,0,0,0,9) table body cell paragraph [Sphinx] > default
                        (0,0,0,0,2) body [Sphinx] > default
                     MixedStyledText('True')
@@ -570,7 +570,7 @@
                      > (0,0,0,1,2) table cell left border [Sphinx] > table cell border
               TableCell()   <entry>
                    > (0,0,0,0,7) table cell [Sphinx] > DEFAULT
-                Paragraph('True')   install_resources.rst:38   <paragraph>
+                Paragraph('True')   tests_regression/rinoh/install_resources.rst:38   <paragraph>
                      > (0,0,0,0,9) table body cell paragraph [Sphinx] > default
                        (0,0,0,0,2) body [Sphinx] > default
                     MixedStyledText('True')
