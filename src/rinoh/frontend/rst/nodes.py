@@ -256,7 +256,7 @@ class Math_Block(DocutilsBodyNode):
         return [self.get('label'), *self.get('ids')]
 
     def build_flowable(self):
-        return rt.Equation(self.text)
+        return rt.DisplayEquation(self.text)
 
 
 class Admonition(DocutilsGroupingNode):
@@ -342,7 +342,7 @@ class Math(Inline):
     style = 'math'
 
     def build_styled_text(self):
-        return rt.InlineEquation(self.text)
+        return rt.Equation(self.text)
 
 
 class Superscript(DocutilsInlineNode):

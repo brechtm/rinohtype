@@ -36,7 +36,7 @@ matcher = StyledMatcher({
     'strong': StyledText.like('strong'),
     'literal emphasis': StyledText.like('literal emphasis'),
     'literal strong': StyledText.like('literal strong'),
-    'inline math': StyledText.like('math'),
+    'inline equation': Equation.like(inline=True),
 
     'inline definition': StyledText.like('definition'),
     'quote': StyledText.like('quote'),
@@ -74,9 +74,6 @@ matcher('glossary inline definition',
 matcher('body', Paragraph)
 matcher('code block', +CodeBlock)
 matcher('code block caption', CodeBlockWithCaption / Caption)
-matcher('equation', Equation)
-matcher('equation paragraph', 'equation' / +Paragraph)
-matcher('equation label', EquationLabel)
 matcher('graphviz code block', Paragraph.like('graphviz'))
 matcher('attribution', Paragraph.like('attribution'))
 matcher('centered', Paragraph.like('centered'))
@@ -84,6 +81,10 @@ matcher('line block', Paragraph.like('line block'))
 
 matcher('block quote', GroupedFlowables.like('block quote'))
 
+matcher('math block', DisplayEquation)
+matcher('math block paragraph', 'math block' / +Paragraph)
+matcher('math block equation', SelectorByName('math block paragraph') / ... / Equation)
+matcher('math block label', EquationLabel)
 
 #
 

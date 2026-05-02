@@ -8,30 +8,32 @@
 #### ChainedContainer('column1')
   StaticGroupedFlowables()
     DocumentTree()   math.rst   <document>
-      Paragraph('The area of a circle is InlineEq...')   math.rst:2   <paragraph>
+      Paragraph('The area of a circle is Equation...')   math.rst:2   <paragraph>
            > (0,0,0,0,2) body [Sphinx] > default
-          MixedStyledText('The area of a circle is InlineEq...')
-            MixedStyledText('The area of a circle is InlineEq...')
+          MixedStyledText('The area of a circle is Equation...')
+            MixedStyledText('The area of a circle is Equation...')
               SingleStyledText('The area of a circle is ')
-              InlineEquation()   <math>
+              Equation()   <math>
+                   x (0,0,0,1,2) inline equation
               SingleStyledText('.')
-              InlineEquation()   <math>
-      Equation()   math.rst:4   <math_block>
-           > (0,0,0,0,2) equation [Sphinx] > DEFAULT
+              Equation()   <math>
+                   x (0,0,0,1,2) inline equation
+      DisplayEquation()   math.rst:4   <math_block>
+           > (0,0,0,0,2) math block [Sphinx] > DEFAULT
         EquationLabel('(1)')
-             > (0,0,0,0,2) equation label [Sphinx] > DEFAULT
+             > (0,0,0,0,2) math block label [Sphinx] > DEFAULT
             MixedStyledText('(1)', style='label')
               SingleStyledText('(')
               SingleStyledText('1')
               SingleStyledText(')')
-        Paragraph('	InlineEquation')
-             > (1,0,0,0,4) equation paragraph [Sphinx] > DEFAULT
+        Paragraph('	Equation')
+             > (1,0,0,0,4) math block paragraph [math.rts] > DEFAULT
                (0,0,0,0,2) body [Sphinx] > default
-            MixedStyledText('	InlineEquation')
-              MixedStyledText('	InlineEquation')
+            MixedStyledText('	Equation')
+              MixedStyledText('	Equation')
                 Tab('	')
-                InlineEquation()
-                InlineEquation()
+                Equation()
+                Equation()
       Paragraph('Referencing Equation 1.')   math.rst:10   <paragraph>
            > (0,0,0,0,2) body [Sphinx] > default
           MixedStyledText('Referencing Equation 1.')
@@ -45,3 +47,33 @@
                   SingleStyledText(' ')
                   SingleStyledText('1')
               SingleStyledText('.')
+      Paragraph('The area of a circle is Equation...')   math.rst:17   <paragraph>
+           > (0,0,0,0,2) body [Sphinx] > default
+          MixedStyledText('The area of a circle is Equation...')
+            MixedStyledText('The area of a circle is Equation...')
+              SingleStyledText('The area of a circle is ')
+              Equation()   <math classes='large'>
+                   > (0,0,0,2,2) large inline equation [math.rts] > DEFAULT
+                   x (0,0,0,1,2) inline equation
+              SingleStyledText('.')
+              Equation()   <math classes='large'>
+                   > (0,0,0,2,2) large inline equation [math.rts] > DEFAULT
+                   x (0,0,0,1,2) inline equation
+      DisplayEquation()   math.rst:19   <math_block classes='large'>
+           > (0,0,0,0,2) math block [Sphinx] > DEFAULT
+        EquationLabel('(2)')
+             > (0,0,0,0,2) math block label [Sphinx] > DEFAULT
+            MixedStyledText('(2)', style='label')
+              SingleStyledText('(')
+              SingleStyledText('2')
+              SingleStyledText(')')
+        Paragraph('	Equation')
+             > (1,0,0,0,4) math block paragraph [math.rts] > DEFAULT
+               (0,0,0,0,2) body [Sphinx] > default
+            MixedStyledText('	Equation')
+              MixedStyledText('	Equation')
+                Tab('	')
+                Equation()
+                     > (0,0,0,1,4) large equation [math.rts] > DEFAULT
+                Equation()
+                     > (0,0,0,1,4) large equation [math.rts] > DEFAULT

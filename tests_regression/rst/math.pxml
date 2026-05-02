@@ -11,3 +11,10 @@
         <reference name="myeq" refid="myeq">
             myeq
         .
+    <paragraph>
+        The area of a circle is 
+        <math classes="large">
+            A_\text{c} = (\pi/4) d^2
+        .
+    <math_block classes="large" xml:space="preserve">
+        \frac{ \sum_{t=0}^{N}f(t,k) }{N}

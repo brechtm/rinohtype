@@ -1390,23 +1390,23 @@
                   MixedStyledText('Paragraph D.')
                     MixedStyledText('Paragraph D.')
                       SingleStyledText('Paragraph D.')
-              Equation(id='eq-1-label')   chapter2.rst:27   <math_block>
-                   > (0,0,0,0,2) equation [Sphinx] > DEFAULT
+              DisplayEquation(id='eq-1-label')   chapter2.rst:27   <math_block>
+                   > (0,0,0,0,2) math block [Sphinx] > DEFAULT
                 EquationLabel('(2.1)')
-                     > (0,0,0,0,2) equation label [Sphinx] > DEFAULT
+                     > (0,0,0,0,2) math block label [Sphinx] > DEFAULT
                     MixedStyledText('(2.1)', style='label')
                       SingleStyledText('(')
                       SingleStyledText('2.1')
                       SingleStyledText(')')
-                Paragraph('	InlineEquation')
-                     > (1,0,0,0,4) equation paragraph [Sphinx] > DEFAULT
+                Paragraph('	Equation')
+                     > (1,0,0,0,4) math block paragraph [Sphinx] > default
                        (0,0,0,1,4) numbered paragraph [Sphinx ref] > body
                        (0,0,0,0,2) body [Sphinx] > default
-                    MixedStyledText('	InlineEquation')
-                      MixedStyledText('	InlineEquation')
+                    MixedStyledText('	Equation')
+                      MixedStyledText('	Equation')
                         Tab('	')
-                        InlineEquation()
-                        InlineEquation()
+                        Equation()
+                        Equation()
             Section(id='%chapter2#glossary')   chapter2.rst:35   <section>
               Heading('2.2 Glossary')   chapter2.rst:35   <title>
                    > (0,0,0,1,2) heading level 2 [Sphinx] > heading level 1

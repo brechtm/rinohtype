@@ -52,9 +52,6 @@ typeface=$(mono_typeface)
 hyphenate=False
 ligatures=False
 
-[inline math]
-base=monospaced
-
 [quote]
 font_slant=italic
 
@@ -160,14 +157,17 @@ padding_bottom=3pt
 base=caption
 keep_with_next=true
 
-[equation]
+[math block]
 label_position=right
 
-[equation paragraph]
+[math block paragraph]
+base=default
 border=none
 tab_stops=50% CENTER, 100% RIGHT
 
-[equation label]
+[math block equation]
+
+[math block label]
 number_format=number
 numbering_level = 1
 label_prefix = '('

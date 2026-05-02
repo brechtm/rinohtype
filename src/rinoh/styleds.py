@@ -11,7 +11,7 @@ from .draw import Line, Shape, Polygon, Rectangle
 from .image import Figure, Caption
 from .image import ListOfFiguresSection, ListOfFigures
 from .image import Image, InlineImage
-from .math import Equation, EquationLabel, InlineEquation
+from .math import DisplayEquation, EquationLabel, Equation
 from .flowable import Flowable, Float
 from .flowable import GroupedFlowables, StaticGroupedFlowables
 from .flowable import LabeledFlowable, GroupedLabeledFlowables
