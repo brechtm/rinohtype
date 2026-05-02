@@ -18,42 +18,38 @@ from .helpers.regression import TIMEOUT, render_rst_file, render_sphinx_rst_file
 
 
 RST_PATH = Path(__file__).parent / 'rst'
-SPHINX_MIN_MAX_VERSION = {  # min=inclusive, max=exclusive
-    'sphinx_admonition': ('7.3', None),
-    'sphinx_collapsible': ('8.2', None),
-    'sphinx_inline_markup': ('3.2', '8.2'),
-    'sphinx_domain': ('7.1', None),
-}
 
 
 def version_to_tuple(version):
+    """Convert a version string like '7.3' to a tuple like (7, 3)."""
     return tuple(int(v) for v in version.split('.'))
 
 
-def get_timeout(rst_path):
+def parse_rst_metadata(rst_path):
+    """Parse docinfo metadata fields from an RST file."""
     doctree = publish_doctree(rst_path.read_text(encoding='utf-8'),
                               source_path=str(rst_path),
                               settings_overrides={'report_level': 5})
+    metadata = {}
     index = doctree.first_child_matching_class(nodes.docinfo)
     if index is not None:
         for field in doctree[index]:
             if isinstance(field, nodes.field):
                 name = field[0].astext().lower()
-                if name == 'timeout':
-                    return int(field[1].astext())
-    return None
+                value = field[1].astext().strip()
+                metadata[name] = value
+    return metadata
 
 
 def collect_tests():
     for rst_path in sorted(RST_PATH.glob('*.rst')):
+        metadata = parse_rst_metadata(rst_path)
         marks = []
-        timeout = get_timeout(rst_path) or TIMEOUT
+        timeout = int(metadata.get('timeout', TIMEOUT))
         marks.append(pytest.mark.timeout(timeout))
-        try:
-            min_ver, max_ver = SPHINX_MIN_MAX_VERSION[rst_path.stem]
-        except KeyError:
-            pass
-        else:
+        min_ver = metadata.get('sphinx-minversion')
+        max_ver = metadata.get('sphinx-maxversion')
+        if min_ver or max_ver:
             if min_ver and sphinx.version_info < version_to_tuple(min_ver):
                 reason = f"minimum Sphinx version is {min_ver}"
             elif max_ver and sphinx.version_info >= version_to_tuple(max_ver):

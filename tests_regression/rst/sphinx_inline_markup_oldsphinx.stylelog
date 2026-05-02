@@ -159,13 +159,9 @@
                  > (0,0,0,0,2) body [Sphinx] > default
                 MixedStyledText('Control-x, page up, +')
                   MixedStyledText('Control-x, page up, +')
-                    MixedStyledText('Control', style='keystrokes')   <literal classes='kbd'>
+                    MixedStyledText('Control-x', style='keystrokes')   <literal classes='kbd'>
                          > (0,0,1,0,1) keystrokes [Sphinx] > monospaced
-                      SingleStyledText('Control')
-                    SingleStyledText('-')
-                    MixedStyledText('x', style='keystrokes')   <literal classes='kbd'>
-                         > (0,0,1,0,1) keystrokes [Sphinx] > monospaced
-                      SingleStyledText('x')
+                      SingleStyledText('Control-x')
                     SingleStyledText(', ')
                     MixedStyledText('page up', style='keystrokes')   <literal classes='kbd'>
                          > (0,0,1,0,1) keystrokes [Sphinx] > monospaced

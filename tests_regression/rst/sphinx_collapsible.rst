@@ -1,4 +1,6 @@
 
+:sphinx-minversion: 8.2
+
 .. note::
    :collapsible:
 

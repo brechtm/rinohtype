@@ -57,10 +57,7 @@
             <field_body>
                 <paragraph>
                     <literal classes="kbd">
-                        Control
-                    -
-                    <literal classes="kbd">
-                        x
+                        Control-x
                     , 
                     <literal classes="kbd">
                         page up

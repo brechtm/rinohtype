@@ -1,4 +1,6 @@
 
+:sphinx-minversion: 7.3
+
 .. seealso:: This other place.
 
 .. versionadded:: 3 Don't try to use this in an older version!
