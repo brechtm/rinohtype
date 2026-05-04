@@ -49,11 +49,11 @@ def check(session):
 
 @nox_poetry.session
 def check_docs(session):
-    _install(session, dependencies=['doc8', 'sphinx-immaterial',
+    _install(session, dependencies=['rstcheck', 'sphinx-immaterial',
                                     'sphinxcontrib-autoprogram'])
-    session.run('doc8', 'README.rst', 'CHANGES.rst', 'CONTRIBUTING.rst',
-                'DEVELOPING.rst',
-                os.path.abspath('doc'))   # workaround for https://github.com/PyCQA/doc8/issues/162
+    session.run('rstcheck', 'README.rst', 'CHANGES.rst', 'CONTRIBUTING.rst',
+                'DEVELOPING.rst')
+    session.run('rstcheck', '--recursive', 'doc')
     session.run('python', 'doc/build.py', 'doctest')
 
 

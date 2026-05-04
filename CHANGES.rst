@@ -302,7 +302,7 @@ Fixed:
   page and thus moved to the next
 
 Part of the work included in this release was kindly sponsored by `Joby
-Aviation <https://www.jobyaviation.com>`_.
+Aviation`_.
 
 
 Release 0.5.2 (2021-02-24)
@@ -334,7 +334,7 @@ Fixed:
 * Incorrect/useless warnings that popped up with release 0.5.1.
 
 Part of the work included in this release was kindly sponsored by `Joby
-Aviation <https://www.jobyaviation.com>`_.
+Aviation`_.
 
 
 Release 0.5.1 (2021-02-19)
@@ -356,7 +356,7 @@ Fixed:
 * Table column widths entries now also accept fractions
 
 Part of the work included in this release was kindly sponsored by `Joby
-Aviation <https://www.jobyaviation.com>`_.
+Aviation`_.
 
 
 Release 0.5.0 (2021-02-03)

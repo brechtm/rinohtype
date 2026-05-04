@@ -107,7 +107,6 @@ cairosvg = {version = "^2.8.2", optional = true}
 math = ["ziamath", "cairosvg"]
 
 [tool.poetry.group.dev.dependencies]
-doc8 = "^2.0.0"
 nox = ">=2026.2.9"
 nox-poetry = "^1.2.0"
 poetry-core = "^1.1.0b3"
@@ -118,6 +117,7 @@ pytest-cov = "^5.0.0"
 pytest-timeout = "^2.3.1"
 pytest-xdist = "^3.0.2"
 restview = "^3.0.0"
+rstcheck = "^6.2.5"
 Sphinx = [
   {version = ">=4.4"},
   {version = ">=8.1.0", python = ">=3.11"},
