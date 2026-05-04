@@ -12,5 +12,5 @@ font_color = #F00
 font_size = 14pt
 font_color = #0000FF
 
-[large equation : DisplayEquation(has_class='large') / ... / Equation]
+[large equation : +DisplayEquation(has_class='large') / ... / Equation]
 font_size = 20pt
