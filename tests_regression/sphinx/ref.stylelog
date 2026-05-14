@@ -1406,7 +1406,9 @@
                       MixedStyledText('	Equation')
                         Tab('	')
                         Equation()
+                             > (1,0,0,0,6) math block equation [Sphinx] > DEFAULT
                         Equation()
+                             > (1,0,0,0,6) math block equation [Sphinx] > DEFAULT
             Section(id='%chapter2#glossary')   chapter2.rst:35   <section>
               Heading('2.2 Glossary')   chapter2.rst:35   <title>
                    > (0,0,0,1,2) heading level 2 [Sphinx] > heading level 1

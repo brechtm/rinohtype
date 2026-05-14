@@ -33,7 +33,9 @@
               MixedStyledText('	Equation')
                 Tab('	')
                 Equation()
+                     > (1,0,0,0,6) math block equation [Sphinx] > DEFAULT
                 Equation()
+                     > (1,0,0,0,6) math block equation [Sphinx] > DEFAULT
       Paragraph('Referencing Equation 1.')   math.rst:10   <paragraph>
            > (0,0,0,0,2) body [Sphinx] > default
           MixedStyledText('Referencing Equation 1.')
@@ -74,6 +76,8 @@
               MixedStyledText('	Equation')
                 Tab('	')
                 Equation()
-                     > (0,0,0,1,4) large equation [math.rts] > DEFAULT
+                     > (1,0,0,1,4) large equation [math.rts] > DEFAULT
+                       (1,0,0,0,6) math block equation [Sphinx] > DEFAULT
                 Equation()
-                     > (0,0,0,1,4) large equation [math.rts] > DEFAULT
+                     > (1,0,0,1,4) large equation [math.rts] > DEFAULT
+                       (1,0,0,0,6) math block equation [Sphinx] > DEFAULT

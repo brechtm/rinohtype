@@ -1,4 +1,4 @@
-<document rinoh_regression_test="True" source="/Users/brechtm/Code/rinohtype/tests_regression/rst/math.rst">
+<document rinoh_regression_test="1" source="/Users/brechtm/Code/rinohtype/tests_regression/rst/math.rst">
     <paragraph>
         The area of a circle is 
         <math>
