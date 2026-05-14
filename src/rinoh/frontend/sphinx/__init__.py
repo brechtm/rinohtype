@@ -193,7 +193,7 @@ class RinohBuilder(Builder, Source):
         if toctree_only:
             # extract toctree nodes from the tree and put them in a
             # fresh document
-            for node in tree.traverse(addnodes.toctree):
+            for node in tree.findall(addnodes.toctree):
                 new_tree += node
         else:
             for node in tree.children:
@@ -210,7 +210,7 @@ class RinohBuilder(Builder, Source):
         self.env.resolve_references(largetree, indexfile, self)
         # resolve :ref:s to other PDF files -- we can't add a cross-reference,
         # but append the document name
-        for pendingnode in largetree.traverse(addnodes.pending_xref):
+        for pendingnode in largetree.findall(addnodes.pending_xref):
             docname = pendingnode['refdocname']
             sectname = pendingnode['refsectname']
             newnodes = [nodes.emphasis(sectname, sectname)]

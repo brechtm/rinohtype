@@ -19,7 +19,7 @@ class RinohCitationReferenceTransform(SphinxPostTransform):
         domain = cast(CitationDomain, self.env.get_domain('citation'))
         pending_xref = NodeMatcher(addnodes.pending_xref, refdomain='citation',
                                    reftype='ref')
-        for node in self.document.traverse(pending_xref):
+        for node in self.document.findall(pending_xref):
             docname, reftarget, _ = domain.citations.get(node['reftarget'],
                                                          ('', '', 0))
             refid = fully_qualified_id(docname, reftarget)
