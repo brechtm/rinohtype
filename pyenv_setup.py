@@ -9,6 +9,8 @@ def echo_and_run(*args):
     subprocess.call(args)
 
 
+echo_and_run('pyenv', 'update')
+
 versions = []
 with open('.python-version') as python_version:
     for line in python_version:
