@@ -1,0 +1,7 @@
+﻿InlineFlowableStyle
+================================
+
+.. currentmodule:: rinoh.inline
+
+.. autoclass:: InlineFlowableStyle
+    :members:

@@ -1,0 +1,7 @@
+﻿TableCellBorderStyle
+================================
+
+.. currentmodule:: rinoh.table
+
+.. autoclass:: TableCellBorderStyle
+    :members:
