@@ -31,7 +31,7 @@ DATA_PATH = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'data')
 
 
 __version__ = version('rinohtype')
-__release_date__ = 'in development'
+__release_date__ = '2026-05-15'
 
 
 from . import resource
