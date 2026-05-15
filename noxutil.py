@@ -2,9 +2,9 @@ import json
 
 from collections.abc import Iterable
 from pathlib import Path
-from typing import Union
 from urllib.request import urlopen, Request
 
+from packaging.version import Version
 from poetry.core.factory import Factory
 from poetry.core.constraints.version.parser import parse_single_constraint
 
@@ -15,7 +15,7 @@ VERSION_PARTS = ('major', 'minor', 'patch')
 def get_versions(
     dependency: str,
     granularity: str = "minor",
-    python: Union[str, None] = None,
+    python: str | None = None,
     # ascending: bool = False, limit: Optional[int] = None,
     # allow_prerelease: bool = False,
 ) -> Iterable[str]:
@@ -79,4 +79,4 @@ def all_versions(dependency):
 
 
 def version_to_tuple(version):
-    return tuple(int(v) for v in version.split('.'))
+    return Version(version)

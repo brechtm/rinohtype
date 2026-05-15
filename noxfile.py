@@ -8,6 +8,9 @@ import nox
 import nox_poetry
 
 sys.path.append('.')
+
+from packaging.version import Version
+
 from noxutil import get_versions, version_to_tuple
 
 
@@ -110,25 +113,25 @@ def _install(session, docutils=None, sphinx=None, dist='wheel', extras=[],
     if docutils:
         deps.append(f"docutils=={docutils}")
         docutils_version = version_to_tuple(docutils)
-        if docutils_version < (0, 20):
+        if docutils_version < Version('0.20'):
             assert sphinx is None
             sphinx = '5.3.0'
     if sphinx:
         deps.append(f"sphinx=={sphinx}")
         sphinx_version = version_to_tuple(sphinx)
-        if sphinx_version < (4, ):
+        if sphinx_version < Version('4'):
             # https://github.com/sphinx-doc/sphinx/issues/10291
             deps.append("jinja2<3.1")
-        elif sphinx_version < (6, ):
+        elif sphinx_version < Version('6'):
             deps.append("myst-parser==0.18.1")
-        if sphinx_version <= (6, 2):
+        if sphinx_version <= Version('6.2'):
             try:
                 python_version = tuple(int(v) for v in session.python.split('.'))
             except AttributeError:
                 python_version = sys.version_info[:3]
             if python_version >= (3, 13):
                 deps.append("standard-imghdr==3.13.0")
-        if sphinx_version < (5, ):
+        if sphinx_version < Version('5'):
             # https://github.com/sphinx-doc/sphinx/issues/11890
             deps.append("alabaster==0.7.13")
             deps.append("sphinxcontrib-applehelp==1.0.4")
