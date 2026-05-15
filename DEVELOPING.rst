@@ -193,7 +193,19 @@ Pages is handled by the GitHub Actions workflow.
      sections for examples)
    * commit these changes as *Release x.y.z*
 
-7. Create a git tag: ``git tag v$(poetry version --short)``
+7. Create a git tag:
+
+   .. code:: bash
+
+       git tag v$(poetry version --short)
+
+   This creates a *lightweight* tag, which is sufficient for a normal release.
+   To use the ``[skip]`` or ``[force]`` markers (see below), you need to
+   create an *annotated* tag instead:
+
+   .. code:: bash
+
+       git tag -a v$(poetry version --short) -m "[skip]"
 
 8. Push the new tag: ``git push origin v$(poetry version --short)``
 
@@ -202,18 +214,30 @@ Pages is handled by the GitHub Actions workflow.
 
    .. note::
 
-      If tests fail unexpectedly against a version that should be released
-      (e.g. due to a CI environment regression), you can override the test
-      gate by creating an *annotated* tag containing ``[force]`` in its
-      message:
+      You can include a marker in the tag's annotation message to control
+      the CI behavior:
+
+      ``[skip]``
+          Skip the ``check``, ``unit`` and ``regression`` jobs entirely.
+          Useful for trivial releases (e.g. documentation-only) where
+          running the full test suite is unnecessary.
+
+      ``[force]``
+          Bypass test failures: if any of the test jobs failed,
+          ``check-tag`` will still proceed with publishing. Useful when
+          tests fail due to a CI environment regression unrelated to your
+          changes.
+
+      To use one of these markers, create an *annotated* tag:
 
       .. code:: bash
 
-          git tag -a v$(poetry version --short) -m "[force]"
+          git tag -a v$(poetry version --short) -m "[skip]"
           git push origin v$(poetry version --short)
 
-      The ``check-tag`` job will detect the ``[force]`` marker and proceed
-      with publishing regardless of test failures.
+      The ``check-skip`` and ``check-tag`` jobs detect the marker via
+      ``git tag -l --format='%(contents)'``, so a lightweight tag (without
+      a message) will be ignored.
 
 10. Create a `new release on GitHub`_. Include the relevant section of the
     changelog. Use previous releases as a template.
