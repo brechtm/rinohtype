@@ -46,11 +46,11 @@ jobs:
     outputs:
       skip: ${{ steps.check-skip-marker.outputs.skip }}
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v6
       with:
         fetch-depth: 0
     - name: Get tag
-      uses: olegtarasov/get-tag@v2.1
+      uses: olegtarasov/get-tag@v2.1.4
     - name: Check for [skip] marker
       id: check-skip-marker
       run: |
@@ -76,11 +76,11 @@ jobs:
           - NOXENV: build_docs
     env: ${{ matrix.env }}
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v6
       with:
         submodules: true
     - name: Get tag
-      uses: olegtarasov/get-tag@v2.1
+      uses: olegtarasov/get-tag@v2.1.4
     - name: Install Python ${{ env.current_python }}
       uses: actions/setup-python@v4
       with:
@@ -138,7 +138,7 @@ jobs:
     if: needs.check.outputs.docs-target != ''
     runs-on: Ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v6
       with:
         ref: gh-pages
     - name: Write versions to JSON file
@@ -189,7 +189,7 @@ jobs:
       NOXENV: ${{ matrix.noxenv }}
       WITH_COVERAGE: ${{ matrix.cov }}
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v6
     - name: Install Python ${{ env.current_python }}
       uses: actions/setup-python@v4
       with:
@@ -243,7 +243,7 @@ jobs:
       NOXENV: ${{ matrix.noxenv }}
       WITH_COVERAGE: ${{ matrix.cov }}
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v6
     - name: Install Python ${{ env.current_python }}
       uses: actions/setup-python@v4
       with:
@@ -333,12 +333,12 @@ jobs:
     if: ${{ always() && startsWith(github.ref, 'refs/tags/') }}
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v6
       with:
         submodules: true
         fetch-depth: 0
     - name: Get tag
-      uses: olegtarasov/get-tag@v2.1
+      uses: olegtarasov/get-tag@v2.1.4
     - name: Verify tests passed or force flag is set
       run: |
         if [[ "${{ needs.check.result }}" != "success" || \
@@ -399,7 +399,7 @@ jobs:
     if: ${{ !cancelled() && needs.check-tag.result == 'success' && needs.check-tag.outputs.develop == 'true' }}
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v6
       with:
         submodules: true
     - name: Install Python ${{ env.current_python }}
@@ -424,7 +424,7 @@ jobs:
     if: ${{ !cancelled() && needs.check-tag.result == 'success' && needs.check-tag.outputs.stable == 'true' }}
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v6
       with:
         submodules: true
     - name: Install Python ${{ env.current_python }}
