@@ -200,6 +200,21 @@ Pages is handled by the GitHub Actions workflow.
 9. The GitHub workflow will run all Nox sessions and upload the new version
    to PyPI if all checks were successful.
 
+   .. note::
+
+      If tests fail unexpectedly against a version that should be released
+      (e.g. due to a CI environment regression), you can override the test
+      gate by creating an *annotated* tag containing ``[force]`` in its
+      message:
+
+      .. code:: bash
+
+          git tag -a v$(poetry version --short) -m "[force]"
+          git push origin v$(poetry version --short)
+
+      The ``check-tag`` job will detect the ``[force]`` marker and proceed
+      with publishing regardless of test failures.
+
 10. Create a `new release on GitHub`_. Include the relevant section of the
     changelog. Use previous releases as a template.
 
