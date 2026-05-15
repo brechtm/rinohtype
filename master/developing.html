@@ -1141,22 +1141,43 @@ sections for examples)</p></li>
 <li><p>commit these changes as <em>Release x.y.z</em></p></li>
 </ul>
 </li>
-<li><p>Create a git tag: <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">tag</span> <span class="pre">v$(poetry</span> <span class="pre">version</span> <span class="pre">--short)</span></code></p></li>
+<li><p>Create a git tag:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><code>git<span class="w"> </span>tag<span class="w"> </span>v<span class="k">$(</span>poetry<span class="w"> </span>version<span class="w"> </span>--short<span class="k">)</span>
+</code></pre></div>
+</div>
+<p>This creates a <em>lightweight</em> tag, which is sufficient for a normal release.
+To use the <code class="docutils literal notranslate"><span class="pre">[skip]</span></code> or <code class="docutils literal notranslate"><span class="pre">[force]</span></code> markers (see below), you need to
+create an <em>annotated</em> tag instead:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><code>git<span class="w"> </span>tag<span class="w"> </span>-a<span class="w"> </span>v<span class="k">$(</span>poetry<span class="w"> </span>version<span class="w"> </span>--short<span class="k">)</span><span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;[skip]&quot;</span>
+</code></pre></div>
+</div>
+</li>
 <li><p>Push the new tag: <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">push</span> <span class="pre">origin</span> <span class="pre">v$(poetry</span> <span class="pre">version</span> <span class="pre">--short)</span></code></p></li>
 <li><p>The GitHub workflow will run all Nox sessions and upload the new version
 to PyPI if all checks were successful.</p>
 <div class="note admonition">
 <p class="admonition-title">Note</p>
-<p>If tests fail unexpectedly against a version that should be released
-(e.g. due to a CI environment regression), you can override the test
-gate by creating an <em>annotated</em> tag containing <code class="docutils literal notranslate"><span class="pre">[force]</span></code> in its
-message:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><code>git<span class="w"> </span>tag<span class="w"> </span>-a<span class="w"> </span>v<span class="k">$(</span>poetry<span class="w"> </span>version<span class="w"> </span>--short<span class="k">)</span><span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;[force]&quot;</span>
+<p>You can include a marker in the tag’s annotation message to control
+the CI behavior:</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">[skip]</span></code></dt><dd><p>Skip the <code class="docutils literal notranslate"><span class="pre">check</span></code>, <code class="docutils literal notranslate"><span class="pre">unit</span></code> and <code class="docutils literal notranslate"><span class="pre">regression</span></code> jobs entirely.
+Useful for trivial releases (e.g. documentation-only) where
+running the full test suite is unnecessary.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">[force]</span></code></dt><dd><p>Bypass test failures: if any of the test jobs failed,
+<code class="docutils literal notranslate"><span class="pre">check-tag</span></code> will still proceed with publishing. Useful when
+tests fail due to a CI environment regression unrelated to your
+changes.</p>
+</dd>
+</dl>
+<p>To use one of these markers, create an <em>annotated</em> tag:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><code>git<span class="w"> </span>tag<span class="w"> </span>-a<span class="w"> </span>v<span class="k">$(</span>poetry<span class="w"> </span>version<span class="w"> </span>--short<span class="k">)</span><span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;[skip]&quot;</span>
 git<span class="w"> </span>push<span class="w"> </span>origin<span class="w"> </span>v<span class="k">$(</span>poetry<span class="w"> </span>version<span class="w"> </span>--short<span class="k">)</span>
 </code></pre></div>
 </div>
-<p>The <code class="docutils literal notranslate"><span class="pre">check-tag</span></code> job will detect the <code class="docutils literal notranslate"><span class="pre">[force]</span></code> marker and proceed
-with publishing regardless of test failures.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">check-skip</span></code> and <code class="docutils literal notranslate"><span class="pre">check-tag</span></code> jobs detect the marker via
+<code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">tag</span> <span class="pre">-l</span> <span class="pre">--format='%(contents)'</span></code>, so a lightweight tag (without
+a message) will be ignored.</p>
 </div>
 </li>
 <li><p>Create a <a class="reference external" href="https://github.com/brechtm/rinohtype/releases/new">new release on GitHub</a>. Include the relevant section of the
