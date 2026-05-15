@@ -63,7 +63,7 @@ Changed:
   require adjustments to the admonition styles in custom stylesheets. Also,
   the admonition style definitions in the 'sphinx' stylesheet needs more work.
 * The default for BodyPageTemplate.chapter_title_height is now ``None``, which
-  creates a DownExpaningContainer for the chapter title flowables instead of
+  creates a DownExpandingContainer for the chapter title flowables instead of
   one with a fixed height.
 * Add support for Python 3.13, 3.14 and 3.15
 * Support for Python 3.8 and 3.9 was dropped (end-of-life)
