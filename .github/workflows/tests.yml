@@ -40,8 +40,31 @@ env:
   poetry_export_version: '1.9.0'
   nox_cmd: 'nox --verbose --error-on-missing-interpreters --session'
 jobs:
+  check-skip:
+    if: startsWith(github.ref, 'refs/tags/')
+    runs-on: ubuntu-latest
+    outputs:
+      skip: ${{ steps.check-skip-marker.outputs.skip }}
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+    - name: Get tag
+      uses: olegtarasov/get-tag@v2.1
+    - name: Check for [skip] marker
+      id: check-skip-marker
+      run: |
+        ANNOTATION=$(git tag -l '${{ env.GIT_TAG_NAME }}' --format='%(contents)' 2>/dev/null || echo "")
+        if echo "$ANNOTATION" | grep -qF '[skip]'; then
+          echo "skip=true" >> $GITHUB_OUTPUT
+        else
+          echo "skip=false" >> $GITHUB_OUTPUT
+        fi
+
   check:
     name: ${{ matrix.env.NOXENV }}
+    needs: check-skip
+    if: ${{ !cancelled() && (needs.check-skip.result != 'success' || needs.check-skip.outputs.skip != 'true') }}
     runs-on: ${{ matrix.os }}-latest
     strategy:
       fail-fast: false
@@ -149,6 +172,8 @@ jobs:
 
   unit:
     name: ${{ matrix.os }} / ${{ matrix.python-version }} unit tests${{ matrix.name }}
+    needs: check-skip
+    if: ${{ !cancelled() && (needs.check-skip.result != 'success' || needs.check-skip.outputs.skip != 'true') }}
     strategy:
       fail-fast: false
       matrix:
@@ -194,6 +219,8 @@ jobs:
 
   regression:
     name: ${{ matrix.os }} / ${{ matrix.python-version }} regression tests${{ matrix.name }}
+    needs: check-skip
+    if: ${{ !cancelled() && (needs.check-skip.result != 'success' || needs.check-skip.outputs.skip != 'true') }}
     strategy:
       fail-fast: false
       matrix:
@@ -318,11 +345,11 @@ jobs:
               "${{ needs.unit.result }}" != "success" || \
               "${{ needs.regression.result }}" != "success" ]]; then
           ANNOTATION=$(git tag -l '${{ env.GIT_TAG_NAME }}' --format='%(contents)' 2>/dev/null || echo "")
-          if ! echo "$ANNOTATION" | grep -qF '[force]'; then
-            echo "Tests failed and no [force] marker found in tag annotation. Aborting."
+          if ! echo "$ANNOTATION" | grep -qF '[force]' && ! echo "$ANNOTATION" | grep -qF '[skip]'; then
+            echo "Tests failed and no [force] or [skip] marker found in tag annotation. Aborting."
             exit 1
           fi
-          echo "Force flag detected in tag annotation. Proceeding despite test failures."
+          echo "Override marker detected in tag annotation. Proceeding despite test failures."
         fi
     - name: Install Python ${{ env.current_python }}
       uses: actions/setup-python@v4
