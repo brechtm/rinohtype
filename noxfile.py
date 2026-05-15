@@ -11,7 +11,7 @@ sys.path.append('.')
 
 from packaging.version import Version
 
-from noxutil import get_versions, version_to_tuple
+from noxutil import get_versions
 
 
 CURRENT_PYTHON = (('pypy' if hasattr(sys, 'pypy_version_info') else '')
@@ -23,8 +23,8 @@ nox.options.sessions = ['check', 'check_docs',
                         f'regression-{CURRENT_PYTHON}(wheel)']
 
 
-PYTHONS = ['3.10', '3.11', '3.12', '3.13', '3.14', '3.15']
-PYTHONS += ['pypy3'] if os.getenv('CI') else ['pypy3.11']
+PYTHONS = ['3.10', '3.11', '3.12', '3.13', '3.14', '3.15',
+           'pypy3' if os.getenv('CI') else 'pypy3.11']
 
 DEPENDENCIES = ['pytest', 'pytest-xdist', 'pytest-cov', 'coverage', 'Sphinx']
 if os.getenv('GITHUB_SHA'):
@@ -112,13 +112,13 @@ def _install(session, docutils=None, sphinx=None, dist='wheel', extras=[],
     deps = []
     if docutils:
         deps.append(f"docutils=={docutils}")
-        docutils_version = version_to_tuple(docutils)
+        docutils_version = Version(docutils)
         if docutils_version < Version('0.20'):
             assert sphinx is None
             sphinx = '5.3.0'
     if sphinx:
         deps.append(f"sphinx=={sphinx}")
-        sphinx_version = version_to_tuple(sphinx)
+        sphinx_version = Version(sphinx)
         if sphinx_version < Version('4'):
             # https://github.com/sphinx-doc/sphinx/issues/10291
             deps.append("jinja2<3.1")

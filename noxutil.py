@@ -4,7 +4,6 @@ from collections.abc import Iterable
 from pathlib import Path
 from urllib.request import urlopen, Request
 
-from packaging.version import Version
 from poetry.core.factory import Factory
 from poetry.core.constraints.version.parser import parse_single_constraint
 
@@ -76,7 +75,3 @@ def all_versions(dependency):
     json_data = json.loads(json_string)
     yield from (parse_single_constraint(version)
                 for version in json_data['releases'])
-
-
-def version_to_tuple(version):
-    return Version(version)
