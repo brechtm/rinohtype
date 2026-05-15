@@ -318,7 +318,7 @@ jobs:
               "${{ needs.unit.result }}" != "success" || \
               "${{ needs.regression.result }}" != "success" ]]; then
           ANNOTATION=$(git tag -l '${{ env.GIT_TAG_NAME }}' --format='%(contents)' 2>/dev/null || echo "")
-          if ! echo "$ANNOTATION" | grep -q '\[force\]'; then
+          if ! echo "$ANNOTATION" | grep -qF '[force]'; then
             echo "Tests failed and no [force] marker found in tag annotation. Aborting."
             exit 1
           fi
@@ -369,7 +369,7 @@ jobs:
 
   publish-develop:
     needs: check-tag
-    if: needs.check-tag.outputs.develop == 'true'
+    if: ${{ !cancelled() && needs.check-tag.result == 'success' && needs.check-tag.outputs.develop == 'true' }}
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
@@ -394,7 +394,7 @@ jobs:
 
   publish-release:
     needs: check-tag
-    if: needs.check-tag.outputs.stable == 'true'
+    if: ${{ !cancelled() && needs.check-tag.result == 'success' && needs.check-tag.outputs.stable == 'true' }}
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
