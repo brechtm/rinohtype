@@ -1144,7 +1144,21 @@ sections for examples)</p></li>
 <li><p>Create a git tag: <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">tag</span> <span class="pre">v$(poetry</span> <span class="pre">version</span> <span class="pre">--short)</span></code></p></li>
 <li><p>Push the new tag: <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">push</span> <span class="pre">origin</span> <span class="pre">v$(poetry</span> <span class="pre">version</span> <span class="pre">--short)</span></code></p></li>
 <li><p>The GitHub workflow will run all Nox sessions and upload the new version
-to PyPI if all checks were successful.</p></li>
+to PyPI if all checks were successful.</p>
+<div class="note admonition">
+<p class="admonition-title">Note</p>
+<p>If tests fail unexpectedly against a version that should be released
+(e.g. due to a CI environment regression), you can override the test
+gate by creating an <em>annotated</em> tag containing <code class="docutils literal notranslate"><span class="pre">[force]</span></code> in its
+message:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><code>git<span class="w"> </span>tag<span class="w"> </span>-a<span class="w"> </span>v<span class="k">$(</span>poetry<span class="w"> </span>version<span class="w"> </span>--short<span class="k">)</span><span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;[force]&quot;</span>
+git<span class="w"> </span>push<span class="w"> </span>origin<span class="w"> </span>v<span class="k">$(</span>poetry<span class="w"> </span>version<span class="w"> </span>--short<span class="k">)</span>
+</code></pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">check-tag</span></code> job will detect the <code class="docutils literal notranslate"><span class="pre">[force]</span></code> marker and proceed
+with publishing regardless of test failures.</p>
+</div>
+</li>
 <li><p>Create a <a class="reference external" href="https://github.com/brechtm/rinohtype/releases/new">new release on GitHub</a>. Include the relevant section of the
 changelog. Use previous releases as a template.</p>
 <ul>
