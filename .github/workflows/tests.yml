@@ -303,14 +303,27 @@ jobs:
 
   check-tag:
     needs: [check, unit, regression]
-    if: startsWith(github.ref, 'refs/tags/')
+    if: ${{ always() && startsWith(github.ref, 'refs/tags/') }}
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
       with:
         submodules: true
+        fetch-depth: 0
     - name: Get tag
       uses: olegtarasov/get-tag@v2.1
+    - name: Verify tests passed or force flag is set
+      run: |
+        if [[ "${{ needs.check.result }}" != "success" || \
+              "${{ needs.unit.result }}" != "success" || \
+              "${{ needs.regression.result }}" != "success" ]]; then
+          ANNOTATION=$(git tag -l '${{ env.GIT_TAG_NAME }}' --format='%(contents)' 2>/dev/null || echo "")
+          if ! echo "$ANNOTATION" | grep -q '\[force\]'; then
+            echo "Tests failed and no [force] marker found in tag annotation. Aborting."
+            exit 1
+          fi
+          echo "Force flag detected in tag annotation. Proceeding despite test failures."
+        fi
     - name: Install Python ${{ env.current_python }}
       uses: actions/setup-python@v4
       with:
