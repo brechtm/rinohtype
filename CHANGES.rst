@@ -19,6 +19,10 @@ Release 0.5.7 (in development)
 
 New Features:
 
+* The Sphinx frontend supports the *see* and *seealso* index entries
+  (``.. index:: see: term; reference``), which are rendered in the index
+  as cross-references (PR #461 by Styx0x6)
+
 
 Changed:
 
