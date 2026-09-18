@@ -1,3 +1,5 @@
+import pytest
+
 from rinoh.index import IndexSee, IndexSeeAlso, IndexTarget, IndexTerm
 
 
@@ -139,3 +141,26 @@ def test_index_terms_are_not_interpreted_as_metadata():
     assert entry_data['targets'][0][0] == IndexTerm('_index_see')
     assert entry_data['sees'] == []
     assert entry_data['see_alsoes'] == []
+
+
+def _index_entry_parts(entry_type, entry_name):
+    """Split an index entry value as the Sphinx frontend does"""
+    sphinx_nodes = pytest.importorskip('rinoh.frontend.sphinx.nodes')
+    return sphinx_nodes.Index._index_entry_parts(entry_type, entry_name)
+
+
+def test_index_entry_parts():
+    assert _index_entry_parts('single', 'term') == ['term']
+    assert _index_entry_parts('single', 'term; subterm') == \
+        ['term', 'subterm']
+    assert _index_entry_parts('pair', 'one; two') == ['one', 'two']
+    assert _index_entry_parts('triple', 'one; two; three') == \
+        ['one', 'two', 'three']
+
+
+def test_index_entry_parts_with_semicolons_in_reference():
+    # only the first semicolon separates the term from the reference
+    assert _index_entry_parts('see', 'term; first; second') == \
+        ['term', 'first; second']
+    assert _index_entry_parts('seealso', ' term ; reference ') == \
+        ['term', 'reference']
