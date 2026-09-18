@@ -23,7 +23,8 @@ from ...annotation import HyperLink
 from ...flowable import DummyFlowable, LabeledFlowable, StaticGroupedFlowables
 from ...glossary import GlossaryTerm
 from ...image import Image
-from ...index import IndexTerm, IndexTarget, InlineIndexTarget
+from ...index import (IndexSee, IndexSeeAlso, IndexTarget, IndexTerm,
+                      InlineIndexTarget)
 from ...paragraph import Paragraph
 from ...reference import Reference
 from ...structure import Admonition, AdmonitionFlowables, DefinitionList, List
@@ -83,20 +84,38 @@ class HListCol(DocutilsNode):
 # inline nodes
 
 class Index(DocutilsBodyNode, DocutilsInlineNode):
+    @staticmethod
+    def _index_entry_parts(entry_type, entry_name):
+        """Split an index entry value as Sphinx does
+
+        A 'see' or 'see-also' entry always consists of the term and the
+        reference, so any semicolons after the first one are part of the
+        reference.
+        """
+        maxsplit = 1 if entry_type in ('see', 'seealso') else -1
+        return [part.strip() for part in entry_name.split(';', maxsplit)]
+
     @property
     def _index_terms(self):
         for type, entry_name, target, ignored, key in self.get('entries'):
+            parts = self._index_entry_parts(type, entry_name)
             if type == 'single':
-                yield IndexTerm(*(n.strip() for n in entry_name.split(';')))
+                yield IndexTerm(*parts)
             elif type == 'pair':
-                name, other_name = (n.strip() for n in entry_name.split(';'))
+                name, other_name = parts
                 yield IndexTerm(name, other_name)
                 yield IndexTerm(other_name, name)
             elif type == 'triple':
-                one, two, three = (n.strip() for n in entry_name.split(';'))
+                one, two, three = parts
                 yield IndexTerm(one, two + ' ' + three)
                 yield IndexTerm(two, three + ', ' + one)
                 yield IndexTerm(three, one + ' ' + two)
+            elif type == 'see':
+                term, reference = parts
+                yield IndexSee(term, reference)
+            elif type == 'seealso':
+                term, reference = parts
+                yield IndexSeeAlso(term, reference)
             else:
                 raise NotImplementedError
 

@@ -33,6 +33,10 @@ EN = Language('en', 'English',
     tip='Tip',
     warning='Warning',
     seealso='See also',
+
+    # indexes
+    index_see='see',
+    index_seealso='see also',
 )
 
 EN.no_break_after = "a an the".split()

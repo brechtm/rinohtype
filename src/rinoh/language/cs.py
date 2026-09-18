@@ -9,7 +9,7 @@
 from .cls import Language
 
 
-CS = Language('cs', 'Česky',
+CS = Language('cs', 'čeština',
     figure='Obrázek',
     table='Tabulka',
     contents='Obsah',
@@ -19,8 +19,8 @@ CS = Language('cs', 'Česky',
     index='Rejstřík',
 
     # admonitions
-    attention='Pozor!',
-    caution='Pozor!',
+    attention='Opatrnost!',
+    caution='Pozornost!',
     danger='!NEBEZPEČÍ!',
     error='Chyba',
     hint='Poznámka',
@@ -29,8 +29,11 @@ CS = Language('cs', 'Česky',
     tip='Tip',
     warning='Varování',
     seealso='Viz také',
-)
 
+    # indexes
+    index_see='viz',
+    index_seealso='viz také',
+)
 
 CS.no_break_after = ("do od u z ze za k ke o na v ve nad pod za po s se "
                      "a i že až či").split()

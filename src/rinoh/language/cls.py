@@ -43,6 +43,8 @@ class Language(AttributeType):
         warning: title for warning admonitions
         seealso: title for see-also admonitions
 
+        index_see: title for see label index entries
+        index_seealso: title for see-also label index entries
     """
 
     languages = {}  #: Dictionary mapping codes to :class:`Language`\ s

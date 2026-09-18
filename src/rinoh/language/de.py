@@ -29,4 +29,8 @@ DE = Language('de', 'Deutsch',
     tip='Tipp',
     warning='Warnung',
     seealso='Siehe auch',
+
+    # indexes
+    index_see='siehe',
+    index_seealso='siehe auch',
 )

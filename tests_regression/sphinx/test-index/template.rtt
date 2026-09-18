@@ -1,0 +1,4 @@
+[TEMPLATE_CONFIGURATION]
+name=index
+template=book
+stylesheet=stylesheet.rts

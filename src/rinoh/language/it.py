@@ -9,12 +9,12 @@
 from .cls import Language
 
 
-IT = Language('it', 'Italiano',
+IT = Language('it', 'italiano',
     figure='Figura',
-    table='Tabelle',
+    table='Tabella',
     contents='Contenuti',
-    list_of_figures='Elenco delle Figure',
-    list_of_tables='Elenco delle Tabelle',
+    list_of_figures='Elenco delle figure',
+    list_of_tables='Elenco delle tabelle',
     chapter='Capitolo',
     index='Indice',
 
@@ -29,4 +29,8 @@ IT = Language('it', 'Italiano',
     tip='Suggerimento',
     warning='Avvertimento',
     seealso='Vedi anche',
+
+    # indexes
+    index_see='vedi',
+    index_seealso='vedi anche',
 )

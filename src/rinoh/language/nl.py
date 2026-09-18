@@ -32,4 +32,8 @@ NL = Language('nl', 'Nederlands',
     tip='Tip',
     warning='Waarschuwing',
     seealso='Zie ook',
+
+    # indexes
+    index_see='zie',
+    index_seealso='zie ook',
 )

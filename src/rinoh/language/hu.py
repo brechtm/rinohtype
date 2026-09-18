@@ -9,10 +9,10 @@
 from .cls import Language
 
 
-HU = Language('hu', 'Hungarian',
+HU = Language('hu', 'magyar',
     contents='Tartalomjegyzék',
-    list_of_figures='Ábrák Listája',
-    list_of_tables='Asztalok Listája',
+    list_of_figures='Ábrák listája',
+    list_of_tables='Táblázatok listája',
     chapter='Fejezet',
     index='Index',
 
@@ -27,4 +27,8 @@ HU = Language('hu', 'Hungarian',
     tip='Tipp',
     warning='Figyelmeztetés',
     seealso='Lásd még',
+
+    # indexes
+    index_see='lásd',
+    index_seealso='lásd még',
 )

@@ -9,7 +9,7 @@
 from .cls import Language
 
 
-ES = Language('es', 'Spanish',
+ES = Language('es', 'español',
     figure='Figura',
     table='Tabla',
     contents='Contenidos',
@@ -28,5 +28,9 @@ ES = Language('es', 'Spanish',
     note='Nota',
     tip='Consejo',
     warning='Precaución',
-    seealso='Vea también',
+    seealso='Véase también',
+
+    # indexes
+    index_see='véase',
+    index_seealso='véase también',
 )

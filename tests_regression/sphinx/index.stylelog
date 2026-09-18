@@ -1,0 +1,627 @@
+---------------------------------- page 1 ----------------------------------
+#### FlowablesContainer('background')
+  StaticGroupedFlowables()
+#### DownExpandingContainer('title')
+  StaticGroupedFlowables()
+    Paragraph('Index', style='title page title')
+         > (0,0,1,0,2) title page title [Sphinx] > DEFAULT
+           (0,0,0,0,2) body [Sphinx] > default
+        SingleStyledText('Index')
+    Paragraph('Release ', style='title page subtitle')
+         > (0,0,1,0,2) title page subtitle [Sphinx] > title page title
+           (0,0,0,0,2) body [Sphinx] > default
+        SingleStyledText('Release ')
+    Paragraph('Author', style='title page author')
+         > (0,0,1,0,2) title page author [Sphinx] > DEFAULT
+           (0,0,0,0,2) body [Sphinx] > default
+        SingleStyledText('Author')
+---------------------------------- page i ----------------------------------
+#### FlowablesContainer('background')
+  StaticGroupedFlowables()
+#### FootnoteContainer('footnotes')
+  StaticGroupedFlowables()
+#### FlowablesContainer('chapter title')
+  Paragraph('Table of Contents', style='front matter section title')
+       > (0,0,1,0,2) front matter section title [Sphinx] > DEFAULT
+         (0,0,0,0,2) body [Sphinx] > default
+      Field('Table of Contents')
+        StringField('Table of Contents')
+          SingleStyledText('Table of Contents')
+#### ChainedContainer('column1')
+  StaticGroupedFlowables()
+    TableOfContentsSection(style='table of contents')
+         > (0,0,1,0,1) table of contents section [Sphinx] > DEFAULT
+           (0,0,0,1,1) chapter [Sphinx] > DEFAULT
+      TableOfContents()   table of contents
+           > (0,0,0,0,2) table of contents [Sphinx] > default
+        TableOfContentsEntry('	Index	3')
+             > (0,0,0,1,2) toc level 1 [Sphinx] > table of contents
+            ReferenceField('')
+                 > (0,0,0,1,4) toc entry number reference field [Sphinx] > linked reference
+                   (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+              SingleStyledText('')
+            Tab('	')
+            ReferenceField('Index')
+                 > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+              StringField('Index')
+                SingleStyledText('Index')
+            Tab('	')
+            ReferenceField('3')
+                 > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+              SingleStyledText('3')
+#### DownExpandingContainer('footer')
+  StaticGroupedFlowables()
+    Footer('		i')
+         > (0,0,0,0,2) footer [Sphinx] > header_footer
+        MixedStyledText('		i')
+          MixedStyledText('		i')
+            Tab('	')
+            Tab('	')
+            Field('i')
+              SingleStyledText('i')
+---------------------------------- page 1 ----------------------------------
+#### FlowablesContainer('background')
+  StaticGroupedFlowables()
+#### FootnoteContainer('footnotes')
+  StaticGroupedFlowables()
+#### ChainedContainer('column1')
+  StaticGroupedFlowables()
+    DocumentTree()   index.rst   <document>
+      Paragraph('This page defines index entries ...', id='index-0')   index.rst:9   <paragraph>
+           > (0,0,0,0,2) body [Sphinx] > default
+          MixedStyledText('This page defines index entries ...')
+            MixedStyledText('This page defines index entries ...')
+              SingleStyledText('This page defines index entries ...')
+      Paragraph('Target term details.', id='index-1')   index.rst:13   <paragraph>
+           > (0,0,0,0,2) body [Sphinx] > default
+          MixedStyledText('Target term details.')
+            MixedStyledText('Target term details.')
+              SingleStyledText('Target term details.')
+      Paragraph('Related term details.', id='index-2')   index.rst:17   <paragraph>
+           > (0,0,0,0,2) body [Sphinx] > default
+          MixedStyledText('Related term details.')
+            MixedStyledText('Related term details.')
+              SingleStyledText('Related term details.')
+      Paragraph('Python is a programming language...', id='index-3')   index.rst:25   <paragraph>
+           > (0,0,0,0,2) body [Sphinx] > default
+          MixedStyledText('Python is a programming language...')
+            MixedStyledText('Python is a programming language...')
+              SingleStyledText('Python is a programming language...')
+      Paragraph('Learn about open source licensin...', id='index-4')   index.rst:32   <paragraph>
+           > (0,0,0,0,2) body [Sphinx] > default
+          MixedStyledText('Learn about open source licensin...')
+            MixedStyledText('Learn about open source licensin...')
+              SingleStyledText('Learn about open source licensin...')
+      Paragraph('Database querying examples.', id='index-6')   index.rst:43   <paragraph>
+           > (0,0,0,0,2) body [Sphinx] > default
+          MixedStyledText('Database querying examples.')
+            MixedStyledText('Database querying examples.')
+              SingleStyledText('Database querying examples.')
+      Paragraph('Testing best practices.', id='index-7')   index.rst:50   <paragraph>
+           > (0,0,0,0,2) body [Sphinx] > default
+          MixedStyledText('Testing best practices.')
+            MixedStyledText('Testing best practices.')
+              SingleStyledText('Testing best practices.')
+      Paragraph('Main entry definition.', id='index-8')   index.rst:55   <paragraph>
+           > (0,0,0,0,2) body [Sphinx] > default
+          MixedStyledText('Main entry definition.')
+            MixedStyledText('Main entry definition.')
+              SingleStyledText('Main entry definition.')
+      Paragraph('Deprecated functionality notice.', id='index-9')   index.rst:61   <paragraph>
+           > (0,0,0,0,2) body [Sphinx] > default
+          MixedStyledText('Deprecated functionality notice.')
+            MixedStyledText('Deprecated functionality notice.')
+              SingleStyledText('Deprecated functionality notice.')
+      Paragraph('The see reference is allowed to ...', id='index-10')   index.rst:68   <paragraph>
+           > (0,0,0,0,2) body [Sphinx] > default
+          MixedStyledText('The see reference is allowed to ...')
+            MixedStyledText('The see reference is allowed to ...')
+              SingleStyledText('The see reference is allowed to ...')
+      Paragraph('Terms resembling the internal se...', id='index-11')   index.rst:73   <paragraph>
+           > (0,0,0,0,2) body [Sphinx] > default
+          MixedStyledText('Terms resembling the internal se...')
+            MixedStyledText('Terms resembling the internal se...')
+              SingleStyledText('Terms resembling the internal se...')
+      Paragraph('A term with only a see-also refe...', id='index-12')   index.rst:78   <paragraph>
+           > (0,0,0,0,2) body [Sphinx] > default
+          MixedStyledText('A term with only a see-also refe...')
+            MixedStyledText('A term with only a see-also refe...')
+              SingleStyledText('A term with only a see-also refe...')
+#### DownExpandingContainer('footer')
+  StaticGroupedFlowables()
+    Footer('		1')
+         > (0,0,0,0,2) footer [Sphinx] > header_footer
+        MixedStyledText('		1')
+          MixedStyledText('		1')
+            Tab('	')
+            Tab('	')
+            Field('1')
+              SingleStyledText('1')
+---------------------------------- page 3 ----------------------------------
+#### FlowablesContainer('background')
+  StaticGroupedFlowables()
+#### FootnoteContainer('footnotes')
+  StaticGroupedFlowables()
+#### FlowablesContainer('chapter title')
+  Paragraph('Index', style='front matter section title')
+       > (0,0,1,0,2) front matter section title [Sphinx] > DEFAULT
+         (0,0,0,0,2) body [Sphinx] > default
+      Field('Index')
+        StringField('Index')
+          SingleStyledText('Index')
+#### ChainedContainer('column1')
+  StaticGroupedFlowables()
+    StaticGroupedFlowables()
+    IndexSection()
+         > (0,0,0,1,1) chapter [Sphinx] > DEFAULT
+      Index()   index
+           > (0,0,0,0,2) index [Sphinx] > DEFAULT
+        IndexLabel('Symbols')
+             > (0,0,0,0,2) index section label [Sphinx] > DEFAULT
+               (0,0,0,0,1) body [Sphinx] > default
+            SingleStyledText('Symbols')
+        IndexEntry('_index_see, 1')
+             > (0,0,0,1,2) level 1 index entry [Sphinx] > default
+               (0,0,0,0,1) body [Sphinx] > default
+            MixedStyledText('_index_see, 1')
+              MixedStyledText('_index_see, 1')
+                SingleStyledText('_index_see, ')
+                MixedStyledText('1')
+                  Reference('1')
+                       > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                    SingleStyledText('1')
+        IndexLabel('C')
+             > (0,0,0,0,2) index section label [Sphinx] > DEFAULT
+               (0,0,0,0,1) body [Sphinx] > default
+            SingleStyledText('C')
+        IndexEntry('C')
+             > (0,0,0,1,2) level 1 index entry [Sphinx] > default
+               (0,0,0,0,1) body [Sphinx] > default
+            SingleStyledText('C')
+        IndexEntry('language, 1')
+             > (0,0,0,1,2) level 2 index entry [Sphinx] > level 1 index entry
+               (0,0,0,0,1) body [Sphinx] > default
+            MixedStyledText('language, 1')
+              MixedStyledText('language, 1')
+                SingleStyledText('language, ')
+                MixedStyledText('1')
+                  Reference('1')
+                       > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                    SingleStyledText('1')
+        IndexEntry('cross-referenced term, see also ...')
+             > (0,0,0,1,2) level 1 index entry [Sphinx] > default
+               (0,0,0,0,1) body [Sphinx] > default
+            MixedStyledText('cross-referenced term, see also ...')
+              MixedStyledText('cross-referenced term, see also ...')
+                SingleStyledText('cross-referenced term, ')
+                MixedStyledText('see also target term')
+                  MixedStyledText('see also target term')
+                    StringField('see also')
+                      SingleStyledText('see also')
+                    SingleStyledText(' ')
+                    SingleStyledText('target term')
+        IndexLabel('D')
+             > (0,0,0,0,2) index section label [Sphinx] > DEFAULT
+               (0,0,0,0,1) body [Sphinx] > default
+            SingleStyledText('D')
+        IndexEntry('data')
+             > (0,0,0,1,2) level 1 index entry [Sphinx] > default
+               (0,0,0,0,1) body [Sphinx] > default
+            SingleStyledText('data')
+        IndexEntry('retrieval, 1')
+             > (0,0,0,1,2) level 2 index entry [Sphinx] > level 1 index entry
+               (0,0,0,0,1) body [Sphinx] > default
+            MixedStyledText('retrieval, 1')
+              MixedStyledText('retrieval, 1')
+                SingleStyledText('retrieval, ')
+                MixedStyledText('1')
+                  Reference('1')
+                       > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                    SingleStyledText('1')
+        IndexEntry('database')
+             > (0,0,0,1,2) level 1 index entry [Sphinx] > default
+               (0,0,0,0,1) body [Sphinx] > default
+            SingleStyledText('database')
+        IndexEntry('querying, 1')
+             > (0,0,0,1,2) level 2 index entry [Sphinx] > level 1 index entry
+               (0,0,0,0,1) body [Sphinx] > default
+            MixedStyledText('querying, 1')
+              MixedStyledText('querying, 1')
+                SingleStyledText('querying, ')
+                MixedStyledText('1')
+                  Reference('1')
+                       > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                    SingleStyledText('1')
+        IndexEntry('debugging, see also debugger too...')
+             > (0,0,0,1,2) level 1 index entry [Sphinx] > default
+               (0,0,0,0,1) body [Sphinx] > default
+            MixedStyledText('debugging, see also debugger too...')
+              MixedStyledText('debugging, see also debugger too...')
+                SingleStyledText('debugging, ')
+                MixedStyledText('see also debugger tools')
+                  MixedStyledText('see also debugger tools')
+                    StringField('see also')
+                      SingleStyledText('see also')
+                    SingleStyledText(' ')
+                    SingleStyledText('debugger tools')
+        IndexEntry('deprecated')
+             > (0,0,0,1,2) level 1 index entry [Sphinx] > default
+               (0,0,0,0,1) body [Sphinx] > default
+            SingleStyledText('deprecated')
+        IndexEntry('old method, 1')
+             > (0,0,0,1,2) level 2 index entry [Sphinx] > level 1 index entry
+               (0,0,0,0,1) body [Sphinx] > default
+            MixedStyledText('old method, 1')
+              MixedStyledText('old method, 1')
+                SingleStyledText('old method, ')
+                MixedStyledText('1')
+                  Reference('1')
+                       > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                    SingleStyledText('1')
+        IndexLabel('E')
+             > (0,0,0,0,2) index section label [Sphinx] > DEFAULT
+               (0,0,0,0,1) body [Sphinx] > default
+            SingleStyledText('E')
+        IndexEntry('entry')
+             > (0,0,0,1,2) level 1 index entry [Sphinx] > default
+               (0,0,0,0,1) body [Sphinx] > default
+            SingleStyledText('entry')
+        IndexEntry('example, index, 1')
+             > (0,0,0,1,2) level 2 index entry [Sphinx] > level 1 index entry
+               (0,0,0,0,1) body [Sphinx] > default
+            MixedStyledText('example, index, 1')
+              MixedStyledText('example, index, 1')
+                SingleStyledText('example, index, ')
+                MixedStyledText('1')
+                  Reference('1')
+                       > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                    SingleStyledText('1')
+        IndexEntry('example')
+             > (0,0,0,1,2) level 1 index entry [Sphinx] > default
+               (0,0,0,0,1) body [Sphinx] > default
+            SingleStyledText('example')
+        IndexEntry('index entry, 1')
+             > (0,0,0,1,2) level 2 index entry [Sphinx] > level 1 index entry
+               (0,0,0,0,1) body [Sphinx] > default
+            MixedStyledText('index entry, 1')
+              MixedStyledText('index entry, 1')
+                SingleStyledText('index entry, ')
+                MixedStyledText('1')
+                  Reference('1')
+                       > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                    SingleStyledText('1')
+        IndexLabel('F')
+             > (0,0,0,0,2) index section label [Sphinx] > DEFAULT
+               (0,0,0,0,1) body [Sphinx] > default
+            SingleStyledText('F')
+        IndexEntry('function')
+             > (0,0,0,1,2) level 1 index entry [Sphinx] > default
+               (0,0,0,0,1) body [Sphinx] > default
+            SingleStyledText('function')
+        IndexEntry('example, 1')
+             > (0,0,0,1,2) level 2 index entry [Sphinx] > level 1 index entry
+               (0,0,0,0,1) body [Sphinx] > default
+            MixedStyledText('example, 1')
+              MixedStyledText('example, 1')
+                SingleStyledText('example, ')
+                MixedStyledText('1')
+                  Reference('1')
+                       > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                    SingleStyledText('1')
+        IndexLabel('G')
+             > (0,0,0,0,2) index section label [Sphinx] > DEFAULT
+               (0,0,0,0,1) body [Sphinx] > default
+            SingleStyledText('G')
+        IndexEntry('GNU')
+             > (0,0,0,1,2) level 1 index entry [Sphinx] > default
+               (0,0,0,0,1) body [Sphinx] > default
+            SingleStyledText('GNU')
+        IndexEntry('GPL, 1')
+             > (0,0,0,1,2) level 2 index entry [Sphinx] > level 1 index entry
+               (0,0,0,0,1) body [Sphinx] > default
+            MixedStyledText('GPL, 1')
+              MixedStyledText('GPL, 1')
+                SingleStyledText('GPL, ')
+                MixedStyledText('1')
+                  Reference('1')
+                       > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                    SingleStyledText('1')
+        IndexEntry('GNU General Public License, 1')
+             > (0,0,0,1,2) level 1 index entry [Sphinx] > default
+               (0,0,0,0,1) body [Sphinx] > default
+            MixedStyledText('GNU General Public License, 1')
+              MixedStyledText('GNU General Public License, 1')
+                SingleStyledText('GNU General Public License, ')
+                MixedStyledText('1')
+                  Reference('1')
+                       > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                    SingleStyledText('1')
+        IndexEntry('GPL, see GNU General Public Lice...')
+             > (0,0,0,1,2) level 1 index entry [Sphinx] > default
+               (0,0,0,0,1) body [Sphinx] > default
+            MixedStyledText('GPL, see GNU General Public Lice...')
+              MixedStyledText('GPL, see GNU General Public Lice...')
+                SingleStyledText('GPL, ')
+                MixedStyledText('see GNU General Public License')
+                  MixedStyledText('see GNU General Public License')
+                    StringField('see')
+                      SingleStyledText('see')
+                    SingleStyledText(' ')
+                    SingleStyledText('GNU General Public License')
+        IndexLabel('I')
+             > (0,0,0,0,2) index section label [Sphinx] > DEFAULT
+               (0,0,0,0,1) body [Sphinx] > default
+            SingleStyledText('I')
+        IndexEntry('index')
+             > (0,0,0,1,2) level 1 index entry [Sphinx] > default
+               (0,0,0,0,1) body [Sphinx] > default
+            SingleStyledText('index')
+        IndexEntry('entry example, 1')
+             > (0,0,0,1,2) level 2 index entry [Sphinx] > level 1 index entry
+               (0,0,0,0,1) body [Sphinx] > default
+            MixedStyledText('entry example, 1')
+              MixedStyledText('entry example, 1')
+                SingleStyledText('entry example, ')
+                MixedStyledText('1')
+                  Reference('1')
+                       > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                    SingleStyledText('1')
+        IndexLabel('L')
+             > (0,0,0,0,2) index section label [Sphinx] > DEFAULT
+               (0,0,0,0,1) body [Sphinx] > default
+            SingleStyledText('L')
+        IndexEntry('language')
+             > (0,0,0,1,2) level 1 index entry [Sphinx] > default
+               (0,0,0,0,1) body [Sphinx] > default
+            SingleStyledText('language')
+        IndexEntry('C, 1')
+             > (0,0,0,1,2) level 2 index entry [Sphinx] > level 1 index entry
+               (0,0,0,0,1) body [Sphinx] > default
+            MixedStyledText('C, 1')
+              MixedStyledText('C, 1')
+                SingleStyledText('C, ')
+                MixedStyledText('1')
+                  Reference('1')
+                       > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                    SingleStyledText('1')
+#### ChainedContainer('column2')
+  (continued) StaticGroupedFlowables()
+    (continued) IndexSection()
+         > (0,0,0,1,1) chapter [Sphinx] > DEFAULT
+      (continued) Index()   index
+           > (0,0,0,0,2) index [Sphinx] > DEFAULT
+        IndexLabel('M')
+             > (0,0,0,0,2) index section label [Sphinx] > DEFAULT
+               (0,0,0,0,1) body [Sphinx] > default
+            SingleStyledText('M')
+        IndexEntry('main entry')
+             > (0,0,0,1,2) level 1 index entry [Sphinx] > default
+               (0,0,0,0,1) body [Sphinx] > default
+            SingleStyledText('main entry')
+        IndexEntry('important, 1')
+             > (0,0,0,1,2) level 2 index entry [Sphinx] > level 1 index entry
+               (0,0,0,0,1) body [Sphinx] > default
+            MixedStyledText('important, 1')
+              MixedStyledText('important, 1')
+                SingleStyledText('important, ')
+                MixedStyledText('1')
+                  Reference('1')
+                       > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                    SingleStyledText('1')
+        IndexEntry('mymodule, 1')
+             > (0,0,0,1,2) level 1 index entry [Sphinx] > default
+               (0,0,0,0,1) body [Sphinx] > default
+            MixedStyledText('mymodule, 1')
+              MixedStyledText('mymodule, 1')
+                SingleStyledText('mymodule, ')
+                MixedStyledText('1')
+                  Reference('1')
+                       > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                    SingleStyledText('1')
+        IndexLabel('P')
+             > (0,0,0,0,2) index section label [Sphinx] > DEFAULT
+               (0,0,0,0,1) body [Sphinx] > default
+            SingleStyledText('P')
+        IndexEntry('Python')
+             > (0,0,0,1,2) level 1 index entry [Sphinx] > default
+               (0,0,0,0,1) body [Sphinx] > default
+            SingleStyledText('Python')
+        IndexEntry('interpreter, 1')
+             > (0,0,0,1,2) level 2 index entry [Sphinx] > level 1 index entry
+               (0,0,0,0,1) body [Sphinx] > default
+            MixedStyledText('interpreter, 1')
+              MixedStyledText('interpreter, 1')
+                SingleStyledText('interpreter, ')
+                MixedStyledText('1')
+                  Reference('1')
+                       > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                    SingleStyledText('1')
+        IndexEntry('language, 1')
+             > (0,0,0,1,2) level 2 index entry [Sphinx] > level 1 index entry
+               (0,0,0,0,1) body [Sphinx] > default
+            MixedStyledText('language, 1')
+              MixedStyledText('language, 1')
+                SingleStyledText('language, ')
+                MixedStyledText('1')
+                  Reference('1')
+                       > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                    SingleStyledText('1')
+        IndexLabel('R')
+             > (0,0,0,0,2) index section label [Sphinx] > DEFAULT
+               (0,0,0,0,1) body [Sphinx] > default
+            SingleStyledText('R')
+        IndexEntry('regular term, 1')
+             > (0,0,0,1,2) level 1 index entry [Sphinx] > default
+               (0,0,0,0,1) body [Sphinx] > default
+            MixedStyledText('regular term, 1')
+              MixedStyledText('regular term, 1')
+                SingleStyledText('regular term, ')
+                MixedStyledText('1')
+                  Reference('1')
+                       > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                    SingleStyledText('1')
+        IndexEntry('related term, 1')
+             > (0,0,0,1,2) level 1 index entry [Sphinx] > default
+               (0,0,0,0,1) body [Sphinx] > default
+            MixedStyledText('related term, 1')
+              MixedStyledText('related term, 1')
+                SingleStyledText('related term, ')
+                MixedStyledText('1')
+                  Reference('1')
+                       > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                    SingleStyledText('1')
+        IndexEntry('replacement, see also new method')
+             > (0,0,0,1,2) level 1 index entry [Sphinx] > default
+               (0,0,0,0,1) body [Sphinx] > default
+            MixedStyledText('replacement, see also new method')
+              MixedStyledText('replacement, see also new method')
+                SingleStyledText('replacement, ')
+                MixedStyledText('see also new method')
+                  MixedStyledText('see also new method')
+                    StringField('see also')
+                      SingleStyledText('see also')
+                    SingleStyledText(' ')
+                    SingleStyledText('new method')
+        IndexEntry('retrieval')
+             > (0,0,0,1,2) level 1 index entry [Sphinx] > default
+               (0,0,0,0,1) body [Sphinx] > default
+            SingleStyledText('retrieval')
+        IndexEntry('data, 1')
+             > (0,0,0,1,2) level 2 index entry [Sphinx] > level 1 index entry
+               (0,0,0,0,1) body [Sphinx] > default
+            MixedStyledText('data, 1')
+              MixedStyledText('data, 1')
+                SingleStyledText('data, ')
+                MixedStyledText('1')
+                  Reference('1')
+                       > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                    SingleStyledText('1')
+        IndexLabel('S')
+             > (0,0,0,0,2) index section label [Sphinx] > DEFAULT
+               (0,0,0,0,1) body [Sphinx] > default
+            SingleStyledText('S')
+        IndexEntry('see term, see target term')
+             > (0,0,0,1,2) level 1 index entry [Sphinx] > default
+               (0,0,0,0,1) body [Sphinx] > default
+            MixedStyledText('see term, see target term')
+              MixedStyledText('see term, see target term')
+                SingleStyledText('see term, ')
+                MixedStyledText('see target term')
+                  MixedStyledText('see target term')
+                    StringField('see')
+                      SingleStyledText('see')
+                    SingleStyledText(' ')
+                    SingleStyledText('target term')
+        IndexEntry('seealso term, see also related t...')
+             > (0,0,0,1,2) level 1 index entry [Sphinx] > default
+               (0,0,0,0,1) body [Sphinx] > default
+            MixedStyledText('seealso term, see also related t...')
+              MixedStyledText('seealso term, see also related t...')
+                SingleStyledText('seealso term, ')
+                MixedStyledText('see also related term')
+                  MixedStyledText('see also related term')
+                    StringField('see also')
+                      SingleStyledText('see also')
+                    SingleStyledText(' ')
+                    SingleStyledText('related term')
+        IndexEntry('shared term, see first target; s...')
+             > (0,0,0,1,2) level 1 index entry [Sphinx] > default
+               (0,0,0,0,1) body [Sphinx] > default
+            MixedStyledText('shared term, see first target; s...')
+              MixedStyledText('shared term, see first target; s...')
+                SingleStyledText('shared term, ')
+                MixedStyledText('see first target; second target;...')
+                  MixedStyledText('see first target; second target')
+                    StringField('see')
+                      SingleStyledText('see')
+                    SingleStyledText(' ')
+                    SingleStyledText('first target; second target')
+                  SingleStyledText('; ')
+                  MixedStyledText('see another target')
+                    StringField('see')
+                      SingleStyledText('see')
+                    SingleStyledText(' ')
+                    SingleStyledText('another target')
+            MixedStyledText('shared term, see first target; s...')
+              MixedStyledText('shared term, see first target; s...')
+                SingleStyledText('shared term, ')
+                MixedStyledText('see first target; second target;...')
+                  MixedStyledText('see first target; second target')
+                    StringField('see')
+                      SingleStyledText('see')
+                    SingleStyledText(' ')
+                    SingleStyledText('first target; second target')
+                  SingleStyledText('; ')
+                  MixedStyledText('see another target')
+                    StringField('see')
+                      SingleStyledText('see')
+                    SingleStyledText(' ')
+                    SingleStyledText('another target')
+                  SingleStyledText('; ')
+                  MixedStyledText('see also related target')
+                    StringField('see also')
+                      SingleStyledText('see also')
+                    SingleStyledText(' ')
+                    SingleStyledText('related target')
+        IndexEntry('SQL')
+             > (0,0,0,1,2) level 1 index entry [Sphinx] > default
+               (0,0,0,0,1) body [Sphinx] > default
+            SingleStyledText('SQL')
+        IndexEntry('SELECT, 1')
+             > (0,0,0,1,2) level 2 index entry [Sphinx] > level 1 index entry
+               (0,0,0,0,1) body [Sphinx] > default
+            MixedStyledText('SELECT, 1')
+              MixedStyledText('SELECT, 1')
+                SingleStyledText('SELECT, ')
+                MixedStyledText('1')
+                  Reference('1')
+                       > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                    SingleStyledText('1')
+        IndexLabel('T')
+             > (0,0,0,0,2) index section label [Sphinx] > DEFAULT
+               (0,0,0,0,1) body [Sphinx] > default
+            SingleStyledText('T')
+        IndexEntry('target term, 1')
+             > (0,0,0,1,2) level 1 index entry [Sphinx] > default
+               (0,0,0,0,1) body [Sphinx] > default
+            MixedStyledText('target term, 1')
+              MixedStyledText('target term, 1')
+                SingleStyledText('target term, ')
+                MixedStyledText('1')
+                  Reference('1')
+                       > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                    SingleStyledText('1')
+        IndexEntry('testing')
+             > (0,0,0,1,2) level 1 index entry [Sphinx] > default
+               (0,0,0,0,1) body [Sphinx] > default
+            SingleStyledText('testing')
+        IndexEntry('integration tests, 1')
+             > (0,0,0,1,2) level 2 index entry [Sphinx] > level 1 index entry
+               (0,0,0,0,1) body [Sphinx] > default
+            MixedStyledText('integration tests, 1')
+              MixedStyledText('integration tests, 1')
+                SingleStyledText('integration tests, ')
+                MixedStyledText('1')
+                  Reference('1')
+                       > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                    SingleStyledText('1')
+        IndexEntry('unit tests, 1')
+             > (0,0,0,1,2) level 2 index entry [Sphinx] > level 1 index entry
+               (0,0,0,0,1) body [Sphinx] > default
+            MixedStyledText('unit tests, 1')
+              MixedStyledText('unit tests, 1')
+                SingleStyledText('unit tests, ')
+                MixedStyledText('1')
+                  Reference('1')
+                       > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                    SingleStyledText('1')
+#### DownExpandingContainer('footer')
+  StaticGroupedFlowables()
+    Footer('		3')
+         > (0,0,0,0,2) footer [Sphinx] > header_footer
+        MixedStyledText('		3')
+          MixedStyledText('		3')
+            Tab('	')
+            Tab('	')
+            Field('3')
+              SingleStyledText('3')

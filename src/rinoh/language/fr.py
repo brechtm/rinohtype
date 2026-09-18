@@ -9,19 +9,19 @@
 from .cls import Language
 
 
-FR = Language('fr', 'Français',
+FR = Language('fr', 'français',
     figure='Figure',
     table='Tableau',
-    contents='Table des Matières',
-    list_of_figures='Liste des Figures',
-    list_of_tables='Liste des Tableaux',
+    contents='Table des matières',
+    list_of_figures='Liste des figures',
+    list_of_tables='Liste des tableaux',
     chapter='Chapitre',
     index='Index',
 
     # admonitions
-    attention='Attention!',
-    caution='Prudence!',
-    danger='!DANGER!',
+    attention='Attention !',
+    caution='Prudence !',
+    danger='! DANGER !',
     error='Erreur',
     hint='Conseil',
     important='Important',
@@ -29,4 +29,10 @@ FR = Language('fr', 'Français',
     tip='Astuce',
     warning='Avertissement',
     seealso='Voir aussi',
+
+    # indexes
+    index_see='voir',
+    index_seealso='voir aussi',
 )
+
+FR.no_break_after = "-".split()
