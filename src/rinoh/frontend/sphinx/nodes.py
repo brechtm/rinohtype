@@ -23,7 +23,8 @@ from ...annotation import HyperLink
 from ...flowable import DummyFlowable, LabeledFlowable, StaticGroupedFlowables
 from ...glossary import GlossaryTerm
 from ...image import Image
-from ...index import IndexTerm, IndexSee, IndexSeeAlso, IndexTarget, InlineIndexTarget
+from ...index import (IndexSee, IndexSeeAlso, IndexTarget, IndexTerm,
+                      InlineIndexTarget)
 from ...paragraph import Paragraph
 from ...reference import Reference
 from ...structure import Admonition, AdmonitionFlowables, DefinitionList, List

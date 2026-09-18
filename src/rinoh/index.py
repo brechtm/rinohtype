@@ -17,8 +17,8 @@ from .text import MixedStyledText, StyledText
 from .util import intersperse
 
 
-__all__ = ['IndexSection', 'Index', 'IndexStyle', 'IndexLabel', 'IndexTerm',
-           'IndexSee', 'IndexSeeAlso', 'InlineIndexTarget', 'IndexTarget']
+__all__ = ['IndexSection', 'Index', 'IndexStyle', 'IndexLabel', 'IndexSee',
+           'IndexSeeAlso', 'IndexTerm', 'InlineIndexTarget', 'IndexTarget']
 
 
 class IndexSection(Section):
