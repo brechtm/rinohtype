@@ -9,19 +9,34 @@ class DummyDocument(object):
     def register_element(self, _element):
         return None
 
+
 class DummyFlowableTarget(object):
     def __init__(self, document):
         self.document = document
+
+
+def _node(targets=None, subentries=None, sees=None, see_alsoes=None):
+    return {'targets': targets or [],
+            'subentries': subentries or {},
+            'sees': sees or [],
+            'see_alsoes': see_alsoes or []}
+
+
+def _prepare(document, index_terms):
+    index_target = IndexTarget(index_terms)
+    index_target.id = 'index-target'
+    index_target.prepare(DummyFlowableTarget(document))
+    return index_target
 
 
 def test_index_see_construction():
     assert tuple(IndexSee('term', 'reference')) == ('term', 'reference')
     assert tuple(IndexSeeAlso('term', 'reference')) == ('term', 'reference')
 
+
 def test_target_index_entries():
     document = DummyDocument()
-    flowable_target = DummyFlowableTarget(document)
-    index_target = IndexTarget([
+    index_target = _prepare(document, [
         IndexTerm('single_term1', 'single_term2', 'single_term3'),
         IndexTerm('single_term4'),
         IndexTerm('pair_term1', 'pair_term2'),
@@ -29,51 +44,98 @@ def test_target_index_entries():
         IndexTerm('module', 'search' + ' ' + 'path'),
         IndexTerm('search', 'path' + ', ' + 'module'),
         IndexTerm('path', 'module' + ' ' + 'search'),
-        IndexSee('term', 'synonym_term'),
-        IndexSeeAlso('term2', 'synonym_term2'),
     ])
-    index_target.id = 'index-target'
 
-    index_target.prepare(flowable_target)
+    single_term1 = ('single_term1', _node(
+        subentries={
+            'single_term2': ('single_term2', _node(
+                subentries={
+                    'single_term3': ('single_term3', _node(
+                        targets=[(IndexTerm('single_term1', 'single_term2',
+                                            'single_term3'), index_target)]
+                    ))
+                }
+            ))
+        }
+    ))
+    single_term4 = ('single_term4', _node(
+        targets=[(IndexTerm('single_term4'), index_target)]
+    ))
+    pair_term1 = ('pair_term1', _node(
+        subentries={
+            'pair_term2': ('pair_term2', _node(
+                targets=[(IndexTerm('pair_term1', 'pair_term2'),
+                          index_target)]
+            ))
+        }
+    ))
+    pair_term2 = ('pair_term2', _node(
+        subentries={
+            'pair_term1': ('pair_term1', _node(
+                targets=[(IndexTerm('pair_term2', 'pair_term1'),
+                          index_target)]
+            ))
+        }
+    ))
+    module = ('module', _node(
+        subentries={
+            'search path': ('search path', _node(
+                targets=[(IndexTerm('module', 'search' + ' ' + 'path'),
+                          index_target)]
+            ))
+        }
+    ))
+    search = ('search', _node(
+        subentries={
+            'path, module': ('path, module', _node(
+                targets=[(IndexTerm('search', 'path' + ', ' + 'module'),
+                          index_target)]
+            ))
+        }
+    ))
+    path = ('path', _node(
+        subentries={
+            'module search': ('module search', _node(
+                targets=[(IndexTerm('path', 'module' + ' ' + 'search'),
+                          index_target)]
+            ))
+        }
+    ))
+
+    assert document.index_entries == {'single_term1': single_term1,
+                                      'single_term4': single_term4,
+                                      'pair_term1': pair_term1,
+                                      'pair_term2': pair_term2,
+                                      'module': module,
+                                      'search': search,
+                                      'path': path}
+
+
+def test_target_index_cross_references():
+    document = DummyDocument()
+    index_target = _prepare(document, [
+        IndexTerm('term'),
+        IndexSee('term', 'synonym_term'),
+        IndexSeeAlso('term', 'related_term'),
+        IndexSeeAlso('other_term', 'another_term'),
+    ])
 
     assert document.index_entries == {
-        'single_term1': ('single_term1', {
-            'single_term2': ('single_term2', {
-                'single_term3': ('single_term3', {
-                    None: [(IndexTerm('single_term1', 'single_term2',
-                                       'single_term3'), index_target)]
-                })
-            })
-        }),
-        'single_term4': ('single_term4', {None: [(IndexTerm('single_term4'), index_target)]}),
-        'pair_term1': ('pair_term1', {
-            'pair_term2': ('pair_term2', {
-                None: [(IndexTerm('pair_term1', 'pair_term2'), index_target)]
-            })
-        }),
-        'pair_term2': ('pair_term2', {
-            'pair_term1': ('pair_term1', {
-                None: [(IndexTerm('pair_term2', 'pair_term1'), index_target)]
-            })
-        }),
-        'module': ('module', {
-            'search path': ('search path', {
-                None: [(IndexTerm('module', 'search' + ' ' + 'path'),
-                        index_target)]
-            })
-        }),
-        'search': ('search', {
-            'path, module': ('path, module', {
-                None: [(IndexTerm('search', 'path' + ', ' + 'module'),
-                        index_target)]
-            })
-        }),
-        'path': ('path', {
-            'module search': ('module search', {
-                None: [(IndexTerm('path', 'module' + ' ' + 'search'),
-                        index_target)]
-            })
-        }),
-        'term': ('term', {'_index_see': ['synonym_term']}),
-        'term2': ('term2', {'_index_seealso': ['synonym_term2']}),
+        'term': ('term', _node(targets=[(IndexTerm('term'), index_target)],
+                               sees=['synonym_term'],
+                               see_alsoes=['related_term'])),
+        'other_term': ('other_term', _node(see_alsoes=['another_term'])),
     }
+
+
+def test_index_terms_are_not_interpreted_as_metadata():
+    # index terms resembling internal bookkeeping must not be dropped
+    document = DummyDocument()
+    _prepare(document, [IndexTerm('_index_see'), IndexTerm('_index_seealso'),
+                        IndexTerm('targets')])
+    entry_data = document.index_entries['_index_see'][1]
+
+    assert 'targets' in document.index_entries
+    assert entry_data['targets'][0][0] == IndexTerm('_index_see')
+    assert entry_data['sees'] == []
+    assert entry_data['see_alsoes'] == []
