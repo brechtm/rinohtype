@@ -1286,7 +1286,17 @@ each release. Be sure to check these when upgrading.</p>
 </div>
 <h2 id="release-0-5-7-in-development">Release 0.5.7 (in development)<a class="headerlink" href="#release-0-5-7-in-development" title="Link to this heading">¶</a></h2>
 <p>New Features:</p>
+<ul class="simple">
+<li><p>The Sphinx frontend supports the <em>see</em> and <em>seealso</em> index entries
+(<code class="docutils literal notranslate"><span class="pre">..</span> <span class="pre">index::</span> <span class="pre">see:</span> <span class="pre">term;</span> <span class="pre">reference</span></code>), which are rendered in the index
+as cross-references (PR #461 by Styx0x6)</p></li>
+</ul>
 <p>Changed:</p>
+<ul class="simple">
+<li><p>Project metadata in <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> is now declared in the standard
+<code class="docutils literal notranslate"><span class="pre">[project]</span></code> table (PEP 621) instead of the deprecated <code class="docutils literal notranslate"><span class="pre">[tool.poetry]</span></code>
+fields. This also removes all <code class="docutils literal notranslate"><span class="pre">poetry</span> <span class="pre">check</span></code> warnings.</p></li>
+</ul>
 <p>Fixed:</p>
 <h2 id="release-0-5-6-2026-05-15">Release 0.5.6 (2026-05-15)<a class="headerlink" href="#release-0-5-6-2026-05-15" title="Link to this heading">¶</a></h2>
 <p>New Features:</p>
