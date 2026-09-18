@@ -112,6 +112,21 @@
           MixedStyledText('Deprecated functionality notice.')
             MixedStyledText('Deprecated functionality notice.')
               SingleStyledText('Deprecated functionality notice.')
+      Paragraph('The see reference is allowed to ...', id='index-10')   index.rst:68   <paragraph>
+           > (0,0,0,0,2) body [Sphinx] > default
+          MixedStyledText('The see reference is allowed to ...')
+            MixedStyledText('The see reference is allowed to ...')
+              SingleStyledText('The see reference is allowed to ...')
+      Paragraph('Terms resembling the internal se...', id='index-11')   index.rst:73   <paragraph>
+           > (0,0,0,0,2) body [Sphinx] > default
+          MixedStyledText('Terms resembling the internal se...')
+            MixedStyledText('Terms resembling the internal se...')
+              SingleStyledText('Terms resembling the internal se...')
+      Paragraph('A term with only a see-also refe...', id='index-12')   index.rst:78   <paragraph>
+           > (0,0,0,0,2) body [Sphinx] > default
+          MixedStyledText('A term with only a see-also refe...')
+            MixedStyledText('A term with only a see-also refe...')
+              SingleStyledText('A term with only a see-also refe...')
 #### DownExpandingContainer('footer')
   StaticGroupedFlowables()
     Footer('		1')
@@ -141,6 +156,20 @@
          > (0,0,0,1,1) chapter [Sphinx] > DEFAULT
       Index()   index
            > (0,0,0,0,2) index [Sphinx] > DEFAULT
+        IndexLabel('Symbols')
+             > (0,0,0,0,2) index section label [Sphinx] > DEFAULT
+               (0,0,0,0,1) body [Sphinx] > default
+            SingleStyledText('Symbols')
+        IndexEntry('_index_see, 1')
+             > (0,0,0,1,2) level 1 index entry [Sphinx] > default
+               (0,0,0,0,1) body [Sphinx] > default
+            MixedStyledText('_index_see, 1')
+              MixedStyledText('_index_see, 1')
+                SingleStyledText('_index_see, ')
+                MixedStyledText('1')
+                  Reference('1')
+                       > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                    SingleStyledText('1')
         IndexLabel('C')
              > (0,0,0,0,2) index section label [Sphinx] > DEFAULT
                (0,0,0,0,1) body [Sphinx] > default
@@ -159,6 +188,18 @@
                   Reference('1')
                        > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
                     SingleStyledText('1')
+        IndexEntry('cross-referenced term, see also ...')
+             > (0,0,0,1,2) level 1 index entry [Sphinx] > default
+               (0,0,0,0,1) body [Sphinx] > default
+            MixedStyledText('cross-referenced term, see also ...')
+              MixedStyledText('cross-referenced term, see also ...')
+                SingleStyledText('cross-referenced term, ')
+                MixedStyledText('see also target term')
+                  MixedStyledText('see also target term')
+                    StringField('see also')
+                      SingleStyledText('see also')
+                    SingleStyledText(' ')
+                    SingleStyledText('target term')
         IndexLabel('D')
              > (0,0,0,0,2) index section label [Sphinx] > DEFAULT
                (0,0,0,0,1) body [Sphinx] > default
@@ -343,6 +384,12 @@
                   Reference('1')
                        > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
                     SingleStyledText('1')
+#### ChainedContainer('column2')
+  (continued) StaticGroupedFlowables()
+    (continued) IndexSection()
+         > (0,0,0,1,1) chapter [Sphinx] > DEFAULT
+      (continued) Index()   index
+           > (0,0,0,0,2) index [Sphinx] > DEFAULT
         IndexLabel('M')
              > (0,0,0,0,2) index section label [Sphinx] > DEFAULT
                (0,0,0,0,1) body [Sphinx] > default
@@ -361,12 +408,6 @@
                   Reference('1')
                        > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
                     SingleStyledText('1')
-#### ChainedContainer('column2')
-  (continued) StaticGroupedFlowables()
-    (continued) IndexSection()
-         > (0,0,0,1,1) chapter [Sphinx] > DEFAULT
-      (continued) Index()   index
-           > (0,0,0,0,2) index [Sphinx] > DEFAULT
         IndexEntry('mymodule, 1')
              > (0,0,0,1,2) level 1 index entry [Sphinx] > default
                (0,0,0,0,1) body [Sphinx] > default
@@ -483,6 +524,45 @@
                       SingleStyledText('see also')
                     SingleStyledText(' ')
                     SingleStyledText('related term')
+        IndexEntry('shared term, see first target; s...')
+             > (0,0,0,1,2) level 1 index entry [Sphinx] > default
+               (0,0,0,0,1) body [Sphinx] > default
+            MixedStyledText('shared term, see first target; s...')
+              MixedStyledText('shared term, see first target; s...')
+                SingleStyledText('shared term, ')
+                MixedStyledText('see first target; second target;...')
+                  MixedStyledText('see first target; second target')
+                    StringField('see')
+                      SingleStyledText('see')
+                    SingleStyledText(' ')
+                    SingleStyledText('first target; second target')
+                  SingleStyledText('; ')
+                  MixedStyledText('see another target')
+                    StringField('see')
+                      SingleStyledText('see')
+                    SingleStyledText(' ')
+                    SingleStyledText('another target')
+            MixedStyledText('shared term, see first target; s...')
+              MixedStyledText('shared term, see first target; s...')
+                SingleStyledText('shared term, ')
+                MixedStyledText('see first target; second target;...')
+                  MixedStyledText('see first target; second target')
+                    StringField('see')
+                      SingleStyledText('see')
+                    SingleStyledText(' ')
+                    SingleStyledText('first target; second target')
+                  SingleStyledText('; ')
+                  MixedStyledText('see another target')
+                    StringField('see')
+                      SingleStyledText('see')
+                    SingleStyledText(' ')
+                    SingleStyledText('another target')
+                  SingleStyledText('; ')
+                  MixedStyledText('see also related target')
+                    StringField('see also')
+                      SingleStyledText('see also')
+                    SingleStyledText(' ')
+                    SingleStyledText('related target')
         IndexEntry('SQL')
              > (0,0,0,1,2) level 1 index entry [Sphinx] > default
                (0,0,0,0,1) body [Sphinx] > default

@@ -59,3 +59,20 @@ Main entry definition.
    seealso: replacement; new method
 
 Deprecated functionality notice.
+
+.. index::
+   see: shared term; first target; second target
+   see: shared term; another target
+   seealso: shared term; related target
+
+The see reference is allowed to contain a semicolon.
+
+.. index::
+   single: _index_see
+
+Terms resembling the internal sentinel keys must still be indexed.
+
+.. index::
+   seealso: cross-referenced term; target term
+
+A term with only a see-also reference.
