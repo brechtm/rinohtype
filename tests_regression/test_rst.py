@@ -14,7 +14,8 @@ import sphinx
 from docutils import nodes
 from docutils.core import publish_doctree
 
-from .helpers.regression import TIMEOUT, render_rst_file, render_sphinx_rst_file
+from .helpers.regression import (TIMEOUT, get_timeout, render_rst_file,
+                                 render_sphinx_rst_file)
 
 
 RST_PATH = Path(__file__).parent / 'rst'
@@ -45,7 +46,7 @@ def collect_tests():
     for rst_path in sorted(RST_PATH.glob('*.rst')):
         metadata = parse_rst_metadata(rst_path)
         marks = []
-        timeout = int(metadata.get('timeout', TIMEOUT))
+        timeout = get_timeout(int(metadata.get('timeout', TIMEOUT)))
         marks.append(pytest.mark.timeout(timeout))
         min_ver = metadata.get('sphinx-minversion')
         max_ver = metadata.get('sphinx-maxversion')

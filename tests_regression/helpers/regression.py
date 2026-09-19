@@ -5,6 +5,8 @@
 # Use of this source code is subject to the terms of the GNU Affero General
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
+import platform
+
 import pytest
 import re
 
@@ -43,6 +45,14 @@ __all__ = ['render_doctree', 'render_md_file', 'render_rst_file',
 
 TEST_DIR = Path(__file__).parent.parent.absolute()
 TIMEOUT = 30    # default timeout for tests that specify no timeout in the docinfo
+# PyPy (especially with coverage tracing enabled) is much slower than CPython,
+# so scale the timeouts to avoid spurious failures
+TIMEOUT_MULTIPLIER = 4 if platform.python_implementation() == 'PyPy' else 1
+
+
+def get_timeout(base=TIMEOUT):
+    """Return the timeout for a test, accounting for interpreter speed."""
+    return base * TIMEOUT_MULTIPLIER
 
 
 if not MATH_ENABLED:
