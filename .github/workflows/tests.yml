@@ -306,7 +306,15 @@ jobs:
       if: startsWith(runner.os, 'Windows')
       run: |
         choco install mupdf --version=1.26.0
-        Add-Content $env:GITHUB_PATH "C:\Program Files\Unity Hub\resources\app.asar.unpacked\node_modules\canvas\build\Release"   # cairo.dll
+        # cairosvg (math support) requires the cairo DLL, which the Windows
+        # image does not provide. Install the GTK3 runtime, which bundles
+        # cairo and its dependencies (as recommended by cairocffi). Unlike
+        # MSYS2's mingw64\bin, this directory contains no executables that
+        # could shadow the Python interpreter used by nox.
+        $uri = 'https://github.com/tschoonj/GTK-for-Windows-Runtime-Environment-Installer/releases/download/2022-01-04/gtk3-runtime-3.24.31-2022-01-04-ts-win64.exe'
+        Invoke-WebRequest -Uri $uri -OutFile gtk3-runtime.exe -TimeoutSec 300
+        Start-Process -FilePath .\gtk3-runtime.exe -ArgumentList '/S' -Wait
+        Add-Content $env:GITHUB_PATH 'C:\Program Files\GTK3-Runtime Win64\bin'   # cairo.dll
 
     - name: Run Nox
       run: ${{ env.nox_cmd }} ${{ env.NOXENV }} -- -s
