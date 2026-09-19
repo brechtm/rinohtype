@@ -49,7 +49,12 @@ examples/               # Example documents
   - Unit tests in `tests/`; these cover only a small portion of the codebase
   - Regression tests in `tests_regression/`
 - Do NOT run the nox sessions; these are for CI only
-- Add an entry to the changelog (`CHANGES.rst`) for significant changes
+- Add an entry to the changelog (`CHANGES.rst`) for changes that are relevant
+  to users of rinohtype. Changes that do not affect users (e.g. changes to the
+  tests or the testing framework) do not need a changelog entry
+  - A pre-commit hook (`.git/hooks/pre-commit`) warns when `CHANGES.rst` is
+    not part of the staged changes. For commits that do not require a
+    changelog entry, bypass the hook with `git commit --no-verify`
 - Update documentation if needed
 
 ### Testing Details
