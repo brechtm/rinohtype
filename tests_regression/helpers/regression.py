@@ -19,7 +19,8 @@ from sphinx.util.docutils import docutils_namespace
 from sphinx.testing.restructuredtext import parse as sphinx_parse
 
 from .diffpdf import diff_pdf
-from .pdf_linkchecker import check_pdf_links, diff_outlines
+from .pdf_linkchecker import check_pdf_links, diff_links, diff_outlines, \
+    format_links
 from .util import in_directory
 
 from rinoh import register_template
@@ -170,14 +171,17 @@ def verify_output(test_name, output_dir, reference_path, alt=None):
     pdf_filename = f'{test_name}.pdf'
     alt_suffix = f'_{alt}' if alt else ''
     ref_pdf_filename = f'{test_name}{alt_suffix}.pdf'
-    (ref_anchors, ref_links, ref_superfluous_anchors,
-     ref_badlinks, ref_badoutlinelinks, ref_urls, ref_badurls, ref_outlines) = \
-        check_pdf_links(reference_path / ref_pdf_filename)
+    (ref_anchors, ref_links, ref_link_targets, ref_superfluous_anchors,
+     ref_badlinks, ref_badoutlinelinks, ref_urls, ref_badurls,
+     ref_outlines) = check_pdf_links(reference_path / ref_pdf_filename)
     with in_directory(output_dir):
-        (anchors, links, superfluous_anchors,
+        (anchors, links, link_targets, superfluous_anchors,
          badlinks, badoutlinelinks, urls, badurls, outlines) = \
             check_pdf_links(pdf_filename)
-        pytest.assume(links == ref_links, (links, ref_links))
+        pytest.assume(diff_links(ref_link_targets, link_targets),
+                      "Links mismatch!                          "
+                      "(ref | new)\n"
+                      + format_links(ref_link_targets, link_targets))
         pytest.assume(badlinks == [], badlinks)
         pytest.assume(badoutlinelinks == [], badoutlinelinks)
         pytest.assume(diff_outlines(ref_outlines, outlines),
