@@ -7,7 +7,6 @@
 import sys
 
 from collections import namedtuple
-from itertools import zip_longest
 
 from rinoh.backend.pdf import PDFReader
 
@@ -111,41 +110,6 @@ def iter_outlines(outlines, level=0):
         yield from iter_outlines(outlines['First'], level + 1)
     if 'Next' in outlines:
         yield from iter_outlines(outlines['Next'], level)
-
-
-def diff_outlines(reference, outlines):
-    for ref, out in zip_longest(reference, outlines,
-                                fillvalue=(None, None, None)):
-        (l1, title1, id1), (l2, title2, id2) = ref, out
-        if l1 != l2 or title1 != title2:
-            return False
-    return True
-
-
-def diff_links(reference, targets):
-    """Compare two lists of resolved :class:`LinkTarget` instances
-
-    Only the resolved targets (page number and position) are compared; the
-    named destinations themselves are not, because their names are assigned by
-    the tool that generated the document and thus differ between versions of
-    that tool.
-    """
-    if len(reference) != len(targets):
-        return False
-    return all(ref == target for ref, target in zip(reference, targets))
-
-
-def format_links(reference, targets):
-    """Format two lists of resolved links for display side by side"""
-    def format_target(target):
-        if target is None:
-            return ''
-        source, page, left, top = target
-        return f'page {source} -> page {page} ({left:g}, {top:g})'
-
-    return '\n'.join(f'{format_target(ref):40}  |  {format_target(target)}'
-                     for ref, target
-                     in zip_longest(reference, targets, fillvalue=None))
 
 
 def check_pdf_links(filename):

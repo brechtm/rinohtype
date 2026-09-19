@@ -15,15 +15,36 @@ import sys
 
 from decimal import Decimal
 from functools import partial
+from itertools import zip_longest
 from multiprocessing import Pool, cpu_count
 from shutil import which
 from subprocess import Popen, PIPE, DEVNULL
+
+try:
+    from .checkpdf import iter_outlines, page_index_map, resolve_destination
+except ImportError:
+    # diffpdf is also runnable as a script, outside of its package
+    from checkpdf import iter_outlines, page_index_map, resolve_destination
 
 from rinoh.backend.pdf import PDFReader
 
 
 DIFF_DIR = 'pdfdiff'
 SHELL = sys.platform == 'win32'
+
+
+def resolved_outlines(pdf, depth):
+    """Yield ``(depth, title, page)`` for outline entries up to `depth`
+
+    Depths are zero-based, matching the ``--split`` DEPTH option. The page is
+    `None` if the entry's destination cannot be resolved to a page.
+    """
+    page_numbers = page_index_map(pdf)
+    for level, title, dest in iter_outlines(pdf.catalog['Outlines']):
+        if level - 1 > depth:
+            continue
+        target = resolve_destination(pdf, page_numbers, dest)
+        yield level - 1, title, target[0] if target is not None else None
 
 
 def diff_pdf(a_filename, b_filename, depth=None):
@@ -40,12 +61,9 @@ def diff_pdf(a_filename, b_filename, depth=None):
 
     sync_points = []
     if depth is not None:
-        a_pages = list(a.catalog['Pages'].pages)
-        b_pages = list(b.catalog['Pages'].pages)
-        for (a_depth, a_title, a_dest), (b_depth, b_title, b_dest) \
-                in zip(a.iter_outlines(depth), b.iter_outlines(depth)):
-            a_page = a_pages.index(a_dest[0]) + 1
-            b_page = b_pages.index(b_dest[0]) + 1
+        for (a_depth, a_title, a_page), (b_depth, b_title, b_page) \
+                in zip(resolved_outlines(a, depth),
+                       resolved_outlines(b, depth)):
             if (a_depth, a_title) != (b_depth, b_title):
                 print("PDF outlines diverge:\n"
                       "  '{a_title}' -> page {a_page} (depth {a_depth})\n"
@@ -58,7 +76,8 @@ def diff_pdf(a_filename, b_filename, depth=None):
                       "  '{a_title}' -> page {a_page} / {b_page}"
                       .format(**locals()))
                 success = False
-                sync_points.append((a_page, b_page))
+                if a_page is not None and b_page is not None:
+                    sync_points.append((a_page, b_page))
     sync_points.append((a_numpages + 1, b_numpages + 1))
 
     if os.path.exists(DIFF_DIR):
@@ -114,6 +133,49 @@ def diff_info(a, b):
             print(f"PDF Info '{key}' entries differ: {a_value} / {b_value}")
             success = False
     return success
+
+
+def diff_links(reference, targets):
+    """Compare two lists of resolved :class:`LinkTarget` instances
+
+    Only the resolved targets (page number and position) are compared; the
+    named destinations themselves are not, because their names are assigned by
+    the tool that generated the document and thus differ between versions of
+    that tool.
+    """
+    if len(reference) != len(targets):
+        return False
+    return all(ref == target for ref, target in zip(reference, targets))
+
+
+def format_links(reference, targets):
+    """Format two lists of resolved links for display side by side"""
+    def format_target(target):
+        if target is None:
+            return ''
+        source, page, left, top = target
+        return f'page {source} -> page {page} ({left:g}, {top:g})'
+
+    return '\n'.join(f'{format_target(ref):40}  |  {format_target(target)}'
+                     for ref, target
+                     in zip_longest(reference, targets, fillvalue=None))
+
+
+def diff_outlines(reference, outlines):
+    for ref, out in zip_longest(reference, outlines,
+                                fillvalue=(None, None, None)):
+        (l1, title1, id1), (l2, title2, id2) = ref, out
+        if l1 != l2 or title1 != title2:
+            return False
+    return True
+
+
+def format_outlines(reference, outlines):
+    return '\n'.join(f"{'':<{l1 - 1}}{title1!s:{25 - l1}} {id1!s:20}  |  "
+                     f"{'':<{l2 - 1}}{title2!s:{25 - l2}} {id2!s:20}"
+                     for (l1, title1, id1), (l2, title2, id2)
+                     in zip_longest(reference, outlines,
+                                    fillvalue=(1, '', '')))
 
 
 class CommandFailed(Exception):

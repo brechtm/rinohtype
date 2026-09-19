@@ -8,7 +8,7 @@
 import pytest
 import re
 
-from itertools import chain, zip_longest
+from itertools import chain
 from pathlib import Path
 from warnings import catch_warnings
 
@@ -18,9 +18,9 @@ from sphinx.application import Sphinx
 from sphinx.util.docutils import docutils_namespace
 from sphinx.testing.restructuredtext import parse as sphinx_parse
 
-from .diffpdf import diff_pdf
-from .pdf_linkchecker import check_pdf_links, diff_links, diff_outlines, \
-    format_links
+from .checkpdf import check_pdf_links
+from .diffpdf import (diff_pdf, diff_links, format_links, diff_outlines,
+                      format_outlines)
 from .util import in_directory
 
 from rinoh import register_template
@@ -191,13 +191,6 @@ def verify_output(test_name, output_dir, reference_path, alt=None):
             pytest.fail('The generated PDF is different from the reference '
                         'PDF.\nGenerated files can be found in {}'
                         .format(output_dir))
-
-
-def format_outlines(reference, outlines):
-    return '\n'.join(f"{'':<{l1 - 1}}{title1!s:{25 - l1}} {id1!s:20}  |  "
-                     f"{'':<{l2 - 1}}{title2!s:{25 - l2}} {id2!s:20}"
-                     for (l1, title1, id1), (l2, title2, id2)
-                     in zip_longest(reference, outlines, fillvalue=(1, '', '')))
 
 
 def version_to_tuple(version):
