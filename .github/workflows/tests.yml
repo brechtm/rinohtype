@@ -332,7 +332,7 @@ jobs:
         bash <(curl -s https://codecov.io/bash) -f coverage.xml -F ${{ env.NOXENV }},${{ matrix.python-version }},${{ runner.os }}
 
     - name: Setup tmate debug session
-      if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.debug_enabled && failure() }}
+      if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.debug_enabled == 'true' && failure() }}
       uses: mxschmitt/action-tmate@v3
       with:
         limit-access-to-actor: true
