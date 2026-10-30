@@ -6,6 +6,8 @@
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
 
+import struct
+
 from .parse import OpenTypeTable, MultiFormatTable, Record, context_array
 from .parse import fixed, array, uint16, tag, glyph_id, offset, indirect, Packed
 
@@ -76,10 +78,19 @@ class LookupFlag(Packed):
               ('MarkAttachmentType', 0xFF00, int)]
 
 
-class RangeRecord(OpenTypeTable):
-    entries = [('Start', glyph_id),
-               ('End', glyph_id),
-               ('StartCoverageIndex', uint16)]
+def range_records(count_key):
+    """Reader for an array of (start glyph ID, end glyph ID, value) records
+
+    The value is the start coverage index (Coverage) or the class
+    (ClassDefinition).
+
+    """
+    def range_records_reader(file, table, **kwargs):
+        count = table[count_key]
+        records_struct = struct.Struct('>{}H'.format(3 * count))
+        values = records_struct.unpack(file.read(records_struct.size))
+        return list(zip(values[0::3], values[1::3], values[2::3]))
+    return range_records_reader
 
 
 class Coverage(MultiFormatTable):
@@ -87,23 +98,16 @@ class Coverage(MultiFormatTable):
     formats = {1: [('GlyphCount', uint16),
                    ('GlyphArray', context_array(glyph_id, 'GlyphCount'))],
                2: [('RangeCount', uint16),
-                   ('RangeRecord', context_array(RangeRecord, 'RangeCount'))]}
+                   ('RangeRecord', range_records('RangeCount'))]}
 
     def index(self, glyph_id):
         if self['CoverageFormat'] == 1:
             return self['GlyphArray'].index(glyph_id)
         else:
-            for record in self['RangeRecord']:
-                if record['Start'] <= glyph_id <= record['End']:
-                    return (record['StartCoverageIndex']
-                            + glyph_id - record['Start'])
+            for start, end, start_coverage_index in self['RangeRecord']:
+                if start <= glyph_id <= end:
+                    return start_coverage_index + glyph_id - start
             raise ValueError
-
-
-class ClassRangeRecord(OpenTypeTable):
-    entries = [('Start', glyph_id),
-               ('End', glyph_id),
-               ('Class', uint16)]
 
 
 class ClassDefinition(MultiFormatTable):
@@ -112,8 +116,7 @@ class ClassDefinition(MultiFormatTable):
                    ('GlyphCount', uint16),
                    ('ClassValueArray', context_array(uint16, 'GlyphCount'))],
                2: [('ClassRangeCount', uint16),
-                   ('ClassRangeRecord', context_array(ClassRangeRecord,
-                                                      'ClassRangeCount'))]}
+                   ('ClassRangeRecord', range_records('ClassRangeCount'))]}
 
     def class_number(self, glyph_id):
         if self['ClassFormat'] == 1:
@@ -121,9 +124,9 @@ class ClassDefinition(MultiFormatTable):
             if 0 <= index < self['GlyphCount']:
                 return self['ClassValueArray'][index]
         else:
-            for record in self['ClassRangeRecord']:
-                if record['Start'] <= glyph_id <= record['End']:
-                    return record['Class']
+            for start, end, class_number in self['ClassRangeRecord']:
+                if start <= glyph_id <= end:
+                    return class_number
         return 0
 
 

@@ -40,6 +40,9 @@ Changed:
   - The garbage collector is disabled while rendering, and the objects
     created while rendering are excluded from later collections until
     ``render()`` is called again.
+  - OpenType fonts load faster: font tables are parsed when first needed
+    (the unused fonts of a typeface are hardly parsed at all), glyph bounding
+    boxes are no longer read and kerning tables are read in bulk.
 
 
 Fixed:
