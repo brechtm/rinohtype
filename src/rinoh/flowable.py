@@ -227,10 +227,10 @@ class Flowable(Styled):
                 raise EndOfContainer(state)
             top_to_baseline += float(space_above)
         self_space_below = float(self.get_style('space_below', container))
-        margin_left = self.get_style('margin_left', container)
-        margin_right = self.get_style('margin_right', container)
+        margin_left = float(self.get_style('margin_left', container))
+        margin_right = float(self.get_style('margin_right', container))
         reference_id = self.get_id(container.document, create=False)
-        right = container.width - margin_right
+        right = float(container.width) - margin_right
         container.register_styled(self, continued=not state.initial)
         margin_container = InlineDownExpandingContainer('MARGIN', container,
                                                         left=margin_left,
@@ -265,14 +265,15 @@ class Flowable(Styled):
         return border.width if border else 0
 
     def _horizontal_padding_and_borders(self, container):
-        """Return the left and right padding and border widths"""
+        """Return the left and right padding and border widths (floats)"""
         padding = self.get_style('padding', container)
         padding_left = self.get_style('padding_left', container) or padding
         padding_right = self.get_style('padding_right', container) or padding
         border = self._border_width('border', container)
         border_left = self._border_width('border_left', container) or border
         border_right = self._border_width('border_right', container) or border
-        return padding_left, padding_right, border_left, border_right
+        return (float(padding_left), float(padding_right), float(border_left),
+                float(border_right))
 
     def flow_width(self, container):
         """Return the width this flowable takes up when flowed into `container`
@@ -285,12 +286,12 @@ class Flowable(Styled):
         """
         cls = type(self)
         if cls.flow is Flowable.flow and cls.flow_inner is Flowable.flow_inner:
-            margin_left = self.get_style('margin_left', container)
-            margin_right = self.get_style('margin_right', container)
+            margin_left = float(self.get_style('margin_left', container))
+            margin_right = float(self.get_style('margin_right', container))
             padding_left, padding_right, border_left, border_right = \
                 self._horizontal_padding_and_borders(container)
             # the same expressions as for the containers created by flow()
-            margin_width = container.width - margin_right - margin_left
+            margin_width = float(container.width) - margin_right - margin_left
             padding_width = ((margin_width - padding_right - border_right)
                              - (padding_left + border_left))
             content_width = self.content_width(padding_width, container)
@@ -317,8 +318,10 @@ class Flowable(Styled):
         draw_top = state.initial
         width = self._width(container)
         padding = self.get_style('padding', container)
-        padding_top = self.get_style('padding_top', container) or padding
-        padding_bottom = self.get_style('padding_bottom', container) or padding
+        padding_top = float(self.get_style('padding_top', container)
+                            or padding)
+        padding_bottom = float(self.get_style('padding_bottom', container)
+                               or padding)
         padding_left, padding_right, border_left, border_right = \
             self._horizontal_padding_and_borders(container)
         padding_h = padding_left + padding_right
@@ -329,11 +332,11 @@ class Flowable(Styled):
         border_h = border_left + border_right
         left = padding_left + border_left
         right = container.width - padding_right - border_right
-        padding_border_bottom = float(padding_bottom + border_bottom)
+        padding_border_bottom = padding_bottom + float(border_bottom)
         total_space_below = space_below + padding_border_bottom
         last_descender = None if border_top else last_descender
         if draw_top:
-            if not container.advance2(border_top + padding_top):
+            if not container.advance2(float(border_top) + padding_top):
                 return state, 0, 0, last_descender
         pad_cntnr = InlineDownExpandingContainer('PADDING', container,
                                                  left=left, right=right)
@@ -361,7 +364,8 @@ class Flowable(Styled):
         if state is None or not state.initial:
             self.render_frame(container, frame_width, container.height,
                               top=draw_top, bottom=state is None)
-        top_to_baseline = border_top + padding_top + first_line_ascender
+        top_to_baseline = (float(border_top) + padding_top
+                           + first_line_ascender)
         descender = None if border_bottom else descender
         return state, bordered_width, top_to_baseline, descender
 
@@ -503,7 +507,9 @@ class GroupedFlowablesState(FlowableState):
     def __init__(self, groupedflowables, flowables, first_flowable_state=None,
                  _initial=True, _index=0):
         super().__init__(groupedflowables, _initial)
-        self.flowables = list(flowables)
+        # the list of flowables is not modified, so copies share it
+        self.flowables = (flowables if isinstance(flowables, list)
+                          else list(flowables))
         self.first_flowable_state = first_flowable_state
         self._index = _index
 
@@ -514,9 +520,8 @@ class GroupedFlowablesState(FlowableState):
         return self._index >= len(self.flowables)
 
     def __copy__(self):
-        copy_flowables = copy(self.flowables)
         copy_first_flowable_state = copy(self.first_flowable_state)
-        return self.__class__(self.groupedflowables, copy_flowables,
+        return self.__class__(self.groupedflowables, self.flowables,
                               copy_first_flowable_state, _initial=self.initial,
                               _index=self._index)
 
