@@ -173,18 +173,20 @@ class Canvas(BytesIO):
         self.images = {}
         self.annotations = []
 
-    def append(self, parent_canvas, left, top):
-        with parent_canvas.save_state():
-            parent_canvas.translate(left, top)
-            parent_canvas.write(self.getvalue())
-        self.propagate_annotations(parent_canvas, left, top)
+    def write_to(self, page_canvas, offsets):
+        """Write this canvas' contents and resources to `page_canvas`
 
-    def propagate_annotations(self, parent_canvas, left, top):
-        translated_annotations = (annotation_location + (left, top)
-                                  for annotation_location in self.annotations)
-        parent_canvas.fonts.update(self.fonts)
-        parent_canvas.images.update(self.images)
-        parent_canvas.annotations.extend(translated_annotations)
+        `offsets` are the (left, top) offsets to apply to the annotations, one
+        after the other.
+
+        """
+        page_canvas.write(self.getbuffer())
+        page_canvas.fonts.update(self.fonts)
+        page_canvas.images.update(self.images)
+        for annotation_location in self.annotations:
+            for offset in offsets:
+                annotation_location += offset
+            page_canvas.annotations.append(annotation_location)
 
     def print(self, string):
         self.write(string.encode('ascii') + b'\n')

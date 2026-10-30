@@ -47,6 +47,11 @@ Changed:
     typeface. As a result, the warning about a missing font style is only
     emitted once.
 
+* Memory usage: the contents of a page's containers are written directly to
+  the page instead of being copied into each enclosing container, and
+  containers only get a canvas when something is drawn on them. This
+  considerably reduces the peak memory usage for long documents.
+
 
 Fixed:
 

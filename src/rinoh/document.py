@@ -127,7 +127,7 @@ class Page(Container):
         return self._document_part
 
     def empty_canvas(self):
-        self.canvas = self.backend_page.canvas
+        self._canvas = self.backend_page.canvas
 
     @property
     def document(self):
@@ -190,7 +190,7 @@ class Page(Container):
 
     def place(self):
         self.before_placing()
-        self.place_children()
+        self.place_children(self.canvas)
         self.canvas.place_annotations()
 
 

@@ -187,7 +187,15 @@ class Container(object):
         raise AttributeError('{}.{}'.format(self.__class__.__name__, name))
 
     def empty_canvas(self):
-        self.canvas = self.document.backend.Canvas()
+        self._canvas = None
+
+    @property
+    def canvas(self):
+        """The canvas to draw this container's contents on; created only when
+        something is drawn"""
+        if self._canvas is None:
+            self._canvas = self.document.backend.Canvas()
+        return self._canvas
 
     def render(self, type, rerender=False):
         """Render the contents of this container to its canvas.
@@ -200,21 +208,37 @@ class Container(object):
     def check_overflow(self):
         return all(child.check_overflow() for child in self.children)
 
-    def place_children(self):
+    def place_children(self, page_canvas, offsets=()):
         for child in self.children:
-            child.place()
+            child.place(page_canvas, offsets)
 
-    def place(self):
-        """Place this container's canvas onto the parent container's canvas."""
-        if self.sideways == 'left':
-            self.canvas.translate(float(self.height), 0)
-            self.canvas.rotate(-90)
-        elif self.sideways == 'right':
-            self.canvas.translate(0, float(self.width))
-            self.canvas.rotate(90)
-        self.place_children()
-        self.canvas.append(self.parent.canvas,
-                           float(self.left), float(self.top))
+    def place(self, page_canvas, offsets):
+        """Write this container's contents onto the page's canvas
+
+        The contents are written directly to `page_canvas` instead of to the
+        parent container's canvas, so that they are copied only once.
+
+        Args:
+            page_canvas (Canvas): the canvas of the page
+            offsets (tuple): the (left, top) positions of the containers this
+                container is placed in relative to their parent, innermost
+                first
+
+        """
+        left, top = float(self.left), float(self.top)
+        offsets = ((left, top), *offsets)
+        with page_canvas.save_state():
+            page_canvas.translate(left, top)
+            if self._canvas is not None:
+                self._canvas.write_to(page_canvas, offsets)
+                self._canvas = None     # no longer needed
+            if self.sideways == 'left':
+                page_canvas.translate(float(self.height), 0)
+                page_canvas.rotate(-90)
+            elif self.sideways == 'right':
+                page_canvas.translate(0, float(self.width))
+                page_canvas.rotate(90)
+            self.place_children(page_canvas, offsets)
 
     def before_placing(self, preallocate=False):
         for child in self.children:
@@ -421,9 +445,9 @@ class ConditionalDownExpandingContainerBase(DownExpandingContainerBase):
     def do_place(self, place=True):
         self._do_place = place
 
-    def place(self):
+    def place(self, page_canvas, offsets):
         if self._do_place:
-            super().place()
+            super().place(page_canvas, offsets)
 
     def before_placing(self, preallocate=False):
         if self._do_place:
