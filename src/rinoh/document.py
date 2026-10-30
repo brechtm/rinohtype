@@ -302,6 +302,7 @@ class Document(object):
         self._attribute_tests = None
         self._attribute_tests_by_type = {}
         self._shared_computed_styles = {}   # computed styles by sharing key
+        self.paragraph_words = WeakMutableKeyDictionary()   # cache words
         self._sections = []
         self.index_entries = {}
         self._glossary = {}

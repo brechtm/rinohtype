@@ -50,6 +50,8 @@ Changed:
     so that each style attribute is looked up only once for all of them.
   - Styled elements that match the same selectors share their matching
     styles, so that the style sheet is searched only once for all of them.
+  - A paragraph's words are created only once per rendering pass instead of
+    each time it is rendered (measured, retried).
 
 * Memory usage: the contents of a page's containers are written directly to
   the page instead of being copied into each enclosing container, and
@@ -58,6 +60,10 @@ Changed:
 
 
 Fixed:
+
+* Index entries for terms in a paragraph that continues on the next page
+  referred to the next page.
+* A literal block continued on the next page started with an empty line.
 
 
 Release 0.5.6 (2026-05-15)

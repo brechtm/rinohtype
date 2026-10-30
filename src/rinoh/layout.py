@@ -375,8 +375,11 @@ class FlowablesContainerBase(Container):
         raise NotImplementedError('{}.render()'.format(self.__class__.__name__))
 
     def register_styled(self, styled, continued=False):
-        styleds = self._placed_styleds.setdefault(len(self.children), [])
-        styleds.append((styled, continued))
+        self.registered_styleds().append((styled, continued))
+
+    def registered_styleds(self):
+        """The styled elements registered at the current position"""
+        return self._placed_styleds.setdefault(len(self.children), [])
 
     def before_placing(self, preallocate=False):
         def log_styleds(index):
