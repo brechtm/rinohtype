@@ -23,6 +23,7 @@ Classes representing a document:
 from pathlib import Path
 
 import datetime
+import gc
 import pickle
 import re
 import sys
@@ -451,6 +452,13 @@ to the terms of the GNU Affero General Public License version 3.''')
                              "'file'.")
 
         fake_container = FakeContainer(self)
+        # rendering creates millions of objects that are kept until the end,
+        # but hardly any reference cycles; don't let the garbage collector
+        # traverse all of these over and over again; collect only in between
+        # rendering passes
+        gc_enabled = gc.isenabled()
+        gc.disable()
+        gc.unfreeze()       # the objects frozen by a previous render()
         try:
             self.document_tree.build_document(fake_container)
             self.prepare(fake_container)
@@ -469,6 +477,7 @@ to the terms of the GNU Affero General Public License version 3.''')
                     break
                 print('Not yet converged, rendering again...')
                 del self.backend_document
+                gc.collect()
             self._create_outlines(self.backend_document)
             if filename:
                 self._save_cache(filename_root)
@@ -477,6 +486,12 @@ to the terms of the GNU Affero General Public License version 3.''')
                 print('Writing output: {}'.format(filename))
             self.backend_document.write(file)
         finally:
+            if gc_enabled:
+                # the collector would traverse all of these objects as soon as
+                # it is re-enabled; exclude them from collection until
+                # render() is called again
+                gc.freeze()
+                gc.enable()
             if filename_root:
                 file.close()
         return not self.error

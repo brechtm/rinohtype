@@ -35,6 +35,11 @@ Changed:
 * Rendering is only repeated when a page reference or page count that was
   used while rendering turned out to be different. Previously, a document
   was always rendered twice when no references cache was available.
+* Rendering performance (issue #455):
+
+  - The garbage collector is disabled while rendering, and the objects
+    created while rendering are excluded from later collections until
+    ``render()`` is called again.
 
 
 Fixed:
