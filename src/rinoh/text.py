@@ -150,6 +150,26 @@ class InlineStyled(Styled):
         raise NotImplementedError
 
 
+class SpanMetrics(object):
+    """The vertical metrics of a span of text or of an inline flowable
+
+    Args:
+        ascender (float): height above the baseline
+        descender (float): depth below the baseline (negative)
+        height (float): font size (after super/subscript size adjustment)
+        line_gap (float): the font's recommended line gap
+
+    """
+
+    __slots__ = ('ascender', 'descender', 'height', 'line_gap')
+
+    def __init__(self, ascender, descender, height, line_gap):
+        self.ascender = ascender
+        self.descender = descender
+        self.height = height
+        self.line_gap = line_gap
+
+
 class CharacterLike(Styled):
     def __repr__(self):
         return "{0}(style={1})".format(self.__class__.__name__, self.style)

@@ -52,6 +52,8 @@ Changed:
     styles, so that the style sheet is searched only once for all of them.
   - A paragraph's words are created only once per rendering pass instead of
     each time it is rendered (measured, retried).
+  - The font and metrics of text are looked up only once for each distinct
+    text style.
 
 * Memory usage: the contents of a page's containers are written directly to
   the page instead of being copied into each enclosing container, and

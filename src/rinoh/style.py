@@ -1057,7 +1057,8 @@ class ComputedStyle(object):
     Styled elements share a computed style when they are of the same type,
     have the same (inline) style, match the same styles in the style sheet and
     their parents share a computed style. Such elements obtain the same value
-    for each style attribute, so these only need to be looked up once.
+    for each style attribute, so these only need to be looked up once. The
+    same holds for values derived from these, such as the metrics of text.
 
     Args:
         styled (Styled): one of the styled elements sharing this computed
@@ -1065,11 +1066,12 @@ class ComputedStyle(object):
 
     """
 
-    __slots__ = ('styled', 'values')
+    __slots__ = ('styled', 'values', 'text_metrics')
 
     def __init__(self, styled):
         self.styled = styled
         self.values = {}        # style attribute values
+        self.text_metrics = None    # see paragraph.text_metrics()
 
 
 class StyleLogEntry(object):
