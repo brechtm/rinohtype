@@ -32,6 +32,9 @@ Changed:
 * The destination for an inline index target (e.g. Sphinx's ``:index:``
   role) now points to the indexed term instead of to the left edge of the
   page.
+* Rendering is only repeated when a page reference or page count that was
+  used while rendering turned out to be different. Previously, a document
+  was always rendered twice when no references cache was available.
 
 
 Fixed:

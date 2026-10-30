@@ -311,13 +311,38 @@ to the terms of the GNU Affero General Public License version 3.''')
 
     def get_reference(self, id, reference_type, default=DEFAULT):
         if reference_type == ReferenceType.PAGE:
-            return self.page_references.get(id, 'XX')
+            page_reference = self.page_references.get(id, 'XX')
+            self._used_page_references.add((id, page_reference))
+            return page_reference
         try:
             return self.references[id][reference_type]
         except KeyError:
             if default is DEFAULT:
                 raise
             return default
+
+    def number_of_pages(self, part_name):
+        """The number of pages in a document part (previous rendering pass)"""
+        try:
+            count = self.part_page_counts[part_name].count
+        except KeyError:
+            count = 0
+        self._used_page_counts.add((part_name, count))
+        return count
+
+    def _converged(self):
+        """Whether the page references and page counts that were used while
+        rendering match the final ones"""
+        def page_count(part_name):
+            try:
+                return self.part_page_counts[part_name].count
+            except KeyError:
+                return 0
+
+        return (all(self.page_references.get(id, 'XX') == page_reference
+                    for id, page_reference in self._used_page_references)
+                and all(page_count(part_name) == count
+                        for part_name, count in self._used_page_counts))
 
     def get_matches(self, styled):
         styled_matches = self._styled_matches
@@ -426,27 +451,23 @@ to the terms of the GNU Affero General Public License version 3.''')
                              "'file'.")
 
         fake_container = FakeContainer(self)
-        prev_page_counts, prev_page_refs = self._load_cache(filename_root)
         try:
             self.document_tree.build_document(fake_container)
             self.prepare(fake_container)
             backend_metadata = self._get_backend_metadata()
             self.page_elements.clear()
-            self.part_page_counts = prev_page_counts
-            self.page_references = prev_page_refs.copy()
+            self.part_page_counts, self.page_references = \
+                self._load_cache(filename_root)
             while True:
                 self.backend_document = \
                     self.backend.Document(self.CREATOR, **backend_metadata)
                 self.part_page_counts = self._render_pages()
-                if (self.part_page_counts == prev_page_counts
-                        and self.page_references == prev_page_refs):
+                if self._converged():
                     break
                 if self._single_pass:
                     print('Stopping after first rendering pass.')
                     break
                 print('Not yet converged, rendering again...')
-                prev_page_counts = self.part_page_counts
-                prev_page_refs = self.page_references.copy()
                 del self.backend_document
             self._create_outlines(self.backend_document)
             if filename:
@@ -468,6 +489,8 @@ to the terms of the GNU Affero General Public License version 3.''')
         self.sideways_floats = deque()
         self.registered_sideways_floats = set()
         self.placed_footnotes = set()
+        self._used_page_references = set()
+        self._used_page_counts = set()
         self._start_time = time.time()
 
         part_page_counts = {}
