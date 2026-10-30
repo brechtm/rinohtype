@@ -23,6 +23,7 @@ import string
 from ast import literal_eval
 from collections import OrderedDict, namedtuple
 from contextlib import suppress
+from functools import lru_cache
 from itertools import chain
 from pathlib import Path
 
@@ -1100,13 +1101,50 @@ class StyleLog(object):
         raise NotImplementedError
 
     def write_log(self, document_source_root, filename_root):
+        @lru_cache(maxsize=None)
+        def source_file(filename):
+            """`filename` relative to the document's source directory"""
+            file_path = Path(filename)
+            if file_path.is_absolute():
+                try:
+                    file_path = file_path.relative_to(document_source_root)
+                except ValueError:
+                    pass
+            return f'   {file_path}'
+
+        @lru_cache(maxsize=None)
+        def stylesheet_file(stylesheet):
+            stylesheet_path = Path(stylesheet)
+            if stylesheet_path.is_absolute():
+                stylesheet = stylesheet_path.relative_to(document_source_root)
+            return stylesheet
+
+        levels = {}     # id(element) -> (element, nesting level)
+
+        def nesting_level(element):
+            """Memoized :attr:`Styled.nesting_level`; holds on to the
+            elements, so that their ids are not reused while writing"""
+            try:
+                return levels[id(element)][1]
+            except KeyError:
+                pass
+            parent = element.parent
+            level = (nesting_level(parent) + 1
+                     if isinstance(parent, Styled) else 0)
+            levels[id(element)] = element, level
+            return level
+
         log_path = filename_root.parent / (filename_root.name + '.stylelog')
         with log_path.open('w', encoding='utf-8') as log:
             current_page = None
             current_container = None
+            page = page_number = None
             for entry in self.entries:
-                if entry.page_number != current_page:
-                    current_page = entry.page_number
+                if entry.container.page is not page:
+                    page = entry.container.page
+                    page_number = page.formatted_number
+                if page_number != current_page:
+                    current_page = page_number
                     log.write('{line} page {} {line}\n'.format(current_page,
                                                                line='-' * 34))
                 container = entry.container
@@ -1116,7 +1154,7 @@ class StyleLog(object):
                               .format(type(current_container).__name__,
                                       current_container.name))
                 styled = entry.styled
-                level = styled.nesting_level
+                level = nesting_level(styled)
                 attrs = OrderedDict()
                 style = None
                 indent = '  ' * level
@@ -1132,14 +1170,7 @@ class StyleLog(object):
                                 filename, extra = filename.split(':')
                             except ValueError:
                                 extra = None
-                            file_path = Path(filename)
-                            if file_path.is_absolute():
-                                try:
-                                    file_path = file_path.relative_to(
-                                        document_source_root)
-                                except ValueError:
-                                    pass
-                            loc = f'   {file_path}'
+                            loc = source_file(filename)
                             if line:
                                 loc += f':{line}'
                             if extra:
@@ -1178,10 +1209,7 @@ class StyleLog(object):
                             base_name = ("DEFAULT" if style.base is None
                                          else str(style.base))
                             base = f' > {base_name}'
-                            stylesheet_path = Path(stylesheet)
-                            if stylesheet_path.is_absolute():
-                                stylesheet = stylesheet_path.relative_to(
-                                    document_source_root)
+                            stylesheet = stylesheet_file(stylesheet)
                         else:
                             label = 'x'
                         specificity = ','.join(str(score)

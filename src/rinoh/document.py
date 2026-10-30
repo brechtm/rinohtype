@@ -142,8 +142,7 @@ class Page(Container):
 
     def get_current_section(self, level):
         current_section = None
-        for section in (section for section in self.document._sections
-                        if section.level == level):
+        for section in self.document._sections_by_level.get(level, ()):
             if section.is_hidden(self):
                 continue
             section_id = section.get_id(self.document)
@@ -613,6 +612,10 @@ to the terms of the GNU Affero General Public License version 3.''')
         try:
             self.document_tree.build_document(fake_container)
             self.prepare(fake_container)
+            self._sections_by_level = {}
+            for section in self._sections:
+                self._sections_by_level.setdefault(section.level,
+                                                   []).append(section)
             backend_metadata = self._get_backend_metadata()
             self.page_elements.clear()
             self.part_page_counts, self.page_references = \
