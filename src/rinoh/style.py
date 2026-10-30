@@ -23,6 +23,7 @@ import string
 from ast import literal_eval
 from collections import OrderedDict, namedtuple
 from contextlib import suppress
+from functools import lru_cache
 from itertools import chain
 from pathlib import Path
 
@@ -31,8 +32,7 @@ from .attribute import (WithAttributes, AttributesDictionary,
                         DefaultValueException, Attribute, Bool)
 from .element import DocumentElement
 from .resource import DynamicEntryPoint, Resource, ResourceNotFound
-from .util import (cached, all_subclasses, NotImplementedAttribute,
-                   class_property)
+from .util import all_subclasses, NotImplementedAttribute, class_property
 from .warnings import warn
 
 
@@ -502,9 +502,18 @@ class Styled(DocumentElement, Configurable, metaclass=StyledMeta):
     def get_annotation(self, container):
         return self.annotation
 
-    @cached
     def get_style(self, attribute, container):
-        return self.get_config_value(attribute, container.document)
+        document = container.document
+        try:    # inlined Document.get_computed_style, for speed
+            computed_style = document.element_styles[id(self)].computed_style
+        except KeyError:
+            computed_style = None
+        if computed_style is None:
+            computed_style = document.get_computed_style(self)
+        try:
+            return computed_style.values[attribute]
+        except KeyError:
+            return document.get_style_value(self, attribute)
 
     @property
     def has_id(self):
@@ -689,8 +698,10 @@ class StyleSheet(RuleSet, Resource):
         try:
             for match in document.get_matches(styled):
                 if match.stylesheet:      # style is defined
-                    with suppress(NextMatchException):
+                    try:
                         return self.get_value(match.style_name, attribute)
+                    except NextMatchException:
+                        pass
             raise DefaultValueException   # no matching styles define attribute
         except DefaultValueException:     # fallback to default style
             if not styled.fallback_to_parent(attribute):
@@ -733,6 +744,34 @@ class StyleSheet(RuleSet, Resource):
             yield match
         if self.base is not None:
             yield from self.base.find_matches(styled, document)
+
+    def attribute_tests(self):
+        """Generate the attribute tests performed by the selectors in this
+        style sheet and its base style sheets
+
+        Yields:
+            (StyledMeta, str, object): the class of styled elements the test
+                applies to, the attribute name and the value it is compared to
+
+        """
+        def tests(selector):
+            if isinstance(selector, SelectorWithPriority):
+                yield from tests(selector.selector)
+            elif isinstance(selector, ContextSelector):
+                for child_selector in selector.selectors:
+                    yield from tests(child_selector)
+            elif isinstance(selector, ClassSelectorBase):
+                for attribute, value in selector.attributes.items():
+                    yield selector.cls, attribute, value
+            elif isinstance(selector, SelectorByName):
+                yield from tests(self.get_selector(selector.name))
+            elif not isinstance(selector, EllipsisSelector):
+                raise NotImplementedError(type(selector))
+
+        for selector in self.matcher.by_name.values():
+            yield from tests(selector.flatten(self))
+        if self.base is not None:
+            yield from self.base.attribute_tests()
 
     def write(self, base_filename):
         from configparser import ConfigParser
@@ -1012,6 +1051,29 @@ ZERO_SPECIFICITY = Specificity(0, 0, 0, 0, 0)
 NO_MATCH = Match(None, ZERO_SPECIFICITY)
 
 
+class ComputedStyle(object):
+    """The style attribute values of styled elements that are styled the same
+
+    Styled elements share a computed style when they are of the same type,
+    have the same (inline) style, match the same styles in the style sheet and
+    their parents share a computed style. Such elements obtain the same value
+    for each style attribute, so these only need to be looked up once. The
+    same holds for values derived from these, such as the metrics of text.
+
+    Args:
+        styled (Styled): one of the styled elements sharing this computed
+            style, used to look up the style attribute values
+
+    """
+
+    __slots__ = ('styled', 'values', 'text_metrics')
+
+    def __init__(self, styled):
+        self.styled = styled
+        self.values = {}        # style attribute values
+        self.text_metrics = None    # see paragraph.text_metrics()
+
+
 class StyleLogEntry(object):
     def __init__(self, styled, container, matches, continued,
                  custom_message=None):
@@ -1041,13 +1103,50 @@ class StyleLog(object):
         raise NotImplementedError
 
     def write_log(self, document_source_root, filename_root):
+        @lru_cache(maxsize=None)
+        def source_file(filename):
+            """`filename` relative to the document's source directory"""
+            file_path = Path(filename)
+            if file_path.is_absolute():
+                try:
+                    file_path = file_path.relative_to(document_source_root)
+                except ValueError:
+                    pass
+            return f'   {file_path}'
+
+        @lru_cache(maxsize=None)
+        def stylesheet_file(stylesheet):
+            stylesheet_path = Path(stylesheet)
+            if stylesheet_path.is_absolute():
+                stylesheet = stylesheet_path.relative_to(document_source_root)
+            return stylesheet
+
+        levels = {}     # id(element) -> (element, nesting level)
+
+        def nesting_level(element):
+            """Memoized :attr:`Styled.nesting_level`; holds on to the
+            elements, so that their ids are not reused while writing"""
+            try:
+                return levels[id(element)][1]
+            except KeyError:
+                pass
+            parent = element.parent
+            level = (nesting_level(parent) + 1
+                     if isinstance(parent, Styled) else 0)
+            levels[id(element)] = element, level
+            return level
+
         log_path = filename_root.parent / (filename_root.name + '.stylelog')
         with log_path.open('w', encoding='utf-8') as log:
             current_page = None
             current_container = None
+            page = page_number = None
             for entry in self.entries:
-                if entry.page_number != current_page:
-                    current_page = entry.page_number
+                if entry.container.page is not page:
+                    page = entry.container.page
+                    page_number = page.formatted_number
+                if page_number != current_page:
+                    current_page = page_number
                     log.write('{line} page {} {line}\n'.format(current_page,
                                                                line='-' * 34))
                 container = entry.container
@@ -1057,7 +1156,7 @@ class StyleLog(object):
                               .format(type(current_container).__name__,
                                       current_container.name))
                 styled = entry.styled
-                level = styled.nesting_level
+                level = nesting_level(styled)
                 attrs = OrderedDict()
                 style = None
                 indent = '  ' * level
@@ -1073,14 +1172,7 @@ class StyleLog(object):
                                 filename, extra = filename.split(':')
                             except ValueError:
                                 extra = None
-                            file_path = Path(filename)
-                            if file_path.is_absolute():
-                                try:
-                                    file_path = file_path.relative_to(
-                                        document_source_root)
-                                except ValueError:
-                                    pass
-                            loc = f'   {file_path}'
+                            loc = source_file(filename)
                             if line:
                                 loc += f':{line}'
                             if extra:
@@ -1119,10 +1211,7 @@ class StyleLog(object):
                             base_name = ("DEFAULT" if style.base is None
                                          else str(style.base))
                             base = f' > {base_name}'
-                            stylesheet_path = Path(stylesheet)
-                            if stylesheet_path.is_absolute():
-                                stylesheet = stylesheet_path.relative_to(
-                                    document_source_root)
+                            stylesheet = stylesheet_file(stylesheet)
                         else:
                             label = 'x'
                         specificity = ','.join(str(score)

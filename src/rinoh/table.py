@@ -8,7 +8,7 @@
 
 from collections.abc import Iterable
 from itertools import chain
-from functools import partial
+from functools import cached_property, partial
 from math import sqrt
 from token import NAME
 
@@ -302,8 +302,7 @@ class Table(Flowable):
         def cell_content_width(cell):
             buffer = VirtualContainer(container, width=max_cell_width,
                                       never_placed=True)
-            width, _, _ = cell.flow(buffer, None)
-            return float(width)
+            return float(cell.flow_width(buffer))
 
         widths = [width if width else 0 for width in fixed]
         fixed_width_cols = set(i for i, width in enumerate(widths) if width)
@@ -440,6 +439,25 @@ class TableSection(Styled, list):
     def num_columns(self):
         return sum(cell.colspan for cell in self[0])
 
+    @cached_property
+    def _grid(self):
+        """Map the rows to their index and the cells to their column index
+        (by `id`), taking into account cells spanning multiple rows/columns"""
+        indices = {}
+        occupied = set()    # (row, column) positions covered by spanning cells
+        for row_index, row in enumerate(self):
+            indices[id(row)] = row_index
+            column_index = 0
+            for cell in row:
+                while (row_index, column_index) in occupied:
+                    column_index += 1
+                indices[id(cell)] = column_index
+                occupied.update((row_index + i, column_index + j)
+                                for i in range(cell.rowspan)
+                                for j in range(cell.colspan))
+                column_index += cell.colspan
+        return indices
+
 
 class TableHead(TableSection):
     pass
@@ -466,25 +484,7 @@ class TableRow(Styled, list):
 
     @property
     def _index(self):
-        return next(i for i, item in enumerate(self.parent) if item is self)
-
-    def get_rowspanned_columns(self):
-        """Return a dictionary mapping column indices to the number of columns
-        spanned."""
-        section = self.parent
-        spanned_columns = {}
-        current_row_index = self._index
-        current_row_cols = sum(cell.colspan for cell in self)
-        prev_rows = iter(reversed(section[:current_row_index]))
-        while current_row_cols < section.num_columns:
-            row = next(prev_rows)
-            min_rowspan = current_row_index - int(row._index)
-            if row.maximum_rowspan > min_rowspan:
-                for cell in (c for c in row if c.rowspan > min_rowspan):
-                    col_index = int(cell.column_index)
-                    spanned_columns[col_index] = cell.colspan
-                    current_row_cols += cell.colspan
-        return spanned_columns
+        return self.parent._grid[id(self)]
 
 
 class VerticalAlign(OptionSet):
@@ -530,13 +530,12 @@ class Index(object):
         return self.row.parent
 
     def __eq__(self, other):
+        num_items = self.num_items
         if isinstance(other, slice):
-            indices = range(*other.indices(self.num_items))
-        elif isinstance(other, Iterable):
-            indices = other
+            indices = range(*other.indices(num_items))
         else:
-            indices = (other, )
-        indices = [self.num_items + idx if idx < 0 else idx for idx in indices]
+            indices = other if isinstance(other, Iterable) else (other, )
+            indices = [num_items + idx if idx < 0 else idx for idx in indices]
         return any(index in indices for index in self)
 
     def __int__(self):
@@ -548,8 +547,7 @@ class Index(object):
 
 class RowIndex(Index):
     def __int__(self):
-        return next(i for i, row in enumerate(self.table_section)
-                    if row is self.row)
+        return self.row._index
 
     def __iter__(self):
         index = int(self)
@@ -562,17 +560,7 @@ class RowIndex(Index):
 
 class ColumnIndex(Index):
     def __int__(self):
-        spanned_columns = self.row.get_rowspanned_columns()
-        column_index = 0
-        cells = iter(self.row)
-        for col_index in range(self.cell.row.parent.num_columns):
-            if col_index in spanned_columns:
-                column_index += spanned_columns[col_index]
-            else:
-                cell = next(cells)
-                if cell is self.cell:
-                    return column_index
-                column_index += cell.colspan
+        return self.table_section._grid[id(self.cell)]
 
     def __iter__(self):
         index = int(self)

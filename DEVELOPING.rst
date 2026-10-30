@@ -152,6 +152,29 @@ these for you (skipping any that are already installed).
 .. _pyenv-win: https://github.com/pyenv-win/pyenv-win
 
 
+Benchmarking
+------------
+
+``benchmarks/refmanual.py`` renders ``benchmarks/refmanual.rst``, a small
+reference manual with tables spanning pages, code blocks, lists and
+cross-references, and measures a single rendering pass::
+
+    python benchmarks/refmanual.py                  # wall-clock/CPU time
+    python benchmarks/refmanual.py --instructions   # instruction count
+
+Wall-clock times vary with CPU clock speed and system load. With
+``--instructions``, the script runs itself under Valgrind_'s cachegrind tool
+and reports the number of CPU instructions executed while rendering, which is
+reproducible to within a millionth (this takes up to a few minutes, and only
+works on x86-64 Linux). It also reports the peak memory allocated while
+rendering, as traced by Python's tracemalloc. Only compare these numbers when
+obtained with the same Python interpreter and dependency versions, from the
+same checkout directory. ``--profile FILE`` stores a per-function profile that
+can be inspected using ``cg_annotate FILE``.
+
+.. _Valgrind: https://valgrind.org
+
+
 Continuous integration
 ----------------------
 

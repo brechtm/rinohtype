@@ -29,9 +29,49 @@ Changed:
 * Project metadata in ``pyproject.toml`` is now declared in the standard
   ``[project]`` table (PEP 621) instead of the deprecated ``[tool.poetry]``
   fields. This also removes all ``poetry check`` warnings.
+* The destination for an inline index target (e.g. Sphinx's ``:index:``
+  role) now points to the indexed term instead of to the left edge of the
+  page.
+* Rendering is only repeated when a page reference or page count that was
+  used while rendering turned out to be different. Previously, a document
+  was always rendered twice when no references cache was available.
+* Rendering performance (issue #455):
+
+  - The garbage collector is disabled while rendering, and the objects
+    created while rendering are excluded from later collections until
+    ``render()`` is called again.
+  - OpenType fonts load faster: font tables are parsed when first needed
+    (the unused fonts of a typeface are hardly parsed at all), glyph bounding
+    boxes are no longer read and kerning tables are read in bulk.
+  - The closest font for a requested style is looked up only once per
+    typeface. As a result, the warning about a missing font style is only
+    emitted once.
+  - Styled elements that are styled identically share their computed style,
+    so that each style attribute is looked up only once for all of them.
+  - Styled elements that match the same selectors share their matching
+    styles, so that the style sheet is searched only once for all of them.
+  - A paragraph's words are created only once per rendering pass instead of
+    each time it is rendered (measured, retried).
+  - The font and metrics of text are looked up only once for each distinct
+    text style.
+  - Table column widths and label widths are determined from the content's
+    line breaks instead of by rendering the content
+    (``Flowable.flow_width``), falling back to rendering for flowables that
+    don't support this.
+  - Each distinct word is set in glyphs (ligatures, kerning) and encoded
+    for the PDF only once per document instead of for each occurrence.
+
+* Memory usage: the contents of a page's containers are written directly to
+  the page instead of being copied into each enclosing container, and
+  containers only get a canvas when something is drawn on them. This
+  considerably reduces the peak memory usage for long documents.
 
 
 Fixed:
+
+* Index entries for terms in a paragraph that continues on the next page
+  referred to the next page.
+* A literal block continued on the next page started with an empty line.
 
 
 Release 0.5.6 (2026-05-15)

@@ -6,6 +6,7 @@
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
 
+from .annotation import AnnotatedSpan, NamedDestination
 from .attribute import Attribute, Bool
 from .flowable import GroupedFlowables, GroupedFlowablesStyle, DummyFlowable
 from .paragraph import Paragraph
@@ -13,7 +14,7 @@ from .reference import Reference
 from .strings import StringField
 from .structure import Section, Heading
 from .style import Styled
-from .text import MixedStyledText, StyledText
+from .text import MixedStyledText, SingleStyledText, StyledText
 from .util import intersperse
 
 
@@ -174,8 +175,15 @@ class InlineIndexTarget(IndexTargetBase, StyledText):
         return MixedStyledText([])
 
     def spans(self, container):
-        self.create_destination(container)
-        return iter([])
+        # an empty span that places the destination along with the text
+        ids = self.get_ids(container.document)
+        destination = NamedDestination(*(str(id) for id in ids))
+        yield AnnotatedSpan(SingleStyledText('', parent=self),
+                            anchor=destination)
+
+    def before_placing(self, container, preallocate=False):
+        container.document.register_page_reference(container.page, self)
+        super().before_placing(container, preallocate)
 
 
 class IndexTarget(IndexTargetBase, DummyFlowable):
