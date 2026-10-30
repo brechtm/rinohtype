@@ -58,6 +58,8 @@ Changed:
     line breaks instead of by rendering the content
     (``Flowable.flow_width``), falling back to rendering for flowables that
     don't support this.
+  - Each distinct word is set in glyphs (ligatures, kerning) and encoded
+    for the PDF only once per document instead of for each occurrence.
 
 * Memory usage: the contents of a page's containers are written directly to
   the page instead of being copied into each enclosing container, and
