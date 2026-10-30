@@ -159,7 +159,7 @@ class Container(object):
 
     @property
     def document_part(self):
-        return self.parent.document_part
+        return self.page.document_part
 
     @cached_property
     def document(self):
@@ -264,11 +264,12 @@ class FlowablesContainerBase(Container):
     # the cached height limits of all containers (see :meth:`_limit`)
     _geometry_epoch = 0
 
+    _advance_parent = None      # container advanced along with this one
+
     def __init__(self, name, type, parent, left=None, top=None,
                  width=None, height=None, right=None, bottom=None,
                  vertically_center_content=False):
         self._cursor = 0.0      # initialized at container's top edge
-        self._advance_parent = None     # container advanced along with self
         self._limit_cache = (None, None)
         self._placed_styleds = {}
         super().__init__(name, parent, left=left, top=top, width=width,
@@ -294,10 +295,11 @@ class FlowablesContainerBase(Container):
             self._grow(- self._cursor)
 
     def mark_page_nonempty(self):
-        if self.type == CONTENT:
-            self.page._empty = False
-        elif self.type is None:
-            self.parent.mark_page_nonempty()
+        container = self
+        while container.type is None:
+            container = container.parent
+        if container.type == CONTENT:
+            container.page._empty = False
 
     @property
     def cursor(self):
@@ -491,15 +493,46 @@ class ConditionalDownExpandingContainerBase(DownExpandingContainerBase):
     containers it advances."""
 
     _changes_geometry = False
+    sideways = None
+    vertically_center_content = False
 
     def __init__(self, name, type, parent, left=None, top=None, width=None,
                  right=None, max_height=None, place=True):
-        super().__init__(name, type, parent, left=left, top=top, width=width,
-                         right=right, max_height=max_height)
-        self.left = float(self.left)
-        self.width = float(self.width)
-        self.right = float(self.right)
+        # many of these are created while flowing; so instead of going through
+        # the base classes' __init__, initialize all attributes directly
+        if left is None:
+            left = 0.0 if (right and width) is None else right - width
+        left = float(left)
+        if width is None:
+            width = (float(parent.width) if right is None
+                     else float(right)) - left
+        else:
+            width = float(width)
+        self.left = left
+        self.width = width
+        self.right = left + width if right is None else float(right)
+        self.top = 0.0 if top is None else float(top)
+        self.name = name
+        self.parent = parent
+        self.document = parent.document
+        if self.register_with_parent:
+            parent.children.append(self)
+        self.children = []
+        self._canvas = None
+        self._cursor = 0.0
+        self._limit_cache = (None, None)
+        self._placed_styleds = {}
+        self.type = type
+        self.max_height = max_height or float('+inf')
         self._do_place = place
+
+    @property
+    def height(self):
+        return ContainerHeight(self)
+
+    @property
+    def bottom(self):
+        return self.top + self.height
 
     def do_place(self, place=True):
         self._do_place = place
