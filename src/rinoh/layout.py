@@ -32,7 +32,7 @@ from contextlib import contextmanager
 from copy import copy
 from functools import cached_property
 
-from .dimension import Dimension, PT, DimensionAddition
+from .dimension import DimensionBase, PT
 from .util import ContextManager
 
 
@@ -256,11 +256,20 @@ class FlowablesContainerBase(Container):
     area on a page. The first flowable is rendered at the top of the container.
     The next flowable is rendered below the first one, and so on."""
 
+    # whether growing this container can affect the geometry of other
+    # containers (through the lazily evaluated dimensions of page templates)
+    _changes_geometry = False
+
+    # incremented whenever such a container's height changes; invalidates
+    # the cached height limits of all containers (see :meth:`_limit`)
+    _geometry_epoch = 0
+
     def __init__(self, name, type, parent, left=None, top=None,
                  width=None, height=None, right=None, bottom=None,
                  vertically_center_content=False):
-        self._self_cursor = Dimension(0)  # initialized at container's top edge
-        self._cursor = DimensionAddition(self._self_cursor)
+        self._cursor = 0.0      # initialized at container's top edge
+        self._advance_parent = None     # container advanced along with self
+        self._limit_cache = (None, None)
         self._placed_styleds = {}
         super().__init__(name, parent, left=left, top=top, width=width,
                          height=height, right=right, bottom=bottom)
@@ -276,10 +285,13 @@ class FlowablesContainerBase(Container):
 
     def clear(self):
         super().clear()
+        for child in self.children:
+            if getattr(child, '_advance_parent', None) is self:
+                child._advance_parent = None
         del self.children[:]
         self._placed_styleds.clear()
-        self._self_cursor._value = 0  # initialized at container's top edge
-        del self._cursor.addends[1:]
+        if self._cursor:    # reset to the container's top edge
+            self._grow(- self._cursor)
 
     def mark_page_nonempty(self):
         if self.type == CONTENT:
@@ -291,20 +303,44 @@ class FlowablesContainerBase(Container):
     def cursor(self):
         """Keeps track of where the next flowable is to be placed. As flowables
         are flowed into the container, the cursor moves down."""
-        return float(self._cursor)
+        return self._cursor
+
+    def _limit(self):
+        """The height this container's cursor can advance to"""
+        epoch = FlowablesContainerBase._geometry_epoch
+        cache_epoch, limit = self._limit_cache
+        if cache_epoch != epoch:
+            limit = self._evaluate_limit()
+            self._limit_cache = (epoch, limit)
+        return limit
+
+    def _evaluate_limit(self):
+        return float(self.height)
 
     @property
     def remaining_height(self):
-        return self.height - self.cursor
+        return self._limit() - self._cursor
+
+    def _grow(self, height):
+        """Move the cursor down by `height`, together with the cursors of
+        the containers this container advances"""
+        height = float(height)
+        container = self
+        while container is not None:
+            container._cursor += height
+            if container._changes_geometry:
+                FlowablesContainerBase._geometry_epoch += 1
+            container = container._advance_parent
 
     def advance(self, height, ignore_overflow=False):
         """Advance the cursor by `height`. If this would cause the cursor to
         point beyond the bottom of the container, an :class:`EndOfContainer`
         exception is raised."""
-        if height <= self.remaining_height + FLOATING_POINT_FUZZ:
-            self._self_cursor.grow(height)
+        remaining_height = self._limit() - self._cursor
+        if height <= remaining_height + FLOATING_POINT_FUZZ:
+            self._grow(height)
         elif ignore_overflow:
-            self._self_cursor.grow(float(self.remaining_height))
+            self._grow(remaining_height)
         else:
             raise ContainerOverflow(self.page.number)
 
@@ -315,10 +351,11 @@ class FlowablesContainerBase(Container):
         bottom of the container.
 
         """
-        if height <= self.remaining_height + FLOATING_POINT_FUZZ:
-            self._self_cursor.grow(height)
+        remaining_height = self._limit() - self._cursor
+        if height <= remaining_height + FLOATING_POINT_FUZZ:
+            self._grow(height)
         elif ignore_overflow:
-            self._self_cursor.grow(float(self.remaining_height))
+            self._grow(remaining_height)
         else:
             return False
         return True
@@ -391,8 +428,20 @@ class ChainedContainer(FlowablesContainerBase):
         self.chain.render(self, rerender=rerender)
 
 
+class ContainerHeight(DimensionBase):
+    """The height of an expanding container: its cursor position"""
+
+    def __init__(self, container):
+        self.container = container
+
+    def __float__(self):
+        return self.container._cursor
+
+
 class ExpandingContainerBase(FlowablesContainerBase):
     """A dynamically, vertically growing :class:`Container`."""
+
+    _changes_geometry = True
 
     def __init__(self, name, type, parent, left=None, top=None, width=None,
                  right=None, bottom=None, max_height=None):
@@ -400,15 +449,13 @@ class ExpandingContainerBase(FlowablesContainerBase):
         `width` and `right` parameters.
 
         `max_height` is the maximum height this container can grow to."""
-        height = DimensionAddition()
-        super().__init__(name, type, parent, left=left, top=top,
-                         width=width, height=height, right=right, bottom=bottom)
-        self.height.addends.append(self._cursor)
+        super().__init__(name, type, parent, left=left, top=top, width=width,
+                         height=ContainerHeight(self), right=right,
+                         bottom=bottom)
         self.max_height = max_height or float('+inf')
 
-    @property
-    def remaining_height(self):
-        return self.max_height - self.cursor
+    def _evaluate_limit(self):
+        return float(self.max_height)
 
 
 class DownExpandingContainerBase(ExpandingContainerBase):
@@ -436,10 +483,22 @@ class DownExpandingContainer(_FlowablesContainer, ExpandingContainerBase):
 
 
 class ConditionalDownExpandingContainerBase(DownExpandingContainerBase):
+    """Expanding container used while flowing flowables, as opposed to the
+    containers defined by page templates
+
+    Its horizontal geometry is evaluated on creation. Growing it does not
+    affect the geometry of any template-defined container, except through the
+    containers it advances."""
+
+    _changes_geometry = False
+
     def __init__(self, name, type, parent, left=None, top=None, width=None,
                  right=None, max_height=None, place=True):
         super().__init__(name, type, parent, left=left, top=top, width=width,
                          right=right, max_height=max_height)
+        self.left = float(self.left)
+        self.width = float(self.width)
+        self.right = float(self.right)
         self._do_place = place
 
     def do_place(self, place=True):
@@ -468,10 +527,15 @@ class InlineDownExpandingContainer(ConditionalDownExpandingContainerBase):
     def __init__(self, name, parent, left=None, width=None, right=None,
                  advance_parent=True, place=True):
         super().__init__(name, None, parent, left=left, top=parent.cursor,
-                         width=width, right=right,
-                         max_height=parent.remaining_height, place=place)
+                         width=width, right=right, place=place)
+        self._limit_parent = parent
+        self._limit_offset = parent.cursor
         if advance_parent:
-            parent._cursor.addends.append(self._cursor)
+            self._advance_parent = parent
+
+    def _evaluate_limit(self):
+        # the parent's remaining height at the time this container was created
+        return self._limit_parent._limit() - self._limit_offset
 
 
 class UpExpandingContainer(_FlowablesContainer, ExpandingContainerBase):
@@ -600,10 +664,11 @@ class FootnoteContainer(UpExpandingContainer):
             self._descenders = [0]
             self._allocation_phase = False
             self._placed_footnotes.clear()
-        if self._reflowed:
-            self._cursor.addends.pop()
+        if self._reflowed:      # discard the footnotes flowed last time
+            self._footnotes_container._advance_parent = None
+            self._grow(- self._footnotes_container.cursor)
             self._descenders.pop()
-        maybe_container = _MaybeContainer(self)
+        maybe_container = self._footnotes_container = _MaybeContainer(self)
         for i, footnote in enumerate(self.footnotes):
             footnote_id = footnote.get_id(self.document)
             if footnote_id not in (self._placed_footnotes
