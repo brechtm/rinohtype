@@ -502,7 +502,17 @@ class Styled(DocumentElement, Configurable, metaclass=StyledMeta):
         return self.annotation
 
     def get_style(self, attribute, container):
-        return container.document.get_style_value(self, attribute)
+        document = container.document
+        try:    # inlined Document.get_computed_style, for speed
+            computed_style = document.element_styles[id(self)].computed_style
+        except KeyError:
+            computed_style = None
+        if computed_style is None:
+            computed_style = document.get_computed_style(self)
+        try:
+            return computed_style.values[attribute]
+        except KeyError:
+            return document.get_style_value(self, attribute)
 
     @property
     def has_id(self):
@@ -733,6 +743,34 @@ class StyleSheet(RuleSet, Resource):
             yield match
         if self.base is not None:
             yield from self.base.find_matches(styled, document)
+
+    def attribute_tests(self):
+        """Generate the attribute tests performed by the selectors in this
+        style sheet and its base style sheets
+
+        Yields:
+            (StyledMeta, str, object): the class of styled elements the test
+                applies to, the attribute name and the value it is compared to
+
+        """
+        def tests(selector):
+            if isinstance(selector, SelectorWithPriority):
+                yield from tests(selector.selector)
+            elif isinstance(selector, ContextSelector):
+                for child_selector in selector.selectors:
+                    yield from tests(child_selector)
+            elif isinstance(selector, ClassSelectorBase):
+                for attribute, value in selector.attributes.items():
+                    yield selector.cls, attribute, value
+            elif isinstance(selector, SelectorByName):
+                yield from tests(self.get_selector(selector.name))
+            elif not isinstance(selector, EllipsisSelector):
+                raise NotImplementedError(type(selector))
+
+        for selector in self.matcher.by_name.values():
+            yield from tests(selector.flatten(self))
+        if self.base is not None:
+            yield from self.base.attribute_tests()
 
     def write(self, base_filename):
         from configparser import ConfigParser

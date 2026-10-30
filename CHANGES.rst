@@ -48,6 +48,8 @@ Changed:
     emitted once.
   - Styled elements that are styled identically share their computed style,
     so that each style attribute is looked up only once for all of them.
+  - Styled elements that match the same selectors share their matching
+    styles, so that the style sheet is searched only once for all of them.
 
 * Memory usage: the contents of a page's containers are written directly to
   the page instead of being copied into each enclosing container, and
