@@ -260,8 +260,9 @@ class Document(object):
         self.language = language
         self._strings = strings or Strings()
         self.backend = backend or pdf
-        self._flowables = list(id(element)
-                               for element in document_tree.elements)
+        # for the progress indicator: the position of each element
+        self._element_index = {id(element): index for index, element
+                               in enumerate(document_tree.elements)}
 
         self.metadata = Metadata(self, date=datetime.date.today())
         self.counters = {}             # counters for Headings, Figures, Tables
@@ -578,11 +579,11 @@ to the terms of the GNU Affero General Public License version 3.''')
 
     def progress(self, flowable, container):
         try:
-            index = self._flowables.index(id(flowable))
-        except ValueError:
+            index = self._element_index[id(flowable)]
+        except KeyError:
             pass
         else:
-            percent = 100 * (index + 1) / len(self._flowables)
+            percent = 100 * (index + 1) / len(self._element_index)
             time_passed = time.time() - self._start_time
             passed = int(time_passed)
             eta = int(time_passed / percent * (100 - percent))
