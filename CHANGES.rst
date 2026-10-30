@@ -29,6 +29,9 @@ Changed:
 * Project metadata in ``pyproject.toml`` is now declared in the standard
   ``[project]`` table (PEP 621) instead of the deprecated ``[tool.poetry]``
   fields. This also removes all ``poetry check`` warnings.
+* The destination for an inline index target (e.g. Sphinx's ``:index:``
+  role) now points to the indexed term instead of to the left edge of the
+  page.
 
 
 Fixed:

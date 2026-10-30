@@ -625,7 +625,10 @@ class ParagraphState(FlowableState):
                 no_break_after = self.language.no_break_after
             try:
                 get_glyph_metrics, lig_kern = create_lig_kern(span, container)
-                groups = groupby(iter(span.text(container)), WHITESPACE.get)
+                text = span.text(container)
+                if not text and getattr(span, 'anchor_annotation', None):
+                    word.append(GlyphsSpan(span, lig_kern))   # place anchor
+                groups = groupby(iter(text), WHITESPACE.get)
                 for _ in range(self.group_index):
                     next(groups)
                 group_index = self.group_index
