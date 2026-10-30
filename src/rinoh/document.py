@@ -46,7 +46,8 @@ from .layout import (Container, ReflowRequired,
 from .number import NumberFormatBase, format_number
 from .reference import ReferenceType
 from .strings import Strings
-from .style import Match, StyleLog, ZERO_SPECIFICITY
+from .style import (ComputedStyle, Match, Style, Styled, StyleLog,
+                    ZERO_SPECIFICITY)
 from .text import StyledText
 from .util import DEFAULT, WeakMutableKeyDictionary
 from .warnings import warn
@@ -272,6 +273,8 @@ class Document(object):
         self.page_elements = {}        # mapping id's to pages
         self.page_references = {}      # mapping id's to page numbers
         self._styled_matches = WeakMutableKeyDictionary()   # cache matching styles
+        self._computed_styles = WeakMutableKeyDictionary()  # styled -> computed
+        self._shared_computed_styles = {}   # computed styles by sharing key
         self._sections = []
         self.index_entries = {}
         self._glossary = {}
@@ -349,6 +352,38 @@ to the terms of the GNU Affero General Public License version 3.''')
                     for id, page_reference in self._used_page_references)
                 and all(page_count(part_name) == count
                         for part_name, count in self._used_page_counts))
+
+    def get_computed_style(self, styled):
+        """Return the :class:`.ComputedStyle` for `styled`"""
+        try:
+            return self._computed_styles[styled]
+        except KeyError:
+            pass
+        parent = styled.parent
+        parent_key = (self.get_computed_style(parent)
+                      if isinstance(parent, Styled) else id(parent))
+        style = styled.style
+        style_key = id(style) if isinstance(style, Style) else style
+        matches = tuple(match.style_name for match in self.get_matches(styled)
+                        if match.stylesheet)
+        key = type(styled), style_key, matches, parent_key
+        try:
+            computed_style = self._shared_computed_styles[key]
+        except KeyError:
+            computed_style = ComputedStyle(styled)
+            self._shared_computed_styles[key] = computed_style
+        self._computed_styles[styled] = computed_style
+        return computed_style
+
+    def get_style_value(self, styled, attribute):
+        """Return the value of the style `attribute` for `styled`"""
+        computed_style = self.get_computed_style(styled)
+        try:
+            return computed_style.values[attribute]
+        except KeyError:
+            value = computed_style.styled.get_config_value(attribute, self)
+            computed_style.values[attribute] = value
+            return value
 
     def get_matches(self, styled):
         styled_matches = self._styled_matches

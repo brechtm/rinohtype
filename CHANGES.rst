@@ -46,6 +46,8 @@ Changed:
   - The closest font for a requested style is looked up only once per
     typeface. As a result, the warning about a missing font style is only
     emitted once.
+  - Styled elements that are styled identically share their computed style,
+    so that each style attribute is looked up only once for all of them.
 
 * Memory usage: the contents of a page's containers are written directly to
   the page instead of being copied into each enclosing container, and

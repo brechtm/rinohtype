@@ -746,7 +746,7 @@ class ParagraphBase(Flowable, Label):
             parent_ref = document.get_reference(parent_id, 'number', None)
             if parent_ref:
                 separator_string = separator.to_string(container)
-                label = parent_ref + separator_string + label
+                label = copy(parent_ref) + separator_string + label
         return label
 
     def number(self, container):

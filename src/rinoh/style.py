@@ -31,8 +31,7 @@ from .attribute import (WithAttributes, AttributesDictionary,
                         DefaultValueException, Attribute, Bool)
 from .element import DocumentElement
 from .resource import DynamicEntryPoint, Resource, ResourceNotFound
-from .util import (cached, all_subclasses, NotImplementedAttribute,
-                   class_property)
+from .util import all_subclasses, NotImplementedAttribute, class_property
 from .warnings import warn
 
 
@@ -502,9 +501,8 @@ class Styled(DocumentElement, Configurable, metaclass=StyledMeta):
     def get_annotation(self, container):
         return self.annotation
 
-    @cached
     def get_style(self, attribute, container):
-        return self.get_config_value(attribute, container.document)
+        return container.document.get_style_value(self, attribute)
 
     @property
     def has_id(self):
@@ -689,8 +687,10 @@ class StyleSheet(RuleSet, Resource):
         try:
             for match in document.get_matches(styled):
                 if match.stylesheet:      # style is defined
-                    with suppress(NextMatchException):
+                    try:
                         return self.get_value(match.style_name, attribute)
+                    except NextMatchException:
+                        pass
             raise DefaultValueException   # no matching styles define attribute
         except DefaultValueException:     # fallback to default style
             if not styled.fallback_to_parent(attribute):
@@ -1010,6 +1010,27 @@ class Match(object):
 ZERO_SPECIFICITY = Specificity(0, 0, 0, 0, 0)
 
 NO_MATCH = Match(None, ZERO_SPECIFICITY)
+
+
+class ComputedStyle(object):
+    """The style attribute values of styled elements that are styled the same
+
+    Styled elements share a computed style when they are of the same type,
+    have the same (inline) style, match the same styles in the style sheet and
+    their parents share a computed style. Such elements obtain the same value
+    for each style attribute, so these only need to be looked up once.
+
+    Args:
+        styled (Styled): one of the styled elements sharing this computed
+            style, used to look up the style attribute values
+
+    """
+
+    __slots__ = ('styled', 'values')
+
+    def __init__(self, styled):
+        self.styled = styled
+        self.values = {}        # style attribute values
 
 
 class StyleLogEntry(object):
