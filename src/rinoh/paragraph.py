@@ -865,6 +865,26 @@ class ParagraphBase(Flowable, Label):
     def _text(self, container):
         raise NotImplementedError('{}.text()'.format(self.__class__.__name__))
 
+    def _tab_stops(self, container):
+        tab_stops = self.get_style('tab_stops', container)
+        if not tab_stops:
+            tab_width = 2 * self.get_style('font_size', container)
+            tab_stops = DefaultTabStops(tab_width)
+        return tab_stops
+
+    def content_width(self, width, container):
+        if type(self).render is not ParagraphBase.render:
+            return None
+        words, _ = self.words(container)
+        if any(isinstance(glyphs_span, InlineFlowableSpan)
+               for word in words for glyphs_span in word):
+            return None     # their size can depend on the container width
+        indent_first = float(self.get_style('indent_first', container))
+        lines = break_lines(words, 0, None, float(width), indent_first,
+                            self._tab_stops(container),
+                            self.significant_whitespace, container)
+        return max([0, *(line.cursor for line, *_ in lines if line)])
+
     def render(self, container, descender, state, space_below=0,
                first_line_only=False):
         """Typeset the paragraph
@@ -886,10 +906,7 @@ class ParagraphBase(Flowable, Label):
         line_width = float(container.width)
         line_spacing = self.get_style('line_spacing', container)
         text_align = self.get_style('text_align', container)
-        tab_stops = self.get_style('tab_stops', container)
-        if not tab_stops:
-            tab_width = 2 * self.get_style('font_size', container)
-            tab_stops = DefaultTabStops(tab_width)
+        tab_stops = self._tab_stops(container)
         split_minimum_lines = self.get_style('split_minimum_lines', container)
         words, registrations = self.words(container)
 

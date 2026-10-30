@@ -302,8 +302,7 @@ class Table(Flowable):
         def cell_content_width(cell):
             buffer = VirtualContainer(container, width=max_cell_width,
                                       never_placed=True)
-            width, _, _ = cell.flow(buffer, None)
-            return float(width)
+            return float(cell.flow_width(buffer))
 
         widths = [width if width else 0 for width in fixed]
         fixed_width_cols = set(i for i, width in enumerate(widths) if width)

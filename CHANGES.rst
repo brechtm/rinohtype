@@ -54,6 +54,10 @@ Changed:
     each time it is rendered (measured, retried).
   - The font and metrics of text are looked up only once for each distinct
     text style.
+  - Table column widths and label widths are determined from the content's
+    line breaks instead of by rendering the content
+    (``Flowable.flow_width``), falling back to rendering for flowables that
+    don't support this.
 
 * Memory usage: the contents of a page's containers are written directly to
   the page instead of being copied into each enclosing container, and
