@@ -319,6 +319,8 @@ class Flowable(Styled):
         return state, bordered_width, top_to_baseline, descender
 
     def render_frame(self, container, width, height, top=True, bottom=True):
+        if container.never_placed:      # only measuring; no need to draw
+            return
         width, height = float(width), - float(height)
         border = self.get_style('border', container)
         border_left = self.get_style('border_left', container) or border
@@ -326,9 +328,11 @@ class Flowable(Styled):
         border_top = self.get_style('border_top', container) or border
         border_bottom = self.get_style('border_bottom', container) or border
         background_color = self.get_style('background_color', container)
-        fill_style = ShapeStyle(stroke=None, fill_color=background_color)
-        rect = Rectangle((0, 0), width, height, style=fill_style, parent=self)
-        rect.render(container)
+        if background_color:
+            fill_style = ShapeStyle(stroke=None, fill_color=background_color)
+            rect = Rectangle((0, 0), width, height, style=fill_style,
+                             parent=self)
+            rect.render(container)
 
         def offset_border(coord, stroke, corr_x, corr_y):
             return (coord + corr * float(stroke.width) / 2
@@ -738,7 +742,7 @@ class LabeledFlowable(Flowable):
     def label_width(self, container):
         label_min_width = self.get_style('label_min_width', container)
         label_max_width = self.get_style('label_max_width', container)
-        virtual_container = VirtualContainer(container)
+        virtual_container = VirtualContainer(container, never_placed=True)
         label_width, _, _ = self.label.flow(virtual_container, 0)
         spillover = (label_width > label_max_width.to_points(container.width)
                      if label_max_width else True)
@@ -768,7 +772,8 @@ class LabeledFlowable(Flowable):
             label_spillover = True
         elif free_label_width > label_width:
             if style('wrap_label'):
-                vcontainer = VirtualContainer(container, width=label_max_width)
+                vcontainer = VirtualContainer(container, width=label_max_width,
+                                              never_placed=True)
                 wrapped_width, _, _ = self.label.flow(vcontainer, 0)
                 if wrapped_width < label_max_width:
                     label_width = wrapped_width
@@ -855,7 +860,7 @@ class LabeledFlowable(Flowable):
 
 
 def find_baseline(flowable, container, last_descender, state=None, **kwargs):
-    virtual_container = VirtualContainer(container)
+    virtual_container = VirtualContainer(container, never_placed=True)
     inline_ctnr = InlineDownExpandingContainer('DUMMY', virtual_container,
                                                advance_parent=False)
     _, baseline, _ = flowable.flow(inline_ctnr, last_descender,

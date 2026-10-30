@@ -1233,13 +1233,15 @@ class Line(list):
         else:   # abort if the line is empty
             return
 
+        if container.never_placed:      # only measuring; no need to draw
+            return
+
         descender = self.descender(container)
         # Temporarily advance with descender so that overflow on
         # before_placing (e.g. footnotes) can be detected
         assert container.advance2(- descender)
-        if not container.never_placed:
-            for glyph_span in self:
-                glyph_span.span.before_placing(container, preallocate=True)
+        for glyph_span in self:
+            glyph_span.span.before_placing(container, preallocate=True)
         assert container.advance2(descender)
 
         # horizontal displacement

@@ -165,7 +165,7 @@ class Container(object):
     def document(self):
         return self.parent.document
 
-    @property
+    @cached_property
     def never_placed(self):
         return self._never_placed or (self.parent.never_placed if self.parent
                                       else False)
@@ -649,7 +649,7 @@ class VirtualContainer(ConditionalDownExpandingContainerBase):
 
     def place_at(self, parent_container, left, top):
         self.parent = parent_container
-        for cached in ('page', 'top_level_container'):    # parent changed
+        for cached in ('page', 'top_level_container', 'never_placed'):
             self.__dict__.pop(cached, None)
         parent_container.children.append(self)
         self.left = left
