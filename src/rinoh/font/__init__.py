@@ -229,6 +229,18 @@ class Typeface(Resource, dict):
             Font: the requested font
 
         """
+        key = weight, slant, width
+        try:
+            return self._closest_fonts[key]
+        except AttributeError:
+            self._closest_fonts = {}
+        except KeyError:
+            pass
+        font = self._get_closest_font(weight, slant, width)
+        self._closest_fonts[key] = font
+        return font
+
+    def _get_closest_font(self, weight, slant, width):
         def find_closest(attribute, value, available):
             nearest = attribute.nearest(value, available)
             return nearest, available[nearest]

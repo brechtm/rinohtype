@@ -43,6 +43,9 @@ Changed:
   - OpenType fonts load faster: font tables are parsed when first needed
     (the unused fonts of a typeface are hardly parsed at all), glyph bounding
     boxes are no longer read and kerning tables are read in bulk.
+  - The closest font for a requested style is looked up only once per
+    typeface. As a result, the warning about a missing font style is only
+    emitted once.
 
 
 Fixed:
