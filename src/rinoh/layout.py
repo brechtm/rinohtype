@@ -30,6 +30,7 @@ page to which :class:`Flowable`\\ s can be rendered.
 from collections import deque
 from contextlib import contextmanager
 from copy import copy
+from functools import cached_property
 
 from .dimension import Dimension, PT, DimensionAddition
 from .util import ContextManager
@@ -160,16 +161,16 @@ class Container(object):
     def document_part(self):
         return self.parent.document_part
 
-    @property
+    @cached_property
     def document(self):
-        return self.document_part.document
+        return self.parent.document
 
     @property
     def never_placed(self):
         return self._never_placed or (self.parent.never_placed if self.parent
                                       else False)
 
-    @property
+    @cached_property
     def page(self):
         """The :class:`Page` this container is located on."""
         return self.parent.page
@@ -242,7 +243,7 @@ class FlowablesContainerBase(Container):
         self.type = type
         self.vertically_center_content = vertically_center_content
 
-    @property
+    @cached_property
     def top_level_container(self):
         try:
             return self.parent.top_level_container
@@ -524,6 +525,8 @@ class VirtualContainer(ConditionalDownExpandingContainerBase):
 
     def place_at(self, parent_container, left, top):
         self.parent = parent_container
+        for cached in ('page', 'top_level_container'):    # parent changed
+            self.__dict__.pop(cached, None)
         parent_container.children.append(self)
         self.left = left
         self.top = top

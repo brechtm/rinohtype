@@ -130,6 +130,10 @@ class Page(Container):
         self.canvas = self.backend_page.canvas
 
     @property
+    def document(self):
+        return self.document_part.document
+
+    @property
     def page(self):
         """Returns the page itself."""
         return self
