@@ -82,7 +82,6 @@ class StringField(MixedStyledTextBase):
     def children(self, container):
         text = container.document.get_string(self.key, self.user)
         if isinstance(text, StyledText):
-            text.parent = self
-            yield text
+            yield text.copy(parent=self)
         else:
             yield SingleStyledText(text, parent=self)

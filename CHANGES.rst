@@ -74,6 +74,8 @@ Fixed:
 * Index entries for terms in a paragraph that continues on the next page
   referred to the next page.
 * A literal block continued on the next page started with an empty line.
+* A string field used in multiple places (e.g. the table of contents title
+  and a running footer) rendered with the style of its first use.
 
 
 Release 0.5.6 (2026-05-15)
