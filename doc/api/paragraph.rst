@@ -102,10 +102,13 @@ Tabulation
 Rendering Internals
 -------------------
 
-.. autoclass:: Glyph
+.. autoclass:: TextMetrics
     :members:
 
-.. autoclass:: GlyphsSpan
+.. autoclass:: Shaper
+    :members:
+
+.. autoclass:: ShapedString
     :members:
 
 
