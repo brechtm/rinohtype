@@ -19,10 +19,17 @@ def create_reader(data_format, process_struct=None, length=None):
                                 * (1 if length is None else length))
     def reader(file, **kwargs):
         data = data_struct.unpack(file.read(data_struct.size))
-        return (process_struct(data) if process_struct
-                else data[0] if length is None else list(data))
-    if process_struct is None:      # a plain field reader, see array()
-        reader.data_format = data_format
+        if process_struct is None:
+            return data[0] if length is None else list(data)
+        if length is None:
+            return process_struct(data)
+        if not data:
+            return []
+        item_length = len(data) // length
+        return [process_struct(data[index:index + item_length])
+                for index in range(0, len(data), item_length)]
+    reader.data_format = data_format      # see array()
+    reader.process_struct = process_struct
     return reader
 
 
@@ -61,8 +68,9 @@ class Packed(OrderedDict):
 
 def array(reader, length):
     data_format = getattr(reader, 'data_format', None)
-    if data_format is not None:     # a plain field reader: read it in one go
-        return create_reader(data_format, length=length)
+    if data_format is not None:     # a field reader: read it in one go
+        return create_reader(data_format, reader.process_struct,
+                             length=length)
     def array_reader(file, **kwargs):
         return [reader(file, **kwargs) for _ in range(length)]
     return array_reader
