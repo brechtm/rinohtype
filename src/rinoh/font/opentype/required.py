@@ -94,18 +94,17 @@ class HmtxTable(OpenTypeTable):
 
     def __init__(self, file, file_offset, number_of_h_metrics, num_glyphs):
         super().__init__(file, file_offset)
-        # TODO: rewrite using context_array ?
         file.seek(file_offset)
-        advance_widths = []
-        left_side_bearings = []
-        for i in range(number_of_h_metrics):
-            advance_width, lsb = ushort(file), short(file)
-            advance_widths.append(advance_width)
-            left_side_bearings.append(lsb)
-        for i in range(num_glyphs - number_of_h_metrics):
-            lsb = short(file)
-            advance_widths.append(advance_width)
-            left_side_bearings.append(lsb)
+        metrics_struct = struct.Struct('>' + 'Hh' * number_of_h_metrics)
+        values = metrics_struct.unpack(file.read(metrics_struct.size))
+        advance_widths = list(values[0::2])
+        left_side_bearings = list(values[1::2])
+        remaining = num_glyphs - number_of_h_metrics
+        if remaining:
+            lsb_struct = struct.Struct('>' + 'h' * remaining)
+            left_side_bearings.extend(
+                lsb_struct.unpack(file.read(lsb_struct.size)))
+            advance_widths.extend([advance_widths[-1]] * remaining)
         self['advanceWidth'] = advance_widths
         self['leftSideBearing'] = left_side_bearings
 
