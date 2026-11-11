@@ -14,13 +14,12 @@ from collections import OrderedDict
 from ...util import all_subclasses
 
 
-def create_reader(data_format, process_struct=None):
-    data_struct = struct.Struct('>' + data_format)
+def create_reader(data_format, process_struct=None, length=None):
+    data_struct = struct.Struct(f'>{length or ""}{data_format}')
     def reader(file, **kwargs):
         data = data_struct.unpack(file.read(data_struct.size))
-        return process_struct(data) if process_struct else data[0]
-    if process_struct is None:
-        reader.array_format = data_format   # see array()
+        return process_struct(data) if process_struct else (data[0] if length is None else list(data))
+    reader.data_format = data_format
     return reader
 
 
@@ -58,15 +57,7 @@ class Packed(OrderedDict):
 
 
 def array(reader, length):
-    item_format = getattr(reader, 'array_format', None)
-    if item_format:     # read all items at once
-        array_struct = struct.Struct('>{}{}'.format(length, item_format))
-        def array_reader(file, **kwargs):
-            return list(array_struct.unpack(file.read(array_struct.size)))
-        return array_reader
-    def array_reader(file, **kwargs):
-        return [reader(file, **kwargs) for _ in range(length)]
-    return array_reader
+    return create_reader(reader.data_format, length=length)
 
 
 def context(reader, *indirect_args):
