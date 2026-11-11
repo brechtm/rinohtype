@@ -15,11 +15,14 @@ from ...util import all_subclasses
 
 
 def create_reader(data_format, process_struct=None, length=None):
-    data_struct = struct.Struct(f'>{length or ""}{data_format}')
+    data_struct = struct.Struct('>' + data_format
+                                * (1 if length is None else length))
     def reader(file, **kwargs):
         data = data_struct.unpack(file.read(data_struct.size))
-        return process_struct(data) if process_struct else (data[0] if length is None else list(data))
-    reader.data_format = data_format
+        return (process_struct(data) if process_struct
+                else data[0] if length is None else list(data))
+    if process_struct is None:      # a plain field reader, see array()
+        reader.data_format = data_format
     return reader
 
 
@@ -57,7 +60,12 @@ class Packed(OrderedDict):
 
 
 def array(reader, length):
-    return create_reader(reader.data_format, length=length)
+    data_format = getattr(reader, 'data_format', None)
+    if data_format is not None:     # a plain field reader: read it in one go
+        return create_reader(data_format, length=length)
+    def array_reader(file, **kwargs):
+        return [reader(file, **kwargs) for _ in range(length)]
+    return array_reader
 
 
 def context(reader, *indirect_args):
