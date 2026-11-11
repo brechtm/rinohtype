@@ -22,6 +22,13 @@ class CountingBytesIO(io.BytesIO):
         return super().read(size)
 
 
+def test_scalar_processed_field_returns_processed_value():
+    file = CountingBytesIO(struct.pack('>L', 1 << 16))
+
+    assert fixed(file) == 1.0
+    assert file.read_count == 1
+
+
 def test_array_of_processed_fields_is_read_in_one_go():
     file = CountingBytesIO(struct.pack('>LLL', 1 << 16, 2 << 16, 3 << 16))
 
