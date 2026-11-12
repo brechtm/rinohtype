@@ -42,8 +42,8 @@ long = create_reader('l')
 fixed = create_reader('L', lambda data: data[0] / 2**16)
 int16 = fword = short
 uint16 = ufword = ushort
-uint24 = create_reader('3B', lambda data: sum([byte << (2 - i)
-                                           for i, byte in enumerate(data)]))
+uint24 = create_reader('3B', lambda data: (data[0] << 16) | (data[1] << 8)
+                                           | data[2])
 string = create_reader('4s', lambda data: data[0].decode('ascii').strip())
 tag = string
 glyph_id = uint16

@@ -9,7 +9,7 @@
 import io
 import struct
 
-from rinoh.font.opentype.parse import array, create_reader, fixed
+from rinoh.font.opentype.parse import array, create_reader, fixed, uint24
 
 
 class CountingBytesIO(io.BytesIO):
@@ -20,6 +20,20 @@ class CountingBytesIO(io.BytesIO):
     def read(self, size=-1):
         self.read_count += 1
         return super().read(size)
+
+
+def test_uint24_parses_big_endian_value():
+    file = CountingBytesIO(bytes([0x12, 0x34, 0x56]))
+
+    assert uint24(file) == 0x123456
+    assert file.read_count == 1
+
+
+def test_array_of_uint24_parses_each_item():
+    file = CountingBytesIO(bytes([0x12, 0x34, 0x56, 0x65, 0x43, 0x21]))
+
+    assert array(uint24, 2)(file) == [0x123456, 0x654321]
+    assert file.read_count == 1
 
 
 def test_scalar_processed_field_returns_processed_value():
