@@ -9,7 +9,10 @@
 import io
 import struct
 
-from rinoh.font.opentype.parse import array, create_reader, fixed, uint24
+import pytest
+
+from rinoh.font.opentype.parse import (array, context_array, create_reader,
+                                       fixed, uint24, ushort)
 
 
 class CountingBytesIO(io.BytesIO):
@@ -56,3 +59,60 @@ def test_array_of_multivalue_processed_fields_is_grouped_correctly():
 
     assert array(three_bytes, 2)(file) == [(1, 2, 3), (4, 5, 6)]
     assert file.read_count == 1
+
+
+def test_reader_length_returns_an_array_reader():
+    file = CountingBytesIO(struct.pack('>HHH', 1, 2, 3))
+
+    assert ushort[3](file) == [1, 2, 3]
+    assert file.read_count == 1
+
+
+def test_context_array_reader_reads_count_from_the_table():
+    file = CountingBytesIO(struct.pack('>HH', 1, 2))
+    reader = ushort['Count']
+
+    assert reader(file, table={'Count': 2}) == [1, 2]
+    assert file.read_count == 1
+
+
+def test_context_array_reader_multiplies_the_count():
+    file = CountingBytesIO(struct.pack('>HH', 1, 2))
+    reader = context_array(ushort, 'CountX2', multiplier=0.5)
+
+    assert reader(file, table={'CountX2': 4}) == [1, 2]
+    assert file.read_count == 1
+
+
+def test_context_array_reader_parses_objects_in_sequence():
+    def item_reader(file, table, **kwargs):
+        return table['Offset'] + file.read(1)
+
+    file = CountingBytesIO(b'abc')
+    reader = context_array(item_reader, 'Count')
+
+    assert reader(file, table={'Count': 3, 'Offset': b'-'}) == [b'-a',
+                                                                 b'-b',
+                                                                 b'-c']
+    assert file.read_count == 3
+
+
+def test_context_array_reader_passes_indirect_arguments():
+    def item_reader(file, extra, table, **kwargs):
+        return extra + table['Offset'] + file.read(1)
+
+    file = CountingBytesIO(b'ab')
+    reader = context_array(item_reader, 'Count', 'Extra')
+
+    assert reader(file, table={'Count': 2, 'Extra': b'!',
+                               'Offset': b'-'}) == [b'!-a', b'!-b']
+    assert file.read_count == 2
+
+
+def test_reader_length_is_the_size_of_a_value():
+    assert len(ushort) == 2
+
+
+def test_invalid_reader_length_raises():
+    with pytest.raises(TypeError):
+        ushort[1.5]

@@ -9,7 +9,7 @@
 import struct
 
 from .parse import OpenTypeTable, MultiFormatTable, Record, context_array
-from .parse import fixed, array, uint16, tag, glyph_id, offset, indirect, Packed
+from .parse import fixed, uint16, tag, glyph_id, offset, indirect, Packed
 
 
 class ListRecord(Record):
@@ -38,7 +38,7 @@ class LangSysTable(OpenTypeTable):
     entries = [('LookupOrder', offset),
                ('ReqFeatureIndex', uint16),
                ('FeatureCount', uint16),
-               ('FeatureIndex', context_array(uint16, 'FeatureCount'))]
+               ('FeatureIndex', uint16['FeatureCount'])]
 
 
 class ScriptTable(ListTable):
@@ -53,7 +53,7 @@ class ScriptListTable(ListTable):
 class FeatureTable(OpenTypeTable):
     entries = [('FeatureParams', offset),
                ('LookupCount', uint16),
-               ('LookupListIndex', context_array(uint16, 'LookupCount'))]
+               ('LookupListIndex', uint16['LookupCount'])]
 
     def __init__(self, file, offset):
         super().__init__(file, offset)
@@ -96,7 +96,7 @@ def range_records(count_key):
 class Coverage(MultiFormatTable):
     entries = [('CoverageFormat', uint16)]
     formats = {1: [('GlyphCount', uint16),
-                   ('GlyphArray', context_array(glyph_id, 'GlyphCount'))],
+                   ('GlyphArray', glyph_id['GlyphCount'])],
                2: [('RangeCount', uint16),
                    ('RangeRecord', range_records('RangeCount'))]}
 
@@ -114,7 +114,7 @@ class ClassDefinition(MultiFormatTable):
     entries = [('ClassFormat', uint16)]
     formats = {1: [('StartGlyph', glyph_id),
                    ('GlyphCount', uint16),
-                   ('ClassValueArray', context_array(uint16, 'GlyphCount'))],
+                   ('ClassValueArray', uint16['GlyphCount'])],
                2: [('ClassRangeCount', uint16),
                    ('ClassRangeRecord', range_records('ClassRangeCount'))]}
 
@@ -146,7 +146,7 @@ class LookupTable(OpenTypeTable):
 
     def __init__(self, file, file_offset, subtable_types):
         super().__init__(file, file_offset)
-        offsets = array(uint16, self['SubTableCount'])(file)
+        offsets = uint16[self['SubTableCount']](file)
         if self['LookupFlag']['UseMarkFilteringSet']:
             self['MarkFilteringSet'] = uint16(file)
         subtable_type = subtable_types[self['LookupType']]
@@ -181,7 +181,7 @@ class LookupListTable(OpenTypeTable):
 
     def __init__(self, file, file_offset, types):
         super().__init__(file, file_offset)
-        lookup_offsets = array(offset, self['LookupCount'])(file)
+        lookup_offsets = offset[self['LookupCount']](file)
         lookup_reader = lambda file, file_offset: LookupTable(file, file_offset,
                                                               types)
         self['Lookup'] = DelayedList(lookup_reader, file, file_offset,

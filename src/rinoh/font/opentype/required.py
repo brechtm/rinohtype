@@ -10,7 +10,7 @@ import struct
 
 from .parse import OpenTypeTable, MultiFormatTable, Record
 from .parse import byte, ushort, short, ulong, fixed, fword, ufword, uint24
-from .parse import longdatetime, string, array, indirect, context_array, Packed
+from .parse import longdatetime, string, indirect, context_array, Packed
 from .macglyphs import MAC_GLYPHS
 from . import ids
 
@@ -148,7 +148,7 @@ class OS2Table(OpenTypeTable):
                ('yStrikeoutSize', short),
                ('yStrikeoutPosition', short),
                ('sFamilyClass', short),
-               ('panose', array(byte, 10)),
+               ('panose', byte[10]),
                ('ulUnicodeRange1', ulong),
                ('ulUnicodeRange2', ulong),
                ('ulUnicodeRange3', ulong),
@@ -212,8 +212,7 @@ class PostTable(MultiFormatTable):
                ('minMemType1', ulong),
                ('maxMemType1', ulong)]
     formats = {2.0: [('numberOfGlyphs', ushort),
-                     ('glyphNameIndex', context_array(ushort,
-                                                      'numberOfGlyphs'))]}
+                     ('glyphNameIndex', ushort['numberOfGlyphs'])]}
 
     def __init__(self, file, file_offset):
         super().__init__(file, file_offset)
@@ -309,11 +308,11 @@ class CmapSubtable(MultiFormatTable):
     formats = {0: # Byte encoding table
                   [('length', ushort),
                    ('language', ushort),
-                   ('glyphIdArray', array(byte, 256))],
+                   ('glyphIdArray', byte[256])],
                2: # High-byte mapping through table
                   [('length', ushort),
                    ('language', ushort),
-                   ('subHeaderKeys', array(ushort, 256))],
+                   ('subHeaderKeys', ushort[256])],
                4: # Segment mapping to delta values
                   [('length', ushort),
                    ('language', ushort),
@@ -335,12 +334,12 @@ class CmapSubtable(MultiFormatTable):
                    ('language', ushort),
                    ('firstCode', ushort),
                    ('entryCount', ushort),
-                   ('glyphIdArray', context_array(ushort, 'entryCount'))],
+                   ('glyphIdArray', ushort['entryCount'])],
                8: # Mixed 16-bit and 32-bit coverage
                   [(None, ushort),
                    ('length', ulong),
                    ('language', ulong),
-                   ('is32', array(byte, 8192)),
+                   ('is32', byte[8192]),
                    ('nGroups', ulong),
                    ('group', context_array(CmapGroup, 'nGroups'))],
               10: # Trimmed array
@@ -348,8 +347,8 @@ class CmapSubtable(MultiFormatTable):
                    ('length', ulong),
                    ('language', ulong),
                    ('startCharCode', ulong),
-                   ('numchars', ulong),
-                   ('glyphs', context_array(ushort, 'numChars'))],
+                   ('numChars', ulong),
+                   ('glyphs', ushort['numChars'])],
               12: # Segmented coverage
                   [(None, ushort),
                    ('length', ulong),
@@ -379,13 +378,13 @@ class CmapSubtable(MultiFormatTable):
         # TODO: create format-dependent lookup function instead of storing
         #       everything in a dict (not efficient for format 13 subtables fe)
         if self['format'] == 0:
-            indices = array(byte, 256)(file)
+            indices = byte[256](file)
             out = {i: index for i, index in enumerate(self['glyphIdArray'])}
         elif self['format'] == 2:
             raise NotImplementedError
         elif self['format'] == 4:
             seg_count = self['segCountX2'] >> 1
-            self['glyphIdArray'] = array(ushort, self['length'])(file)
+            self['glyphIdArray'] = ushort[self['length']](file)
             segments = zip(self['startCount'], self['endCount'],
                            self['idDelta'], self['idRangeOffset'])
             out = {}

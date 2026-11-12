@@ -7,7 +7,7 @@
 
 
 from .parse import OpenTypeTable, MultiFormatTable
-from .parse import uint16, ushort, ulong, glyph_id, array, indirect
+from .parse import uint16, ushort, ulong, glyph_id, indirect
 from .parse import context_array, indirect_array
 from .layout import LayoutTable
 from .layout import Coverage
@@ -19,7 +19,7 @@ class SingleSubTable(MultiFormatTable):
                ('Coverage', indirect(Coverage))]
     formats = {1: [('DeltaGlyphID', glyph_id)],
                2: [('GlyphCount', uint16),
-                   ('Substitute', context_array(glyph_id, 'GlyphCount'))]}
+                   ('Substitute', glyph_id['GlyphCount'])]}
 
     def lookup(self, glyph_id):
         try:
@@ -35,7 +35,7 @@ class SingleSubTable(MultiFormatTable):
 # Multiple subtitution (subtable format 2)
 class Sequence(OpenTypeTable):
     entries = [('GlyphCount', uint16),
-               ('Substitute', context_array(glyph_id, 'GlyphCount'))]
+               ('Substitute', glyph_id['GlyphCount'])]
 
 
 class MultipleSubTable(OpenTypeTable):
@@ -64,7 +64,7 @@ class Ligature(OpenTypeTable):
 
     def __init__(self, file, file_offset):
         super().__init__(file, file_offset)
-        self['Component'] = array(glyph_id, self['CompCount'] - 1)(file)
+        self['Component'] = glyph_id[self['CompCount'] - 1](file)
 
 
 class LigatureSet(OpenTypeTable):

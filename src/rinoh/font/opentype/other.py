@@ -6,7 +6,7 @@
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
 
-from .parse import OpenTypeTable, ushort, fword, array, Packed
+from .parse import OpenTypeTable, ushort, fword, Packed
 
 
 class KerningCoverage(Packed):
@@ -29,7 +29,7 @@ class KernSubTable(OpenTypeTable):
         if self['coverage']['format'] == 0:
             self.pairs = {}
             (n_pairs, search_range,
-             entry_selector, range_shift) = array(ushort, 4)(file)
+             entry_selector, range_shift) = ushort[4](file)
             for i in range(n_pairs):
                 left, right, value = ushort(file), ushort(file), fword(file)
                 left_dict = self.pairs.setdefault(left, {})

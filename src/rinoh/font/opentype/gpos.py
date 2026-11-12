@@ -130,7 +130,7 @@ class PairSetTable(OpenTypeTable):
 
 def pair_sets(file, base, table):
     """The pair sets, each parsed when it is first accessed"""
-    offsets = array(offset, table['PairSetCount'])(file)
+    offsets = offset[table['PairSetCount']](file)
     format_1, format_2 = table['ValueFormat1'], table['ValueFormat2']
 
     def reader(file, file_offset):

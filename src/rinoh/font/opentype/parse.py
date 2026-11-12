@@ -14,21 +14,89 @@ from collections import OrderedDict
 from ...util import all_subclasses
 
 
-def create_reader(data_format, process_struct=None, length=None):
-    data_struct = struct.Struct('>' + data_format
-                                * (1 if length is None else length))
-    def reader(file, **kwargs):
-        data = data_struct.unpack(file.read(data_struct.size))
-        if process_struct and length is None:
-            return process_struct(data)
-        if process_struct:
-            size = len(data) // length if data else 0
+class ValueReader(object):
+    """Reader for a single value"""
+
+    def __init__(self, data_format, process_struct=None):
+        self.data_format = data_format
+        self.struct = struct.Struct('>' + data_format)
+        self.unpack = self.struct.unpack
+        self.process_struct = process_struct
+
+    def __call__(self, file, **kwargs):
+        data = self.unpack(file.read(self.struct.size))
+        if self.process_struct:
+            return self.process_struct(data)
+        return data[0]
+
+    def __len__(self):
+        return self.struct.size
+
+    def __getitem__(self, length):
+        """Reader for an array of values
+
+        An integer `length` is the number of values to read; a string is the
+        key of the table entry holding the number of values (a context
+        array).
+
+        """
+        if isinstance(length, int):
+            return ArrayReader(self, length)
+        elif isinstance(length, str):
+            return ContextArrayReader(self, length)
+        raise TypeError('invalid length: {!r}'.format(length))
+
+
+class ArrayReader(object):
+    """Reader for an array of values or objects"""
+
+    def __init__(self, reader, length):
+        self.reader = reader
+        self.length = length
+        if hasattr(reader, 'data_format'):      # a value reader
+            self.struct = struct.Struct('>' + reader.data_format * length)
+            self.unpack = self.struct.unpack
+        else:               # a table or record; parse the items one by one
+            self.struct = None
+
+    def __call__(self, file, *args, **kwargs):
+        if self.struct is None:
+            return [self.reader(file, *args, **kwargs)
+                    for _ in range(self.length)]
+        data = self.unpack(file.read(self.struct.size))
+        if self.reader.process_struct:
+            size = len(data) // self.length if data else 0
             items = zip(*[iter(data)] * size)
-            return [process_struct(item) for item in items]
-        return data[0] if length is None else list(data)
-    reader.data_format = data_format      # see array()
-    reader.process_struct = process_struct
-    return reader
+            return [self.reader.process_struct(item) for item in items]
+        return list(data)
+
+
+class ContextArrayReader(object):
+    """Reader for an array of which the length is stored in the table
+
+    The length is looked up in the table under `length_key` and multiplied by
+    `multiplier` (e.g. 0.5 for a count that is specified in bytes). Optional
+    `indirect_args` specify further table entries passed on to the item
+    reader.
+
+    """
+
+    def __init__(self, reader, length_key, *indirect_args, multiplier=1):
+        self.reader = reader
+        self.length_key = length_key
+        self.indirect_args = indirect_args
+        self.multiplier = multiplier
+
+    def __call__(self, file, table, **kwargs):
+        length = int(table[self.length_key] * self.multiplier)
+        args = [table[key] for key in self.indirect_args]
+        return ArrayReader(self.reader, length)(file, *args, table=table,
+                                                **kwargs)
+
+
+create_reader = ValueReader
+array = ArrayReader
+context_array = ContextArrayReader
 
 
 # using the names and datatypes from the OpenType specification
@@ -64,28 +132,11 @@ class Packed(OrderedDict):
             self[name] = processor(self.value & mask)
 
 
-def array(reader, length):
-    if hasattr(reader, 'data_format'):  # a field reader: read it in one go
-        return create_reader(reader.data_format, reader.process_struct,
-                             length)
-    def array_reader(file, **kwargs):
-        return [reader(file, **kwargs) for _ in range(length)]
-    return array_reader
-
-
 def context(reader, *indirect_args):
     def context_reader(file, base, table):
         args = [table[key] for key in indirect_args]
         return reader(file, *args)
     return context_reader
-
-
-def context_array(reader, count_key, *indirect_args, multiplier=1):
-    def context_array_reader(file, table, **kwargs):
-        length = int(table[count_key] * multiplier)
-        args = [table[key] for key in indirect_args]
-        return array(reader, length)(file, *args, table=table, **kwargs)
-    return context_array_reader
 
 
 def indirect(reader, *indirect_args, offset_reader=offset):
@@ -103,7 +154,7 @@ def indirect(reader, *indirect_args, offset_reader=offset):
 
 def indirect_array(reader, count_key, *indirect_args):
     def indirect_array_reader(file, base, table):
-        offsets = array(offset, table[count_key])(file)
+        offsets = offset[table[count_key]](file)
         args = [table[key] for key in indirect_args]
         return [reader(file, base + entry_offset, *args)
                 for entry_offset in offsets]
