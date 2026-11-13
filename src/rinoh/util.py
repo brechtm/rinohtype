@@ -142,8 +142,22 @@ def consumer(function):
 
 # method decorators
 
+_KEYWORD_ARGUMENTS = object()   # marks the start of the keyword arguments in
+                                # the cache key used by `cached`
+
+
 def cached(function):
-    """Method decorator caching a method's returned values."""
+    """Method decorator caching a method's returned values
+
+    The cached values are stored in a dict attached to the object instance.
+    This is the equivalent of :func:`functools.cache`, but it can be used for
+    methods of objects that cannot be hashed. :func:`functools.cache` keys its
+    cache on the object instance, which rules out the ``dict`` subclasses used
+    throughout rinohtype (such as ``Typeface`` and ``AttributesDictionary``).
+    As a bonus, the cache is discarded together with the object instead of
+    keeping it alive.
+
+    """
     cache_variable = '_cached_' + function.__name__
     @wraps(function)
     def function_wrapper(obj, *args, **kwargs):
@@ -153,12 +167,19 @@ def cached(function):
         except AttributeError:
             cache = {}
             setattr(obj, cache_variable, cache)
-        args_kwargs = args + tuple(kwargs.values())
+        # keyword arguments are marked and sorted so that they don't collide
+        # with positional arguments (`method(value)` vs. `method(other=value)`)
+        # and so that their order does not matter. Calls passing only
+        # positional arguments (the common case for the hot paths) are keyed on
+        # `args` alone, just like the cache key of `functools.cache`.
+        key = args
+        if kwargs:
+            key += (_KEYWORD_ARGUMENTS,) + tuple(sorted(kwargs.items()))
         try:
-            return cache[args_kwargs]
+            return cache[key]
         except KeyError:
             cache_value = function(obj, *args, **kwargs)
-            cache[args_kwargs] = cache_value
+            cache[key] = cache_value
             return cache_value
     return function_wrapper
 
