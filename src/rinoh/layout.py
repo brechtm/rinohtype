@@ -40,7 +40,8 @@ __all__ = ['Container', 'FlowablesContainer', 'ChainedContainer',
            'DownExpandingContainer', 'InlineDownExpandingContainer',
            'UpExpandingContainer', 'UpDownExpandingContainer',
            'VirtualContainer', 'Chain', 'FootnoteContainer', 'MaybeContainer',
-           'ContainerOverflow', 'EndOfContainer', 'PageBreakException']
+           'FlowContext', 'ContainerOverflow', 'EndOfContainer',
+           'PageBreakException']
 
 
 class ContainerOverflow(Exception):
@@ -102,6 +103,48 @@ class FlowableTarget(object):
 
 
 
+class FlowContext(object):
+    """The layout context a container subtree is rendered in.
+
+    A context is shared by reference between a container and all its
+    descendants. Values that are derived from the container hierarchy are
+    looked up in the context, so they never need to be cached per container
+    nor invalidated when a container is re-parented: a re-parented container
+    keeps referencing the same context, which is shared by its new ancestors
+    as well.
+
+    Attributes:
+        page (Page): the page the subtree is located on
+        document_part (DocumentPart): the document part the page belongs to
+        top_level_container (FlowablesContainerBase): the top-level container
+            the subtree is rendered in
+        never_placed (bool): whether the subtree is only being measured and
+            its contents should not be drawn
+    """
+
+    __slots__ = ('page', 'document_part', 'top_level_container',
+                 'never_placed')
+
+    def __init__(self, page, document_part, top_level_container,
+                 never_placed=False):
+        self.page = page
+        self.document_part = document_part
+        self.top_level_container = top_level_container
+        self.never_placed = never_placed
+
+    def inside(self, container):
+        """The context for the contents of `container`, which is a new
+        top-level container"""
+        return FlowContext(self.page, self.document_part, container,
+                           self.never_placed)
+
+    def measuring(self):
+        """The context for a subtree that only lays out its contents to
+        measure them"""
+        return FlowContext(self.page, self.document_part,
+                           self.top_level_container, True)
+
+
 class Container(object):
     """Rectangular area that contains elements to be rendered to a
     :class:`Page`. A :class:`Container` has an origin (the top-left corner), a
@@ -109,8 +152,6 @@ class Container(object):
     position in its parent :class:`Container`."""
 
     register_with_parent = True
-
-    _never_placed = False
 
     def __init__(self, name, parent, left=None, top=None, width=None,
                  height=None, right=None, bottom=None, sideways=None):
@@ -151,6 +192,8 @@ class Container(object):
 
         self.name = name
         self.parent = parent
+        if parent is not None:      # a Page sets up its own context
+            self.context = parent.context
         self.sideways = sideways
         if self.register_with_parent:
             self.parent.children.append(self)
@@ -159,21 +202,20 @@ class Container(object):
 
     @property
     def document_part(self):
-        return self.page.document_part
+        return self.context.document_part
 
     @cached_property
     def document(self):
         return self.parent.document
 
-    @cached_property
+    @property
     def never_placed(self):
-        return self._never_placed or (self.parent.never_placed if self.parent
-                                      else False)
+        return self.context.never_placed
 
-    @cached_property
+    @property
     def page(self):
         """The :class:`Page` this container is located on."""
-        return self.parent.page
+        return self.context.page
 
     def clear(self):
         self.empty_canvas()
@@ -274,15 +316,14 @@ class FlowablesContainerBase(Container):
         self._placed_styleds = {}
         super().__init__(name, parent, left=left, top=top, width=width,
                          height=height, right=right, bottom=bottom)
+        if not isinstance(parent, FlowablesContainerBase):
+            self.context = self.context.inside(self)
         self.type = type
         self.vertically_center_content = vertically_center_content
 
-    @cached_property
+    @property
     def top_level_container(self):
-        try:
-            return self.parent.top_level_container
-        except AttributeError:
-            return self
+        return self.context.top_level_container
 
     def clear(self):
         super().clear()
@@ -517,6 +558,10 @@ class ConditionalDownExpandingContainerBase(DownExpandingContainerBase):
         self.top = 0.0 if top is None else float(top)
         self.name = name
         self.parent = parent
+        if isinstance(parent, FlowablesContainerBase):
+            self.context = parent.context
+        else:
+            self.context = parent.context.inside(self)
         self.document = parent.document
         if self.register_with_parent:
             parent.children.append(self)
@@ -645,12 +690,15 @@ class VirtualContainer(ConditionalDownExpandingContainerBase):
         """`width` specifies the width of the container."""
         super().__init__('VIRTUAL', None, parent, width=width,
                          max_height=float('+inf'), place=False)
-        self._never_placed = never_placed
+        if never_placed and not self.context.never_placed:
+            self.context = self.context.measuring()
 
     def place_at(self, parent_container, left, top):
+        # The new parent is the tentative parent or an ancestor of it, so both
+        # share this container's context and page, top_level_container and
+        # never_placed remain valid.
+        assert parent_container.context is self.context
         self.parent = parent_container
-        for cached in ('page', 'top_level_container', 'never_placed'):
-            self.__dict__.pop(cached, None)
         parent_container.children.append(self)
         self.left = left
         self.top = top

@@ -60,6 +60,9 @@ Changed:
     don't support this.
   - Each distinct word is set in glyphs (ligatures, kerning) and encoded
     for the PDF only once per document instead of for each occurrence.
+  - The page, the document part and the top-level container of a container
+    are looked up in a layout context that is shared with all its
+    descendants, instead of walking up the container hierarchy each time.
 
 * Memory usage: the contents of a page's containers are written directly to
   the page instead of being copied into each enclosing container, and

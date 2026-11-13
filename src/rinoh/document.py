@@ -41,7 +41,7 @@ from .attribute import OptionSet, Source
 from .backend import pdf
 from .flowable import StaticGroupedFlowables
 from .language import EN
-from .layout import (Container, ReflowRequired,
+from .layout import (Container, FlowContext, ReflowRequired,
                      BACKGROUND, CONTENT, HEADER_FOOTER)
 from .number import NumberFormatBase, format_number
 from .reference import ReferenceType
@@ -117,6 +117,7 @@ class Page(Container):
         self.backend_page = document.backend.Page(backend_document,
                                                   width, height, self)
         self._empty = True
+        self.context = FlowContext(self, document_part, None)
         super().__init__('PAGE', None, 0, 0, width, height)
 
     def __repr__(self):
