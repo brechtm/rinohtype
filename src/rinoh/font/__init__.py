@@ -14,7 +14,7 @@ from warnings import warn
 
 from .style import FontWeight, FontSlant, FontWidth
 from ..resource import Resource, ResourceNotFound
-from ..util import NotImplementedAttribute
+from ..util import NotImplementedAttribute, cached
 from ..warnings import warn
 
 
@@ -213,12 +213,14 @@ class Typeface(Resource, dict):
                 for weight in sorted(self[width][slant]):
                     yield self[width][slant][weight]
 
+    @cached
     def get_font(self, weight=FontWeight.REGULAR, slant=FontSlant.UPRIGHT,
                  width=FontWidth.NORMAL):
         """Return the font matching or closest to the given style
 
         If a font with the given weight, slant and width is available, return
-        it. Otherwise, return the font that is closest in style.
+        it. Otherwise, return the font that is closest in style. Lookups are
+        cached, so the fallback warning is emitted only once per style.
 
         Args:
             weight (FontWeight): weight of the font
@@ -229,18 +231,6 @@ class Typeface(Resource, dict):
             Font: the requested font
 
         """
-        key = weight, slant, width
-        try:
-            return self._closest_fonts[key]
-        except AttributeError:
-            self._closest_fonts = {}
-        except KeyError:
-            pass
-        font = self._get_closest_font(weight, slant, width)
-        self._closest_fonts[key] = font
-        return font
-
-    def _get_closest_font(self, weight, slant, width):
         def find_closest(attribute, value, available):
             nearest = attribute.nearest(value, available)
             return nearest, available[nearest]
