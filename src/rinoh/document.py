@@ -117,7 +117,7 @@ class Page(Container):
         self.backend_page = document.backend.Page(backend_document,
                                                   width, height, self)
         self._empty = True
-        self.context = FlowContext(self, document_part, None)
+        self.context = FlowContext(self, None)
         super().__init__('PAGE', None, 0, 0, width, height)
 
     def __repr__(self):

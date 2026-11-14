@@ -115,34 +115,28 @@ class FlowContext(object):
 
     Attributes:
         page (Page): the page the subtree is located on
-        document_part (DocumentPart): the document part the page belongs to
         top_level_container (FlowablesContainerBase): the top-level container
             the subtree is rendered in
         never_placed (bool): whether the subtree is only being measured and
             its contents should not be drawn
     """
 
-    __slots__ = ('page', 'document_part', 'top_level_container',
-                 'never_placed')
+    __slots__ = ('page', 'top_level_container', 'never_placed')
 
-    def __init__(self, page, document_part, top_level_container,
-                 never_placed=False):
+    def __init__(self, page, top_level_container, never_placed=False):
         self.page = page
-        self.document_part = document_part
         self.top_level_container = top_level_container
         self.never_placed = never_placed
 
     def inside(self, container):
         """The context for the contents of `container`, which is a new
         top-level container"""
-        return FlowContext(self.page, self.document_part, container,
-                           self.never_placed)
+        return FlowContext(self.page, container, self.never_placed)
 
     def measuring(self):
         """The context for a subtree that only lays out its contents to
         measure them"""
-        return FlowContext(self.page, self.document_part,
-                           self.top_level_container, True)
+        return FlowContext(self.page, self.top_level_container, True)
 
 
 class Container(object):
@@ -202,7 +196,7 @@ class Container(object):
 
     @property
     def document_part(self):
-        return self.context.document_part
+        return self.context.page.document_part
 
     @cached_property
     def document(self):
