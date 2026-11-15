@@ -210,8 +210,15 @@ class ContainerBase(object):
         return "{}('{}')".format(self.__class__.__name__, self.name)
 
     def __getattr__(self, name):
-        if name in ('_footnote_space', 'float_space'):
-            return getattr(self.parent, name)
+        # the footnote and float spaces are attributes of the page; looking
+        # them up there avoids walking up the container hierarchy
+        if name in ('footnote_space', 'float_space'):
+            try:
+                # object.__getattribute__ does not fall back to __getattr__
+                # (which would recurse when the page is this container)
+                return object.__getattribute__(self.context.page, name)
+            except AttributeError:
+                pass
         raise AttributeError('{}.{}'.format(self.__class__.__name__, name))
 
     def render(self, type, rerender=False):
@@ -348,11 +355,9 @@ class FlowablesContainerBase(Container):
             self._grow(- self._cursor)
 
     def mark_page_nonempty(self):
-        container = self
-        while container.type is None:
-            container = container.parent
-        if container.type == CONTENT:
-            container.page._empty = False
+        context = self.context
+        if context.top_level_container.type is CONTENT:
+            context.page._empty = False
 
     @property
     def cursor(self):
@@ -736,14 +741,14 @@ class FootnoteContainer(UpExpandingContainer):
         super().__init__(name, CONTENT, parent, left, bottom,
                          width=width, right=right, max_height=max_height)
         self._footnote_number = 0
-        self._footnote_space = self
+        self.footnote_space = self
         self.footnotes = []
         self._flowing_footnotes = False
         self._reflowed = False
         self._descenders = [0]
         self._allocation_phase = True
         self._placed_footnotes = set()
-        parent._footnote_space = self
+        parent.footnote_space = self
 
     def add_footnote(self, footnote, preallocate):
         self.footnotes.append(footnote)

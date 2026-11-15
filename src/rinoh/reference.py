@@ -269,7 +269,7 @@ class NoteMarkerBase(ReferenceBase, Label):
     def before_placing(self, container, preallocate=False):
         note = container.document.elements[self.target_id(container.document)]
         if note.get_style('location', container) == NoteLocation.FOOTER:
-            if not container._footnote_space.add_footnote(note, preallocate):
+            if not container.footnote_space.add_footnote(note, preallocate):
                 raise ContainerOverflow
         super().before_placing(container, preallocate)
 

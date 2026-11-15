@@ -201,12 +201,14 @@ class Flowable(Styled):
         page_break = self.get_style('page_break', container)
         break_type = page_break.split()[0] if page_break else None
         if page_break:
-            page_number = container.page.number
+            context = container.context
+            page = context.page
+            page_number = page.number
             next_page_type = 'right' if page_number % 2 == 0 else 'left'
-            if not container.page._empty or break_type == next_page_type:
+            if not page._empty or break_type == next_page_type:
                 if break_type == Break.ANY:
                     page_break = page_break.replace('any', next_page_type)
-                chain = container.top_level_container.chain
+                chain = context.top_level_container.chain
                 raise self.break_exception(page_break, chain, state)
 
     def flow(self, container, last_descender, state=None, space_below=0,

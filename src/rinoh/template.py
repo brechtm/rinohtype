@@ -205,7 +205,6 @@ class BodyPageBase(PageBase):
                               sideways=self.display_sideways)
         self.footnote_space = FootnoteContainer('footnotes', self.body, 0*PT,
                                                 self.body.height)
-        self.body._footnote_space = self.footnote_space
         header, footer, self.content_top = self.get_header_footer_contenttop()
         if header:
             header_bottom = self.body.top - header_footer_distance
@@ -226,7 +225,6 @@ class BodyPageBase(PageBase):
         max_height = self.body_height / 2
         self.float_space = DownExpandingContainer('floats', CONTENT, self.body,
                                                   0, 0, max_height=max_height)
-        self.body.float_space = self.float_space
         header = try_copy(self.get_option('header_text'))
         footer = try_copy(self.get_option('footer_text'))
         return header, footer, self.float_space.bottom

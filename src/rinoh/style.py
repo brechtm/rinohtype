@@ -1150,8 +1150,9 @@ class StyleLog(object):
                     log.write('{line} page {} {line}\n'.format(current_page,
                                                                line='-' * 34))
                 container = entry.container
-                if container.top_level_container is not current_container:
-                    current_container = container.top_level_container
+                top_level_container = container.top_level_container
+                if top_level_container is not current_container:
+                    current_container = top_level_container
                     log.write("#### {}('{}')\n"
                               .format(type(current_container).__name__,
                                       current_container.name))

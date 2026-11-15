@@ -63,6 +63,8 @@ Changed:
   - The page, the document part and the top-level container of a container
     are looked up in a layout context that is shared with all its
     descendants, instead of walking up the container hierarchy each time.
+    The page area a flowable ends up in and the page's footnote and float
+    space are no longer determined by walking up the hierarchy either.
 
 * Memory usage: the contents of a page's containers are written directly to
   the page instead of being copied into each enclosing container, and

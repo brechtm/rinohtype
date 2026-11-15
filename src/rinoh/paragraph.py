@@ -956,7 +956,8 @@ class ParagraphBase(Flowable, Label):
         later, so these need to be created for each rendering.
 
         """
-        page, document_part = container.page, container.document_part
+        page = container.context.page
+        document_part = page.document_part
         cache = container.document.paragraph_words
         try:
             key, words_and_registrations = cache[self]
