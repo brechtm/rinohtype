@@ -175,6 +175,23 @@ can be inspected using ``cg_annotate FILE``.
 .. _Valgrind: https://valgrind.org
 
 
+Debugging named destinations
+----------------------------
+
+Set the ``RINOH_DEBUG_DESTINATIONS`` environment variable to a non-zero value
+when rendering to draw every named destination on the page as a blue
+rectangle. The red square marks the corner used by the PDF backend, and the
+label shows the destination names followed by ``(TL)`` for that top-left
+corner. Destinations without an extent are drawn as a small square marker.
+This is useful for verifying destination anchors and link targets, especially
+on sideways pages::
+
+    RINOH_DEBUG_DESTINATIONS=1 rinoh document.rst
+
+The debug graphics are written to the page content stream, so the resulting
+PDF no longer matches the regression-test references.
+
+
 Continuous integration
 ----------------------
 
