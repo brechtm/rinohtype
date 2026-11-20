@@ -176,17 +176,22 @@ class Canvas(BytesIO):
     def write_to(self, page_canvas, offsets):
         """Write this canvas' contents and resources to `page_canvas`
 
-        `offsets` are the (left, top) offsets to apply to the annotations, one
-        after the other.
+        `offsets` are transforms that map this canvas' annotation coordinates
+        to those of the page, innermost first. They are composed into a single
+        transform before being applied to the annotations.
 
         """
         page_canvas.write(self.getbuffer())
         page_canvas.fonts.update(self.fonts)
         page_canvas.images.update(self.images)
-        for annotation_location in self.annotations:
-            for offset in offsets:
-                annotation_location += offset
-            page_canvas.annotations.append(annotation_location)
+        if not self.annotations:
+            return
+        transform = AnnotationTransform()
+        for offset in offsets:
+            transform = offset.compose(transform)
+        page_canvas.annotations.extend(
+            transform.apply(annotation_location)
+            for annotation_location in self.annotations)
 
     def print(self, string):
         self.write(string.encode('ascii') + b'\n')
@@ -317,6 +322,11 @@ class Canvas(BytesIO):
         ann_loc = AnnotationLocation(annotation, left, top, width, height)
         self.annotations.append(ann_loc)
 
+    def annotation_transform(self, left, top, width, height, sideways=None):
+        """Return the transform for annotations in this canvas' container"""
+        return AnnotationTransform.from_container(left, top, width, height,
+                                                  sideways)
+
     def place_image(self, image, left, top, document,
                     scale_width=1, scale_height=1, rotate=0):
         image_number = document.backend_document.get_unique_image_number()
@@ -367,8 +377,11 @@ class PageCanvas(Canvas):
             left = annotation_location.left
             top = page_height - annotation_location.top
             if annotation.type == 'NamedDestination':
+                dest_left, dest_top = \
+                    self.destination_anchor(annotation_location)
                 dest = cos.Array([cos_page, cos.Name('XYZ'),
-                                  cos.Real(left), cos.Real(top),
+                                  cos.Real(dest_left),
+                                  cos.Real(page_height - dest_top),
                                   cos.Real(0)], indirect=True)
                 for name in annotation.names:
                     key = cos.String(name)
@@ -388,6 +401,20 @@ class PageCanvas(Canvas):
                 raise NotImplementedError
             annots.append(annot)
 
+    def destination_anchor(self, annotation_location):
+        """Return the top-left destination corner after page rotation"""
+        left, top = annotation_location.left, annotation_location.top
+        width = annotation_location.width or 0
+        height = annotation_location.height or 0
+        rotate = int(self.backend_page.cos_page.get('Rotate', 0)) % 360
+        if rotate == 90:            # bottom-left in page coordinates
+            return left, top + height
+        elif rotate == 180:         # bottom-right
+            return left + width, top + height
+        elif rotate == 270:         # top-right
+            return left + width, top
+        return left, top
+
 
 class AnnotationLocation(object):
     def __init__(self, annotation, left, top, width, height):
@@ -397,10 +424,64 @@ class AnnotationLocation(object):
         self.width = width
         self.height = height
 
-    def __add__(self, offset):
-        offset_left, offset_top = offset
-        return self.__class__(self.annotation, self.left + offset_left,
-                              self.top + offset_top, self.width, self.height)
+
+class AnnotationTransform(object):
+    """Affine transform for annotation locations
+
+    Annotation coordinates have their origin in the top-left corner of a
+    container, with the y axis pointing down. This transform maps coordinates
+    in a container's coordinate system to those of its parent container,
+    including sideways rotations.
+
+    """
+
+    def __init__(self, a=1, b=0, c=0, d=1, e=0, f=0):
+        self.a = a
+        self.b = b
+        self.c = c
+        self.d = d
+        self.e = e
+        self.f = f
+
+    @classmethod
+    def from_container(cls, left, top, width, height, sideways=None):
+        """Create the transform for a container's annotation coordinates"""
+        left, top = float(left), float(top)
+        if sideways == 'left':
+            return cls(0, 1, -1, 0, left + float(height), top)
+        elif sideways == 'right':
+            return cls(0, -1, 1, 0, left, top + float(width))
+        else:
+            return cls(1, 0, 0, 1, left, top)
+
+    def compose(self, inner):
+        """Return the transform that applies `inner` first, then this one"""
+        return self.__class__(
+            self.a * inner.a + self.c * inner.b,
+            self.b * inner.a + self.d * inner.b,
+            self.a * inner.c + self.c * inner.d,
+            self.b * inner.c + self.d * inner.d,
+            self.a * inner.e + self.c * inner.f + self.e,
+            self.b * inner.e + self.d * inner.f + self.f)
+
+    def apply(self, annotation_location):
+        """Transform `annotation_location` to the parent's coordinates"""
+        left, top = annotation_location.left, annotation_location.top
+        # Most transforms only translate; skip the corner calculations then
+        if self.a == 1 and self.b == 0 and self.c == 0 and self.d == 1:
+            return annotation_location.__class__(
+                annotation_location.annotation, left + self.e, top + self.f,
+                annotation_location.width, annotation_location.height)
+        width = annotation_location.width or 0
+        height = annotation_location.height or 0
+        corners = ((left, top), (left + width, top),
+                   (left, top + height), (left + width, top + height))
+        xs = [self.a * x + self.c * y + self.e for x, y in corners]
+        ys = [self.b * x + self.d * y + self.f for x, y in corners]
+        return annotation_location.__class__(
+            annotation_location.annotation, min(xs), min(ys),
+            abs(self.a) * width + abs(self.c) * height,
+            abs(self.b) * width + abs(self.d) * height)
 
 
 class Image(object):

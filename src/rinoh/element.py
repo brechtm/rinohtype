@@ -90,5 +90,6 @@ def create_destination(flowable, container, at_top_of_container=False):
     ids = flowable.get_ids(container.document)
     destination = NamedDestination(*(str(id) for id in ids))
     container.canvas.annotate(destination, 0, vertical_position,
-                              container.width, None)
+                              float(container.width),
+                              float(container.height))
     container.document.register_page_reference(container.page, flowable)

@@ -256,13 +256,14 @@ class Container(object):
 
         Args:
             page_canvas (Canvas): the canvas of the page
-            offsets (tuple): the (left, top) positions of the containers this
-                container is placed in relative to their parent, innermost
-                first
+            offsets (tuple): transforms mapping annotation coordinates to
+                those of the parent container, innermost first
 
         """
         left, top = float(self.left), float(self.top)
-        offsets = ((left, top), *offsets)
+        offset = page_canvas.annotation_transform(left, top, self.width,
+                                                  self.height, self.sideways)
+        offsets = (offset, *offsets)
         with page_canvas.save_state():
             page_canvas.translate(left, top)
             if self.sideways == 'left':

@@ -78,7 +78,9 @@ Fixed:
 * A string field used in multiple places (e.g. the table of contents title
   and a running footer) rendered with the style of its first use.
 * Content drawn directly on a sideways container is now rotated along with
-  the container's children instead of being placed unrotated.
+  the container's children instead of being placed unrotated. Link and
+  destination annotations are now also placed correctly on sideways
+  containers.
 
 
 Release 0.5.6 (2026-05-15)
