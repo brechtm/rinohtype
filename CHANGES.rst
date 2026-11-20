@@ -77,6 +77,8 @@ Fixed:
 * A literal block continued on the next page started with an empty line.
 * A string field used in multiple places (e.g. the table of contents title
   and a running footer) rendered with the style of its first use.
+* Content drawn directly on a sideways container is now rotated along with
+  the container's children instead of being placed unrotated.
 
 
 Release 0.5.6 (2026-05-15)

@@ -265,15 +265,17 @@ class Container(object):
         offsets = ((left, top), *offsets)
         with page_canvas.save_state():
             page_canvas.translate(left, top)
-            if self._canvas is not None:
-                self._canvas.write_to(page_canvas, offsets)
-                self._canvas = None     # no longer needed
             if self.sideways == 'left':
                 page_canvas.translate(float(self.height), 0)
                 page_canvas.rotate(-90)
             elif self.sideways == 'right':
                 page_canvas.translate(0, float(self.width))
                 page_canvas.rotate(90)
+            if self._canvas is not None:
+                # contents drawn directly on this container are subject to
+                # the sideways transform as well
+                self._canvas.write_to(page_canvas, offsets)
+                self._canvas = None     # no longer needed
             self.place_children(page_canvas, offsets)
 
     def before_placing(self, preallocate=False):
