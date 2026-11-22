@@ -192,6 +192,8 @@ class Page(Container):
     def place(self):
         self.before_placing()
         self.place_children(self.canvas)
+        from .debug import draw_destinations
+        draw_destinations(self)
         self.canvas.place_annotations()
 
 

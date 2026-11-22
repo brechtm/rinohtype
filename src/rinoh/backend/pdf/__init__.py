@@ -10,7 +10,6 @@ import math
 
 from io import BytesIO
 from contextlib import contextmanager
-from os import getenv
 
 try:
     from PIL import Image as PILImage
@@ -28,9 +27,6 @@ from ...annotation import (AnnotationLocation, AnnotationTransform,
 from ...font.type1 import Type1Font
 from ...font.opentype import OpenTypeFont
 from ...number import NumberFormatBase
-
-#: Draw named destinations as debug rectangles when set to a non-zero value
-DEBUG_DESTINATIONS = getenv('RINOH_DEBUG_DESTINATIONS', '0') != '0'
 
 
 class Document(object):
@@ -383,8 +379,6 @@ class PageCanvas(Canvas):
             left = annotation_location.left
             top = page_height - annotation_location.top
             if annotation.type == 'NamedDestination':
-                if DEBUG_DESTINATIONS:
-                    self.debug_destination(annotation_location)
                 dest_left, dest_top = destination_anchor(
                     annotation_location,
                     self.backend_page.rinoh_page.display_sideways)
@@ -409,71 +403,6 @@ class PageCanvas(Canvas):
             else:
                 raise NotImplementedError
             annots.append(annot)
-
-
-    def debug_destination(self, annotation_location):
-        """Draw a named destination and the corner used by the PDF backend"""
-        self.add_debug_font()
-        left, top = annotation_location.left, annotation_location.top
-        width = annotation_location.width or 0
-        height = annotation_location.height or 0
-        anchor_left, anchor_top = destination_anchor(
-            annotation_location,
-            self.backend_page.rinoh_page.display_sideways)
-        dx, dy = left - anchor_left, top - anchor_top
-        if not (width > 0 or height > 0):
-            width = height = 8
-            dx -= 4
-            dy -= 4
-        with self.save_state():
-            self.translate(anchor_left, anchor_top)
-            self.print('0 0 1 RG')          # blue outline
-            self.print('0.5 w')
-            # path coordinates use a y-up system; page coordinates have y down
-            self.line_path([(dx, - dy), (dx + width, - dy),
-                            (dx + width, - dy - height),
-                            (dx, - dy - height)])
-            self.close_path()
-            self.print('S')
-            # the corner used by the PDF backend (display top-left)
-            self.print('1 0 0 rg')          # red square
-            size = 2
-            self.line_path([(- size, - size), (size, - size),
-                            (size, size), (- size, size)])
-            self.close_path()
-            self.print('f')
-            label = self.destination_label(annotation_location)
-            label_y = -3 if anchor_top > 7 else 9
-            rotate = SIDEWAYS_TO_ROTATE[
-                self.backend_page.rinoh_page.display_sideways]
-            with self.save_state():
-                self.translate(6, label_y)
-                self.rotate(rotate)
-                self.print('BT')
-                self.print('/RinohDebug 5 Tf')
-                self.print('0 0 0 rg')
-                self.print('0 0 Td')
-                self.print('({}) Tj'.format(label))
-                self.print('ET')
-
-    def destination_label(self, annotation_location):
-        names = ', '.join(annotation_location.annotation.names)
-        names = names.encode('ascii', 'replace').decode('ascii')
-        names = (names.replace('\\', '\\\\').replace('(', '\\(')
-                 .replace(')', '\\)'))
-        return '{} (TL)'.format(names)
-
-    def add_debug_font(self):
-        resources = self.backend_page.cos_page['Resources']
-        if 'Font' not in resources:
-            resources['Font'] = cos.Dictionary()
-        fonts = resources['Font']
-        if 'RinohDebug' not in fonts:
-            font = cos.Dictionary()
-            font['Type'] = cos.Name('Font')
-            font['Subtype'] = cos.Name('Type1')
-            font['BaseFont'] = cos.Name('Helvetica')
-            fonts['RinohDebug'] = font
 
 
 class Image(object):
