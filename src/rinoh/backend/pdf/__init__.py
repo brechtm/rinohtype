@@ -23,10 +23,11 @@ from .filter import FlateDecode
 from .xobject.jpeg import JPEGReader
 from .xobject.png import PNGReader
 
+from ...annotation import (AnnotationLocation, AnnotationTransform,
+                           destination_anchor)
 from ...font.type1 import Type1Font
 from ...font.opentype import OpenTypeFont
 from ...number import NumberFormatBase
-
 
 #: Draw named destinations as debug rectangles when set to a non-zero value
 DEBUG_DESTINATIONS = getenv('RINOH_DEBUG_DESTINATIONS', '0') != '0'
@@ -384,8 +385,9 @@ class PageCanvas(Canvas):
             if annotation.type == 'NamedDestination':
                 if DEBUG_DESTINATIONS:
                     self.debug_destination(annotation_location)
-                dest_left, dest_top = \
-                    self.destination_anchor(annotation_location)
+                dest_left, dest_top = destination_anchor(
+                    annotation_location,
+                    self.backend_page.rinoh_page.display_sideways)
                 dest = cos.Array([cos_page, cos.Name('XYZ'),
                                   cos.Real(dest_left),
                                   cos.Real(page_height - dest_top),
@@ -408,19 +410,6 @@ class PageCanvas(Canvas):
                 raise NotImplementedError
             annots.append(annot)
 
-    def destination_anchor(self, annotation_location):
-        """Return the top-left destination corner after page rotation"""
-        left, top = annotation_location.left, annotation_location.top
-        width = annotation_location.width or 0
-        height = annotation_location.height or 0
-        rotate = int(self.backend_page.cos_page.get('Rotate', 0)) % 360
-        if rotate == 90:            # bottom-left in page coordinates
-            return left, top + height
-        elif rotate == 180:         # bottom-right
-            return left + width, top + height
-        elif rotate == 270:         # top-right
-            return left + width, top
-        return left, top
 
     def debug_destination(self, annotation_location):
         """Draw a named destination and the corner used by the PDF backend"""
@@ -428,7 +417,9 @@ class PageCanvas(Canvas):
         left, top = annotation_location.left, annotation_location.top
         width = annotation_location.width or 0
         height = annotation_location.height or 0
-        anchor_left, anchor_top = self.destination_anchor(annotation_location)
+        anchor_left, anchor_top = destination_anchor(
+            annotation_location,
+            self.backend_page.rinoh_page.display_sideways)
         dx, dy = left - anchor_left, top - anchor_top
         if not (width > 0 or height > 0):
             width = height = 8
@@ -453,7 +444,8 @@ class PageCanvas(Canvas):
             self.print('f')
             label = self.destination_label(annotation_location)
             label_y = -3 if anchor_top > 7 else 9
-            rotate = int(self.backend_page.cos_page.get('Rotate', 0))
+            rotate = SIDEWAYS_TO_ROTATE[
+                self.backend_page.rinoh_page.display_sideways]
             with self.save_state():
                 self.translate(6, label_y)
                 self.rotate(rotate)
@@ -482,74 +474,6 @@ class PageCanvas(Canvas):
             font['Subtype'] = cos.Name('Type1')
             font['BaseFont'] = cos.Name('Helvetica')
             fonts['RinohDebug'] = font
-
-
-class AnnotationLocation(object):
-    def __init__(self, annotation, left, top, width, height):
-        self.annotation = annotation
-        self.left = left
-        self.top = top
-        self.width = width
-        self.height = height
-
-
-class AnnotationTransform(object):
-    """Affine transform for annotation locations
-
-    Annotation coordinates have their origin in the top-left corner of a
-    container, with the y axis pointing down. This transform maps coordinates
-    in a container's coordinate system to those of its parent container,
-    including sideways rotations.
-
-    """
-
-    def __init__(self, a=1, b=0, c=0, d=1, e=0, f=0):
-        self.a = a
-        self.b = b
-        self.c = c
-        self.d = d
-        self.e = e
-        self.f = f
-
-    @classmethod
-    def from_container(cls, left, top, width, height, sideways=None):
-        """Create the transform for a container's annotation coordinates"""
-        left, top = float(left), float(top)
-        if sideways == 'left':
-            return cls(0, 1, -1, 0, left + float(height), top)
-        elif sideways == 'right':
-            return cls(0, -1, 1, 0, left, top + float(width))
-        else:
-            return cls(1, 0, 0, 1, left, top)
-
-    def compose(self, inner):
-        """Return the transform that applies `inner` first, then this one"""
-        return self.__class__(
-            self.a * inner.a + self.c * inner.b,
-            self.b * inner.a + self.d * inner.b,
-            self.a * inner.c + self.c * inner.d,
-            self.b * inner.c + self.d * inner.d,
-            self.a * inner.e + self.c * inner.f + self.e,
-            self.b * inner.e + self.d * inner.f + self.f)
-
-    def apply(self, annotation_location):
-        """Transform `annotation_location` to the parent's coordinates"""
-        left, top = annotation_location.left, annotation_location.top
-        # Most transforms only translate; skip the corner calculations then
-        if self.a == 1 and self.b == 0 and self.c == 0 and self.d == 1:
-            return annotation_location.__class__(
-                annotation_location.annotation, left + self.e, top + self.f,
-                annotation_location.width, annotation_location.height)
-        width = annotation_location.width or 0
-        height = annotation_location.height or 0
-        corners = ((left, top), (left + width, top),
-                   (left, top + height), (left + width, top + height))
-        xs = [self.a * x + self.c * y + self.e for x, y in corners]
-        ys = [self.b * x + self.d * y + self.f for x, y in corners]
-        return annotation_location.__class__(
-            annotation_location.annotation, min(xs), min(ys),
-            abs(self.a) * width + abs(self.c) * height,
-            abs(self.b) * width + abs(self.d) * height)
 
 
 class Image(object):
