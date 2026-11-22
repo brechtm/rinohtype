@@ -41,7 +41,7 @@ from .attribute import OptionSet, Source
 from .backend import pdf
 from .flowable import StaticGroupedFlowables
 from .language import EN
-from .layout import (Container, FlowContext, ReflowRequired,
+from .layout import (ContainerBase, FlowContext, ReflowRequired,
                      BACKGROUND, CONTENT, HEADER_FOOTER)
 from .number import NumberFormatBase, format_number
 from .reference import ReferenceType
@@ -84,11 +84,11 @@ class PageNumberFormat(NumberFormatBase):
     values = NumberFormatBase.values + ('continue', )
 
 
-class Page(Container):
+class Page(ContainerBase):
     """A single page in a document.
 
-    A :class:`Page` is a :class:`Container`, so other containers can be added
-    as children.
+    A :class:`Page` is a :class:`ContainerBase`, so other containers can be
+    added as children.
 
     Args:
         document_part (DocumentPart): the document part this page is part of

@@ -139,17 +139,17 @@ class FlowContext(object):
         return FlowContext(self.page, self.top_level_container, True)
 
 
-class Container(object):
+class ContainerBase(object):
     """Rectangular area that contains elements to be rendered to a
-    :class:`Page`. A :class:`Container` has an origin (the top-left corner), a
-    width and a height. It's contents are rendered relative to the container's
-    position in its parent :class:`Container`."""
+    :class:`Page`. A container has an origin (the top-left corner), a width
+    and a height. Its contents are rendered relative to the container's
+    position in its parent container."""
 
     register_with_parent = True
 
     def __init__(self, name, parent, left=None, top=None, width=None,
-                 height=None, right=None, bottom=None, sideways=None):
-        """Initialize a this container as a child of the `parent` container.
+                 height=None, right=None, bottom=None):
+        """Initialize this container as a child of the `parent` container.
 
         The horizontal position and width of the container are determined from
         `left`, `width` and `right`. If only `left` or `right` is specified,
@@ -174,9 +174,6 @@ class Container(object):
         if bottom is None:
             bottom = top + height
 
-        if sideways:
-            width, height = height, width
-
         self.left = left
         self.width = width
         self.right = right
@@ -188,11 +185,9 @@ class Container(object):
         self.parent = parent
         if parent is not None:      # a Page sets up its own context
             self.context = parent.context
-        self.sideways = sideways
         if self.register_with_parent:
             self.parent.children.append(self)
         self.children = []
-        self.clear()
 
     @property
     def document_part(self):
@@ -211,9 +206,6 @@ class Container(object):
         """The :class:`Page` this container is located on."""
         return self.context.page
 
-    def clear(self):
-        self.empty_canvas()
-
     def __repr__(self):
         return "{}('{}')".format(self.__class__.__name__, self.name)
 
@@ -221,6 +213,48 @@ class Container(object):
         if name in ('_footnote_space', 'float_space'):
             return getattr(self.parent, name)
         raise AttributeError('{}.{}'.format(self.__class__.__name__, name))
+
+    def render(self, type, rerender=False):
+        """Render the contents of this container to its canvas.
+
+        Note that the rendered contents need to be :meth:`place`\ d on the
+        parent container's canvas before they become visible."""
+        for child in self.children:
+            child.render(type, rerender)
+
+    def check_overflow(self):
+        return all(child.check_overflow() for child in self.children)
+
+    def place_children(self, page_canvas, offsets=()):
+        for child in self.children:
+            child.place(page_canvas, offsets)
+
+    def before_placing(self, preallocate=False):
+        for child in self.children:
+            child.before_placing(preallocate)
+
+
+class Container(ContainerBase):
+    """A container whose contents are rendered to an intermediate canvas,
+    which is written to the page's canvas when the container is placed."""
+
+    def __init__(self, name, parent, left=None, top=None, width=None,
+                 height=None, right=None, bottom=None, sideways=None):
+        """Initialize this container as a child of the `parent` container.
+
+        See :class:`ContainerBase` about the `name`, `parent`, `left`, `top`,
+        `width`, `height`, `right` and `bottom` parameters.
+
+        `sideways` rotates the contents of this container on the page."""
+        if sideways:
+            width, height = height, width
+        super().__init__(name, parent, left=left, top=top, width=width,
+                         height=height, right=right, bottom=bottom)
+        self.sideways = sideways
+        self.clear()
+
+    def clear(self):
+        self.empty_canvas()
 
     def empty_canvas(self):
         self._canvas = None
@@ -232,21 +266,6 @@ class Container(object):
         if self._canvas is None:
             self._canvas = self.document.backend.Canvas()
         return self._canvas
-
-    def render(self, type, rerender=False):
-        """Render the contents of this container to its canvas.
-
-        Note that the rendered contents need to be :meth:`place`\\ d on the
-        parent container's canvas before they become visible."""
-        for child in self.children:
-            child.render(type, rerender)
-
-    def check_overflow(self):
-        return all(child.check_overflow() for child in self.children)
-
-    def place_children(self, page_canvas, offsets=()):
-        for child in self.children:
-            child.place(page_canvas, offsets)
 
     def place(self, page_canvas, offsets):
         """Write this container's contents onto the page's canvas
@@ -278,10 +297,6 @@ class Container(object):
                 self._canvas.write_to(page_canvas, offsets)
                 self._canvas = None     # no longer needed
             self.place_children(page_canvas, offsets)
-
-    def before_placing(self, preallocate=False):
-        for child in self.children:
-            child.before_placing(preallocate)
 
 
 BACKGROUND = 'background'
