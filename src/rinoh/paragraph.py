@@ -19,11 +19,13 @@ from collections import namedtuple
 from copy import copy
 from itertools import chain, count
 from os import path
+from types import SimpleNamespace
 
 from . import DATA_PATH
 from .annotation import AnnotatedSpan
 from .attribute import (Attribute, AttributeType, OptionSet, ParseError,
                         OverrideDefault, Integer)
+from .color import BLACK
 from .dimension import Dimension, PT
 from .flowable import Flowable, FlowableStyle, FlowableState, FlowableWidth
 from .font import MissingGlyphException
@@ -39,7 +41,7 @@ from .util import all_subclasses, ReadAliasAttribute
 
 __all__ = ['Paragraph', 'ParagraphStyle', 'TabStop',
            'ProportionalSpacing', 'FixedSpacing', 'Leading',
-           'DEFAULT', 'STANDARD', 'SINGLE', 'DOUBLE']
+           'DEFAULT', 'STANDARD', 'SINGLE', 'DOUBLE', 'render_text']
 
 
 # Text justification
@@ -1411,6 +1413,37 @@ def show_text(canvas, left, cursor, metrics, shapeds, add_to_spaces,
     for shaped in shapeds:
         width = shaped.advance(width, space_width)
     return width
+
+
+def render_text(container, text, left, top, font, size, color=BLACK,
+                rotate=0):
+    """Draw a single line of text at `left`, `top`
+
+    This is a low-level helper for annotations and debugging. It does not
+    perform line breaking, justification or any other advanced text layout.
+
+    Args:
+        container: object providing the `canvas` and `document` to draw on
+        text (str): the text to draw
+        left (float): horizontal position of the text
+        top (float): baseline position, measured downwards from the page top
+        font (Font): font to set the text in
+        size (Dimension): font size
+        color (Color): text color
+        rotate (float): rotation of the text in degrees
+
+    """
+    size = float(size)
+    shaper = Shaper(font, size, 'normal', True, False, 0)
+    shaped = shaper.shape(text)
+    metrics = SimpleNamespace(font=font, height=size, color=color,
+                              y_offset=0, shaper=shaper)
+    canvas = container.canvas
+    with canvas.save_state():
+        canvas.translate(left, top)
+        if rotate:
+            canvas.rotate(rotate)
+        show_text(canvas, 0, 0, metrics, [shaped], None, container.document)
 
 
 def group_spans(line):
