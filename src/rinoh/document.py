@@ -128,8 +128,10 @@ class Page(Container):
     def document_part(self):
         return self._document_part
 
-    def empty_canvas(self):
-        self._canvas = self.backend_page.canvas
+    @property
+    def canvas(self):
+        """A page draws directly on the backend page canvas."""
+        return self.backend_page.canvas
 
     @property
     def document(self):
