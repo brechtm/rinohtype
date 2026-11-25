@@ -175,12 +175,12 @@ class Canvas(BytesIO):
         self.images = {}
         self.annotations = []
 
-    def write_to(self, page_canvas, offsets):
+    def write_to(self, page_canvas, annotation_transform):
         """Write this canvas' contents and resources to `page_canvas`
 
-        `offsets` are transforms that map this canvas' annotation coordinates
-        to those of the page, innermost first. They are composed into a single
-        transform before being applied to the annotations.
+        `annotation_transform` maps this canvas' annotation coordinates to
+        those of the page. It is composed of the transforms of the container
+        this canvas belongs to and its ancestors.
 
         """
         page_canvas.write(self.getbuffer())
@@ -188,11 +188,8 @@ class Canvas(BytesIO):
         page_canvas.images.update(self.images)
         if not self.annotations:
             return
-        transform = AnnotationTransform()
-        for offset in offsets:
-            transform = offset.compose(transform)
         page_canvas.annotations.extend(
-            transform.apply(annotation_location)
+            annotation_transform.apply(annotation_location)
             for annotation_location in self.annotations)
 
     def print(self, string):

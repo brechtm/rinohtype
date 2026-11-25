@@ -32,6 +32,7 @@ from contextlib import contextmanager
 from copy import copy
 from functools import cached_property
 
+from .annotation import AnnotationTransform
 from .dimension import DimensionBase, PT
 from .util import ContextManager
 
@@ -42,6 +43,10 @@ __all__ = ['Container', 'FlowablesContainer', 'ChainedContainer',
            'VirtualContainer', 'Chain', 'FootnoteContainer', 'MaybeContainer',
            'FlowContext', 'ContainerOverflow', 'EndOfContainer',
            'PageBreakException']
+
+
+#: annotation transform at the page level; maps coordinates onto themselves
+IDENTITY = AnnotationTransform()
 
 
 class ContainerOverflow(Exception):
@@ -232,9 +237,9 @@ class ContainerBase(object):
     def check_overflow(self):
         return all(child.check_overflow() for child in self.children)
 
-    def place_children(self, page_canvas, offsets=()):
+    def place_children(self, page_canvas, annotation_transform=IDENTITY):
         for child in self.children:
-            child.place(page_canvas, offsets)
+            child.place(page_canvas, annotation_transform)
 
     def before_placing(self, preallocate=False):
         for child in self.children:
@@ -274,7 +279,7 @@ class Container(ContainerBase):
             self._canvas = self.document.backend.Canvas()
         return self._canvas
 
-    def place(self, page_canvas, offsets):
+    def place(self, page_canvas, annotation_transform=IDENTITY):
         """Write this container's contents onto the page's canvas
 
         The contents are written directly to `page_canvas` instead of to the
@@ -282,14 +287,15 @@ class Container(ContainerBase):
 
         Args:
             page_canvas (Canvas): the canvas of the page
-            offsets (tuple): transforms mapping annotation coordinates to
-                those of the parent container, innermost first
+            annotation_transform (AnnotationTransform): maps this container's
+                annotation coordinates to those of the page (identity at the
+                page level)
 
         """
         left, top = float(self.left), float(self.top)
-        offset = page_canvas.annotation_transform(left, top, self.width,
-                                                  self.height, self.sideways)
-        offsets = (offset, *offsets)
+        annotation_transform = annotation_transform.compose(
+            page_canvas.annotation_transform(left, top, self.width,
+                                             self.height, self.sideways))
         with page_canvas.save_state():
             page_canvas.translate(left, top)
             if self.sideways == 'left':
@@ -301,9 +307,9 @@ class Container(ContainerBase):
             if self._canvas is not None:
                 # contents drawn directly on this container are subject to
                 # the sideways transform as well
-                self._canvas.write_to(page_canvas, offsets)
+                self._canvas.write_to(page_canvas, annotation_transform)
                 self._canvas = None     # no longer needed
-            self.place_children(page_canvas, offsets)
+            self.place_children(page_canvas, annotation_transform)
 
 
 BACKGROUND = 'background'
@@ -602,9 +608,9 @@ class ConditionalDownExpandingContainerBase(DownExpandingContainerBase):
     def do_place(self, place=True):
         self._do_place = place
 
-    def place(self, page_canvas, offsets):
+    def place(self, page_canvas, annotation_transform=IDENTITY):
         if self._do_place:
-            super().place(page_canvas, offsets)
+            super().place(page_canvas, annotation_transform)
 
     def before_placing(self, preallocate=False):
         if self._do_place:

@@ -16,6 +16,7 @@ transform and its children are placed.
 
 from types import SimpleNamespace
 
+from rinoh.annotation import AnnotationTransform
 from rinoh.backend.pdf import Canvas
 from rinoh.layout import Container
 
@@ -41,18 +42,21 @@ def make_container(sideways=None, left=0, top=0, width=100, height=50):
     own_canvas.annotate(ANNOTATION, ANNOTATION_LEFT, ANNOTATION_TOP,
                         ANNOTATION_WIDTH, ANNOTATION_HEIGHT)
 
-    def place_children(page_canvas, offsets):
+    def place_children(page_canvas, annotation_transform):
         page_canvas.print(CHILD)
-        place_children.offsets = offsets
+        place_children.annotation_transform = annotation_transform
 
     return SimpleNamespace(left=left, top=top, width=width, height=height,
                            sideways=sideways, _canvas=own_canvas,
                            place_children=place_children)
 
 
-def place(container):
+def place(container, annotation_transform=None):
     page_canvas = Canvas()
-    Container.place(container, page_canvas, ())
+    if annotation_transform is None:
+        Container.place(container, page_canvas)
+    else:
+        Container.place(container, page_canvas, annotation_transform)
     return page_canvas
 
 
@@ -60,9 +64,10 @@ def placement(container):
     return place(container).getvalue().splitlines()
 
 
-def offset_fields(offsets):
-    offset, = offsets
-    return (offset.a, offset.b, offset.c, offset.d, offset.e, offset.f)
+def transform_fields(annotation_transform):
+    return (annotation_transform.a, annotation_transform.b,
+            annotation_transform.c, annotation_transform.d,
+            annotation_transform.e, annotation_transform.f)
 
 
 def annotation_location(page_canvas):
@@ -80,8 +85,8 @@ def test_not_sideways():
                      CHILD.encode(),
                      b'Q']
     assert container._canvas is None
-    assert offset_fields(container.place_children.offsets) == (1, 0, 0, 1,
-                                                              10, 20)
+    annotation_transform = container.place_children.annotation_transform
+    assert transform_fields(annotation_transform) == (1, 0, 0, 1, 10, 20)
     assert annotation_location(page_canvas) == (20, 25, 20, 3)
 
 
@@ -100,8 +105,8 @@ def test_sideways_left():
                      CHILD.encode(),
                      b'Q']
     assert container._canvas is None
-    assert offset_fields(container.place_children.offsets) == (0, 1, -1, 0,
-                                                              60, 20)
+    annotation_transform = container.place_children.annotation_transform
+    assert transform_fields(annotation_transform) == (0, 1, -1, 0, 60, 20)
     assert annotation_location(page_canvas) == (52, 30, 3, 20)
 
 
@@ -117,8 +122,8 @@ def test_sideways_right():
                      CHILD.encode(),
                      b'Q']
     assert container._canvas is None
-    assert offset_fields(container.place_children.offsets) == (0, -1, 1, 0,
-                                                              10, 120)
+    annotation_transform = container.place_children.annotation_transform
+    assert transform_fields(annotation_transform) == (0, -1, 1, 0, 10, 120)
     assert annotation_location(page_canvas) == (15, 90, 3, 20)
 
 
@@ -132,32 +137,33 @@ def test_own_contents_rotated_like_children():
         assert lines.index(CHILD.encode()) == rotate_index + 2
 
 
-def test_translation_offsets_are_composed():
-    """Offsets are composed in the order the containers are nested"""
+def annotated_canvas():
     canvas = Canvas()
     canvas.annotate(ANNOTATION, 1, 2, 3, 4)
-    page_canvas = Canvas()
-    inner = page_canvas.annotation_transform(10, 20, 30, 40)
-    outer = page_canvas.annotation_transform(5, 7, 50, 60)
-    canvas.write_to(page_canvas, (inner, outer))
+    return canvas
+
+
+def test_translation_transforms_are_composed():
+    """The inherited transform is composed with the container's own"""
+    outer = AnnotationTransform.from_container(5, 7, 50, 60)
+    container = make_container(left=10, top=20, width=30, height=40)
+    container._canvas = annotated_canvas()
+    page_canvas = place(container, outer)
     assert annotation_location(page_canvas) == (16, 29, 3, 4)
 
 
-def test_rotation_offsets_are_composed():
-    canvas = Canvas()
-    canvas.annotate(ANNOTATION, 1, 2, 3, 4)
-    page_canvas = Canvas()
-    inner = page_canvas.annotation_transform(10, 20, 30, 40)
-    outer = page_canvas.annotation_transform(5, 7, 50, 60, 'right')
-    canvas.write_to(page_canvas, (inner, outer))
+def test_rotation_transforms_are_composed():
+    outer = AnnotationTransform.from_container(5, 7, 50, 60, 'right')
+    container = make_container(left=10, top=20, width=30, height=40)
+    container._canvas = annotated_canvas()
+    page_canvas = place(container, outer)
     assert annotation_location(page_canvas) == (27, 43, 4, 3)
 
 
-def test_write_to_without_offsets():
-    canvas = Canvas()
-    canvas.annotate(ANNOTATION, 1, 2, 3, 4)
+def test_write_to_with_identity_transform():
+    canvas = annotated_canvas()
     page_canvas = Canvas()
-    canvas.write_to(page_canvas, ())
+    canvas.write_to(page_canvas, AnnotationTransform())
     assert annotation_location(page_canvas) == (1, 2, 3, 4)
 
 
@@ -167,5 +173,5 @@ def test_destination_point_on_sideways_container():
     canvas.annotate(ANNOTATION, 5, 10, 0, 0)
     page_canvas = Canvas()
     transform = page_canvas.annotation_transform(10, 20, 100, 50, 'right')
-    canvas.write_to(page_canvas, (transform,))
+    canvas.write_to(page_canvas, transform)
     assert annotation_location(page_canvas) == (20, 115, 0, 0)

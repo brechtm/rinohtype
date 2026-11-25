@@ -65,6 +65,9 @@ Changed:
     descendants, instead of walking up the container hierarchy each time.
     The page area a flowable ends up in and the page's footnote and float
     space are no longer determined by walking up the hierarchy either.
+  - Annotation transforms are composed as containers are placed, instead of
+    collecting them in a list that is composed again for each canvas that
+    holds annotations.
 
 * Memory usage: the contents of a page's containers are written directly to
   the page instead of being copied into each enclosing container, and
