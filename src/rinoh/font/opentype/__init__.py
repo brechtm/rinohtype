@@ -6,6 +6,7 @@
 # Public License v3. See the LICENSE file or http://www.gnu.org/licenses/.
 
 
+from functools import cached_property
 from logging import warning
 from warnings import warn
 
@@ -51,12 +52,6 @@ class OpenTypeFont(Font, OpenTypeParser):
         width = self._check('width', width, self['OS/2']['usWidthClass'],
                             FontWidth.to_name)
         super().__init__(filename, weight, slant, width)
-        self._glyphs_by_code = self._create_glyph_metrics()
-        self._encoding, self._glyphs = \
-            self._create_glyphs_by_char(self._glyphs_by_code)
-        self._suffixes = {}
-        self._ligatures = {}
-        self._kerning_pairs = {}
 
     def _check(self, attr, specified, determined, convert=lambda value: value):
         if specified and specified != determined:
@@ -67,21 +62,27 @@ class OpenTypeFont(Font, OpenTypeParser):
             return specified
         return determined
 
-    def _create_glyph_metrics(self):
-        glyphs_by_code = {}
-        # TODO: extract bboxes from CFF: www.tug.org/TUGboat/tb24-3/bella.pdf
+    @cached_property
+    def _glyphs_by_code(self):
+        # glyph bounding boxes are not needed (and not parsed)
         advance_width_table = self['hmtx']['advanceWidth']
-        glyf_table = self['glyf'] if 'glyf' in self else None
-        for glyph_index, width in enumerate(advance_width_table):
-            bbox = (glyf_table[glyph_index].bounding_box
-                    if glyf_table and glyph_index in glyf_table
-                    else None)
-            glyph_metrics = GlyphMetrics(None, width, bbox, glyph_index)
-            glyphs_by_code[glyph_index] = glyph_metrics
-        return glyphs_by_code
+        return {glyph_index: GlyphMetrics(None, width, None, glyph_index)
+                for glyph_index, width in enumerate(advance_width_table)}
 
-    def _create_glyphs_by_char(self, glyphs_by_code):
+    @cached_property
+    def _glyphs(self):
+        """Glyph metrics by character"""
+        return self._cmap[1]
+
+    @property
+    def _encoding(self):
+        """The (platform ID, encoding ID) of the cmap subtable in use"""
+        return self._cmap[0]
+
+    @cached_property
+    def _cmap(self):
         # TODO: properly handle encodings
+        glyphs_by_code = self._glyphs_by_code
         glyphs_by_char = {}
         cmap_tables = self['cmap']
         for encoding in [UNICODE_20_FULL, WINDOWS_UNICODE_FULL,

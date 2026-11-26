@@ -28,6 +28,7 @@ Some characters with special properties and are represented by special classes:
 import re
 
 from ast import literal_eval
+from copy import copy
 from html.entities import name2codepoint
 from token import NAME, STRING, NEWLINE, NL, LPAR, RPAR, ENDMARKER
 
@@ -147,6 +148,26 @@ class InlineStyled(Styled):
 
     def spans(self, container):
         raise NotImplementedError
+
+
+class SpanMetrics(object):
+    """The vertical metrics of a span of text or of an inline flowable
+
+    Args:
+        ascender (float): height above the baseline
+        descender (float): depth below the baseline (negative)
+        height (float): font size (after super/subscript size adjustment)
+        line_gap (float): the font's recommended line gap
+
+    """
+
+    __slots__ = ('ascender', 'descender', 'height', 'line_gap')
+
+    def __init__(self, ascender, descender, height, line_gap):
+        self.ascender = ascender
+        self.descender = descender
+        self.height = height
+        self.line_gap = line_gap
 
 
 class CharacterLike(Styled):
@@ -544,6 +565,14 @@ class MixedStyledText(MixedStyledTextBase, list):
         items = [item.copy() for item in self.items]
         return type(self)(items, style=self.style, parent=parent,
                           source=self.source)
+
+    def __copy__(self):
+        # also copy the items; an item cannot have more than one parent
+        result = type(self).__new__(type(self))
+        result.__dict__.update(self.__dict__)
+        for item in self:
+            result.append(copy(item))
+        return result
 
 
 class ConditionalMixedStyledText(MixedStyledText):

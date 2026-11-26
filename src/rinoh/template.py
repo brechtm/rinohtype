@@ -409,10 +409,7 @@ class DocumentPart(Templated, metaclass=DocumentLocationType):
 
     @property
     def number_of_pages(self):
-        try:
-            return self.document.part_page_counts[self.template.name].count
-        except KeyError:
-            return 0
+        return self.document.number_of_pages(self.template.name)
 
     def prepare(self):
         for flowable in self._flowables(self.document):

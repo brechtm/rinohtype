@@ -1,0 +1,7 @@
+[TEMPLATE_CONFIGURATION]
+name = reference manual benchmark
+template = book
+stylesheet = refmanual.rts
+
+[front_matter]
+flowables = [TableOfContentsSection()]

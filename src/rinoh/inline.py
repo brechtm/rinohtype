@@ -14,7 +14,7 @@ from .element import DocumentElement
 from .flowable import Flowable, FlowableStyle
 from .layout import VirtualContainer
 from .style import StyledMeta
-from .text import InlineStyle, InlineStyled
+from .text import InlineStyle, InlineStyled, SpanMetrics
 from .util import NotImplementedAttribute
 
 
@@ -98,6 +98,11 @@ class InlineFlowableSpan(DocumentElement):
         self.width = width
         self.baseline = baseline
         self.virtual_container = virtual_container
+        height = virtual_container.height
+        baseline = baseline.to_points(height)
+        ascender = 0 if baseline > height else float(height - baseline)
+        descender = min(0, - baseline)
+        self.metrics = SpanMetrics(ascender, descender, ascender - descender, 0)
 
     def font(self, document):
         raise InlineFlowableException
@@ -106,28 +111,9 @@ class InlineFlowableSpan(DocumentElement):
     def span(self):
         return self
 
-    def height(self, document):
-        return self.ascender(document) - self.descender(document)
-
-    def ascender(self, document):
-        baseline = self.baseline.to_points(self.virtual_container.height)
-        if baseline > self.virtual_container.height:
-            return 0
-        else:
-            return self.virtual_container.height - baseline
-
-    def descender(self, document):
-        return min(0, - self.baseline.to_points(self.virtual_container.height))
-
-    def line_gap(self, document):
-        return 0
-
     def before_placing(self, container, preallocate=False):
         pass
 
-    # TODO: get_style and word_to_glyphs may need proper implementations
+    # TODO: get_style may need a proper implementation
     def get_style(self, attribute, document=None):
         pass
-
-    def chars_to_glyphs(self, chars):
-        return chars

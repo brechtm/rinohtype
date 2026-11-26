@@ -173,18 +173,20 @@ class Canvas(BytesIO):
         self.images = {}
         self.annotations = []
 
-    def append(self, parent_canvas, left, top):
-        with parent_canvas.save_state():
-            parent_canvas.translate(left, top)
-            parent_canvas.write(self.getvalue())
-        self.propagate_annotations(parent_canvas, left, top)
+    def write_to(self, page_canvas, offsets):
+        """Write this canvas' contents and resources to `page_canvas`
 
-    def propagate_annotations(self, parent_canvas, left, top):
-        translated_annotations = (annotation_location + (left, top)
-                                  for annotation_location in self.annotations)
-        parent_canvas.fonts.update(self.fonts)
-        parent_canvas.images.update(self.images)
-        parent_canvas.annotations.extend(translated_annotations)
+        `offsets` are the (left, top) offsets to apply to the annotations, one
+        after the other.
+
+        """
+        page_canvas.write(self.getbuffer())
+        page_canvas.fonts.update(self.fonts)
+        page_canvas.images.update(self.images)
+        for annotation_location in self.annotations:
+            for offset in offsets:
+                annotation_location += offset
+            page_canvas.annotations.append(annotation_location)
 
     def print(self, string):
         self.write(string.encode('ascii') + b'\n')
@@ -264,17 +266,21 @@ class Canvas(BytesIO):
         self.fonts.setdefault(font_name, font_rsc)
         return font_name, font_rsc
 
-    def show_glyphs(self, left, cursor, span, glyphs, container):
-        font = span.font(container)
-        size = span.height(container)
-        color = span.get_style('font_color', container)
-        font_name, font_rsc = self.register_font(container.document, font)
-        string = ''
-        current_string = ''
-        total_width = 0
-        for glyph in glyphs:
-            glyph_metrics, width = glyph.metrics, glyph.width
-            total_width += width
+    def encode_glyphs(self, document, font, size, glyphs):
+        """Encode glyphs for :meth:`show_glyphs`
+
+        Args:
+            glyphs: (glyph metrics, width) pairs; the width includes kerning
+                and character spacing
+
+        Returns:
+            list: a string for each glyph; :meth:`show_glyphs` takes (a
+            concatenation of) these
+
+        """
+        _, font_rsc = document.backend_document.register_font(font)
+        fragments = []
+        for glyph_metrics, width in glyphs:
             default_advance = 1000 * glyph_metrics.width / font.units_per_em
             adjusted_advance = 1000 * width / size  # w kerning & char spacing
             adjust = default_advance - adjusted_advance
@@ -287,21 +293,25 @@ class Canvas(BytesIO):
                 char = CODE_TO_CHAR[high] + CODE_TO_CHAR[low]
             if abs(adjust) > 1e-3:
                 adjust_str = '{:.3f}'.format(adjust).rstrip('0').rstrip('.')
-                string += '({}{}) {} '.format(current_string, char, adjust_str)
-                current_string = ''
+                fragments.append('{}) {} ('.format(char, adjust_str))
             else:
-                current_string += char
-        if current_string:
-            string += '({})'.format(current_string)
+                fragments.append(char)
+        return fragments
+
+    def show_glyphs(self, left, cursor, metrics, encoded, document):
+        """Show glyphs encoded by :meth:`encode_glyphs`"""
+        font_name, font_rsc = self.register_font(document, metrics.font)
+        string = '({})'.format(encoded)
+        if string == '()' or string.endswith(' ()'):  # nothing after adjust
+            string = string[:-2]
         with self.save_state():
             self.print('BT')
-            self.print('/{} {} Tf'.format(font_name, size))
-            self.fill_color(color)
-            y_offset = span.y_offset(container)
-            self.print('{:f} {:f} Td'.format(left, - (cursor - y_offset)))
+            self.print('/{} {} Tf'.format(font_name, metrics.height))
+            self.fill_color(metrics.color)
+            self.print('{:f} {:f} Td'.format(left,
+                                             - (cursor - metrics.y_offset)))
             self.print('[{}] TJ'.format(string))
             self.print('ET')
-        return total_width
 
     def annotate(self, annotation, left, top, width, height):
         ann_loc = AnnotationLocation(annotation, left, top, width, height)

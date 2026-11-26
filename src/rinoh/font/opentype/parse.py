@@ -14,11 +14,13 @@ from collections import OrderedDict
 from ...util import all_subclasses
 
 
-def create_reader(data_format, process_struct=lambda data: data[0]):
+def create_reader(data_format, process_struct=None):
     data_struct = struct.Struct('>' + data_format)
     def reader(file, **kwargs):
         data = data_struct.unpack(file.read(data_struct.size))
-        return process_struct(data)
+        return process_struct(data) if process_struct else data[0]
+    if process_struct is None:
+        reader.array_format = data_format   # see array()
     return reader
 
 
@@ -56,6 +58,12 @@ class Packed(OrderedDict):
 
 
 def array(reader, length):
+    item_format = getattr(reader, 'array_format', None)
+    if item_format:     # read all items at once
+        array_struct = struct.Struct('>{}{}'.format(length, item_format))
+        def array_reader(file, **kwargs):
+            return list(array_struct.unpack(file.read(array_struct.size)))
+        return array_reader
     def array_reader(file, **kwargs):
         return [reader(file, **kwargs) for _ in range(length)]
     return array_reader
@@ -158,56 +166,50 @@ class TableRecord(OpenTypeTable):
                ('length', ulong)]
 
     def check_sum(self, file):
-        total = 0
-        table_offset = self['offset']
-        file.seek(table_offset)
-        end_of_data = table_offset + 4 * math.ceil(self['length'] / 4)
-        while file.tell() < end_of_data:
-            value = ulong(file)
-            if not (self['tag'] == 'head' and file.tell() == table_offset + 12):
-                total += value
+        file.seek(self['offset'])
+        num_values = math.ceil(self['length'] / 4)    # padded to 4 bytes
+        data = file.read(4 * num_values).ljust(4 * num_values, b'\0')
+        values = struct.unpack('>{}L'.format(num_values), data)
+        total = sum(values)
+        if self['tag'] == 'head':
+            total -= values[2]      # skip checkSumAdjustment
         checksum = total % 2**32
         assert checksum == self['checkSum']
 
 
 from .required import HmtxTable
 from .cff import CompactFontFormat
-from . import truetype, gpos, gsub, other
+from . import gpos, gsub, other
 
 
 class OpenTypeParser(dict):
+    """The tables in an OpenType font file, parsed on first access"""
+
     def __init__(self, filename):
-        disk_file = open(filename, 'rb')
-        file = io.BytesIO(disk_file.read())
-        disk_file.close()
+        with open(filename, 'rb') as disk_file:
+            self._file = file = io.BytesIO(disk_file.read())
         offset_table = OffsetTable(file)
-        table_records = OrderedDict()
+        self._table_records = {}
         for i in range(offset_table['numTables']):
             record = TableRecord(file)
-            table_records[record['tag']] = record
-        for tag, record in table_records.items():
-            record.check_sum(file)
+            self._table_records[record['tag']] = record
 
-        for tag in ('head', 'hhea', 'cmap', 'maxp', 'name', 'post', 'OS/2'):
-            self[tag] = self._parse_table(file, table_records[tag])
+    def __contains__(self, tag):
+        return tag in self._table_records
 
-        self['hmtx'] = HmtxTable(file, table_records['hmtx']['offset'],
-                                 self['hhea']['numberOfHMetrics'],
-                                 self['maxp']['numGlyphs'])
-        try:
-            self['CFF'] = CompactFontFormat(file,
-                                            table_records['CFF']['offset'])
-        except KeyError:
-            self['loca'] = truetype.LocaTable(file,
-                                              table_records['loca']['offset'],
-                                              self['head']['indexToLocFormat'],
-                                              self['maxp']['numGlyphs'])
-            self['glyf'] = truetype.GlyfTable(file,
-                                              table_records['glyf']['offset'],
-                                              self['loca'])
-        for tag in ('kern', 'GPOS', 'GSUB'):
-            if tag in table_records:
-                self[tag] = self._parse_table(file, table_records[tag])
+    def __missing__(self, tag):
+        file, record = self._file, self._table_records[tag]
+        record.check_sum(file)
+        if tag == 'hmtx':
+            table = HmtxTable(file, record['offset'],
+                              self['hhea']['numberOfHMetrics'],
+                              self['maxp']['numGlyphs'])
+        elif tag == 'CFF':
+            table = CompactFontFormat(file, record['offset'])
+        else:
+            table = self._parse_table(file, record)
+        self[tag] = table
+        return table
 
     @staticmethod
     def _parse_table(file, table_record):

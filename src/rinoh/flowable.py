@@ -227,10 +227,10 @@ class Flowable(Styled):
                 raise EndOfContainer(state)
             top_to_baseline += float(space_above)
         self_space_below = float(self.get_style('space_below', container))
-        margin_left = self.get_style('margin_left', container)
-        margin_right = self.get_style('margin_right', container)
+        margin_left = float(self.get_style('margin_left', container))
+        margin_right = float(self.get_style('margin_right', container))
         reference_id = self.get_id(container.document, create=False)
-        right = container.width - margin_right
+        right = float(container.width) - margin_right
         container.register_styled(self, continued=not state.initial)
         margin_container = InlineDownExpandingContainer('MARGIN', container,
                                                         left=margin_left,
@@ -260,33 +260,83 @@ class Flowable(Styled):
         container.document.progress(self, container)
         return margin_left + width + margin_right, top_to_baseline, descender
 
+    def _border_width(self, attribute, container):
+        border = self.get_style(attribute, container)
+        return border.width if border else 0
+
+    def _horizontal_padding_and_borders(self, container):
+        """Return the left and right padding and border widths (floats)"""
+        padding = self.get_style('padding', container)
+        padding_left = self.get_style('padding_left', container) or padding
+        padding_right = self.get_style('padding_right', container) or padding
+        border = self._border_width('border', container)
+        border_left = self._border_width('border_left', container) or border
+        border_right = self._border_width('border_right', container) or border
+        return (float(padding_left), float(padding_right), float(border_left),
+                float(border_right))
+
+    def flow_width(self, container):
+        """Return the width this flowable takes up when flowed into `container`
+
+        This is the width returned by :meth:`flow`. It is determined from the
+        flowable's content where possible (see :meth:`content_width`), and
+        otherwise by flowing the flowable into `container`, which must be a
+        container that is never placed.
+
+        """
+        cls = type(self)
+        if cls.flow is Flowable.flow and cls.flow_inner is Flowable.flow_inner:
+            margin_left = float(self.get_style('margin_left', container))
+            margin_right = float(self.get_style('margin_right', container))
+            padding_left, padding_right, border_left, border_right = \
+                self._horizontal_padding_and_borders(container)
+            # the same expressions as for the containers created by flow()
+            margin_width = float(container.width) - margin_right - margin_left
+            padding_width = ((margin_width - padding_right - border_right)
+                             - (padding_left + border_left))
+            content_width = self.content_width(padding_width, container)
+            if content_width is not None:
+                padding_h = padding_left + padding_right
+                border_h = border_left + border_right
+                bordered_width = content_width + padding_h + border_h
+                return margin_left + bordered_width + margin_right
+        width, _, _ = self.flow(container, None)
+        return width
+
+    def content_width(self, width, container):
+        """Return the width of this flowable's content, as returned by
+        :meth:`render`, when rendered into a container of `width`
+
+        Returns `None` if this can only be determined by rendering.
+        `container` is only used for looking up styles and the like.
+
+        """
+        return None
+
     def flow_inner(self, container, last_descender, state=None, space_below=0,
                    **kwargs):
-        def border_width(attribute):
-            border = self.get_style(attribute, container)
-            return border.width if border else 0
-
         draw_top = state.initial
         width = self._width(container)
         padding = self.get_style('padding', container)
-        padding_top = self.get_style('padding_top', container) or padding
-        padding_left = self.get_style('padding_left', container) or padding
-        padding_right = self.get_style('padding_right', container) or padding
-        padding_bottom = self.get_style('padding_bottom', container) or padding
+        padding_top = float(self.get_style('padding_top', container)
+                            or padding)
+        padding_bottom = float(self.get_style('padding_bottom', container)
+                               or padding)
+        padding_left, padding_right, border_left, border_right = \
+            self._horizontal_padding_and_borders(container)
         padding_h = padding_left + padding_right
-        border = border_width('border')
-        border_left = border_width('border_left') or border
-        border_right = border_width('border_right') or border
-        border_top = border_width('border_top') or border
-        border_bottom = border_width('border_bottom') or border
+        border = self._border_width('border', container)
+        border_top = self._border_width('border_top', container) or border
+        border_bottom = (self._border_width('border_bottom', container)
+                         or border)
         border_h = border_left + border_right
         left = padding_left + border_left
         right = container.width - padding_right - border_right
-        padding_border_bottom = float(padding_bottom + border_bottom)
+        padding_border_bottom = padding_bottom + float(border_bottom)
         total_space_below = space_below + padding_border_bottom
         last_descender = None if border_top else last_descender
         if draw_top:
-            if not container.advance2(border_top + padding_top):
+            if not container.advance2(float(border_top) + padding_top):
                 return state, 0, 0, last_descender
         pad_cntnr = InlineDownExpandingContainer('PADDING', container,
                                                  left=left, right=right)
@@ -314,11 +364,14 @@ class Flowable(Styled):
         if state is None or not state.initial:
             self.render_frame(container, frame_width, container.height,
                               top=draw_top, bottom=state is None)
-        top_to_baseline = border_top + padding_top + first_line_ascender
+        top_to_baseline = (float(border_top) + padding_top
+                           + first_line_ascender)
         descender = None if border_bottom else descender
         return state, bordered_width, top_to_baseline, descender
 
     def render_frame(self, container, width, height, top=True, bottom=True):
+        if container.never_placed:      # only measuring; no need to draw
+            return
         width, height = float(width), - float(height)
         border = self.get_style('border', container)
         border_left = self.get_style('border_left', container) or border
@@ -326,9 +379,11 @@ class Flowable(Styled):
         border_top = self.get_style('border_top', container) or border
         border_bottom = self.get_style('border_bottom', container) or border
         background_color = self.get_style('background_color', container)
-        fill_style = ShapeStyle(stroke=None, fill_color=background_color)
-        rect = Rectangle((0, 0), width, height, style=fill_style, parent=self)
-        rect.render(container)
+        if background_color:
+            fill_style = ShapeStyle(stroke=None, fill_color=background_color)
+            rect = Rectangle((0, 0), width, height, style=fill_style,
+                             parent=self)
+            rect.render(container)
 
         def offset_border(coord, stroke, corr_x, corr_y):
             return (coord + corr * float(stroke.width) / 2
@@ -452,7 +507,9 @@ class GroupedFlowablesState(FlowableState):
     def __init__(self, groupedflowables, flowables, first_flowable_state=None,
                  _initial=True, _index=0):
         super().__init__(groupedflowables, _initial)
-        self.flowables = list(flowables)
+        # the list of flowables is not modified, so copies share it
+        self.flowables = (flowables if isinstance(flowables, list)
+                          else list(flowables))
         self.first_flowable_state = first_flowable_state
         self._index = _index
 
@@ -463,9 +520,8 @@ class GroupedFlowablesState(FlowableState):
         return self._index >= len(self.flowables)
 
     def __copy__(self):
-        copy_flowables = copy(self.flowables)
         copy_first_flowable_state = copy(self.first_flowable_state)
-        return self.__class__(self.groupedflowables, copy_flowables,
+        return self.__class__(self.groupedflowables, self.flowables,
                               copy_first_flowable_state, _initial=self.initial,
                               _index=self._index)
 
@@ -521,6 +577,19 @@ class GroupedFlowables(Flowable):
 
     def mark_page_nonempty(self, container):
         pass   # only the children place content on the page
+
+    def content_width(self, width, container):
+        if type(self).render is not GroupedFlowables.render:
+            return None
+        inner = VirtualContainer(container, width=width, never_placed=True)
+        max_flowable_width = 0
+        for flowable in self.initial_state(inner).flowables:
+            if flowable.is_hidden(inner):
+                continue
+            flowable.parent = self
+            max_flowable_width = max(max_flowable_width,
+                                     flowable.flow_width(inner))
+        return max_flowable_width
 
     def render(self, container, descender, state, first_line_only=False,
                **kwargs):
@@ -738,8 +807,8 @@ class LabeledFlowable(Flowable):
     def label_width(self, container):
         label_min_width = self.get_style('label_min_width', container)
         label_max_width = self.get_style('label_max_width', container)
-        virtual_container = VirtualContainer(container)
-        label_width, _, _ = self.label.flow(virtual_container, 0)
+        virtual_container = VirtualContainer(container, never_placed=True)
+        label_width = self.label.flow_width(virtual_container)
         spillover = (label_width > label_max_width.to_points(container.width)
                      if label_max_width else True)
         return max(label_width, label_min_width), spillover
@@ -768,8 +837,9 @@ class LabeledFlowable(Flowable):
             label_spillover = True
         elif free_label_width > label_width:
             if style('wrap_label'):
-                vcontainer = VirtualContainer(container, width=label_max_width)
-                wrapped_width, _, _ = self.label.flow(vcontainer, 0)
+                vcontainer = VirtualContainer(container, width=label_max_width,
+                                              never_placed=True)
+                wrapped_width = self.label.flow_width(vcontainer)
                 if wrapped_width < label_max_width:
                     label_width = wrapped_width
                 else:
@@ -855,7 +925,7 @@ class LabeledFlowable(Flowable):
 
 
 def find_baseline(flowable, container, last_descender, state=None, **kwargs):
-    virtual_container = VirtualContainer(container)
+    virtual_container = VirtualContainer(container, never_placed=True)
     inline_ctnr = InlineDownExpandingContainer('DUMMY', virtual_container,
                                                advance_parent=False)
     _, baseline, _ = flowable.flow(inline_ctnr, last_descender,

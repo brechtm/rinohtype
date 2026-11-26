@@ -1,0 +1,233 @@
+---------------------------------- page 1 ----------------------------------
+#### FlowablesContainer('background')
+  StaticGroupedFlowables()
+#### DownExpandingContainer('title')
+  StaticGroupedFlowables()
+    Paragraph('Index page break', style='title page title')
+         > (0,0,1,0,2) title page title [Sphinx] > DEFAULT
+           (0,0,0,0,2) body [Sphinx] > default
+        SingleStyledText('Index page break')
+    Paragraph('Release ', style='title page subtitle')
+         > (0,0,1,0,2) title page subtitle [Sphinx] > title page title
+           (0,0,0,0,2) body [Sphinx] > default
+        SingleStyledText('Release ')
+    Paragraph('Author', style='title page author')
+         > (0,0,1,0,2) title page author [Sphinx] > DEFAULT
+           (0,0,0,0,2) body [Sphinx] > default
+        SingleStyledText('Author')
+---------------------------------- page i ----------------------------------
+#### FlowablesContainer('background')
+  StaticGroupedFlowables()
+#### FootnoteContainer('footnotes')
+  StaticGroupedFlowables()
+#### FlowablesContainer('chapter title')
+  Paragraph('Table of Contents', style='front matter section title')
+       > (0,0,1,0,2) front matter section title [Sphinx] > DEFAULT
+         (0,0,0,0,2) body [Sphinx] > default
+      Field('Table of Contents')
+        StringField('Table of Contents')
+          SingleStyledText('Table of Contents')
+#### ChainedContainer('column1')
+  StaticGroupedFlowables()
+    TableOfContentsSection(style='table of contents')
+         > (0,0,1,0,1) table of contents section [Sphinx] > DEFAULT
+           (0,0,0,1,1) chapter [Sphinx] > DEFAULT
+      TableOfContents()   table of contents
+           > (0,0,0,0,2) table of contents [Sphinx] > default
+        TableOfContentsEntry('	Index	3')
+             > (0,0,0,1,2) toc level 1 [Sphinx] > table of contents
+            ReferenceField('')
+                 > (0,0,0,1,4) toc entry number reference field [Sphinx] > linked reference
+                   (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+              SingleStyledText('')
+            Tab('	')
+            ReferenceField('Index')
+                 > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+              StringField('Index')
+                SingleStyledText('Index')
+            Tab('	')
+            ReferenceField('3')
+                 > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+              SingleStyledText('3')
+#### DownExpandingContainer('footer')
+  StaticGroupedFlowables()
+    Footer('		i')
+         > (0,0,0,0,2) footer [Sphinx] > header_footer
+        MixedStyledText('		i')
+          MixedStyledText('		i')
+            Tab('	')
+            Tab('	')
+            Field('i')
+              SingleStyledText('i')
+---------------------------------- page 1 ----------------------------------
+#### FlowablesContainer('background')
+  StaticGroupedFlowables()
+#### FootnoteContainer('footnotes')
+  StaticGroupedFlowables()
+#### ChainedContainer('column1')
+  StaticGroupedFlowables()
+    DocumentTree()   index.rst   <document>
+      Paragraph('The index entries for terms in a...')   index.rst:4   <paragraph>
+           > (0,0,0,0,2) body [Sphinx] > default
+          MixedStyledText('The index entries for terms in a...')
+            MixedStyledText('The index entries for terms in a...')
+              SingleStyledText('The index entries for terms in a...')
+      Paragraph('Lorem ipsum dolor sit amet, cons...')   index.rst:7   <paragraph>
+           > (0,0,0,0,2) body [Sphinx] > default
+          MixedStyledText('Lorem ipsum dolor sit amet, cons...')
+            MixedStyledText('Lorem ipsum dolor sit amet, cons...')
+              SingleStyledText('Lorem ipsum dolor sit amet, cons...')
+      Paragraph('Lorem ipsum dolor sit amet, cons...')   index.rst:9   <paragraph>
+           > (0,0,0,0,2) body [Sphinx] > default
+          MixedStyledText('Lorem ipsum dolor sit amet, cons...')
+            MixedStyledText('Lorem ipsum dolor sit amet, cons...')
+              SingleStyledText('Lorem ipsum dolor sit amet, cons...')
+      Paragraph('Lorem ipsum dolor sit amet, cons...')   index.rst:11   <paragraph>
+           > (0,0,0,0,2) body [Sphinx] > default
+          MixedStyledText('Lorem ipsum dolor sit amet, cons...')
+            MixedStyledText('Lorem ipsum dolor sit amet, cons...')
+              SingleStyledText('Lorem ipsum dolor sit amet, cons...')
+      Paragraph('Lorem ipsum dolor sit amet, cons...')   index.rst:13   <paragraph>
+           > (0,0,0,0,2) body [Sphinx] > default
+          MixedStyledText('Lorem ipsum dolor sit amet, cons...')
+            MixedStyledText('Lorem ipsum dolor sit amet, cons...')
+              SingleStyledText('Lorem ipsum dolor sit amet, cons...')
+      Paragraph('Lorem ipsum dolor sit amet, cons...')   index.rst:15   <paragraph>
+           > (0,0,0,0,2) body [Sphinx] > default
+          MixedStyledText('Lorem ipsum dolor sit amet, cons...')
+            MixedStyledText('Lorem ipsum dolor sit amet, cons...')
+              SingleStyledText('Lorem ipsum dolor sit amet, cons...')
+      Paragraph('Lorem ipsum dolor sit amet, cons...')   index.rst:17   <paragraph>
+           > (0,0,0,0,2) body [Sphinx] > default
+          MixedStyledText('Lorem ipsum dolor sit amet, cons...')
+            MixedStyledText('Lorem ipsum dolor sit amet, cons...')
+              SingleStyledText('Lorem ipsum dolor sit amet, cons...')
+      Paragraph('Lorem ipsum dolor sit amet, cons...')   index.rst:19   <paragraph>
+           > (0,0,0,0,2) body [Sphinx] > default
+          MixedStyledText('Lorem ipsum dolor sit amet, cons...')
+            MixedStyledText('Lorem ipsum dolor sit amet, cons...')
+              SingleStyledText('Lorem ipsum dolor sit amet, cons...')
+      Paragraph('Lorem ipsum dolor sit amet, cons...')   index.rst:21   <paragraph>
+           > (0,0,0,0,2) body [Sphinx] > default
+          MixedStyledText('Lorem ipsum dolor sit amet, cons...')
+            MixedStyledText('Lorem ipsum dolor sit amet, cons...')
+              SingleStyledText('Lorem ipsum dolor sit amet, cons...')
+              InlineIndexTarget('')   index.rst:21   <index>
+              SingleStyledText('first term')
+              SingleStyledText(' and Lorem ipsum dolor sit amet,...')
+              InlineIndexTarget('')   index.rst:21   <index>
+              SingleStyledText('second term')
+              SingleStyledText(' on the next page.')
+#### DownExpandingContainer('footer')
+  StaticGroupedFlowables()
+    Footer('		1')
+         > (0,0,0,0,2) footer [Sphinx] > header_footer
+        MixedStyledText('		1')
+          MixedStyledText('		1')
+            Tab('	')
+            Tab('	')
+            Field('1')
+              SingleStyledText('1')
+---------------------------------- page 2 ----------------------------------
+#### FlowablesContainer('background')
+  StaticGroupedFlowables()
+#### FootnoteContainer('footnotes')
+  StaticGroupedFlowables()
+#### DownExpandingContainer('floats')
+  StaticGroupedFlowables()
+#### ChainedContainer('column1')
+  (continued) StaticGroupedFlowables()
+    (continued) DocumentTree()   index.rst   <document>
+      (continued) Paragraph('Lorem ipsum dolor sit amet, cons...')   index.rst:21   <paragraph>
+           > (0,0,0,0,2) body [Sphinx] > default
+              InlineIndexTarget('')   index.rst:21   <index>
+              SingleStyledText('second term')
+              SingleStyledText(' on the next page.')
+#### UpExpandingContainer('header')
+  StaticGroupedFlowables()
+    Header('Index page break, Release ')
+         > (0,0,0,0,2) header [Sphinx] > header_footer
+        MixedStyledText('Index page break, Release ')
+          MixedStyledText('Index page break, Release ')
+            Field('Index page break')
+              SingleStyledText('Index page break')
+            SingleStyledText(', ')
+            Field('Release ')
+              SingleStyledText('Release ')
+#### DownExpandingContainer('footer')
+  StaticGroupedFlowables()
+    Footer('2		Chapter ​.  ​')
+         > (0,0,0,0,2) footer [Sphinx] > header_footer
+        MixedStyledText('2		Chapter ​.  ​')
+          MixedStyledText('2		Chapter ​.  ​')
+            Field('2')
+              SingleStyledText('2')
+            Tab('	')
+            Tab('	')
+            StringField('Chapter')
+              SingleStyledText('Chapter')
+            SingleStyledText(' ')
+            Field('​')
+              SingleStyledText('​')
+            SingleStyledText('.  ')
+            Field('​')
+              SingleStyledText('​')
+---------------------------------- page 3 ----------------------------------
+#### FlowablesContainer('background')
+  StaticGroupedFlowables()
+#### FootnoteContainer('footnotes')
+  StaticGroupedFlowables()
+#### FlowablesContainer('chapter title')
+  Paragraph('Index', style='front matter section title')
+       > (0,0,1,0,2) front matter section title [Sphinx] > DEFAULT
+         (0,0,0,0,2) body [Sphinx] > default
+      Field('Index')
+        StringField('Index')
+          SingleStyledText('Index')
+#### ChainedContainer('column1')
+  StaticGroupedFlowables()
+    StaticGroupedFlowables()
+    IndexSection()
+         > (0,0,0,1,1) chapter [Sphinx] > DEFAULT
+      Index()   index
+           > (0,0,0,0,2) index [Sphinx] > DEFAULT
+        IndexLabel('F')
+             > (0,0,0,0,2) index section label [Sphinx] > DEFAULT
+               (0,0,0,0,1) body [Sphinx] > default
+            SingleStyledText('F')
+        IndexEntry('first term, 1')
+             > (0,0,0,1,2) level 1 index entry [Sphinx] > default
+               (0,0,0,0,1) body [Sphinx] > default
+            MixedStyledText('first term, 1')
+              MixedStyledText('first term, 1')
+                SingleStyledText('first term, ')
+                MixedStyledText('1')
+                  Reference('1')
+                       > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                    SingleStyledText('1')
+        IndexLabel('S')
+             > (0,0,0,0,2) index section label [Sphinx] > DEFAULT
+               (0,0,0,0,1) body [Sphinx] > default
+            SingleStyledText('S')
+        IndexEntry('second term, 2')
+             > (0,0,0,1,2) level 1 index entry [Sphinx] > default
+               (0,0,0,0,1) body [Sphinx] > default
+            MixedStyledText('second term, 2')
+              MixedStyledText('second term, 2')
+                SingleStyledText('second term, ')
+                MixedStyledText('2')
+                  Reference('2')
+                       > (0,0,0,0,1) linked reference [Sphinx] > DEFAULT
+                    SingleStyledText('2')
+#### ChainedContainer('column2')
+  StaticGroupedFlowables()
+#### DownExpandingContainer('footer')
+  StaticGroupedFlowables()
+    Footer('		3')
+         > (0,0,0,0,2) footer [Sphinx] > header_footer
+        MixedStyledText('		3')
+          MixedStyledText('		3')
+            Tab('	')
+            Tab('	')
+            Field('3')
+              SingleStyledText('3')

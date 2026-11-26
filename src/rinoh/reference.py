@@ -397,6 +397,11 @@ class Field(MixedStyledTextBase):
         return type(self)(self.type, style=self.style, parent=parent,
                           source=self.source)
 
+    @property
+    def depends_on_page(self):
+        return (self.type == PAGE_NUMBER
+                or isinstance(self.type, SectionFieldType))
+
     def children(self, container):
         if container is None:
             text = '${}'.format(self.type)

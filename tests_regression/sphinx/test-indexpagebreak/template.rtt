@@ -1,0 +1,4 @@
+[TEMPLATE_CONFIGURATION]
+name=indexpagebreak
+template=book
+stylesheet=stylesheet.rts

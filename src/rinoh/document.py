@@ -23,6 +23,7 @@ Classes representing a document:
 from pathlib import Path
 
 import datetime
+import gc
 import pickle
 import re
 import sys
@@ -34,6 +35,7 @@ from copy import copy
 from itertools import count
 from operator import attrgetter
 from os import getenv
+from weakref import ref
 
 from . import __version__, __release_date__
 from .attribute import OptionSet, Source
@@ -45,7 +47,8 @@ from .layout import (Container, ReflowRequired,
 from .number import NumberFormatBase, format_number
 from .reference import ReferenceType
 from .strings import Strings
-from .style import Match, StyleLog, ZERO_SPECIFICITY
+from .style import (ComputedStyle, Match, Style, Styled, StyleLog,
+                    ZERO_SPECIFICITY)
 from .text import StyledText
 from .util import DEFAULT, WeakMutableKeyDictionary
 from .warnings import warn
@@ -126,7 +129,11 @@ class Page(Container):
         return self._document_part
 
     def empty_canvas(self):
-        self.canvas = self.backend_page.canvas
+        self._canvas = self.backend_page.canvas
+
+    @property
+    def document(self):
+        return self.document_part.document
 
     @property
     def page(self):
@@ -135,8 +142,7 @@ class Page(Container):
 
     def get_current_section(self, level):
         current_section = None
-        for section in (section for section in self.document._sections
-                        if section.level == level):
+        for section in self.document._sections_by_level.get(level, ()):
             if section.is_hidden(self):
                 continue
             section_id = section.get_id(self.document)
@@ -185,7 +191,7 @@ class Page(Container):
 
     def place(self):
         self.before_placing()
-        self.place_children()
+        self.place_children(self.canvas)
         self.canvas.place_annotations()
 
 
@@ -224,6 +230,29 @@ class Metadata(dict, Source):
         return 'document metadata'
 
 
+class ElementStyle(object):
+    """Style information for a single styled element (see
+    :meth:`Document.element_style`)
+
+    Attributes:
+        match_key: see :meth:`Document._match_key` (`UNKNOWN` until set)
+        matches (list[Match]): the matching styles, or `None` if not yet set
+        computed_style (ComputedStyle): the element's computed style, or
+            `None` if not yet set
+
+    """
+
+    __slots__ = ('ref', 'match_key', 'matches', 'computed_style')
+
+    UNKNOWN = object()
+
+    def __init__(self, ref):
+        self.ref = ref      # weak reference to the element
+        self.match_key = self.UNKNOWN
+        self.matches = None
+        self.computed_style = None
+
+
 class Document(object):
     """Renders a document tree to pages
 
@@ -255,8 +284,9 @@ class Document(object):
         self.language = language
         self._strings = strings or Strings()
         self.backend = backend or pdf
-        self._flowables = list(id(element)
-                               for element in document_tree.elements)
+        # for the progress indicator: the position of each element
+        self._element_index = {id(element): index for index, element
+                               in enumerate(document_tree.elements)}
 
         self.metadata = Metadata(self, date=datetime.date.today())
         self.counters = {}             # counters for Headings, Figures, Tables
@@ -265,7 +295,15 @@ class Document(object):
         self.references = {}           # mapping id's to reference data
         self.page_elements = {}        # mapping id's to pages
         self.page_references = {}      # mapping id's to page numbers
-        self._styled_matches = WeakMutableKeyDictionary()   # cache matching styles
+        # id(styled) -> ElementStyle
+        self.element_styles = {}
+        self._shared_matches = {}   # matching styles by match key
+        self._match_key_ids = {}
+        self._attribute_tests = None
+        self._attribute_tests_by_type = {}
+        self._shared_computed_styles = {}   # computed styles by sharing key
+        self.paragraph_words = WeakMutableKeyDictionary()   # cache words
+        self.shapers = {}      # paragraph.Shaper by font, size and features
         self._sections = []
         self.index_entries = {}
         self._glossary = {}
@@ -311,7 +349,9 @@ to the terms of the GNU Affero General Public License version 3.''')
 
     def get_reference(self, id, reference_type, default=DEFAULT):
         if reference_type == ReferenceType.PAGE:
-            return self.page_references.get(id, 'XX')
+            page_reference = self.page_references.get(id, 'XX')
+            self._used_page_references.add((id, page_reference))
+            return page_reference
         try:
             return self.references[id][reference_type]
         except KeyError:
@@ -319,26 +359,164 @@ to the terms of the GNU Affero General Public License version 3.''')
                 raise
             return default
 
-    def get_matches(self, styled):
-        styled_matches = self._styled_matches
+    def number_of_pages(self, part_name):
+        """The number of pages in a document part (previous rendering pass)"""
         try:
-            return styled_matches[styled]
+            count = self.part_page_counts[part_name].count
+        except KeyError:
+            count = 0
+        self._used_page_counts.add((part_name, count))
+        return count
+
+    def _converged(self):
+        """Whether the page references and page counts that were used while
+        rendering match the final ones"""
+        def page_count(part_name):
+            try:
+                return self.part_page_counts[part_name].count
+            except KeyError:
+                return 0
+
+        return (all(self.page_references.get(id, 'XX') == page_reference
+                    for id, page_reference in self._used_page_references)
+                and all(page_count(part_name) == count
+                        for part_name, count in self._used_page_counts))
+
+    def element_style(self, element):
+        """Return the :class:`ElementStyle` for `element`
+
+        These are stored in :attr:`element_styles` by the id of `element`.
+        Entries are removed when `element` is garbage collected, so that its
+        id can't be mistaken for that of a new element.
+
+        """
+        element_id = id(element)
+        element_styles = self.element_styles
+        entry = element_styles.get(element_id)
+        if entry is None:
+            def forget(_):
+                element_styles.pop(element_id, None)
+
+            entry = element_styles[element_id] = \
+                ElementStyle(ref(element, forget))
+        return entry
+
+    def get_computed_style(self, styled):
+        """Return the :class:`.ComputedStyle` for `styled`"""
+        entry = self.element_style(styled)
+        computed_style = entry.computed_style
+        if computed_style is not None:
+            return computed_style
+        parent = styled.parent
+        parent_key = (self.get_computed_style(parent)
+                      if isinstance(parent, Styled) else id(parent))
+        style = styled.style
+        style_key = id(style) if isinstance(style, Style) else style
+        matches = tuple(match.style_name
+                        for match in self._get_matches(styled, entry)
+                        if match.stylesheet)
+        key = type(styled), style_key, matches, parent_key
+        try:
+            computed_style = self._shared_computed_styles[key]
+        except KeyError:
+            computed_style = ComputedStyle(styled)
+            self._shared_computed_styles[key] = computed_style
+        entry.computed_style = computed_style
+        return computed_style
+
+    def get_style_value(self, styled, attribute):
+        """Return the value of the style `attribute` for `styled`"""
+        computed_style = self.get_computed_style(styled)
+        try:
+            return computed_style.values[attribute]
+        except KeyError:
+            value = computed_style.styled.get_config_value(attribute, self)
+            computed_style.values[attribute] = value
+            return value
+
+    def _match_key(self, element):
+        """Return a key that is shared by all elements matching the same
+        styles: elements of the same type, with the same style and the same
+        outcome of the selectors' attribute tests, with parents that share a
+        key (or None if this cannot be determined)"""
+        if element is None:
+            return None
+        entry = self.element_style(element)
+        if entry.match_key is not ElementStyle.UNKNOWN:
+            return entry.match_key
+        tests = self._get_attribute_tests(type(element))
+        if tests is None:
+            return None
+        outcomes = []
+        for attribute, value in tests:
+            try:
+                attribute_value = getattr(element, attribute)
+                if callable(attribute_value):
+                    attribute_value = attribute_value(self)
+                outcomes.append(bool(attribute_value == value))
+            except Exception as exception:
+                outcomes.append(type(exception))
+        style = getattr(element, 'style', None)
+        parent_key = self._match_key(element.parent)
+        if parent_key is None and element.parent is not None:
+            return None
+        key = (type(element), style if isinstance(style, str) else None,
+               tuple(outcomes), parent_key)
+        key_id = self._match_key_ids.setdefault(key, len(self._match_key_ids))
+        entry.match_key = key_id
+        return key_id
+
+    def _get_attribute_tests(self, element_type):
+        """The (attribute, value) tests selectors perform on elements of
+        `element_type` (None if these cannot be determined)"""
+        try:
+            return self._attribute_tests_by_type[element_type]
+        except KeyError:
+            pass
+        if self._attribute_tests is None:
+            try:
+                self._attribute_tests = list(self.stylesheet.attribute_tests())
+            except NotImplementedError:     # unknown selector type
+                self._attribute_tests = False
+        if self._attribute_tests is False:
+            tests = None
+        else:
+            tests = []
+            for cls, attribute, value in self._attribute_tests:
+                if (issubclass(element_type, cls)
+                        and (attribute, value) not in tests):
+                    tests.append((attribute, value))
+        self._attribute_tests_by_type[element_type] = tests
+        return tests
+
+    def get_matches(self, styled):
+        return self._get_matches(styled, self.element_style(styled))
+
+    def _get_matches(self, styled, entry):
+        if entry.matches is not None:
+            return entry.matches
+        key = self._match_key(styled)
+        try:
+            matches = self._shared_matches[key]
         except KeyError:
             stylesheet = self.stylesheet
             matches = sorted(stylesheet.find_matches(styled, self),
                              key=attrgetter('specificity'), reverse=True)
-            last_match = Match(None, ZERO_SPECIFICITY)
             for match in matches:
-                if (match.specificity == last_match.specificity
-                        and match.style_name != last_match.style_name):
-                    styled.warn("Multiple selectors match with the same "
-                                f"specificity: {last_match.style_name}, "
-                                f"{match.style_name}. See the style log for "
-                                "details.")
                 match.stylesheet = stylesheet.find_source(match.style_name)
-                last_match = match
-            styled_matches[styled] = matches
-            return matches
+            if key is not None:
+                self._shared_matches[key] = matches
+        last_match = Match(None, ZERO_SPECIFICITY)
+        for match in matches:
+            if (match.specificity == last_match.specificity
+                    and match.style_name != last_match.style_name):
+                styled.warn("Multiple selectors match with the same "
+                            f"specificity: {last_match.style_name}, "
+                            f"{match.style_name}. See the style log for "
+                            "details.")
+            last_match = match
+        entry.matches = matches
+        return matches
 
     def set_glossary(self, term, definition):
         try:
@@ -426,28 +604,36 @@ to the terms of the GNU Affero General Public License version 3.''')
                              "'file'.")
 
         fake_container = FakeContainer(self)
-        prev_page_counts, prev_page_refs = self._load_cache(filename_root)
+        # rendering creates millions of objects that are kept until the end,
+        # but hardly any reference cycles; don't let the garbage collector
+        # traverse all of these over and over again; collect only in between
+        # rendering passes
+        gc_enabled = gc.isenabled()
+        gc.disable()
+        gc.unfreeze()       # the objects frozen by a previous render()
         try:
             self.document_tree.build_document(fake_container)
             self.prepare(fake_container)
+            self._sections_by_level = {}
+            for section in self._sections:
+                self._sections_by_level.setdefault(section.level,
+                                                   []).append(section)
             backend_metadata = self._get_backend_metadata()
             self.page_elements.clear()
-            self.part_page_counts = prev_page_counts
-            self.page_references = prev_page_refs.copy()
+            self.part_page_counts, self.page_references = \
+                self._load_cache(filename_root)
             while True:
                 self.backend_document = \
                     self.backend.Document(self.CREATOR, **backend_metadata)
                 self.part_page_counts = self._render_pages()
-                if (self.part_page_counts == prev_page_counts
-                        and self.page_references == prev_page_refs):
+                if self._converged():
                     break
                 if self._single_pass:
                     print('Stopping after first rendering pass.')
                     break
                 print('Not yet converged, rendering again...')
-                prev_page_counts = self.part_page_counts
-                prev_page_refs = self.page_references.copy()
                 del self.backend_document
+                gc.collect()
             self._create_outlines(self.backend_document)
             if filename:
                 self._save_cache(filename_root)
@@ -456,6 +642,12 @@ to the terms of the GNU Affero General Public License version 3.''')
                 print('Writing output: {}'.format(filename))
             self.backend_document.write(file)
         finally:
+            if gc_enabled:
+                # the collector would traverse all of these objects as soon as
+                # it is re-enabled; exclude them from collection until
+                # render() is called again
+                gc.freeze()
+                gc.enable()
             if filename_root:
                 file.close()
         return not self.error
@@ -468,6 +660,8 @@ to the terms of the GNU Affero General Public License version 3.''')
         self.sideways_floats = deque()
         self.registered_sideways_floats = set()
         self.placed_footnotes = set()
+        self._used_page_references = set()
+        self._used_page_counts = set()
         self._start_time = time.time()
 
         part_page_counts = {}
@@ -536,11 +730,11 @@ to the terms of the GNU Affero General Public License version 3.''')
 
     def progress(self, flowable, container):
         try:
-            index = self._flowables.index(id(flowable))
-        except ValueError:
+            index = self._element_index[id(flowable)]
+        except KeyError:
             pass
         else:
-            percent = 100 * (index + 1) / len(self._flowables)
+            percent = 100 * (index + 1) / len(self._element_index)
             time_passed = time.time() - self._start_time
             passed = int(time_passed)
             eta = int(time_passed / percent * (100 - percent))

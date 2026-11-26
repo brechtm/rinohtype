@@ -9,9 +9,10 @@
 import struct
 
 from .parse import OpenTypeTable, MultiFormatTable, Record
-from .parse import int16, uint16, ushort, ulong, Packed
-from .parse import array, context, context_array, indirect, indirect_array
+from .parse import int16, uint16, ushort, ulong, offset, Packed
+from .parse import array, context, context_array, indirect
 from .layout import LayoutTable, Coverage, ClassDefinition, Device
+from .layout import DelayedList
 from ...util import cached_property
 
 
@@ -127,14 +128,24 @@ class PairSetTable(OpenTypeTable):
         self['PairValueRecord'] = pvr_list
 
 
+def pair_sets(file, base, table):
+    """The pair sets, each parsed when it is first accessed"""
+    offsets = array(offset, table['PairSetCount'])(file)
+    format_1, format_2 = table['ValueFormat1'], table['ValueFormat2']
+
+    def reader(file, file_offset):
+        return PairSetTable(file, file_offset, format_1, format_2)
+
+    return DelayedList(reader, file, base, offsets)
+
+
 class PairAdjustmentSubtable(MultiFormatTable):
     entries = [('PosFormat', uint16),
                ('Coverage', indirect(Coverage)),
                ('ValueFormat1', ValueFormat),
                ('ValueFormat2', ValueFormat)]
     formats = {1: [('PairSetCount', uint16),
-                   ('PairSet', indirect_array(PairSetTable, 'PairSetCount',
-                                              'ValueFormat1', 'ValueFormat2'))],
+                   ('PairSet', pair_sets)],
                2: [('ClassDef1', indirect(ClassDefinition)),
                    ('ClassDef2', indirect(ClassDefinition)),
                    ('Class1Count', uint16),
@@ -144,27 +155,19 @@ class PairAdjustmentSubtable(MultiFormatTable):
         super().__init__(file, file_offset)
         format_1, format_2 = self['ValueFormat1'], self['ValueFormat2']
         if self['PosFormat'] == 2:
+            # only the first glyph's XAdvance is used (see lookup)
+            class_1_count, class_2_count = (self['Class1Count'],
+                                            self['Class2Count'])
             record_format = format_1.data_format + format_2.data_format
-            c2r_struct = struct.Struct('>' + record_format)
-            c2r_size = c2r_struct.size
-            value_1_length = len(format_1)
-            format_1_keys = format_1.present_keys
-            format_2_keys = format_2.present_keys
-            class_1_record = []
-            for i in range(self['Class1Count']):
-                class_2_record = []
-                for j in range(self['Class2Count']):
-                    record_data = c2r_struct.unpack(file.read(c2r_size))
-                    value_1 = {}
-                    value_2 = {}
-                    for i, key in enumerate(format_1_keys):
-                        value_1[key] = record_data[i]
-                    for i, key in enumerate(format_2_keys):
-                        value_2[key] = record_data[value_1_length + i]
-                    class_2_record.append({'Value1': value_1,
-                                           'Value2': value_2})
-                class_1_record.append(class_2_record)
-            self['Class1Record'] = class_1_record
+            records_struct = struct.Struct('>' + record_format * class_2_count)
+            if 'XAdvance' in format_1.present_keys:
+                stride = len(record_format)
+                index = format_1.present_keys.index('XAdvance')
+                self._x_advances = [
+                    records_struct.unpack(file.read(records_struct.size))
+                    [index::stride] for _ in range(class_1_count)]
+            else:
+                self._x_advances = None
 
     def lookup(self, a_id, b_id):
         if self['PosFormat'] == 1:
@@ -177,8 +180,9 @@ class PairAdjustmentSubtable(MultiFormatTable):
         elif self['PosFormat'] == 2:
             a_class = self['ClassDef1'].class_number(a_id)
             b_class = self['ClassDef2'].class_number(b_id)
-            class_2_record = self['Class1Record'][a_class][b_class]
-            return class_2_record['Value1']['XAdvance']
+            if self._x_advances is None:
+                raise KeyError
+            return self._x_advances[a_class][b_class]
 
 
 class EntryExitRecord(OpenTypeTable):

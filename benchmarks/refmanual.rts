@@ -1,0 +1,42 @@
+[STYLESHEET]
+name = Reference manual benchmark
+description = Small adjustments to the Sphinx style sheet
+base = sphinx
+
+[VARIABLES]
+serif_typeface = TeX Gyre Heros
+sans_typeface = TeX Gyre Heros
+mono_typeface = TeX Gyre Cursor
+base_font_size = 10pt
+
+[body]
+text_align = LEFT
+line_spacing = fixed(13pt, leading(0))
+
+[code block]
+font_size = 7.5pt
+background_color = #f2f2f2
+
+[table]
+width = 100%
+repeat_head = true
+
+[table head cell paragraph]
+font_size = 9pt
+text_align = LEFT
+
+[table body cell paragraph]
+font_size = 9pt
+text_align = LEFT
+
+[table head cell background]
+fill_color = #e6e6e6
+
+[heading level 1]
+page_break = ANY
+
+[heading level 2]
+page_break = NONE
+
+[heading level 3]
+page_break = NONE
