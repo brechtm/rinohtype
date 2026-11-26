@@ -5,8 +5,7 @@ import sys
 
 _, github_python_version = sys.argv
 
-mapping = {'3.10':                '3.10',
-           '3.11':                '3.11',
+mapping = {'3.11':                '3.11',
            '3.12':                '3.12',
            '3.13':                '3.13',
            '3.14':                '3.14',

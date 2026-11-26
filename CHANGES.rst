@@ -26,6 +26,8 @@ New Features:
 
 Changed:
 
+* Python 3.10 is no longer supported. The minimum supported Python version is
+  now 3.11.
 * Project metadata in ``pyproject.toml`` is now declared in the standard
   ``[project]`` table (PEP 621) instead of the deprecated ``[tool.poetry]``
   fields. This also removes all ``poetry check`` warnings.

@@ -123,17 +123,17 @@ Testing against multiple Python interpreter versions
 Nox facilitates running tests on multiple Python interpreter versions. You can
 combine the ``unit`` and ``regression`` sessions with a Python `version
 number`_ to execute it on a specific Python interpreter version. For example,
-to run the unit tests with CPython 3.8::
+to run the unit tests with CPython 3.11::
 
-    nox -e unit-3.8
+    nox -e unit-3.11
 
 While it is typically sufficient to test on a single Python version during
 development, it can be useful to run tests on a set of Python versions before
 pushing your commits. Of course, this requires these versions to be available
 on your machine. It is highly recommended you use pyenv_ (or pyenv-win_) to
-install and manage these. For example, to install CPython 3.8.1, you can run::
+install and manage these. For example, to install CPython 3.11.9, you can run::
 
-    pyenv install 3.8.1
+    pyenv install 3.11.9
 
 and pyenv will download, build and install this version of CPython for you.
 pyenv will install the different Python versions in an isolated location
