@@ -51,7 +51,7 @@ dependencies = [
 [project.optional-dependencies]
 math = [
     "ziamath>=0.12",
-    "cairosvg>=2.8.2,<3.0.0",
+    "cairosvg>=2.9.1,<3.0.0",
 ]
 
 [project.urls]
