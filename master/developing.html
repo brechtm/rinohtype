@@ -42,7 +42,7 @@
         <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
       
     
-        <link rel="stylesheet" type="text/css" href="_static/sphinx_immaterial_theme.74c816e3f9967dd6e.min.css?v=6cfe2491" />
+        <link rel="stylesheet" type="text/css" href="_static/sphinx_immaterial_theme.6efbe22605a23fcd6.min.css?v=b2ceb110" />
         <link rel="stylesheet" type="text/css" href="_static/tweaks.css?v=ac567af0" />
     <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -578,6 +578,16 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#benchmarking" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      <span>Benchmarking</span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#continuous-integration" class="md-nav__link">
     
     <span class="md-ellipsis">
@@ -954,6 +964,16 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#benchmarking" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      <span>Benchmarking</span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#continuous-integration" class="md-nav__link">
     
     <span class="md-ellipsis">
@@ -1108,6 +1128,23 @@ repository checkout directory. The file lists specific the versions of CPython
 rinohtype aims to support plus recent PyPy3 versions (ideally, we should
 closely track the latest releases). The <code class="docutils literal notranslate"><span class="pre">pyenv_setup.py</span></code> script can install
 these for you (skipping any that are already installed).</p>
+<h2 id="benchmarking">Benchmarking<a class="headerlink" href="#benchmarking" title="Link to this heading">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">benchmarks/refmanual.py</span></code> renders <code class="docutils literal notranslate"><span class="pre">benchmarks/refmanual.rst</span></code>, a small
+reference manual with tables spanning pages, code blocks, lists and
+cross-references, and measures a single rendering pass:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><code><span class="n">python</span> <span class="n">benchmarks</span><span class="o">/</span><span class="n">refmanual</span><span class="o">.</span><span class="n">py</span>                  <span class="c1"># wall-clock/CPU time</span>
+<span class="n">python</span> <span class="n">benchmarks</span><span class="o">/</span><span class="n">refmanual</span><span class="o">.</span><span class="n">py</span> <span class="o">--</span><span class="n">instructions</span>   <span class="c1"># instruction count</span>
+</code></pre></div>
+</div>
+<p>Wall-clock times vary with CPU clock speed and system load. With
+<code class="docutils literal notranslate"><span class="pre">--instructions</span></code>, the script runs itself under <a class="reference external" href="https://valgrind.org">Valgrind</a>’s cachegrind tool
+and reports the number of CPU instructions executed while rendering, which is
+reproducible to within a millionth (this takes up to a few minutes, and only
+works on x86-64 Linux). It also reports the peak memory allocated while
+rendering, as traced by Python’s tracemalloc. Only compare these numbers when
+obtained with the same Python interpreter and dependency versions, from the
+same checkout directory. <code class="docutils literal notranslate"><span class="pre">--profile</span> <span class="pre">FILE</span></code> stores a per-function profile that
+can be inspected using <code class="docutils literal notranslate"><span class="pre">cg_annotate</span> <span class="pre">FILE</span></code>.</p>
 <h2 id="continuous-integration">Continuous integration<a class="headerlink" href="#continuous-integration" title="Link to this heading">¶</a></h2>
 <p><a class="reference external" href="https://github.com/brechtm/rinohtype/actions">GitHub Actions</a> automatically executes the Nox sessions when new commits
 are pushed to the repository. The Nox sessions are run on Linux, macOS and

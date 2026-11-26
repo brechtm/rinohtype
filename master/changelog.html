@@ -42,7 +42,7 @@
         <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
       
     
-        <link rel="stylesheet" type="text/css" href="_static/sphinx_immaterial_theme.74c816e3f9967dd6e.min.css?v=6cfe2491" />
+        <link rel="stylesheet" type="text/css" href="_static/sphinx_immaterial_theme.6efbe22605a23fcd6.min.css?v=b2ceb110" />
         <link rel="stylesheet" type="text/css" href="_static/tweaks.css?v=ac567af0" />
     <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -1296,8 +1296,50 @@ as cross-references (PR #461 by Styx0x6)</p></li>
 <li><p>Project metadata in <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> is now declared in the standard
 <code class="docutils literal notranslate"><span class="pre">[project]</span></code> table (PEP 621) instead of the deprecated <code class="docutils literal notranslate"><span class="pre">[tool.poetry]</span></code>
 fields. This also removes all <code class="docutils literal notranslate"><span class="pre">poetry</span> <span class="pre">check</span></code> warnings.</p></li>
+<li><p>The destination for an inline index target (e.g. Sphinx’s <code class="docutils literal notranslate"><span class="pre">:index:</span></code>
+role) now points to the indexed term instead of to the left edge of the
+page.</p></li>
+<li><p>Rendering is only repeated when a page reference or page count that was
+used while rendering turned out to be different. Previously, a document
+was always rendered twice when no references cache was available.</p></li>
+<li><p>Rendering performance (issue #455):</p>
+<ul>
+<li><p>The garbage collector is disabled while rendering, and the objects
+created while rendering are excluded from later collections until
+<code class="docutils literal notranslate"><span class="pre">render()</span></code> is called again.</p></li>
+<li><p>OpenType fonts load faster: font tables are parsed when first needed
+(the unused fonts of a typeface are hardly parsed at all), glyph bounding
+boxes are no longer read and kerning tables are read in bulk.</p></li>
+<li><p>The closest font for a requested style is looked up only once per
+typeface. As a result, the warning about a missing font style is only
+emitted once.</p></li>
+<li><p>Styled elements that are styled identically share their computed style,
+so that each style attribute is looked up only once for all of them.</p></li>
+<li><p>Styled elements that match the same selectors share their matching
+styles, so that the style sheet is searched only once for all of them.</p></li>
+<li><p>A paragraph’s words are created only once per rendering pass instead of
+each time it is rendered (measured, retried).</p></li>
+<li><p>The font and metrics of text are looked up only once for each distinct
+text style.</p></li>
+<li><p>Table column widths and label widths are determined from the content’s
+line breaks instead of by rendering the content
+(<code class="docutils literal notranslate"><span class="pre">Flowable.flow_width</span></code>), falling back to rendering for flowables that
+don’t support this.</p></li>
+<li><p>Each distinct word is set in glyphs (ligatures, kerning) and encoded
+for the PDF only once per document instead of for each occurrence.</p></li>
+</ul>
+</li>
+<li><p>Memory usage: the contents of a page’s containers are written directly to
+the page instead of being copied into each enclosing container, and
+containers only get a canvas when something is drawn on them. This
+considerably reduces the peak memory usage for long documents.</p></li>
 </ul>
 <p>Fixed:</p>
+<ul class="simple">
+<li><p>Index entries for terms in a paragraph that continues on the next page
+referred to the next page.</p></li>
+<li><p>A literal block continued on the next page started with an empty line.</p></li>
+</ul>
 <h2 id="release-0-5-6-2026-05-15">Release 0.5.6 (2026-05-15)<a class="headerlink" href="#release-0-5-6-2026-05-15" title="Link to this heading">¶</a></h2>
 <p>New Features:</p>
 <ul>
