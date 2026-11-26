@@ -1106,16 +1106,16 @@ Windows.</p>
 <p>Nox facilitates running tests on multiple Python interpreter versions. You can
 combine the <code class="docutils literal notranslate"><span class="pre">unit</span></code> and <code class="docutils literal notranslate"><span class="pre">regression</span></code> sessions with a Python <a class="reference external" href="https://nox.thea.codes/en/stable/tutorial.html#testing-against-different-and-multiple-pythons">version
 number</a> to execute it on a specific Python interpreter version. For example,
-to run the unit tests with CPython 3.8:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><code><span class="n">nox</span> <span class="o">-</span><span class="n">e</span> <span class="n">unit</span><span class="o">-</span><span class="mf">3.8</span>
+to run the unit tests with CPython 3.11:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><code><span class="n">nox</span> <span class="o">-</span><span class="n">e</span> <span class="n">unit</span><span class="o">-</span><span class="mf">3.11</span>
 </code></pre></div>
 </div>
 <p>While it is typically sufficient to test on a single Python version during
 development, it can be useful to run tests on a set of Python versions before
 pushing your commits. Of course, this requires these versions to be available
 on your machine. It is highly recommended you use <a class="reference external" href="https://github.com/pyenv/pyenv">pyenv</a> (or <a class="reference external" href="https://github.com/pyenv-win/pyenv-win">pyenv-win</a>) to
-install and manage these. For example, to install CPython 3.8.1, you can run:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><code><span class="n">pyenv</span> <span class="n">install</span> <span class="mf">3.8.1</span>
+install and manage these. For example, to install CPython 3.11.9, you can run:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><code><span class="n">pyenv</span> <span class="n">install</span> <span class="mf">3.11.9</span>
 </code></pre></div>
 </div>
 <p>and pyenv will download, build and install this version of CPython for you.
