@@ -33,8 +33,8 @@ Have a look at the showcase_ to get an idea of the level of customization that
 is possible. See the documentation_ to learn how to customize the style of your
 document.
 
-.. _showcase: https://www.mos6581.org/rinohtype/master/showcase.html
-.. _documentation: http://www.mos6581.org/rinohtype/master/
+.. _showcase: https://www.mos6581.org/rinohtype/main/showcase.html
+.. _documentation: http://www.mos6581.org/rinohtype/main/
 
 
 Call for Contributions
@@ -101,7 +101,7 @@ on hold. Please `contact me`_ if you are interested in testing it.
 .. _Google Fonts: https://fonts.google.com
 .. _reStructuredText: http://docutils.sourceforge.net/rst.html
 .. _Sphinx: http://sphinx-doc.org
-.. _rinohtype manual: http://www.mos6581.org/rinohtype/master/manual.pdf
+.. _rinohtype manual: http://www.mos6581.org/rinohtype/main/manual.pdf
 .. _DITA: https://en.wikipedia.org/wiki/Darwin_Information_Typing_Architecture
 .. _contact me: brecht@opqode.com
 

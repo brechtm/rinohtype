@@ -58,9 +58,9 @@ math = [
 [project.urls]
 Homepage = "https://github.com/brechtm/rinohtype"
 Repository = "https://github.com/brechtm/rinohtype"
-Documentation = "http://www.mos6581.org/rinohtype/master"
+Documentation = "http://www.mos6581.org/rinohtype/main"
 "Bug Tracker" = "https://github.com/brechtm/rinohtype/issues"
-Changelog = "http://www.mos6581.org/rinohtype/master/changelog.html"
+Changelog = "http://www.mos6581.org/rinohtype/main/changelog.html"
 
 [project.scripts]
 rinoh = "rinoh.__main__:main"

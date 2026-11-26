@@ -148,7 +148,7 @@ html_theme_options = {
     'repo_url': 'https://github.com/brechtm/rinohtype',
     'repo_name': 'rinohtype',
     'repo_type': 'github',
-    'edit_uri': 'edit/master/doc',
+    'edit_uri': 'edit/main/doc',
     'palette': [
         {
             'media': '(prefers-color-scheme: light)',

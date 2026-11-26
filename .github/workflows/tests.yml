@@ -149,8 +149,12 @@ jobs:
           from pathlib import Path
 
           cwd = Path.cwd()
+          # 'master' is a legacy alias that redirects to 'main'
+          excluded = {'master'}
           versions = sorted((item.name for item in cwd.iterdir()
-                             if item.is_dir() and not item.name.startswith('.')),
+                             if item.is_dir()
+                             and not item.name.startswith('.')
+                             and item.name not in excluded),
                             reverse=True)
           target_dir = Path('gh-pages')
           target_dir.mkdir(parents=True)

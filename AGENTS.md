@@ -5,7 +5,7 @@
 **rinohtype** is a Python-based batch-mode document processor that renders structured documents to PDF based on document templates and style sheets.
 
 **Repository:** https://github.com/brechtm/rinohtype  
-**Documentation:** http://www.mos6581.org/rinohtype/master/
+**Documentation:** http://www.mos6581.org/rinohtype/main/
 
 **Key Features:**
 - Powerful page layout system with columns, running headers/footers, floatable elements, and footnotes
