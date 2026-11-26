@@ -21,7 +21,7 @@ rinohtype
    :target: https://github.com/brechtm/rinohtype/actions?query=workflow%3A%22Test+%26+Publish%22
    :alt: Tests
 
-.. image:: https://codecov.io/gh/brechtm/rinohtype/branch/master/graph/badge.svg
+.. image:: https://codecov.io/gh/brechtm/rinohtype/branch/main/graph/badge.svg
    :target: https://codecov.io/gh/brechtm/rinohtype
    :alt: Test coverage
 
@@ -146,7 +146,7 @@ Installation is trivial::
 If you want to have access to bug fixes and features that are not available in
 a release, you can install the current development version::
 
-    pip install https://github.com/brechtm/rinohtype/archive/refs/heads/master.zip
+    pip install https://github.com/brechtm/rinohtype/archive/refs/heads/main.zip
 
 
 reStructuredText Renderer

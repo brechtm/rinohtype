@@ -22,11 +22,11 @@ name: Test & Publish
 
 on:
   push:
-    branches: [ master ]
+    branches: [ main ]
     tags:
       - '*'
   pull_request:
-    branches: [ master ]
+    branches: [ main ]
   workflow_dispatch:
     inputs:
       debug_enabled:
@@ -116,8 +116,8 @@ jobs:
                        github_ref)
           if m:
               target = m.group(1)
-          elif github_ref == 'refs/heads/master':
-              target = 'master'
+          elif github_ref == 'refs/heads/main':
+              target = 'main'
           else:
               target = ''
           set_output('target', target)

@@ -205,7 +205,7 @@ Pages is handled by the GitHub Actions workflow.
 
     nox
 
-4. Push your commits to master on GitHub. Don't create a tag yet!
+4. Push your commits to main on GitHub. Don't create a tag yet!
 
 5. Check whether all tests on `GitHub Actions`_ are green.
 
