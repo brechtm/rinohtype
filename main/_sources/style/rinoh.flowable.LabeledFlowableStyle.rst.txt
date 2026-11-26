@@ -1,0 +1,7 @@
+﻿LabeledFlowableStyle
+===================================
+
+.. currentmodule:: rinoh.flowable
+
+.. autoclass:: LabeledFlowableStyle
+    :members:

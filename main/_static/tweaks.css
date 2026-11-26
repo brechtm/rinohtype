@@ -1,0 +1,21 @@
+.md-header__button.md-logo :is(img, svg) {
+    height: 1.5rem;
+    margin-top: -5px;
+    margin-bottom: -5px;
+}
+
+.md-header__topic:first-child .md-ellipsis {
+    display: none;
+}
+
+.md-version {
+    margin-left: -1.4rem;
+}
+
+.md-header__button.md-logo {
+    width: 11.7rem;
+}
+
+a.pdf-link {
+  pointer-events: initial;
+}
