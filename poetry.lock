@@ -2072,13 +2072,13 @@ sphinxcontrib-serializinghtml = ">=1.1.9"
 
 [[package]]
 name = "sphinx-immaterial"
-version = "0.13.9"
+version = "0.13.12"
 description = "Adaptation of mkdocs-material theme for the Sphinx documentation system"
 optional = false
 python-versions = ">=3.10"
 groups = ["dev"]
 files = [
-    {file = "sphinx_immaterial-0.13.9-py3-none-any.whl", hash = "sha256:5ea92d2ddc6befcd0fedbd3e6766ea4746e94d9a8a5cc0ab092a946e1fde4254"},
+    {file = "sphinx_immaterial-0.13.12-py3-none-any.whl", hash = "sha256:9f72067941222b06b67ccef8ac3eadc8b54d5339d7329f790de40d572c11cbcd"},
 ]
 
 [package.dependencies]
@@ -2455,4 +2455,4 @@ math = ["cairosvg", "ziamath"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.10,<4.0"
-content-hash = "5d471c01ea8d0e6c1c2f019704d7e20bff4d2266658064c4f0238428f36a4788"
+content-hash = "a1f7688f4607257bda6b768178b4eed7ffef6433b1564f2dac97c44bf1c1f5f7"

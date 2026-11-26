@@ -134,7 +134,7 @@ Sphinx = [
   {version = ">=8.1.0", python = ">=3.11"},
 ]
 defusedxml = ">=0.7.1"  # for Sphinx>=7.3
-sphinx-immaterial = ">=0.10"
+sphinx-immaterial = ">=0.13.12"
 sphinxcontrib-autoprogram = "^0.1.7"
 pytest-github-actions-annotate-failures = { version = ">=0.2", optional = true }
 pytest-pycharm = "^0.7.0"
