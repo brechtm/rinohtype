@@ -265,6 +265,56 @@ class DimensionMaximum(DimensionBase):
         return max(*(float(dimension) for dimension in self.dimensions))
 
 
+class DimensionScope(object):
+    """The evaluation context of a set of dimensions
+
+    Dimensions obtained from :meth:`cached` are evaluated at most once per
+    revision. Call :meth:`changed` when an input that can change, such as the
+    height of a growing container, has changed.
+
+    """
+
+    __slots__ = ('revision',)
+
+    def __init__(self):
+        self.revision = 0
+
+    def changed(self):
+        """Note that the cached dimensions' values may have changed"""
+        self.revision += 1
+
+    def cached(self, dimension):
+        """Return a dimension that retains `dimension`'s value"""
+        return CachedDimension(dimension, self)
+
+
+class CachedDimension(DimensionBase):
+    """A dimension whose value is retained until its scope's revision changes
+
+    Evaluating a tree of dimensions is much more expensive than adding two
+    numbers, and the same edges of a container are typically evaluated many
+    times, whereas the values they depend on change only rarely. This wrapper
+    therefore evaluates the dimension it wraps only when the
+    :class:`DimensionScope` it belongs to has changed.
+
+    """
+
+    def __init__(self, dimension, scope):
+        self.dimension = dimension
+        self.scope = scope
+        self.revision = -1
+        self.value = 0.0
+
+    def __float__(self):
+        if self.scope.revision != self.revision:
+            self.value = float(self.dimension)
+            self.revision = self.scope.revision
+        return self.value
+
+    def __repr__(self):
+        return 'CachedDimension({})'.format(self.dimension)
+
+
 class DimensionUnitBase(object):
     all = OrderedDict()
 

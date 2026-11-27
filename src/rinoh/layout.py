@@ -33,7 +33,7 @@ from copy import copy
 from functools import cached_property
 
 from .annotation import AnnotationTransform
-from .dimension import DimensionBase, PT
+from .dimension import DimensionBase, DimensionScope, PT
 from .util import ContextManager
 
 
@@ -360,22 +360,29 @@ class PageGeometry(object):
 
     """
 
+    EDGES = ('left', 'top', 'width', 'height', 'right', 'bottom')
+
     def __init__(self, page):
         self.page = page
-        self._dims = {}     # container -> {edge: Dimension}
+        self._containers = []
+        self._scope = DimensionScope()
         self._dirty = True
         self.version = 0    # bumped each time the geometry is resolved
 
     def setup(self):
-        """Register the page template's containers and resolve their geometry
-        """
+        """Register the page template's containers and cache their edges"""
         for container in self._descendants(self.page):
-            dims = self._edges(container)
-            if dims:
-                self._dims[container] = dims
-                if isinstance(container, ExpandingContainerBase):
-                    # its height can change while the page is laid out
-                    container._geometry_source = True
+            self._containers.append(container)
+            if isinstance(container, ExpandingContainerBase):
+                # its height can change while the page is laid out
+                container._geometry_source = True
+            for edge in self.EDGES:
+                dimension = getattr(container, edge)
+                if (edge == 'top'
+                        and getattr(container, 'vertically_center_content',
+                                    False)):
+                    dimension = dimension + _VerticalOffset(container)
+                setattr(container, edge, self._scope.cached(dimension))
         self.resolve()
 
     @classmethod
@@ -384,41 +391,18 @@ class PageGeometry(object):
             yield child
             yield from cls._descendants(child)
 
-    @staticmethod
-    def _edges(container):
-        """The edges that can be stored on `container` as plain floats
-
-        The height of an expanding container follows from its cursor and its
-        edges are anchored at one side, so only the anchor and the horizontal
-        edges are resolved."""
-        edges = ['left', 'width', 'right']
-        if isinstance(container, UpDownExpandingContainer):
-            pass                            # expands up and down: stays live
-        elif isinstance(container, UpExpandingContainer):
-            edges.append('bottom')          # anchored at the bottom
-        elif isinstance(container, ExpandingContainerBase):
-            edges.append('top')             # anchored at the top
-        else:
-            edges += ['top', 'height', 'bottom']
-        return {edge: getattr(container, edge) for edge in edges}
-
     def resolve(self):
-        """Evaluate the template containers' edges and store them as floats
+        """Update the cached dimensions if a geometry source has changed
 
         Does nothing if no geometry-changing container has changed since the
         last resolution."""
         if not self._dirty:
             return
-        for container, dims in self._dims.items():
-            offset = getattr(container, '_vertical_offset', 0.0)
-            for edge, dimension in dims.items():
-                value = float(dimension)
-                if edge == 'top':
-                    value += offset
-                setattr(container, edge, value)
+        self._scope.changed()
+        for container in self._containers:
             if (isinstance(container, FlowablesContainerBase)
                     and not container._expanding):
-                container._limit = container.height
+                container._limit = float(container.height)
         self.version += 1
         self._dirty = False
 
@@ -430,6 +414,16 @@ class PageGeometry(object):
         """Resolve the geometry, which is known to have changed"""
         self._dirty = True
         self.resolve()
+
+
+class _VerticalOffset(DimensionBase):
+    """The offset applied to a vertically centered container's top edge"""
+
+    def __init__(self, container):
+        self.container = container
+
+    def __float__(self):
+        return self.container._vertical_offset
 
 
 class FlowablesContainerBase(Container):
@@ -565,7 +559,7 @@ class FlowablesContainerBase(Container):
             self._render(type, rerender)
         if self.vertically_center_content and type is CONTENT:
             self._vertical_offset = float(self.remaining_height) / 2
-            self.top = float(self.top) + self._vertical_offset
+            self.context.page.geometry.mark_changed()
         if self._geometry_source:
             self.context.page.geometry.mark_changed()
 
