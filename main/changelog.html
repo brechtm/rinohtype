@@ -1362,6 +1362,10 @@ and a running footer) rendered with the style of its first use.</p></li>
 the container’s children instead of being placed unrotated. Link and
 destination annotations are now also placed correctly on sideways
 containers.</p></li>
+<li><p>The numbers of ordered list items were determined by comparing list items
+for structural equality, which compares the items’ entire element trees and
+could recurse infinitely on PyPy (where dictionary comparison visits keys in
+a different order). List items are now identified by identity.</p></li>
 </ul>
 <h2 id="release-0-5-6-2026-05-15">Release 0.5.6 (2026-05-15)<a class="headerlink" href="#release-0-5-6-2026-05-15" title="Link to this heading">¶</a></h2>
 <p>New Features:</p>
