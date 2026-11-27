@@ -271,6 +271,8 @@ class NewChapterBodyPage(BodyPage):
         for flowable in self.get_config_value('chapter_title_flowables',
                                               self.document):
             _, _, descender = flowable.flow(self.chapter_title, descender)
+        # the containers below the chapter title depend on its height
+        self.geometry.update()
 
 
 class SidewaysBodyPage(BodyPageBase):

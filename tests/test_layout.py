@@ -9,9 +9,9 @@
 import pytest
 
 from rinoh.dimension import PT
-from rinoh.layout import (Container, FlowContext, FlowablesContainer,
-                          InlineDownExpandingContainer, CONTENT,
-                          HEADER_FOOTER)
+from rinoh.layout import (Container, EndOfContainer, FlowContext,
+                          FlowablesContainer, InlineDownExpandingContainer,
+                          MaybeContainer, CONTENT, HEADER_FOOTER)
 
 
 class FakeDocumentPart(object):
@@ -89,3 +89,61 @@ def test_missing_page_attribute(page):
     del page.footnote_space
     with pytest.raises(AttributeError):
         content.footnote_space
+
+
+def test_cursor_includes_advancing_sub_container(page):
+    content = FlowablesContainer('content', CONTENT, page, 0*PT, 0*PT,
+                                 100*PT, 100*PT)
+    inline = InlineDownExpandingContainer('inline', content, 0*PT, 100*PT)
+    inline.advance(10*PT)
+    assert content.cursor == pytest.approx(10)
+    inline.advance(5*PT)
+    assert content.cursor == pytest.approx(15)
+    # the advance is folded into the parent's own cursor when it advances
+    content.advance(5*PT)
+    assert content.cursor == pytest.approx(20)
+    assert content._child is None
+
+
+def test_discarded_sub_container_leaves_no_advance(page):
+    content = FlowablesContainer('content', CONTENT, page, 0*PT, 0*PT,
+                                 100*PT, 100*PT)
+    inline = InlineDownExpandingContainer('inline', content, 0*PT, 100*PT)
+    inline.advance(10*PT)
+    content._discard(inline)
+    assert content.cursor == pytest.approx(0)
+
+
+def test_failed_maybe_container_rolls_back(page):
+    content = FlowablesContainer('content', CONTENT, page, 0*PT, 0*PT,
+                                 100*PT, 100*PT)
+
+    class State(object):
+        initial = True
+
+    with pytest.raises(EndOfContainer):
+        with MaybeContainer(content) as maybe_container:
+            maybe_container.advance(10*PT)
+            raise EndOfContainer(State())
+    assert content.cursor == pytest.approx(0)
+
+
+def test_inline_container_limit_follows_parent(page):
+    content = FlowablesContainer('content', CONTENT, page, 0*PT, 0*PT,
+                                 100*PT, 100*PT)
+    inline = InlineDownExpandingContainer('inline', content, 0*PT, 100*PT)
+    assert inline.remaining_height == pytest.approx(100)
+    content._limit = float(content._limit) - 40    # the page geometry shrunk
+    assert inline.remaining_height == pytest.approx(60)
+
+
+def test_advance_beyond_limit(page):
+    content = FlowablesContainer('content', CONTENT, page, 0*PT, 0*PT,
+                                 100*PT, 100*PT)
+    assert content.advance2(60*PT)
+    assert not content.advance2(50*PT)
+    assert content.cursor == pytest.approx(60)
+    assert content.advance2(50*PT, ignore_overflow=True)
+    assert content.cursor == pytest.approx(100)
+    with pytest.raises(Exception):
+        content.advance(10*PT)

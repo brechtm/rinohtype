@@ -41,8 +41,8 @@ from .attribute import OptionSet, Source
 from .backend import pdf
 from .flowable import StaticGroupedFlowables
 from .language import EN
-from .layout import (ContainerBase, FlowContext, ReflowRequired,
-                     BACKGROUND, CONTENT, HEADER_FOOTER)
+from .layout import (ContainerBase, FlowContext, PageGeometry,
+                     ReflowRequired, BACKGROUND, CONTENT, HEADER_FOOTER)
 from .number import NumberFormatBase, format_number
 from .reference import ReferenceType
 from .strings import Strings
@@ -117,8 +117,36 @@ class Page(ContainerBase):
         self.backend_page = document.backend.Page(backend_document,
                                                   width, height, self)
         self._empty = True
+        self._geometry = None       # resolved template container geometry
+        self._geometry_setup = False
         self.context = FlowContext(self, None)
         super().__init__('PAGE', None, 0, 0, width, height)
+
+    @property
+    def geometry(self):
+        """The geometry of this page's template containers
+
+        See :class:`PageGeometry`."""
+        if self._geometry is None:
+            self._geometry = PageGeometry(self)
+        return self._geometry
+
+    def finish_page_setup(self):
+        """Register and resolve the page template's container geometry
+
+        This must be called once the page template is done creating its
+        containers; containers created afterwards are laid out while flowing
+        and take their geometry from their parent."""
+        if not self._geometry_setup:
+            self._geometry_setup = True
+            self.geometry.setup()
+
+    def check_overflow(self):
+        # the container a footnote or float was flowed into has grown; the
+        # containers that depend on it need to be re-evaluated before checking
+        if self._geometry_setup:
+            self.geometry.update()
+        return super().check_overflow()
 
     def __repr__(self):
         return "{}('{}', {})".format(self.__class__.__name__, self.name,
@@ -179,10 +207,12 @@ class Page(ContainerBase):
         return prefix + page_number if prefix else page_number
 
     def render(self):
+        self.finish_page_setup()
         super().render(BACKGROUND)
         try:
             for index in count():
                 try:
+                    self.geometry.update()
                     super().render(CONTENT, rerender=index > 0)
                     break
                 except ReflowRequired:
@@ -193,6 +223,8 @@ class Page(ContainerBase):
 
     def place(self):
         self.before_placing()
+        # placing footnotes may have grown the footnote space
+        self.geometry.update()
         self.place_children(self.canvas)
         from .debug import draw_destinations
         draw_destinations(self)

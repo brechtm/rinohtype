@@ -68,6 +68,15 @@ Changed:
   - Annotation transforms are composed as containers are placed, instead of
     collecting them in a list that is composed again for each canvas that
     holds annotations.
+  - The geometry of a page template's containers is evaluated once per page
+    (and only again when a container it depends on has changed) and stored
+    as plain numbers, instead of being re-evaluated for every lookup. Flow
+    cursors are plain numbers as well; a container that advances another one
+    is folded into its parent's cursor on demand instead of every container
+    traversing the chain of containers it advances.
+  - A footnote that could not be placed is discarded by retracting its
+    advance instead of adjusting the footnote space's cursor, which could
+    subtract its height twice.
 
 * Memory usage: the contents of a page's containers are written directly to
   the page instead of being copied into each enclosing container, and
