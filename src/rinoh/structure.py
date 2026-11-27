@@ -172,8 +172,13 @@ class List(GroupedLabeledFlowables, StaticGroupedFlowables):
         self.start_index = start_index
 
     def index(self, item, container):
+        # compare by identity: comparing list items with `==` compares their
+        # entire element trees, which contain reference cycles (an item's
+        # label refers back to the item) that can make the comparison recurse
+        # infinitely (observed on PyPy), and structurally equal items would be
+        # mistaken for each other
         items = filter(lambda itm: not itm.label.get_style('hide', container),
-                       takewhile(lambda li: li != item, self.children))
+                       takewhile(lambda li: li is not item, self.children))
         return self.start_index + itemcount(items)
 
 

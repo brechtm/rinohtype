@@ -95,6 +95,10 @@ Fixed:
   the container's children instead of being placed unrotated. Link and
   destination annotations are now also placed correctly on sideways
   containers.
+* The numbers of ordered list items were determined by comparing list items
+  for structural equality, which compares the items' entire element trees and
+  could recurse infinitely on PyPy (where dictionary comparison visits keys in
+  a different order). List items are now identified by identity.
 
 
 Release 0.5.6 (2026-05-15)
