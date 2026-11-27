@@ -588,6 +588,16 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#debugging-named-destinations" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      <span>Debugging named destinations</span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#continuous-integration" class="md-nav__link">
     
     <span class="md-ellipsis">
@@ -974,6 +984,16 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#debugging-named-destinations" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      <span>Debugging named destinations</span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#continuous-integration" class="md-nav__link">
     
     <span class="md-ellipsis">
@@ -1145,6 +1165,19 @@ rendering, as traced by Python’s tracemalloc. Only compare these numbers when
 obtained with the same Python interpreter and dependency versions, from the
 same checkout directory. <code class="docutils literal notranslate"><span class="pre">--profile</span> <span class="pre">FILE</span></code> stores a per-function profile that
 can be inspected using <code class="docutils literal notranslate"><span class="pre">cg_annotate</span> <span class="pre">FILE</span></code>.</p>
+<h2 id="debugging-named-destinations">Debugging named destinations<a class="headerlink" href="#debugging-named-destinations" title="Link to this heading">¶</a></h2>
+<p>Set the <code class="docutils literal notranslate"><span class="pre">RINOH_DEBUG_DESTINATIONS</span></code> environment variable to a non-zero value
+when rendering to draw every named destination on the page as a blue
+rectangle. The red square marks the corner used by the PDF backend, and the
+label shows the destination names followed by <code class="docutils literal notranslate"><span class="pre">(TL)</span></code> for that top-left
+corner. Destinations without an extent are drawn as a small square marker.
+This is useful for verifying destination anchors and link targets, especially
+on sideways pages:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><code><span class="n">RINOH_DEBUG_DESTINATIONS</span><span class="o">=</span><span class="mi">1</span> <span class="n">rinoh</span> <span class="n">document</span><span class="o">.</span><span class="n">rst</span>
+</code></pre></div>
+</div>
+<p>The debug graphics are written to the page content stream, so the resulting
+PDF no longer matches the regression-test references.</p>
 <h2 id="continuous-integration">Continuous integration<a class="headerlink" href="#continuous-integration" title="Link to this heading">¶</a></h2>
 <p><a class="reference external" href="https://github.com/brechtm/rinohtype/actions">GitHub Actions</a> automatically executes the Nox sessions when new commits
 are pushed to the repository. The Nox sessions are run on Linux, macOS and

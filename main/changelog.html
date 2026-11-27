@@ -1306,12 +1306,10 @@ used while rendering turned out to be different. Previously, a document
 was always rendered twice when no references cache was available.</p></li>
 <li><p>Rendering performance (issue #455):</p>
 <ul>
-<li><p>The garbage collector is disabled while rendering, and the objects
-created while rendering are excluded from later collections until
-<code class="docutils literal notranslate"><span class="pre">render()</span></code> is called again.</p></li>
 <li><p>OpenType fonts load faster: font tables are parsed when first needed
 (the unused fonts of a typeface are hardly parsed at all), glyph bounding
-boxes are no longer read and kerning tables are read in bulk.</p></li>
+boxes are no longer read, kerning tables are read in bulk, and horizontal
+metrics are decoded in a single struct unpack.</p></li>
 <li><p>The closest font for a requested style is looked up only once per
 typeface. As a result, the warning about a missing font style is only
 emitted once.</p></li>
@@ -1329,6 +1327,23 @@ line breaks instead of by rendering the content
 don’t support this.</p></li>
 <li><p>Each distinct word is set in glyphs (ligatures, kerning) and encoded
 for the PDF only once per document instead of for each occurrence.</p></li>
+<li><p>The page, the document part and the top-level container of a container
+are looked up in a layout context that is shared with all its
+descendants, instead of walking up the container hierarchy each time.
+The page area a flowable ends up in and the page’s footnote and float
+space are no longer determined by walking up the hierarchy either.</p></li>
+<li><p>Annotation transforms are composed as containers are placed, instead of
+collecting them in a list that is composed again for each canvas that
+holds annotations.</p></li>
+<li><p>The geometry of a page template’s containers is evaluated once per page
+(and only again when a container it depends on has changed) and stored
+as plain numbers, instead of being re-evaluated for every lookup. Flow
+cursors are plain numbers as well; a container that advances another one
+is folded into its parent’s cursor on demand instead of every container
+traversing the chain of containers it advances.</p></li>
+<li><p>A footnote that could not be placed is discarded by retracting its
+advance instead of adjusting the footnote space’s cursor, which could
+subtract its height twice.</p></li>
 </ul>
 </li>
 <li><p>Memory usage: the contents of a page’s containers are written directly to
@@ -1341,6 +1356,12 @@ considerably reduces the peak memory usage for long documents.</p></li>
 <li><p>Index entries for terms in a paragraph that continues on the next page
 referred to the next page.</p></li>
 <li><p>A literal block continued on the next page started with an empty line.</p></li>
+<li><p>A string field used in multiple places (e.g. the table of contents title
+and a running footer) rendered with the style of its first use.</p></li>
+<li><p>Content drawn directly on a sideways container is now rotated along with
+the container’s children instead of being placed unrotated. Link and
+destination annotations are now also placed correctly on sideways
+containers.</p></li>
 </ul>
 <h2 id="release-0-5-6-2026-05-15">Release 0.5.6 (2026-05-15)<a class="headerlink" href="#release-0-5-6-2026-05-15" title="Link to this heading">¶</a></h2>
 <p>New Features:</p>
