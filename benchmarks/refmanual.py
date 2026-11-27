@@ -32,6 +32,23 @@ reStructuredText input happens before that.
     only compare numbers obtained in the same environment. ``--profile
     FILE`` keeps cachegrind's per-function counts (``cg_annotate FILE``).
 
+
+``python benchmarks/refmanual.py --bytecode-steps``
+    Count the Python bytecode instructions executed while rendering, using
+    ``sys.monitoring`` (Python 3.12 or newer). This is a portable stand-in
+    for cachegrind's instruction count on platforms where Valgrind is not
+    available, such as Apple silicon macOS: it is deterministic and
+    independent of the CPU's speed and the system load as well. It measures
+    Python-level work, however: only the bytecode instructions executed by
+    the interpreter are counted, not the work done by the C API (such as the
+    arithmetic of :class:`~rinoh.dimension.Dimension` objects or other
+    builtins). A change that moves work between Python and C can therefore
+    move this count in the opposite direction of the wall-clock time and of
+    cachegrind's instruction count. Only compare numbers obtained with the
+    same interpreter, the same dependency versions and a similar checkout
+    path. Each measured run happens in a process of its own because rendering
+    a document a second time in one process takes a different path.
+
 Cachegrind starts with instrumentation disabled (--instr-at-start=no), so
 startup, imports and parsing run at near-native speed. The script switches
 instrumentation on and off around render() with Valgrind client requests,
@@ -43,6 +60,7 @@ import ctypes
 import mmap
 import os
 import platform
+import statistics
 import subprocess
 import sys
 import tempfile
@@ -124,6 +142,34 @@ def measure_under_cachegrind(document, out_dir):
     client_request(CG_STOP_INSTRUMENTATION)
 
 
+def measure_under_bytecode_steps(main):
+    """Print the number of Python bytecode instructions `main` executes
+
+    `main` renders a document; it is passed a callable so that this function
+    can also count the instructions render a document that is not prepared by
+    this script (see ``benchmarks/compare.py``)."""
+    monitoring = getattr(sys, 'monitoring', None)
+    if monitoring is None or not hasattr(monitoring.events, 'INSTRUCTION'):
+        raise SystemExit('--bytecode-steps requires Python 3.12 or newer')
+    tool = next(index for index in range(6)
+                if monitoring.get_tool(index) is None)
+    monitoring.use_tool_id(tool, 'rinoh-benchmark')
+    steps = [0]
+
+    def count_instruction(code, instruction_offset):
+        steps[0] += 1
+
+    monitoring.register_callback(tool, monitoring.events.INSTRUCTION,
+                                 count_instruction)
+    try:
+        monitoring.set_events(tool, monitoring.events.INSTRUCTION)
+        main()
+    finally:
+        monitoring.set_events(tool, 0)
+        monitoring.free_tool_id(tool)
+    print(steps[0])
+
+
 def measure_under_tracemalloc(document, out_dir):
     tracemalloc.start()
     render(document, out_dir)
@@ -148,6 +194,22 @@ def count_instructions(args, out_dir):
     return int(summary.split()[1])
 
 
+def bytecode_steps(out_dir, repeat):
+    """Return the bytecode instruction counts of `repeat` separate runs"""
+    if repeat < 1:
+        raise SystemExit('--steps-repeat must be at least 1')
+    command = [sys.executable, __file__, '--under-bytecode-steps',
+               '--out-dir', str(out_dir)]
+    samples = []
+    for _ in range(repeat):
+        result = subprocess.run(command, env=environment(),
+                                capture_output=True, text=True)
+        if result.returncode:
+            raise SystemExit(result.stderr)
+        samples.append(int(result.stdout.split()[-1]))
+    return samples
+
+
 def peak_memory(out_dir):
     """Run this script with tracemalloc and return the peak memory usage"""
     command = [sys.executable, __file__, '--under-tracemalloc',
@@ -170,6 +232,13 @@ def main():
     parser.add_argument('--instructions', action='store_true',
                         help='count instructions using Valgrind (cachegrind) '
                              'and trace the peak memory usage')
+    parser.add_argument('--bytecode-steps', action='store_true',
+                        help='count the Python bytecode instructions '
+                             'executed while rendering (Python 3.12 or '
+                             'newer; portable alternative to --instructions)')
+    parser.add_argument('--steps-repeat', metavar='N', type=int, default=3,
+                        help='number of separate runs for --bytecode-steps '
+                             '(default: %(default)s)')
     parser.add_argument('--profile', metavar='FILE', type=Path,
                         help='keep the cachegrind output file, a per-function '
                              'profile (implies --instructions)')
@@ -180,6 +249,8 @@ def main():
                         help=argparse.SUPPRESS)
     parser.add_argument('--under-tracemalloc', action='store_true',
                         help=argparse.SUPPRESS)
+    parser.add_argument('--under-bytecode-steps', action='store_true',
+                        help=argparse.SUPPRESS)
     args = parser.parse_args()
     if args.under_cachegrind:
         document = prepare_document()
@@ -187,7 +258,11 @@ def main():
     if args.under_tracemalloc:
         document = prepare_document()
         return measure_under_tracemalloc(document, args.out_dir)
-    if not (args.instructions or args.profile) \
+    if args.under_bytecode_steps:
+        document = prepare_document()
+        return measure_under_bytecode_steps(
+            lambda: render(document, args.out_dir))
+    if not (args.instructions or args.profile or args.bytecode_steps) \
             and os.environ.get('PYTHONHASHSEED') != '0':
         # render under the same conditions as with --instructions
         os.execve(sys.executable, [sys.executable] + sys.argv, environment())
@@ -203,6 +278,15 @@ def main():
                   .format(peak_memory(out_dir) / 1e6))
             if args.profile:
                 print('profile: cg_annotate {}'.format(args.profile))
+        elif args.bytecode_steps:
+            samples = bytecode_steps(out_dir, args.steps_repeat)
+            steps = int(statistics.median(samples))
+            print('render: {:,} bytecode steps'.format(steps))
+            if len(set(samples)) > 1:
+                print('warning: the counts differ between runs: {}'
+                      .format(', '.join('{:,}'.format(sample)
+                                        for sample in samples)),
+                      file=sys.stderr)
         else:
             measure_native(prepare_document(), out_dir)
 
